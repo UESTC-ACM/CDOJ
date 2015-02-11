@@ -27,11 +27,6 @@ public class ContestUserServiceImpl extends AbstractService implements ContestUs
   }
 
   @Override
-  public ContestUserDao getDao() {
-    return contestUserDao;
-  }
-
-  @Override
   public Integer createNewContestUser(ContestUserDto contestUserDto) throws AppException {
     ContestUser contestUser = new ContestUser();
     if (contestUserDto.getUserId() != null) {

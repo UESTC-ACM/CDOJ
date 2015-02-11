@@ -35,16 +35,16 @@ import java.util.Map;
  * Description
  */
 @Service
-public class ContestRankListServiceImpl extends AbstractService implements ContestRankListService {
+public class ContestRankListServiceImpl implements ContestRankListService {
 
   private final Map<String, RankList> rankListPool = new HashMap<>();
   private final long FETCH_INTERVAL = 10 * 1000; // 10 seconds
 
-  private ContestProblemService contestProblemService;
-  private StatusService statusService;
-  private ContestService contestService;
-  private ContestTeamService contestTeamService;
-  private TeamUserService teamUserService;
+  private final ContestProblemService contestProblemService;
+  private final StatusService statusService;
+  private final ContestService contestService;
+  private final ContestTeamService contestTeamService;
+  private final TeamUserService teamUserService;
 
   @Autowired
   public ContestRankListServiceImpl(ContestProblemService contestProblemService,

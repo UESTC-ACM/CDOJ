@@ -21,8 +21,7 @@ import java.util.List;
 
 @Service
 @Primary
-public class ContestServiceImpl extends AbstractService implements
-    ContestService {
+public class ContestServiceImpl extends AbstractService implements ContestService {
 
   private final ContestDao contestDao;
   @SuppressWarnings("unused")
@@ -32,11 +31,6 @@ public class ContestServiceImpl extends AbstractService implements
   public ContestServiceImpl(ContestDao contestDao, Settings settings) {
     this.contestDao = contestDao;
     this.settings = settings;
-  }
-
-  @Override
-  public ContestDao getDao() {
-    return contestDao;
   }
 
   @SuppressWarnings("unchecked")

@@ -2,7 +2,6 @@ package cn.edu.uestc.acmicpc.service;
 
 import cn.edu.uestc.acmicpc.config.IntegrationTestContext;
 import cn.edu.uestc.acmicpc.db.criteria.impl.TrainingCriteria;
-import cn.edu.uestc.acmicpc.db.dao.iface.TrainingDao;
 import cn.edu.uestc.acmicpc.db.dto.field.TrainingFields;
 import cn.edu.uestc.acmicpc.db.dto.impl.TrainingDto;
 import cn.edu.uestc.acmicpc.service.iface.TrainingService;
@@ -10,17 +9,22 @@ import cn.edu.uestc.acmicpc.util.exception.AppException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.testng.AbstractTestNGSpringContextTests;
+import org.springframework.test.context.testng.AbstractTransactionalTestNGSpringContextTests;
+import org.springframework.test.context.transaction.TransactionConfiguration;
+import org.springframework.transaction.annotation.Transactional;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
 import java.util.List;
 
 /**
- * Integration test cases for {@link cn.edu.uestc.acmicpc.service.iface.TrainingService}
+ * Integration test cases for
+ * {@link cn.edu.uestc.acmicpc.service.iface.TrainingService}
  */
-@ContextConfiguration(classes = {IntegrationTestContext.class})
-public class TrainingServiceITTest extends AbstractTestNGSpringContextTests {
+@ContextConfiguration(classes = { IntegrationTestContext.class })
+@Transactional
+@TransactionConfiguration(transactionManager = "transactionManager", defaultRollback = true)
+public class TrainingServiceITTest extends AbstractTransactionalTestNGSpringContextTests {
 
   @Autowired
   private TrainingService trainingService;
@@ -28,7 +32,8 @@ public class TrainingServiceITTest extends AbstractTestNGSpringContextTests {
   @Test
   public void testGetTrainingDto() throws AppException {
     Integer trainingId = 1;
-    Assert.assertEquals(trainingService.getTrainingDto(trainingId, TrainingFields.ALL_FIELDS).getTrainingId(), trainingId);
+    Assert.assertEquals(trainingService.getTrainingDto(trainingId, TrainingFields.ALL_FIELDS)
+        .getTrainingId(), trainingId);
   }
 
   @Test
@@ -54,7 +59,7 @@ public class TrainingServiceITTest extends AbstractTestNGSpringContextTests {
     Assert.assertEquals(
         trainingService.count(trainingCriteria),
         totalRecords
-    );
+        );
   }
 
   @Test
@@ -66,7 +71,7 @@ public class TrainingServiceITTest extends AbstractTestNGSpringContextTests {
     Assert.assertEquals(
         trainingService.count(trainingCriteria),
         totalRecords
-    );
+        );
   }
 
   @Test
@@ -77,7 +82,7 @@ public class TrainingServiceITTest extends AbstractTestNGSpringContextTests {
     Assert.assertEquals(
         trainingService.count(trainingCriteria),
         totalRecords
-    );
+        );
   }
 
   @Test
@@ -88,7 +93,7 @@ public class TrainingServiceITTest extends AbstractTestNGSpringContextTests {
     Assert.assertEquals(
         trainingService.count(trainingCriteria),
         totalRecords
-    );
+        );
   }
 
   @Test
@@ -97,7 +102,7 @@ public class TrainingServiceITTest extends AbstractTestNGSpringContextTests {
     List<TrainingDto> trainingDtoList = trainingService.getTrainingList(trainingCriteria, null);
     Assert.assertEquals(trainingDtoList.size(), 7);
     Integer id = 0;
-    for (TrainingDto trainingDto: trainingDtoList) {
+    for (TrainingDto trainingDto : trainingDtoList) {
       Assert.assertEquals(trainingDto.getTrainingId(), ++id);
       Assert.assertNotNull(trainingDto.getTitle());
       Assert.assertNotNull(trainingDto.getDescription());
@@ -112,7 +117,7 @@ public class TrainingServiceITTest extends AbstractTestNGSpringContextTests {
     List<TrainingDto> trainingDtoList = trainingService.getTrainingList(trainingCriteria, null);
     Assert.assertEquals(trainingDtoList.size(), 7);
     Integer id = 7;
-    for (TrainingDto trainingDto: trainingDtoList) {
+    for (TrainingDto trainingDto : trainingDtoList) {
       Assert.assertEquals(trainingDto.getTrainingId(), id--);
       Assert.assertNotNull(trainingDto.getTitle());
       Assert.assertNotNull(trainingDto.getDescription());
@@ -127,7 +132,8 @@ public class TrainingServiceITTest extends AbstractTestNGSpringContextTests {
         .setDescription("new description")
         .build();
     trainingService.updateTraining(trainingDto);
-    TrainingDto result = trainingService.getTrainingDto(trainingDto.getTrainingId(), TrainingFields.ALL_FIELDS);
+    TrainingDto result = trainingService.getTrainingDto(trainingDto.getTrainingId(),
+        TrainingFields.ALL_FIELDS);
     Assert.assertEquals(result, trainingDto);
   }
 
@@ -138,7 +144,8 @@ public class TrainingServiceITTest extends AbstractTestNGSpringContextTests {
         .setDescription("new description")
         .build();
     trainingService.updateTraining(trainingDto);
-    TrainingDto result = trainingService.getTrainingDto(trainingDto.getTrainingId(), TrainingFields.ALL_FIELDS);
+    TrainingDto result = trainingService.getTrainingDto(trainingDto.getTrainingId(),
+        TrainingFields.ALL_FIELDS);
     Assert.assertEquals(result.getTrainingId(), trainingDto.getTrainingId());
     Assert.assertEquals(result.getDescription(), trainingDto.getDescription());
     Assert.assertNotEquals(result.getTitle(), trainingDto.getTitle());
@@ -151,7 +158,8 @@ public class TrainingServiceITTest extends AbstractTestNGSpringContextTests {
         .setTitle("new title")
         .build();
     trainingService.updateTraining(trainingDto);
-    TrainingDto result = trainingService.getTrainingDto(trainingDto.getTrainingId(), TrainingFields.ALL_FIELDS);
+    TrainingDto result = trainingService.getTrainingDto(trainingDto.getTrainingId(),
+        TrainingFields.ALL_FIELDS);
     Assert.assertEquals(result.getTrainingId(), trainingDto.getTrainingId());
     Assert.assertNotEquals(result.getDescription(), trainingDto.getDescription());
     Assert.assertEquals(result.getTitle(), trainingDto.getTitle());
@@ -175,8 +183,5 @@ public class TrainingServiceITTest extends AbstractTestNGSpringContextTests {
     Long exceptedId = trainingService.count(new TrainingCriteria(TrainingFields.ALL_FIELDS)) + 1;
     Integer newId = trainingService.createNewTraining("new training!");
     Assert.assertEquals(newId.intValue(), exceptedId.intValue());
-
-    TrainingDao trainingDao = (TrainingDao) trainingService.getDao();
-    trainingDao.deleteEntitiesByField("trainingId", exceptedId.toString());
   }
 }

@@ -19,18 +19,22 @@ public class OnlineUsersServiceImpl extends AbstractService implements OnlineUse
   public OnlineUsersServiceImpl() {
   }
 
+  @Override
   public synchronized void addOnlineUsers(UserDto user) {
     userPool.add(user);
   }
 
+  @Override
   public synchronized void removeOnlineUsers(UserDto user) {
     userPool.remove(user);
   }
 
+  @Override
   public Integer getNumberOfOnlineUsers() {
     return userPool.size();
   }
 
+  @Override
   public Set<UserDto> getOnlineList() {
     return userPool;
   }

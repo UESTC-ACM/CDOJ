@@ -5,7 +5,6 @@ import cn.edu.uestc.acmicpc.db.dto.impl.status.StatusDto;
 import cn.edu.uestc.acmicpc.db.dto.impl.status.StatusForJudgeDto;
 import cn.edu.uestc.acmicpc.db.dto.impl.status.StatusInformationDto;
 import cn.edu.uestc.acmicpc.db.dto.impl.status.StatusListDto;
-import cn.edu.uestc.acmicpc.db.entity.Status;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
 import cn.edu.uestc.acmicpc.web.dto.PageInfo;
 
@@ -14,7 +13,7 @@ import java.util.List;
 /**
  * Status service interface.
  */
-public interface StatusService extends DatabaseService<Status, Integer> {
+public interface StatusService {
 
   /**
    * list user's tried problem id.

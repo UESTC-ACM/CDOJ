@@ -30,4 +30,7 @@ public class LogConstants {
       + FOREGROUND_CYAN + SUFFIX;
   public static final String TRACE_COLOR = PREFIX + NORMAL + SEPARATOR
       + FOREGROUND_BLUE + SUFFIX;
+
+  private LogConstants() {
+  }
 }

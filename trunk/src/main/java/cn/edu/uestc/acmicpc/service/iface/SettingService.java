@@ -1,13 +1,12 @@
 package cn.edu.uestc.acmicpc.service.iface;
 
 import cn.edu.uestc.acmicpc.db.dto.impl.setting.SettingDto;
-import cn.edu.uestc.acmicpc.db.entity.Setting;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
 
 /**
  * Setting service interface.
  */
-public interface SettingService extends DatabaseService<Setting, Integer> {
+public interface SettingService {
 
   /**
    * Get settings detail by settings name.

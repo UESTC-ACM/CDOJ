@@ -22,8 +22,7 @@ import java.util.Map;
  * Implementation for {@link ProblemService}.
  */
 @Service
-public class ProblemServiceImpl extends AbstractService implements
-    ProblemService {
+public class ProblemServiceImpl extends AbstractService implements ProblemService {
 
   private final ProblemDao problemDao;
 
@@ -39,11 +38,6 @@ public class ProblemServiceImpl extends AbstractService implements
     problemCondition.isVisible = true;
     return (List<Integer>) problemDao.findAll("problemId",
         problemCondition.getCondition());
-  }
-
-  @Override
-  public ProblemDao getDao() {
-    return problemDao;
   }
 
   @Override

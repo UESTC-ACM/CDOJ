@@ -1,14 +1,13 @@
 package cn.edu.uestc.acmicpc.service.iface;
 
 import cn.edu.uestc.acmicpc.db.dto.impl.language.LanguageDto;
-import cn.edu.uestc.acmicpc.db.entity.Language;
 
 import java.util.List;
 
 /**
  * Language service interface.
  */
-public interface LanguageService extends DatabaseService<Language, Integer> {
+public interface LanguageService {
 
   /**
    * Get all {@link LanguageDto} entities.

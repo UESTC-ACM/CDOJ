@@ -32,7 +32,7 @@ import cn.edu.uestc.acmicpc.db.entity.{0};
 /**
  * {0}Dao AOP interface.
  */
-public interface {0}Dao extends Dao<{0}, Integer> {{
+public interface {0}Dao extends Dao<{0}> {{
 }}
 '''.format(entity)
     )
@@ -55,12 +55,7 @@ import org.springframework.stereotype.Repository;
  * Dao for {{@link {0}}} entity.
  */
 @Repository
-public class {0}DaoImpl extends DaoImpl<{0}, Integer> implements {0}Dao {{
-
-  @Override
-  protected Class<Integer> getPKClass() {{
-    return Integer.class;
-  }}
+public class {0}DaoImpl extends DaoImpl<{0}> implements {0}Dao {{
 
   @Override
   protected Class<{0}> getReferenceClass() {{

@@ -1,14 +1,13 @@
 package cn.edu.uestc.acmicpc.service.iface;
 
 import cn.edu.uestc.acmicpc.db.dto.impl.department.DepartmentDto;
-import cn.edu.uestc.acmicpc.db.entity.Department;
 
 import java.util.List;
 
 /**
  * Department service interface.
  */
-public interface DepartmentService extends DatabaseService<Department, Integer> {
+public interface DepartmentService {
 
   /**
    * Get department name by department id.

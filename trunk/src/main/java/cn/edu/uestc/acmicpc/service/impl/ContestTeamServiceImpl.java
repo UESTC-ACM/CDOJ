@@ -34,11 +34,6 @@ public class ContestTeamServiceImpl extends AbstractService implements ContestTe
   }
 
   @Override
-  public ContestTeamDao getDao() {
-    return contestTeamDao;
-  }
-
-  @Override
   public Boolean checkUserCanRegisterInContest(Integer userId,
       Integer contestId) throws AppException {
     StringBuilder hqlBuilder = new StringBuilder();

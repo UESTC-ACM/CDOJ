@@ -4,7 +4,6 @@ import cn.edu.uestc.acmicpc.db.condition.impl.MessageCondition;
 import cn.edu.uestc.acmicpc.db.dto.impl.message.MessageDto;
 import cn.edu.uestc.acmicpc.db.dto.impl.message.MessageForReceiverDto;
 import cn.edu.uestc.acmicpc.db.dto.impl.message.MessageForUserDto;
-import cn.edu.uestc.acmicpc.db.entity.Message;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
 import cn.edu.uestc.acmicpc.web.dto.PageInfo;
 
@@ -13,7 +12,7 @@ import java.util.List;
 /**
  * Message service interface
  */
-public interface MessageService extends DatabaseService<Message, Integer> {
+public interface MessageService {
 
   /**
    * Create a message by
