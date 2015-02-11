@@ -21,11 +21,9 @@ buildscript {
   }
   dependencies {
     classpath 'com.sahlbach.gradle:gradle-jetty-eclipse-plugin:1.9.2'
-    classpath 'ws.antonov.gradle.plugins:gradle-plugin-protobuf:0.9.1'
   }
 }
 
-apply plugin: 'protobuf'
 apply plugin: 'jettyEclipse'
 
 // Build cdoj subproject first
@@ -112,23 +110,16 @@ task cleanResources << {
   delete "src/gen/"
 }
 
-task fixGeneratedProto(type:Copy) {
-  from 'build/generated-sources/main'
-  into 'src/gen/java'
-}
-
 checkDtosDoNotContainEntities.dependsOn(generateDtos)
 checkControllerDoNotContainDaos.dependsOn(generateDaos)
 compileJava.dependsOn(checkControllerDoNotContainDaos)
 compileJava.dependsOn(checkDtosDoNotContainEntities)
 compileJava.dependsOn(checkTestingCodeAllDoNotUseJunit)
 compileJava.dependsOn(createSchema)
-compileJava.dependsOn(fixGeneratedProto)
 compileJava.dependsOn(generateData)
 generateData.dependsOn(createSchema)
 compileJava.dependsOn(generateMainPropertyFile)
 compileJava.dependsOn(generateTestPropertyFile)
-fixGeneratedProto.dependsOn(generateProto)
 clean.dependsOn(cleanResources)
 test.dependsOn(war)
 
@@ -211,8 +202,6 @@ dependencies {
   compile "com.sun.mail:all:1.5.1"
 
   compile "net.sf.opencsv:opencsv:2.3"
-
-  compile "com.google.protobuf:protobuf-java:2.5.0"
 
   testCompile "$springGroup:spring-test:$springVersion"
   testCompile "org.hamcrest:hamcrest-all:1.3"

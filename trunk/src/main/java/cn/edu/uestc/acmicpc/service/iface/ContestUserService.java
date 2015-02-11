@@ -1,13 +1,12 @@
 package cn.edu.uestc.acmicpc.service.iface;
 
 import cn.edu.uestc.acmicpc.db.dto.impl.contestUser.ContestUserDto;
-import cn.edu.uestc.acmicpc.db.entity.ContestUser;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
 
 /**
  * Contest user service interface
  */
-public interface ContestUserService extends DatabaseService<ContestUser, Integer> {
+public interface ContestUserService {
 
   /**
    * Create a new contest user record in database by {@link ContestUserDto}

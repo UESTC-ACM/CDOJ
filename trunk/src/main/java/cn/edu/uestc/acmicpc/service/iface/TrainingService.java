@@ -3,7 +3,6 @@ package cn.edu.uestc.acmicpc.service.iface;
 import cn.edu.uestc.acmicpc.db.criteria.impl.TrainingCriteria;
 import cn.edu.uestc.acmicpc.db.dto.field.TrainingFields;
 import cn.edu.uestc.acmicpc.db.dto.impl.TrainingDto;
-import cn.edu.uestc.acmicpc.db.entity.Training;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
 import cn.edu.uestc.acmicpc.web.dto.PageInfo;
 
@@ -12,7 +11,7 @@ import java.util.List;
 /**
  * Training service interface.
  */
-public interface TrainingService extends DatabaseService<Training, Integer> {
+public interface TrainingService {
 
   /**
    * Get {@link TrainingDto} by Training id.

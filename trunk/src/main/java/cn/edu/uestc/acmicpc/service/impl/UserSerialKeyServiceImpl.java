@@ -64,18 +64,14 @@ public class UserSerialKeyServiceImpl extends AbstractService implements UserSer
   @Override
   public void updateUserSerialKey(UserSerialKeyDto userSerialKeyDto) throws AppException {
     UserSerialKey userSerialKey;
-    if (userSerialKeyDto.getUserSerialKeyId() == null)
+    if (userSerialKeyDto.getUserSerialKeyId() == null) {
       userSerialKey = new UserSerialKey();
-    else
+    } else {
       userSerialKey = userSerialKeyDao.get(userSerialKeyDto.getUserSerialKeyId());
+    }
     userSerialKey.setTime(userSerialKeyDto.getTime());
     userSerialKey.setSerialKey(userSerialKeyDto.getSerialKey());
     userSerialKey.setUserId(userSerialKeyDto.getUserId());
     userSerialKeyDao.addOrUpdate(userSerialKey);
-  }
-
-  @Override
-  public UserSerialKeyDao getDao() {
-    return userSerialKeyDao;
   }
 }

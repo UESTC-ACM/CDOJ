@@ -3,7 +3,6 @@ package cn.edu.uestc.acmicpc.service.iface;
 import cn.edu.uestc.acmicpc.db.criteria.impl.TrainingContestCriteria;
 import cn.edu.uestc.acmicpc.db.dto.field.TrainingContestFields;
 import cn.edu.uestc.acmicpc.db.dto.impl.TrainingContestDto;
-import cn.edu.uestc.acmicpc.db.entity.TrainingContest;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
 
 import java.util.List;
@@ -11,7 +10,7 @@ import java.util.List;
 /**
  * Training contest service interface.
  */
-public interface TrainingContestService extends DatabaseService<TrainingContest, Integer> {
+public interface TrainingContestService {
 
   /**
    * Get {@link cn.edu.uestc.acmicpc.db.dto.impl.TrainingContestDto} by training

@@ -36,12 +36,9 @@ import java.util.Map;
  *
  * @param <E>
  *          entity type
- * @param <K>
- *          primary key type
  */
 @Repository
-public abstract class DaoImpl<E extends Serializable, K extends Serializable>
-    extends BaseDao implements Dao<E, K> {
+public abstract class DaoImpl<E extends Serializable> extends BaseDao implements Dao<E> {
 
   private static final Logger LOGGER = LogManager.getLogger(DaoImpl.class);
 
@@ -57,13 +54,6 @@ public abstract class DaoImpl<E extends Serializable, K extends Serializable>
       throw new AppException("Invoke addOrUpdate method error.");
     }
   }
-
-  /**
-   * Get primary key's type.
-   *
-   * @return primary key's type
-   */
-  protected abstract Class<K> getPKClass();
 
   /**
    * Build HQL with class name.
@@ -142,7 +132,7 @@ public abstract class DaoImpl<E extends Serializable, K extends Serializable>
 
   @SuppressWarnings("unchecked")
   @Override
-  public E get(K key) throws AppException {
+  public E get(Integer key) throws AppException {
     try {
       if (key == null) {
         return null;

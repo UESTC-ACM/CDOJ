@@ -3,7 +3,6 @@ package cn.edu.uestc.acmicpc.service.iface;
 import cn.edu.uestc.acmicpc.db.dto.impl.contestproblem.ContestProblemDetailDto;
 import cn.edu.uestc.acmicpc.db.dto.impl.contestproblem.ContestProblemDto;
 import cn.edu.uestc.acmicpc.db.dto.impl.contestproblem.ContestProblemSummaryDto;
-import cn.edu.uestc.acmicpc.db.entity.ContestProblem;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
 
 import java.util.List;
@@ -11,7 +10,7 @@ import java.util.List;
 /**
  * ContestProblem service interface.
  */
-public interface ContestProblemService extends DatabaseService<ContestProblem, Integer> {
+public interface ContestProblemService {
 
   /**
    * Gets

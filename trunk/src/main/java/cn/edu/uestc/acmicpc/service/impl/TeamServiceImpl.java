@@ -30,11 +30,6 @@ public class TeamServiceImpl extends AbstractService implements TeamService {
   }
 
   @Override
-  public TeamDao getDao() {
-    return teamDao;
-  }
-
-  @Override
   public Boolean checkTeamExists(String teamName) throws AppException {
     AppExceptionUtil.assertNotNull(teamName);
     TeamDto teamDto = teamDao.getDtoByUniqueField(TeamDto.class, TeamDto.builder(), "teamName",

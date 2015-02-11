@@ -48,9 +48,4 @@ public class CodeServiceImpl extends AbstractService implements CodeService {
     codeDao.addOrUpdate(code);
     return code.getCodeId();
   }
-
-  @Override
-  public CodeDao getDao() {
-    return codeDao;
-  }
 }

@@ -6,7 +6,6 @@ import cn.edu.uestc.acmicpc.db.dto.impl.user.UserDto;
 import cn.edu.uestc.acmicpc.db.dto.impl.user.UserEditorDto;
 import cn.edu.uestc.acmicpc.db.dto.impl.user.UserListDto;
 import cn.edu.uestc.acmicpc.db.dto.impl.user.UserTypeAheadDto;
-import cn.edu.uestc.acmicpc.db.entity.User;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
 import cn.edu.uestc.acmicpc.web.dto.PageInfo;
 
@@ -16,7 +15,7 @@ import java.util.Map;
 /**
  * User service interface.
  */
-public interface UserService extends DatabaseService<User, Integer> {
+public interface UserService {
 
   /**
    * Get {@link UserDto} by user id.

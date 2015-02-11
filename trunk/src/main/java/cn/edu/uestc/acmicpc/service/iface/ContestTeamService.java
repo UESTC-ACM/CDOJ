@@ -4,7 +4,6 @@ import cn.edu.uestc.acmicpc.db.condition.impl.ContestTeamCondition;
 import cn.edu.uestc.acmicpc.db.dto.impl.contestteam.ContestTeamDto;
 import cn.edu.uestc.acmicpc.db.dto.impl.contestteam.ContestTeamListDto;
 import cn.edu.uestc.acmicpc.db.dto.impl.contestteam.ContestTeamReportDto;
-import cn.edu.uestc.acmicpc.db.entity.ContestTeam;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
 import cn.edu.uestc.acmicpc.web.dto.PageInfo;
 
@@ -13,8 +12,7 @@ import java.util.List;
 /**
  * Contest team service interface
  */
-public interface ContestTeamService
-    extends DatabaseService<ContestTeam, Integer> {
+public interface ContestTeamService {
 
   /**
    * Check whether some user can be register in one contest. If any team

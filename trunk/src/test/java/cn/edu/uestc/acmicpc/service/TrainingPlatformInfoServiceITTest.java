@@ -198,9 +198,4 @@ public class TrainingPlatformInfoServiceITTest extends AbstractTestNGSpringConte
 
     trainingPlatformInfoService.removeTrainingPlatformInfo(exceptedId);
   }
-
-  @Test
-  public void testGetDao() throws AppException {
-    trainingPlatformInfoService.getDao();
-  }
 }

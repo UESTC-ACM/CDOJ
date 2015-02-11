@@ -3,7 +3,6 @@ package cn.edu.uestc.acmicpc.service.iface;
 import cn.edu.uestc.acmicpc.db.criteria.impl.TrainingPlatformInfoCriteria;
 import cn.edu.uestc.acmicpc.db.dto.field.TrainingPlatformInfoFields;
 import cn.edu.uestc.acmicpc.db.dto.impl.TrainingPlatformInfoDto;
-import cn.edu.uestc.acmicpc.db.entity.TrainingPlatformInfo;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
 
 import java.util.List;
@@ -11,7 +10,7 @@ import java.util.List;
 /**
  * Training platform info service interface
  */
-public interface TrainingPlatformInfoService extends DatabaseService<TrainingPlatformInfo, Integer> {
+public interface TrainingPlatformInfoService {
 
   /**
    * Get {@link TrainingPlatformInfoDto} by Training platform info id.

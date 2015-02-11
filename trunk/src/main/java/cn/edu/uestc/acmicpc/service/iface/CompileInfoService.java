@@ -1,12 +1,11 @@
 package cn.edu.uestc.acmicpc.service.iface;
 
-import cn.edu.uestc.acmicpc.db.entity.CompileInfo;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
 
 /**
  * CompileInfo service interface.
  */
-public interface CompileInfoService extends DatabaseService<CompileInfo, Integer> {
+public interface CompileInfoService {
 
   /**
    * Get compile info by compile info id.

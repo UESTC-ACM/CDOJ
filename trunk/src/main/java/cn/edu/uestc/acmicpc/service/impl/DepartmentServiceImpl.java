@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.LinkedList;
 import java.util.List;
+
 import javax.annotation.PostConstruct;
 
 /**
@@ -39,19 +40,16 @@ public class DepartmentServiceImpl extends AbstractService implements Department
 
   @Override
   public String getDepartmentName(Integer departmentId) {
-    for (DepartmentDto department : departmentDtoList)
-      if (department.getDepartmentId().equals(departmentId))
+    for (DepartmentDto department : departmentDtoList) {
+      if (department.getDepartmentId().equals(departmentId)) {
         return department.getName();
+      }
+    }
     return null;
   }
 
   @Override
   public List<DepartmentDto> getDepartmentList() {
     return departmentDtoList;
-  }
-
-  @Override
-  public DepartmentDao getDao() {
-    return departmentDao;
   }
 }
