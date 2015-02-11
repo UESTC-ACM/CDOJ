@@ -36,36 +36,21 @@ import java.util.List;
 @EnableAspectJAutoProxy(proxyTargetClass = true)
 public class WebMVCConfig extends WebMvcConfigurerAdapter {
 
-  private static final String STATIC_RESOURCES_PATH = "staticResources.path";
-  private static final String IMAGES_PATH = "images.path";
   @Autowired
   private Environment environment;
 
   @Override
   public void addResourceHandlers(ResourceHandlerRegistry registry) {
-    // Static page
-    registry.addResourceHandler("/").addResourceLocations(
-        getResourceLocations("html/index.html", STATIC_RESOURCES_PATH));
-    registry.addResourceHandler("/fuckIE").addResourceLocations(
-        getResourceLocations("html/fuckIE.html", STATIC_RESOURCES_PATH));
-
-    // Css and js
     registry.addResourceHandler("/dist/**").addResourceLocations(
-        getResourceLocations("dist", STATIC_RESOURCES_PATH));
+        getResourceLocations("dist", "staticResources.path"));
     registry.addResourceHandler("/bower_components/**").addResourceLocations(
-        getResourceLocations("bower_components", STATIC_RESOURCES_PATH));
-
-    // Font
+        getResourceLocations("bower_components", "staticResources.path"));
     registry.addResourceHandler("/font/**").addResourceLocations(
-        getResourceLocations("font", STATIC_RESOURCES_PATH));
-
-    // Angular template
+        getResourceLocations("font", "staticResources.path"));
     registry.addResourceHandler("/template/**").addResourceLocations(
-        getResourceLocations("template", STATIC_RESOURCES_PATH));
-
-    // Images
+        getResourceLocations("template", "staticResources.path"));
     registry.addResourceHandler("/images/**").addResourceLocations(
-        getResourceLocations("", IMAGES_PATH));
+        getResourceLocations("", "images.path"));
   }
 
   private String getResourceLocations(String folder, String name) {

@@ -59,6 +59,20 @@ public class IndexController extends BaseController {
     this.recentContestService = recentContestService;
   }
 
+  @RequestMapping("/")
+  public String index() {
+    return "index";
+  }
+
+  /**
+   * Force redirect to this page when user use IE 6 7 8
+   * @return
+   */
+  @RequestMapping("fuckIE")
+  public String fuckIE() {
+    return "fuckIE";
+  }
+
   @RequestMapping("recentContest")
   @LoginPermit(NeedLogin = false)
   public @ResponseBody Map<String, Object> recentContestList() {
