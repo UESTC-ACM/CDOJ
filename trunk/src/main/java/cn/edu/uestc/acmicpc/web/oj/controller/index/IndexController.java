@@ -5,7 +5,6 @@ import cn.edu.uestc.acmicpc.db.dto.impl.user.UserDto;
 import cn.edu.uestc.acmicpc.service.iface.DepartmentService;
 import cn.edu.uestc.acmicpc.service.iface.LanguageService;
 import cn.edu.uestc.acmicpc.service.iface.MessageService;
-import cn.edu.uestc.acmicpc.service.iface.OnlineUsersService;
 import cn.edu.uestc.acmicpc.service.iface.RecentContestService;
 import cn.edu.uestc.acmicpc.util.annotation.LoginPermit;
 import cn.edu.uestc.acmicpc.util.enums.AuthenticationType;
@@ -44,18 +43,15 @@ public class IndexController extends BaseController {
   private final DepartmentService departmentService;
   private final LanguageService languageService;
   private final MessageService messageService;
-  private final OnlineUsersService onlineUsersService;
   private final RecentContestService recentContestService;
 
   @Autowired
   public IndexController(DepartmentService departmentService,
       LanguageService languageService, MessageService messageService,
-      OnlineUsersService onlineUsersService,
       RecentContestService recentContestService) {
     this.departmentService = departmentService;
     this.languageService = languageService;
     this.messageService = messageService;
-    this.onlineUsersService = onlineUsersService;
     this.recentContestService = recentContestService;
   }
 
@@ -105,8 +101,6 @@ public class IndexController extends BaseController {
         result.put("unreadMessages", messageService.getMessageForReceiverDtoList(messageCondition,
             pageInfo));
       }
-      Integer onlineUsersCount = onlineUsersService.getNumberOfOnlineUsers();
-      result.put("onlineUsersCount", onlineUsersCount);
       result.put("result", "success");
     } catch (AppException e) {
       result.put("result", "error");
