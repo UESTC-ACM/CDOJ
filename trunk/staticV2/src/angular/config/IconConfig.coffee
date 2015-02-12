@@ -8,6 +8,11 @@ cdojV2
       addIcon = (set, names) ->
         for name in names
           $mdIconProvider.icon(
-            "#{set}:#{name}", iconLocation(set, name, "48px"))
+            "#{set}:#{name}", iconLocation(set, name, "24px"))
+
+      # Search before add new item :-)
+      addIcon("action",
+        ["home", "assignment", "extension", "info"])
       addIcon("navigation", ["menu"])
+      addIcon("social", ["people"])
   ])

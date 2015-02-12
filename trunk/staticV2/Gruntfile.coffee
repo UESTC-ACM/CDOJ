@@ -21,6 +21,7 @@ module.exports = (grunt) ->
             "src/angular/cdoj.coffee"
             "src/angular/config/*.coffee"
             "src/angular/controller/*/*.coffee"
+            "src/angular/directive/*/*.coffee"
           ]
 
     coffeelint:
