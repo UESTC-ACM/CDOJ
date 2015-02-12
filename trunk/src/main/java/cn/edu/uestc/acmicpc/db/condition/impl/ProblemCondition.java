@@ -3,6 +3,7 @@ package cn.edu.uestc.acmicpc.db.condition.impl;
 import cn.edu.uestc.acmicpc.db.condition.base.BaseCondition;
 import cn.edu.uestc.acmicpc.db.condition.base.Condition;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
+import cn.edu.uestc.acmicpc.util.enums.ProblemType;
 
 /**
  * Problem database condition entity.
@@ -70,6 +71,12 @@ public class ProblemCondition extends BaseCondition {
    * Is problem has an empty title?
    */
   public Boolean isTitleEmpty;
+
+  /**
+  * The problem type to be searched.
+  */
+  @Exp(type = Condition.ConditionType.EQUALS)
+  public ProblemType type;
 
   @Override
   public Condition getCondition() throws AppException {

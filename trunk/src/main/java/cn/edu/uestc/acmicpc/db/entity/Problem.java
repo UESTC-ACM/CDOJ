@@ -1,6 +1,8 @@
 package cn.edu.uestc.acmicpc.db.entity;
 
 import cn.edu.uestc.acmicpc.util.annotation.KeyField;
+import cn.edu.uestc.acmicpc.util.enums.ProblemType;
+
 
 import java.io.Serializable;
 import java.util.Collection;
@@ -8,6 +10,8 @@ import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
@@ -46,7 +50,7 @@ public class Problem implements Serializable {
         + ", memoryLimit=" + memoryLimit + ", solved=" + solved + ", tried=" + tried + ", isSpj="
         + isSpj + ", isVisible=" + isVisible + ", outputLimit=" + outputLimit + ", javaTimeLimit="
         + javaTimeLimit + ", javaMemoryLimit=" + javaMemoryLimit + ", dataCount=" + dataCount
-        + ", difficulty=" + difficulty + '}';
+        + ", difficulty=" + difficulty + ", type=" + type.name() + '}';
   }
 
   @Column(name = "problemId", nullable = false, insertable = true, updatable = true, length = 10,
@@ -306,6 +310,20 @@ public class Problem implements Serializable {
 
   public void setDifficulty(Integer difficulty) {
     this.difficulty = difficulty;
+  }
+
+  private ProblemType type = ProblemType.NORMAL;
+
+  @Column(name = "type", nullable = false, insertable = true, updatable = true, length = 10,
+      precision = 0)
+  @Enumerated(EnumType.ORDINAL)
+  @Basic
+  public ProblemType getType() {
+    return type;
+  }
+  
+  public void setType(ProblemType type) {
+    this.type = type;
   }
 
   private Collection<ContestProblem> contestproblemsByProblemId;
