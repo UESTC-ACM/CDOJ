@@ -55,6 +55,8 @@ public class WebMVCConfig extends WebMvcConfigurerAdapter {
     // V2
     registry.addResourceHandler("/distV2/**").addResourceLocations(
         getResourceLocations("dist", STATIC_V2_PATH));
+    registry.addResourceHandler("/bower_componentsV2/**").addResourceLocations(
+        getResourceLocations("bower_components", STATIC_V2_PATH));
     registry.addResourceHandler("/templateV2/**").addResourceLocations(
         getResourceLocations("template", STATIC_V2_PATH));
     // Images
