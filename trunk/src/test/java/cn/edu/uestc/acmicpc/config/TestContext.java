@@ -5,7 +5,7 @@ import static org.mockito.Mockito.when;
 
 import cn.edu.uestc.acmicpc.db.dao.iface.ProblemDao;
 import cn.edu.uestc.acmicpc.db.dao.iface.UserDao;
-import cn.edu.uestc.acmicpc.db.dto.impl.SettingDto;
+import cn.edu.uestc.acmicpc.db.dto.impl.setting.SettingDto;
 import cn.edu.uestc.acmicpc.judge.JudgeService;
 import cn.edu.uestc.acmicpc.service.iface.ArticleService;
 import cn.edu.uestc.acmicpc.service.iface.DepartmentService;

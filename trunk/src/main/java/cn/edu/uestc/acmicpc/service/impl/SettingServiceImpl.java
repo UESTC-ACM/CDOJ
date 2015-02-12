@@ -1,7 +1,7 @@
 package cn.edu.uestc.acmicpc.service.impl;
 
 import cn.edu.uestc.acmicpc.db.dao.iface.SettingDao;
-import cn.edu.uestc.acmicpc.db.dto.impl.SettingDto;
+import cn.edu.uestc.acmicpc.db.dto.impl.setting.SettingDto;
 import cn.edu.uestc.acmicpc.db.entity.Setting;
 import cn.edu.uestc.acmicpc.service.iface.SettingService;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
