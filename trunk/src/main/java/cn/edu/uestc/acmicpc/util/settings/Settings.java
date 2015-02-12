@@ -1,6 +1,6 @@
 package cn.edu.uestc.acmicpc.util.settings;
 
-import cn.edu.uestc.acmicpc.db.dto.impl.setting.SettingDto;
+import cn.edu.uestc.acmicpc.db.dto.impl.SettingDto;
 import cn.edu.uestc.acmicpc.service.iface.SettingService;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
 import cn.edu.uestc.acmicpc.util.helper.FileUtil;
@@ -18,6 +18,7 @@ import org.springframework.stereotype.Repository;
 import com.alibaba.fastjson.JSON;
 
 import java.util.List;
+
 import javax.annotation.PostConstruct;
 
 /**
@@ -33,7 +34,7 @@ public class Settings {
 
   @Autowired
   private Environment environment;
-  private SettingService settingService;
+  private final SettingService settingService;
 
   @Autowired
   public Settings(SettingService settingService) {
