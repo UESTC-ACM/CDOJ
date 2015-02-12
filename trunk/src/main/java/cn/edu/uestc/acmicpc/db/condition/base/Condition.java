@@ -17,7 +17,12 @@ import java.util.Objects;
  * <p/>
  * If this condition is stored as {@link Entry#getValue()}, we ignore the order
  * of it.
+ *
+ * @deprecated this class is deprecated, use
+ *             {@link cn.edu.uestc.acmicpc.db.criteria.base.BaseCriteria}
+ *             instead.
  */
+@Deprecated
 public class Condition {
 
   /**
