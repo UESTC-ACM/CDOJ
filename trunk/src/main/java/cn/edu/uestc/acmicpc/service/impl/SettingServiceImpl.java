@@ -1,7 +1,9 @@
 package cn.edu.uestc.acmicpc.service.impl;
 
+import cn.edu.uestc.acmicpc.db.criteria.impl.SettingCriteria;
 import cn.edu.uestc.acmicpc.db.dao.iface.SettingDao;
-import cn.edu.uestc.acmicpc.db.dto.impl.setting.SettingDto;
+import cn.edu.uestc.acmicpc.db.dto.field.SettingFields;
+import cn.edu.uestc.acmicpc.db.dto.impl.SettingDto;
 import cn.edu.uestc.acmicpc.db.entity.Setting;
 import cn.edu.uestc.acmicpc.service.iface.SettingService;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
@@ -24,8 +26,9 @@ public class SettingServiceImpl extends AbstractService implements SettingServic
 
   @Override
   public SettingDto getSettingDto(Integer settingId) throws AppException {
-    return settingDao.getDtoByUniqueField(SettingDto.class,
-        SettingDto.builder(), "settingId", settingId);
+    SettingCriteria criteria = new SettingCriteria(SettingFields.ALL_FIELDS);
+    criteria.settingId = settingId;
+    return settingDao.getDtoByUniqueField(criteria.getCriteria());
   }
 
   @Override
