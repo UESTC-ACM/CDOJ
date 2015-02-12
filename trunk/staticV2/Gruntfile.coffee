@@ -18,6 +18,7 @@ module.exports = (grunt) ->
           join: true
         files:
           "temp/angular/cdoj.angular.js": [
+            "src/angular/i18n/*.coffee"
             "src/angular/cdoj.coffee"
             "src/angular/config/*.coffee"
             "src/angular/controller/*/*.coffee"
