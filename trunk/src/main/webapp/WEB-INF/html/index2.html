@@ -17,17 +17,18 @@
 
 <md-sidenav id="cdoj-sidenav" class="md-sidenav-left md-whiteframe-z2 md-closed md-locked-open"
             md-component-id="left-sidenav" md-is-locked-open="$media('gt-sm')" tabindex="-1">
-  <md-toolbar class="md-default-theme">
-    <h1 class="md-toolbar-tools">
-      <div style="line-height:40px; text-indent: 15px;">CDOJ</div>
-    </h1>
-  </md-toolbar>
   <md-content flex="" class="md-default-theme">
     <cdoj-menu></cdoj-menu>
   </md-content>
 </md-sidenav>
 <div layout="column" tabindex="-1" role="main" flex>
-  <md-toolbar class="md-default-theme" ng-click="openMenu()">
+  <md-toolbar class="md-default-theme">
+    <md-button class="md-fab md-primary md-hue-2 mb-toolbar-tools" aria-label="Show menu button" ng-click="openMenu()">
+      <md-icon md-svg-icon="navigation:menu"></md-icon>
+    </md-button>
+    <h1 class="md-toolbar-tools">
+      <div style="line-height:40px; text-indent: 15px;">CDOJ</div>
+    </h1>
   </md-toolbar>
   <md-content md-scroll-y flex ng-view id="cdoj-content">
 
