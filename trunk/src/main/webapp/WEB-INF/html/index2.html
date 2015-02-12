@@ -22,15 +22,17 @@
     </h1>
   </md-toolbar>
   <md-content flex="" class="md-default-theme">
-    <cdoj-menu></cdoj-menu>
+    <cdoj-menu />
   </md-content>
 </md-sidenav>
 <div layout="column" tabindex="-1" role="main" flex>
   <md-toolbar class="md-default-theme">
-    <h1 class="md-toolbar-tools">
-      <md-button hide-gt-sm aria-label="Show menu button" ng-click="openMenu()">
+    <h1 class="md-toolbar-tools" layout="row" flex>
+      <md-button class="md-toolbar-item" hide-gt-sm aria-label="Show menu button" ng-click="openMenu()">
         <md-icon md-svg-icon="navigation:menu"></md-icon>
       </md-button>
+      <span flex></span>
+      <cdoj-user />
     </h1>
   </md-toolbar>
   <div layout="row">
