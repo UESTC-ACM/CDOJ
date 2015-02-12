@@ -24,6 +24,13 @@ module.exports = (grunt) ->
             "src/angular/controller/*/*.coffee"
             "src/angular/directive/*/*.coffee"
           ]
+      cdojTest:
+        options:
+          join: true
+        files:
+          "temp/test/cdoj.test.js": [
+            "src/test/*/*.coffee"
+          ]
 
     coffeelint:
       coffee: [
@@ -39,6 +46,21 @@ module.exports = (grunt) ->
           "temp/css/cdoj.css": "src/less/cdoj.less"
 
     concat:
+      jasmineJS:
+        src: [
+          "dist/js/cdoj.js"
+          "bower_components/jasmine/lib/jasmine-core/jasmine.js"
+          "bower_components/jasmine/lib/jasmine-core/jasmine-html.js"
+          "bower_components/jasmine/lib/jasmine-core/boot.js"
+          "temp/test/cdoj.test.js"
+        ]
+        dest: "dist/js/cdoj.js"
+      jasmineCSS:
+        src: [
+          "dist/css/cdoj.css"
+          "bower_components/jasmine/lib/jasmine-core/jasmine.css"
+        ]
+        dest: "dist/css/cdoj.css"
       cdojCssFull:
         src: [
           "bower_components/angular-material/angular-material.css"
@@ -104,6 +126,13 @@ module.exports = (grunt) ->
     "coffee:cdojAngularFull"
     "concat:cdojJsFull"
   ]
+  grunt.registerTask "testEnvironment", [
+    "compileFull"
+    "coffee:cdojTest"
+
+    "concat:jasmineJS"
+    "concat:jasmineCSS"
+  ]
   grunt.registerTask "minifyResult", [
     "cssmin:minimizeCss"
 
@@ -113,8 +142,7 @@ module.exports = (grunt) ->
     "concat:cdojJsMinimized"
   ]
   grunt.registerTask "default", [
-    "compileFull",
-    "minifyResult"
+    "build"
   ]
   grunt.registerTask "build", [
     "compileFull",
