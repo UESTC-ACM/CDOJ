@@ -54,8 +54,10 @@ module.exports = (grunt) ->
           "bower_components/angular/angular.js"
           "bower_components/angular-animate/angular-animate.js"
           "bower_components/angular-aria/angular-aria.js"
+          "bower_components/angular-cookies/angular-cookies.js"
           "bower_components/angular-material/angular-material.js"
           "bower_components/angular-route/angular-route.js"
+          "bower_components/underscore/underscore.js"
           "temp/angular/cdoj.angular.js"
         ]
         dest: "dist/js/cdoj.js"
@@ -64,8 +66,10 @@ module.exports = (grunt) ->
           "bower_components/angular/angular.min.js"
           "bower_components/angular-animate/angular-animate.min.js"
           "bower_components/angular-aria/angular-aria.min.js"
+          "bower_components/angular-cookies/angular-cookies.min.js"
           "bower_components/angular-material/angular-material.min.js"
           "bower_components/angular-route/angular-route.min.js"
+          "temp/js/underscore.min.js"
           "temp/js/need-minimized.min.js"
         ]
         dest: "dist/js/cdoj.min.js"
@@ -76,6 +80,9 @@ module.exports = (grunt) ->
         dest: "dist/css/cdoj.min.css"
 
     min:
+      minimizeUnderscore:
+        src: "bower_components/underscore/underscore.js"
+        dest: "temp/js/underscore.min.js"
       minimizeScripts:
         src: "temp/js/need-minimized.js"
         dest: "temp/js/need-minimized.min.js"
@@ -100,6 +107,7 @@ module.exports = (grunt) ->
     "cssmin:minimizeCss"
 
     "concat:cdojJsNeedMinimized"
+    "min:minimizeUnderscore"
     "min:minimizeScripts"
     "concat:cdojJsMinimized"
   ]
