@@ -53,7 +53,12 @@ import java.lang.reflect.Field;
  * }
  * </code></li>
  * </ul>
+ *
+ * @deprecated this class is deprecated, use
+ *             {@link cn.edu.uestc.acmicpc.db.criteria.base.BaseCriteria}
+ *             instead.
  */
+@Deprecated
 public abstract class BaseCondition {
 
   private static final Logger LOGGER = LogManager.getLogger(BaseCondition.class);
