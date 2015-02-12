@@ -11,16 +11,14 @@ cdojV2
 .run([
     "$rootScope", "$http", "$cookies"
     ($rootScope, $http, $cookies) ->
-      supportedLanguages = ["en"]
+      messages =
+        "en": messages_en
+        "zh": messages_zh
 
       lang = $cookies.lang
-      if lang == undefined || !(lang in supportedLanguages)
-        lang = "en"
+      if lang == undefined
+        lang = "zh"
 
-      messages = {}
-      $rootScope.getMessage = (message) -> messages[message]
-
-      $http.get("/i18n/#{lang}.json").success((data) ->
-        messages = data
-      )
+      $rootScope.getMessage = (message) ->
+        messages[lang][message] || messages["en"][message]
 ])
