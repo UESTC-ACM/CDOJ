@@ -18,6 +18,7 @@ import org.springframework.stereotype.Repository;
 import com.alibaba.fastjson.JSON;
 
 import java.util.List;
+
 import javax.annotation.PostConstruct;
 
 /**
@@ -33,7 +34,7 @@ public class Settings {
 
   @Autowired
   private Environment environment;
-  private SettingService settingService;
+  private final SettingService settingService;
 
   @Autowired
   public Settings(SettingService settingService) {

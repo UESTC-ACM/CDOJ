@@ -50,15 +50,15 @@ public class FieldProjection {
     this.type = type;
   }
 
-  public static FieldProjection Property(String field, String alias) {
+  public static FieldProjection property(String field, String alias) {
     return new FieldProjection(field, alias, "property");
   }
 
-  public static FieldProjection Property(String field) {
+  public static FieldProjection property(String field) {
     return new FieldProjection(field, field, "property");
   }
 
-  public static FieldProjection Alias(String field, String alias) {
+  public static FieldProjection alias(String field, String alias) {
     return new FieldProjection(field, alias, "alias");
   }
 }

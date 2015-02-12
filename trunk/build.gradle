@@ -59,7 +59,7 @@ task generateDtos(type: Exec) {
   commandLine "python2",
       file("src/main/python/generate_dtos.py").absolutePath,
       "-i", "src/main/dto",
-      "-o", "src/gen/java/cn/edu/uestc/acmicpc/db/dto/impl"
+      "-o", "src/gen/java/cn/edu/uestc/acmicpc/db/dto"
 }
 
 task createSchema(type: Exec) {
@@ -233,6 +233,9 @@ test {
 checkstyle {
   toolVersion = "6.0"
 }
+
+checkstyleMain.source = "src/main/java"
+//checkstyleMain.exclude 'src/gen/**'
 
 jacoco {
   toolVersion = "0.7.0.201403182114"
