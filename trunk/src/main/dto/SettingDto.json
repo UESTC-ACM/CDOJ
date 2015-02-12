@@ -1,0 +1,21 @@
+{
+  "entity": "Setting",
+  "fields": [
+    {
+      "name": "settingId",
+      "type": "Integer"
+    },
+    {
+      "name": "name",
+      "type": "String"
+    },
+    {
+      "name": "description",
+      "type": "String"
+    },
+    {
+      "name": "value",
+      "type": "String"
+    }
+  ]
+}
