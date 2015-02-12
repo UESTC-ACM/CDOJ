@@ -29,7 +29,7 @@ apply plugin: 'jettyEclipse'
 // Build cdoj subproject first
 jettyEclipseRun {
   doFirst {
-    tasks.getByPath(":static:build").execute()
+    tasks.getByPath(":staticV2:build").execute()
   }
 }
 
@@ -89,7 +89,8 @@ task generateMainPropertyFile(type: Exec) {
       file(imagesPath).absolutePath,
       file(dataPath).absolutePath,
       file(uploadPath).absolutePath,
-      file(judgeWorkPath).absolutePath
+      file(judgeWorkPath).absolutePath,
+      file(staticV2Path).absolutePath
 }
 
 task generateTestPropertyFile(type: Exec) {
@@ -101,7 +102,8 @@ task generateTestPropertyFile(type: Exec) {
       file(imagesPath).absolutePath,
       file(dataPath).absolutePath,
       file(uploadPath).absolutePath,
-      file(judgeWorkPath).absolutePath
+      file(judgeWorkPath).absolutePath,
+      file(staticV2Path).absolutePath
 }
 
 task cleanResources << {

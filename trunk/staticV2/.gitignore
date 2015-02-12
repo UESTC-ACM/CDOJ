@@ -1,0 +1,8 @@
+/node_modules
+/.idea
+/.gradle
+*.xmi
+/temp
+/bower_components
+/dist
+/build/
