@@ -60,6 +60,11 @@ public class IndexController extends BaseController {
     return "index";
   }
 
+  @RequestMapping("/v2")
+  public String index2() {
+    return "index2";
+  }
+
   /**
    * Force redirect to this page when user use IE 6 7 8
    * @return
