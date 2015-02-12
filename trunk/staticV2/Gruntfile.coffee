@@ -20,6 +20,7 @@ module.exports = (grunt) ->
           "temp/angular/cdoj.angular.js": [
             "src/angular/cdoj.coffee"
             "src/angular/config/*.coffee"
+            "src/angular/controller/*/*.coffee"
           ]
 
     coffeelint:
@@ -53,6 +54,7 @@ module.exports = (grunt) ->
           "bower_components/angular-animate/angular-animate.js"
           "bower_components/angular-aria/angular-aria.js"
           "bower_components/angular-material/angular-material.js"
+          "bower_components/angular-route/angular-route.js"
           "temp/angular/cdoj.angular.js"
         ]
         dest: "dist/js/cdoj.js"
@@ -62,6 +64,7 @@ module.exports = (grunt) ->
           "bower_components/angular-animate/angular-animate.min.js"
           "bower_components/angular-aria/angular-aria.min.js"
           "bower_components/angular-material/angular-material.min.js"
+          "bower_components/angular-route/angular-route.min.js"
           "temp/js/need-minimized.min.js"
         ]
         dest: "dist/js/cdoj.min.js"

@@ -3,10 +3,9 @@ cdojV2
     "$routeProvider",
     ($routeProvider) ->
       $routeProvider.when("/",
-        templateUrl: "template/index/index.html"
-        controller: "IndexController"
+        templateUrl: "templateV2/index/index.html"
       ).when("/404/",
-        templateUrl: "template/index/404.html"
+        templateUrl: "templateV2/index/404.html"
       ).otherwise(
         redirectTo: "/404/"
       )
