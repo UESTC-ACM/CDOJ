@@ -1,0 +1,99 @@
+{
+  "entity": "Article",
+  "fields": [
+    {
+      "name": "articleId",
+      "type": "Integer",
+      "projectionParameters": [],
+      "projections": ["ALL_FIELDS", "FIELDS_FOR_LIST_PAGE"]
+    },
+    {
+      "name": "title",
+      "type": "String",
+      "projectionParameters": [],
+      "projections": ["ALL_FIELDS", "FIELDS_FOR_LIST_PAGE"]
+    },
+    {
+      "name": "content",
+      "type": "String",
+      "projectionParameters": [],
+      "projections": ["ALL_FIELDS", "FIELDS_FOR_LIST_PAGE"]
+    },
+    {
+      "name": "time",
+      "type": "Timestamp",
+      "projectionParameters": [],
+      "projections": ["ALL_FIELDS", "FIELDS_FOR_LIST_PAGE"]
+    },
+    {
+      "name": "clicked",
+      "type": "Integer",
+      "projectionParameters": [],
+      "projections": ["ALL_FIELDS", "FIELDS_FOR_LIST_PAGE"]
+    },
+    {
+      "name": "order",
+      "type": "Integer",
+      "projectionParameters": [],
+      "projections": ["ALL_FIELDS"]
+    },
+    {
+      "name": "type",
+      "type": "Integer",
+      "projectionParameters": [],
+      "projections": ["ALL_FIELDS"]
+    },
+    {
+      "name": "isVisible",
+      "type": "Boolean",
+      "projectionParameters": [],
+      "projections": ["ALL_FIELDS", "FIELDS_FOR_LIST_PAGE"]
+    },
+    {
+      "name": "parentId",
+      "type": "Integer",
+      "projectionParameters": [],
+      "projections": ["ALL_FIELDS"]
+    },
+    {
+      "name": "problemId",
+      "type": "Integer",
+      "projectionParameters": [],
+      "projections": ["ALL_FIELDS"]
+    },
+    {
+      "name": "contestId",
+      "type": "Integer",
+      "projectionParameters": [],
+      "projections": ["ALL_FIELDS"]
+    },
+    {
+      "name": "userId",
+      "type": "Integer",
+      "projectionParameters": [],
+      "projections": ["ALL_FIELDS"]
+    },
+    {
+      "name": "ownerName",
+      "type": "String",
+      "projectionParameters": ["owner.userName"],
+      "projections": ["ALL_FIELDS", "FIELDS_FOR_LIST_PAGE"]
+    },
+    {
+      "name": "ownerEmail",
+      "type": "String",
+      "projectionParameters": ["owner.email"],
+      "projections": ["ALL_FIELDS", "FIELDS_FOR_LIST_PAGE"]
+    },
+    {
+      "name": "hasMore",
+      "type": "Boolean"
+    }
+  ],
+  "aliases": [
+    {
+      "name": "owner",
+      "value": "userByUserId"
+    }
+  ]
+}

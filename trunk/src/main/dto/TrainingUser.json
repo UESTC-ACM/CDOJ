@@ -1,0 +1,118 @@
+{
+  "entity": "TrainingUser",
+  "fields": [
+    {
+      "name": "trainingUserId",
+      "type": "Integer",
+      "projectionParameters": [],
+      "projections": ["ALL_FIELDS", "FIELDS_FOR_LIST_PAGE"]
+    },
+    {
+      "name": "trainingId",
+      "type": "Integer",
+      "projectionParameters": [],
+      "projections": ["ALL_FIELDS"]
+    },
+    {
+      "name": "userId",
+      "type": "Integer",
+      "projectionParameters": [],
+      "projections": ["ALL_FIELDS"]
+    },
+    {
+      "name": "userName",
+      "type": "String",
+      "projectionParameters": ["user.userName"],
+      "projections": ["ALL_FIELDS"]
+    },
+    {
+      "name": "trainingUserName",
+      "type": "String",
+      "validator": [
+        {
+          "type": "NotNull",
+          "message": "Please enter a display name."
+        },
+        {
+          "type": "Length",
+          "min": 2,
+          "max": 30,
+          "message": "Please enter 2-30 characters."
+        }
+      ],
+      "projectionParameters": [],
+      "projections": ["ALL_FIELDS", "FIELDS_FOR_LIST_PAGE"]
+    },
+    {
+      "name": "type",
+      "type": "Integer",
+      "projectionParameters": [],
+      "projections": ["ALL_FIELDS", "FIELDS_FOR_LIST_PAGE"]
+    },
+    {
+      "name": "currentRating",
+      "type": "Double",
+      "projectionParameters": [],
+      "projections": ["ALL_FIELDS", "FIELDS_FOR_LIST_PAGE"]
+    },
+    {
+      "name": "currentVolatility",
+      "type": "Double",
+      "projectionParameters": [],
+      "projections": ["ALL_FIELDS", "FIELDS_FOR_LIST_PAGE"]
+    },
+    {
+      "name": "competitions",
+      "type": "Integer",
+      "projectionParameters": [],
+      "projections": ["ALL_FIELDS", "FIELDS_FOR_LIST_PAGE"]
+    },
+    {
+      "name": "rank",
+      "type": "Integer",
+      "projectionParameters": [],
+      "projections": ["ALL_FIELDS", "FIELDS_FOR_LIST_PAGE"]
+    },
+    {
+      "name": "maximumRating",
+      "type": "Double",
+      "projectionParameters": [],
+      "projections": ["ALL_FIELDS"]
+    },
+    {
+      "name": "minimumRating",
+      "type": "Double",
+      "projectionParameters": [],
+      "projections": ["ALL_FIELDS"]
+    },
+    {
+      "name": "mostRecentEventId",
+      "type": "Integer",
+      "projectionParameters": [],
+      "projections": ["ALL_FIELDS", "FIELDS_FOR_LIST_PAGE"]
+    },
+    {
+      "name": "mostRecentEventName",
+      "type": "String",
+      "projectionParameters": [],
+      "projections": ["ALL_FIELDS", "FIELDS_FOR_LIST_PAGE"]
+    },
+    {
+      "name": "ratingHistory",
+      "type": "String",
+      "projectionParameters": [],
+      "projections": ["ALL_FIELDS"]
+    },
+    {
+      "name": "ratingHistoryList",
+      "type": "List<TrainingRating>",
+      "classpath": "cn.edu.uestc.acmicpc.web.dto.TrainingRating"
+    }
+  ],
+  "aliases": [
+    {
+      "name": "user",
+      "value": "userByUserId"
+    }
+  ]
+}

@@ -102,197 +102,235 @@ def writeProperties(indent, out, fields, builder):
         out.write(indent * ' ')
         out.write("}\n")
 
-validators_in_javax = [
-    "AssertFalse", "AssertTrue", "DecimalMax", "DecimalMin",
-    "Digits", "Future", "Max", "Min", "NotNull", "Null", "Past", "Pattern", "Size"
-]
-validators_in_hibernate = [
-    "ConstraintComposition", "CreditCardNumber", "Email", "Length", "NotBlank",
-    "NotEmpty", "Range", "SafeHtml", "ScriptAssert", "RUL"
-]
 
+def writeFields(indent, out, fields, aliases):
+    projections = {}
+    for i in range(len(fields)):
+        field = fields[i]
+        if "projections" in field:
+            for j in range(len(field["projections"])):
+                projection = field["projections"][j]
+                if projection not in projections:
+                    projections[projection] = []
+                params = []
+                if "projectionParameters" in field:
+                    for k in range(len(field["projectionParameters"])):
+                        params.append(
+                            "\"{0}\"".format(field["projectionParameters"][k]))
+                params.append("\"{0}\"".format(field["name"]))
+                projections[projection].append(
+                    "property({0})".format(", ".join(params)))
 
-def unique(seq):
-    seen = set()
-    return [x for x in seq if x not in seen and not seen.add(x)]
+    first = True
+    for key in projections:
+        if first:
+            first = False
+        else:
+            out.write(",\n")
+        out.write(indent * ' ')
+        out.write("{0}(".format(key))
+        second = True
+        for i in range(len(aliases)):
+            if second:
+                second = False
+            else:
+                out.write(',\n')
+            out.write((indent + 4) * ' ')
+            out.write("alias(\"{0}\", \"{1}\")".format(
+                aliases[i]["value"], aliases[i]["name"]))
+        for i in range(len(projections[key])):
+            projection = projections[key][i]
+            if second:
+                second = False
+            else:
+                out.write(',\n')
+            out.write((indent + 4) * ' ')
+            out.write(projection)
+        out.write(")")
+    out.write(indent * ' ')
+    out.write(";\n")
 
 
 def generateDto(input_file, output_dir):
+    impl_dir = output_dir + '/impl/'
+    field_dir = output_dir + '/field/'
     data = json.load(open(input_file))
     entity = data["entity"]
     fields = data["fields"]
+    aliases = []
+    if "aliases" in data:
+        aliases = data["aliases"]
 
     # Create directors if needed
-    if not os.path.exists(output_dir):
-        os.makedirs(output_dir)
+    if not os.path.exists(impl_dir):
+        os.makedirs(impl_dir)
+    if not os.path.exists(field_dir):
+        os.makedirs(field_dir)
+
     class_name = input_file[input_file.rfind("/") + 1: -5]
-    output_file = output_dir + class_name + ".java"
+    impl_file_name = impl_dir + class_name + "Dto.java"
+    field_file_name = field_dir + class_name + "Fields.java"
 
     # Create file
-    out = open(output_file, "w")
-
-    need_timestamp = False
-    need_list = False
-    javax_import_list = []
-    hibernate_import_list = []
-
-    for field in fields:
-        if field["type"] == "Timestamp":
-            need_timestamp = True
-        if field["type"].startswith("List<") and field["type"].endswith(">"):
-            need_list = True
-
-        if "validator" in field:
-            for validator in field["validator"]:
-                if validator["type"] in validators_in_javax:
-                    javax_import_list.append(
-                        "javax.validation.constraints." + validator["type"])
-                elif validator["type"] in validators_in_hibernate:
-                    hibernate_import_list.append(
-                        "org.hibernate.validator.constraints." + validator["type"])
-                else:
-                    print "Unknown validator type: " + validator["type"]
-                    exit(-1)
+    impl_file = open(impl_file_name, "w")
+    field_file = open(field_file_name, "w")
 
     importList = [
         "cn.edu.uestc.acmicpc.db.dto.base.BaseDto",
         "cn.edu.uestc.acmicpc.db.dto.base.BaseDtoBuilder",
-        "cn.edu.uestc.acmicpc.db.entity.{0}".format(entity)
+        "cn.edu.uestc.acmicpc.db.entity.{0}".format(entity),
+        "javax.validation.constraints.*",
+        "org.hibernate.validator.constraints.*",
+        "java.sql.Timestamp",
+        "java.util.*"
     ]
-    javax_import_list = unique(javax_import_list)
-    hibernate_import_list = unique(hibernate_import_list)
     for field in fields:
         if "classpath" in field:
             importList.append(field["classpath"])
 
     # imports
-    out.write("""package cn.edu.uestc.acmicpc.db.dto.impl;
+    impl_file.write("""package cn.edu.uestc.acmicpc.db.dto.impl;
 
 """)
     for package in sorted(importList):
-        out.write("import {0};\n".format(package))
-    if len(hibernate_import_list) > 0:
-        out.write("\n")
-        for package in sorted(hibernate_import_list):
-            out.write("import {0};\n".format(package))
-    out.write("\n")
-    if need_timestamp:
-        out.write("import java.sql.Timestamp;\n")
-    if need_list:
-        out.write("import java.util.List;\n")
-    out.write("import java.util.Map;\n")
-    out.write("import java.util.Objects;\n")
-    if len(javax_import_list) > 0:
-        for package in sorted(javax_import_list):
-            out.write("import {0};\n".format(package))
+        impl_file.write("import {0};\n".format(package))
 
     # Class definition
-    out.write("""
-public class {0} implements BaseDto<{1}> {{
+    impl_file.write("""
+public class {0}Dto implements BaseDto<{1}> {{
 
-  public {0}() {{
+  public {0}Dto() {{
   }}
 
 """.format(class_name, entity))
 
     # Constructor
-    out.write("  public {0}(".format(class_name))
+    impl_file.write("  public {0}Dto(".format(class_name))
     for i in xrange(len(fields)):
         field = fields[i]
         if i > 0:
-            out.write(", ")
-        out.write("{0} {1}".format(field["type"], field["name"]))
-    out.write(") {\n")
+            impl_file.write(", ")
+        impl_file.write("{0} {1}".format(field["type"], field["name"]))
+    impl_file.write(") {\n")
     for field in fields:
-        out.write("    this.{0} = {0};\n".format(field["name"]))
-    out.write("  }\n\n")
+        impl_file.write("    this.{0} = {0};\n".format(field["name"]))
+    impl_file.write("  }\n\n")
 
-    writeProperties(2, out, fields, False)
+    writeProperties(2, impl_file, fields, False)
 
     # Equals
-    out.write("""
+    impl_file.write("""
   @Override
   public boolean equals(Object o) {{
     if (this == o) {{
       return true;
     }}
-    if (!(o instanceof {0})) {{
+    if (!(o instanceof {0}Dto)) {{
       return false;
     }}
 
-    {0} that = ({1}) o; 
-""".format(class_name, class_name))
-    out.write("    return true")
+    {0}Dto that = ({0}Dto) o; 
+""".format(class_name))
+    impl_file.write("    return true")
     for field in fields:
-        out.write('\n')
-        out.write(8 * ' ')
-        out.write("&& Objects.equals(this.{0}, that.{1})".format(
+        impl_file.write('\n')
+        impl_file.write(8 * ' ')
+        impl_file.write("&& Objects.equals(this.{0}, that.{1})".format(
             field["name"], field["name"]))
-    out.write(";\n  }\n")
+    impl_file.write(";\n  }\n")
 
     # HashCode
-    out.write("""
+    impl_file.write("""
   @Override
   public int hashCode() {
     return Objects.hash(""")
     for i in xrange(len(fields)):
         field = fields[i]
         if i > 0:
-            out.write(",\n")
-            out.write(8 * ' ')
-        out.write(field["name"])
-    out.write(");\n  }\n");
+            impl_file.write(",\n")
+            impl_file.write(8 * ' ')
+        impl_file.write(field["name"])
+    impl_file.write(");\n  }\n")
 
-    out.write("\n")
-    out.write(2 * ' ')
-    out.write("public static Builder builder() {\n")
-    out.write(4 * ' ')
-    out.write("return new Builder();\n")
-    out.write(2 * ' ')
-    out.write("}\n\n")
+    impl_file.write("\n")
+    impl_file.write(2 * ' ')
+    impl_file.write("public static Builder builder() {\n")
+    impl_file.write(4 * ' ')
+    impl_file.write("return new Builder();\n")
+    impl_file.write(2 * ' ')
+    impl_file.write("}\n\n")
 
     # builder
-    out.write(2 * ' ')
-    out.write(
-        "public static class Builder implements BaseDtoBuilder<" + class_name + "> {\n\n")
-    out.write(4 * ' ')
-    out.write("private Builder() {\n")
-    out.write(4 * ' ')
-    out.write("}\n\n")
-    out.write(4 * ' ')
-    out.write("@Override\n")
-    out.write(4 * ' ')
-    out.write("public " + class_name + " build() {\n")
-    out.write(6 * ' ')
-    out.write("return new " + class_name + "(")
+    impl_file.write(2 * ' ')
+    impl_file.write(
+        "public static class Builder implements BaseDtoBuilder<" + class_name + "Dto> {\n\n")
+    impl_file.write(4 * ' ')
+    impl_file.write("private Builder() {\n")
+    impl_file.write(4 * ' ')
+    impl_file.write("}\n\n")
+    impl_file.write(4 * ' ')
+    impl_file.write("@Override\n")
+    impl_file.write(4 * ' ')
+    impl_file.write("public " + class_name + "Dto build() {\n")
+    impl_file.write(6 * ' ')
+    impl_file.write("return new " + class_name + "Dto(")
     for i in range(0, len(fields)):
         if i > 0:
-            out.write(", ")
-        out.write(fields[i]["name"])
-    out.write(");\n")
-    out.write(4 * ' ')
-    out.write("}\n\n")
+            impl_file.write(", ")
+        impl_file.write(fields[i]["name"])
+    impl_file.write(");\n")
+    impl_file.write(4 * ' ')
+    impl_file.write("}\n\n")
 
-    out.write(4 * ' ')
-    out.write("@Override\n")
-    out.write(4 * ' ')
-    out.write(
-        "public " + class_name + " build(Map<String, Object> properties) {\n")
+    impl_file.write(4 * ' ')
+    impl_file.write("@Override\n")
+    impl_file.write(4 * ' ')
+    impl_file.write(
+        "public " + class_name + "Dto build(Map<String, Object> properties) {\n")
     for i in range(0, len(fields)):
-        out.write(6 * ' ')
-        out.write(fields[i]["name"] + " = (" + fields[i]["type"] +
-                  ") properties.get(\"" + fields[i]["name"] + "\");\n")
-    out.write(6 * ' ')
-    out.write("return build();\n")
-    out.write(4 * ' ')
-    out.write("}\n\n")
+        impl_file.write(6 * ' ')
+        impl_file.write(fields[i]["name"] + " = (" + fields[i]["type"] +
+                        ") properties.get(\"" + fields[i]["name"] + "\");\n")
+    impl_file.write(6 * ' ')
+    impl_file.write("return build();\n")
+    impl_file.write(4 * ' ')
+    impl_file.write("}\n\n")
 
-    writeProperties(4, out, fields, True)
-    out.write(2 * ' ')
-    out.write("}\n")
-    out.write("}\n")
+    writeProperties(4, impl_file, fields, True)
+    impl_file.write(2 * ' ')
+    impl_file.write("}\n")
+    impl_file.write("}\n")
 
-    out.close()
+    impl_file.close()
+
+    # field class
+    field_file.write("""package cn.edu.uestc.acmicpc.db.dto.field;
+
+import static cn.edu.uestc.acmicpc.db.dto.field.FieldProjection.*;
+
+""")
+    field_file.write("""
+public enum {0}Fields implements Fields {{
+
+""".format(class_name))
+
+    writeFields(2, field_file, fields, aliases)
+
+    field_file.write("""
+  private final FieldProjection[] projections;
+
+  public FieldProjection[] getProjections() {{
+    return projections;
+  }}
+
+  {0}Fields(FieldProjection... projections) {{
+    this.projections = projections;
+  }}
+}}
+
+""".format(class_name))
+
+    field_file.close()
 
 if __name__ == "__main__":
     input_dir, output_dir = parseOpt(sys.argv[1:])
