@@ -31,7 +31,7 @@ public class CriteriaITTest extends AbstractTestNGSpringContextTests {
       @Override
       public FieldProjection[] getProjections() {
         FieldProjection[] projection = new FieldProjection[1];
-        projection[0] = FieldProjection.Property("articleId");
+        projection[0] = FieldProjection.property("articleId");
         return projection;
       }
     });

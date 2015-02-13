@@ -230,6 +230,7 @@ public interface Dao<E extends Serializable> {
    *          specific condition entity
    * @throws AppException
    */
+  @Deprecated
   void updateEntitiesByCondition(String propertyField, Object propertyValue, Condition condition)
       throws AppException;
 
@@ -268,6 +269,7 @@ public interface Dao<E extends Serializable> {
    * @return Dto list for this query.
    * @throws AppException
    */
+  @Deprecated
   <T extends BaseDto<E>> List<T> findAll(Class<T> clazz, BaseDtoBuilder<T> builder,
       Condition condition) throws AppException;
 
@@ -303,6 +305,7 @@ public interface Dao<E extends Serializable> {
    * @return unique entity for query.
    * @throws AppException
    */
+  @Deprecated
   <T extends BaseDto<E>> T getDtoByUniqueField(Class<T> clazz, BaseDtoBuilder<T> builder,
       String field, Object value) throws AppException;
 
