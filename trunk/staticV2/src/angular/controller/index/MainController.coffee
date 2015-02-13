@@ -1,5 +1,4 @@
-cdojV2
-.controller("MainController", [
+angular.module("cdojV2").controller("MainController", [
   "$scope", "$mdSidenav"
   ($scope, $mdSidenav) ->
     LEFT_SIDEBAR_ID = "left-sidenav"
@@ -8,4 +7,4 @@ cdojV2
     $scope.openMenu = ->
       if $mdSidenav(LEFT_SIDEBAR_ID).isOpen() == false
         $mdSidenav(LEFT_SIDEBAR_ID).open()
-  ])
+])

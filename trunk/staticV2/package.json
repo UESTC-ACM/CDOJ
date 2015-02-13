@@ -4,23 +4,28 @@
   "description": "Styles and js for cdoj",
   "main": "Gruntfile.coffee",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "postinstall": "./node_modules/.bin/bower install"
   },
   "repository": "",
   "author": "mzry1992",
   "license": "BSD",
   "devDependencies": {
+    "bower": "*",
     "grunt": "*",
     "grunt-cmd-concat": "*",
-    "grunt-contrib-coffee": "*",
-	"grunt-contrib-watch": "*",
-	"grunt-contrib-less": "*",
-    "grunt-contrib-concat": "*",
-    "grunt-yui-compressor": "*",
     "grunt-coffeelint": "*",
-    "bower": "*"
-  },
-  "scripts": {
-    "postinstall": "./node_modules/.bin/bower install"
+    "grunt-contrib-coffee": "*",
+    "grunt-contrib-concat": "*",
+    "grunt-contrib-less": "*",
+    "grunt-contrib-watch": "*",
+    "grunt-yui-compressor": "*",
+    "grunt-karma": "*",
+    "karma-chrome-launcher": "*",
+    "karma-coverage": "*",
+    "karma-firefox-launcher": "*",
+    "karma-jasmine": "*",
+    "karma-safari-launcher": "*",
+    "karma-phantomjs-launcher": "*",
+    "karma-coffee-preprocessor": "*"
   }
 }

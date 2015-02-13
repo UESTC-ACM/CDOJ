@@ -1,5 +1,5 @@
-messages_en =
-  "Home": "Home",
+window.messages_en =
+  "Home": "Home"
   "Problems": "Problems"
   "Contests": "Contests"
   "Status": "Status"
