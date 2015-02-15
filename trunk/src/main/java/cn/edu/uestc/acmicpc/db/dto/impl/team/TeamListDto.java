@@ -1,7 +1,7 @@
 package cn.edu.uestc.acmicpc.db.dto.impl.team;
 
-import cn.edu.uestc.acmicpc.db.dto.base.BaseDto;
-import cn.edu.uestc.acmicpc.db.dto.base.BaseDtoBuilder;
+import cn.edu.uestc.acmicpc.db.dto.BaseDto;
+import cn.edu.uestc.acmicpc.db.dto.BaseDtoBuilder;
 import cn.edu.uestc.acmicpc.db.dto.impl.teamUser.TeamUserListDto;
 import cn.edu.uestc.acmicpc.db.entity.Team;
 import cn.edu.uestc.acmicpc.util.annotation.Fields;
