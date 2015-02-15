@@ -30,6 +30,6 @@
     "underscore": "~1.7.0",
     "google-code-prettify": "~1.0.1",
     "marked": "~0.3.2",
-    "MathJax": "~2.5.0",
+    "MathJax": "~2.5.0"
   }
 }
