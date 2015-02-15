@@ -1,14 +1,14 @@
-angular.module("cdojV2").run([
-  "$rootScope", "$http", "$cookies"
-  ($r, $http, $cookies) ->
+angular.module("cdojV2").factory("msg", [
+  "$cookies"
+  ($cookies) ->
     messages =
       "en": messages_en
       "zh": messages_zh
 
     lang = $cookies.lang
     if lang == undefined
-      lang = "zh"
+      lang = "en"
 
-    $r.getMessage = (message) ->
+    return (message) ->
       messages[lang][message] || messages["en"][message]
 ])
