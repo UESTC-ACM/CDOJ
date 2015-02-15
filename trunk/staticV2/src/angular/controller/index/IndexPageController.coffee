@@ -12,7 +12,7 @@ angular.module("cdojV2").controller("IndexPageController", [
       $timeout(->
         $scope.articleList = data.list
         $scope.onLoading = false
-      , 3000)
+      , 10)
     , (data) ->
       # Do something
       #setIsLoading(false)
