@@ -65,12 +65,6 @@ public abstract class BaseCriteria<E, D> {
     this.resultFields = resultFields;
   }
 
-  protected BaseCriteria(Class<E> referenceClass,
-      Class<D> resultClass) {
-    this.referenceClass = referenceClass;
-    this.resultClass = resultClass;
-  }
-
   public void setResultFields(Fields resultFields) {
     this.resultFields = resultFields;
   }

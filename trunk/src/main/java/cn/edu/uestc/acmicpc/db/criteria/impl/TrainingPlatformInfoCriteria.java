@@ -20,6 +20,10 @@ public class TrainingPlatformInfoCriteria extends
     super(TrainingPlatformInfo.class, TrainingPlatformInfoDto.class, resultFields);
   }
 
+  public TrainingPlatformInfoCriteria() {
+    this(null);
+  }
+
   public Integer startId;
   public Integer endId;
   public Integer trainingUserId;

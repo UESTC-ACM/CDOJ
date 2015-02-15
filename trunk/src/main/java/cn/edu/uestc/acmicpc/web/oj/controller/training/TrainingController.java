@@ -97,9 +97,8 @@ public class TrainingController extends BaseController {
     Map<String, Object> json = new HashMap<>();
 
     if (trainingCriteria == null) {
-      trainingCriteria = new TrainingCriteria();
+      trainingCriteria = new TrainingCriteria(TrainingFields.FIELDS_FOR_LIST_PAGE);
     }
-    trainingCriteria.setResultFields(TrainingFields.FIELDS_FOR_LIST_PAGE);
     Long count = trainingService.count(trainingCriteria);
     PageInfo pageInfo = buildPageInfo(count, trainingCriteria.currentPage,
         settings.RECORD_PER_PAGE, null);
@@ -234,9 +233,8 @@ public class TrainingController extends BaseController {
     Map<String, Object> json = new HashMap<>();
 
     if (trainingUserCriteria == null) {
-      trainingUserCriteria = new TrainingUserCriteria();
+      trainingUserCriteria = new TrainingUserCriteria(TrainingUserFields.ALL_FIELDS);
     }
-    trainingUserCriteria.setResultFields(TrainingUserFields.ALL_FIELDS);
     trainingUserCriteria.trainingId = trainingId;
 
     List<TrainingUserDto> trainingUserDtoList = trainingUserService
@@ -338,9 +336,9 @@ public class TrainingController extends BaseController {
     Map<String, Object> json = new HashMap<>();
 
     if (trainingContestCriteria == null) {
-      trainingContestCriteria = new TrainingContestCriteria();
+      trainingContestCriteria = new TrainingContestCriteria(
+          TrainingContestFields.FIELDS_FOR_LIST_PAGE);
     }
-    trainingContestCriteria.setResultFields(TrainingContestFields.FIELDS_FOR_LIST_PAGE);
     trainingContestCriteria.trainingId = trainingId;
 
     List<TrainingContestDto> trainingContestDtoList = trainingContestService
