@@ -1,7 +1,7 @@
 package cn.edu.uestc.acmicpc.db.criteria.impl;
 
 import cn.edu.uestc.acmicpc.db.criteria.base.BaseCriteria;
-import cn.edu.uestc.acmicpc.db.dto.field.Fields;
+import cn.edu.uestc.acmicpc.db.dto.Fields;
 import cn.edu.uestc.acmicpc.db.dto.impl.TrainingDto;
 import cn.edu.uestc.acmicpc.db.entity.Training;
 import cn.edu.uestc.acmicpc.util.exception.AppException;

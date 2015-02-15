@@ -3,9 +3,9 @@ package cn.edu.uestc.acmicpc.db.criteria;
 import cn.edu.uestc.acmicpc.config.IntegrationTestContext;
 import cn.edu.uestc.acmicpc.db.criteria.impl.ArticleCriteria;
 import cn.edu.uestc.acmicpc.db.dao.iface.ArticleDao;
+import cn.edu.uestc.acmicpc.db.dto.FieldProjection;
+import cn.edu.uestc.acmicpc.db.dto.Fields;
 import cn.edu.uestc.acmicpc.db.dto.field.ArticleFields;
-import cn.edu.uestc.acmicpc.db.dto.field.FieldProjection;
-import cn.edu.uestc.acmicpc.db.dto.field.Fields;
 import cn.edu.uestc.acmicpc.db.dto.impl.ArticleDto;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
 
