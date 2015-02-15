@@ -1,6 +1,7 @@
 package cn.edu.uestc.acmicpc.web.oj.controller.user;
 
 import cn.edu.uestc.acmicpc.db.condition.impl.UserCondition;
+import cn.edu.uestc.acmicpc.db.dto.impl.UserSerialKeyDto;
 import cn.edu.uestc.acmicpc.db.dto.impl.user.UserActivateDto;
 import cn.edu.uestc.acmicpc.db.dto.impl.user.UserAdminEditDto;
 import cn.edu.uestc.acmicpc.db.dto.impl.user.UserCenterDto;
@@ -12,7 +13,6 @@ import cn.edu.uestc.acmicpc.db.dto.impl.user.UserLoginDto;
 import cn.edu.uestc.acmicpc.db.dto.impl.user.UserProblemStatusDto;
 import cn.edu.uestc.acmicpc.db.dto.impl.user.UserRegisterDto;
 import cn.edu.uestc.acmicpc.db.dto.impl.user.UserTypeAheadDto;
-import cn.edu.uestc.acmicpc.db.dto.impl.userSerialKey.UserSerialKeyDto;
 import cn.edu.uestc.acmicpc.service.iface.DepartmentService;
 import cn.edu.uestc.acmicpc.service.iface.EmailService;
 import cn.edu.uestc.acmicpc.service.iface.ProblemService;

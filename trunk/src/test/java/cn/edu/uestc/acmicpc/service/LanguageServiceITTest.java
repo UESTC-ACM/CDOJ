@@ -1,7 +1,7 @@
 package cn.edu.uestc.acmicpc.service;
 
 import cn.edu.uestc.acmicpc.config.IntegrationTestContext;
-import cn.edu.uestc.acmicpc.db.dto.impl.language.LanguageDto;
+import cn.edu.uestc.acmicpc.db.dto.impl.LanguageDto;
 import cn.edu.uestc.acmicpc.service.iface.LanguageService;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
 

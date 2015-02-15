@@ -21,12 +21,7 @@ public class TrainingContestCriteria extends BaseCriteria<TrainingContest, Train
   }
 
   public TrainingContestCriteria() {
-    super(TrainingContest.class, TrainingContestDto.class);
-  }
-
-  @Override
-  public void setResultFields(Fields resultFields) {
-    super.setResultFields(resultFields);
+    this(null);
   }
 
   public Integer startId;
