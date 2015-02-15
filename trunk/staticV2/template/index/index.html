@@ -1,8 +1,20 @@
 <div layout="row" layout-align="center center">
   <cdoj-dropdown>
-    <md-button>Dropdown</md-button>
+    <md-button cdoj-dropdown-toggle>Dropdown</md-button>
     <cdoj-dropdown-menu>
-      Fuck
+      <md-list>
+        <md-item>
+          <md-item-content><h3>Add</h3></md-item-content>
+        </md-item>
+        <md-divider></md-divider>
+        <md-item>
+          <md-item-content><h3>Remove</h3></md-item-content>
+        </md-item>
+        <md-divider></md-divider>
+        <md-item>
+          <md-item-content><h3>Submit</h3></md-item-content>
+        </md-item>
+      </md-list>
     </cdoj-dropdown-menu>
   </cdoj-dropdown>
 </div>
