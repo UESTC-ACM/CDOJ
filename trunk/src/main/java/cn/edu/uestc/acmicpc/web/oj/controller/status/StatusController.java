@@ -21,10 +21,10 @@ import cn.edu.uestc.acmicpc.service.iface.StatusService;
 import cn.edu.uestc.acmicpc.service.iface.UserService;
 import cn.edu.uestc.acmicpc.util.annotation.LoginPermit;
 import cn.edu.uestc.acmicpc.util.enums.AuthenticationType;
-import cn.edu.uestc.acmicpc.util.enums.ProblemType;
 import cn.edu.uestc.acmicpc.util.enums.ContestType;
 import cn.edu.uestc.acmicpc.util.enums.OnlineJudgeResultType;
 import cn.edu.uestc.acmicpc.util.enums.OnlineJudgeReturnType;
+import cn.edu.uestc.acmicpc.util.enums.ProblemType;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
 import cn.edu.uestc.acmicpc.util.helper.ArrayUtil;
 import cn.edu.uestc.acmicpc.util.helper.EnumTypeUtil;
@@ -138,6 +138,7 @@ public class StatusController extends BaseController {
           if(statusCondition.problemId != null) {
             ProblemDto problemDto = problemService.getProblemDtoByProblemId(statusCondition.problemId);
             UserDto currentUser = getCurrentUser(session);
+            //internal problem' status only show for internal user who are searching.
             if(currentUser != null && problemDto != null && problemDto.getType() == ProblemType.INTERNAL
              && currentUser.getType() == AuthenticationType.INTERNAL.ordinal()) {
               statusCondition.type = ProblemType.INTERNAL.ordinal();

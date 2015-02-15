@@ -2,8 +2,8 @@ package cn.edu.uestc.acmicpc.db.condition.impl;
 
 import cn.edu.uestc.acmicpc.db.condition.base.BaseCondition;
 import cn.edu.uestc.acmicpc.db.condition.base.Condition;
-import cn.edu.uestc.acmicpc.util.exception.AppException;
 import cn.edu.uestc.acmicpc.util.enums.ProblemType;
+import cn.edu.uestc.acmicpc.util.exception.AppException;
 
 /**
  * Problem database condition entity.

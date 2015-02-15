@@ -17,6 +17,7 @@ import cn.edu.uestc.acmicpc.db.dto.impl.problem.ProblemDto;
 import cn.edu.uestc.acmicpc.db.dto.impl.problem.ProblemListDto;
 import cn.edu.uestc.acmicpc.db.entity.Problem;
 import cn.edu.uestc.acmicpc.service.iface.ProblemService;
+import cn.edu.uestc.acmicpc.util.enums.ProblemType;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
 import cn.edu.uestc.acmicpc.util.helper.ObjectUtil;
 import cn.edu.uestc.acmicpc.web.dto.PageInfo;
@@ -144,6 +145,19 @@ public class ProblemServiceTest extends AbstractTestNGSpringContextTests {
     List<Entry> entries = condition.getEntries();
     Assert.assertEquals(Entry.of("isVisible",
         ConditionType.STRING_EQUALS, "1"), entries.get(0));
+  }
+
+  @Test
+  public void testGetAllVisibleNormalProblemIds() throws AppException {
+    ArgumentCaptor<Condition> captor = ArgumentCaptor.forClass(Condition.class);
+    problemService.getAllVisibleNormalProblemIds();
+    verify(problemDao).findAll(eq("problemId"), captor.capture());
+    Condition condition = captor.getValue();
+    List<Entry> entries = condition.getEntries();
+    Assert.assertEquals(Entry.of("isVisible",
+        ConditionType.STRING_EQUALS, "1"), entries.get(0));
+    Assert.assertEquals(Entry.of("type",
+        ConditionType.EQUALS, ProblemType.NORMAL), entries.get(1));
   }
 
 }

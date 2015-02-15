@@ -63,6 +63,7 @@ public class StatusServiceImpl extends AbstractService implements StatusService 
     StatusCondition statusCondition = new StatusCondition();
     statusCondition.userId = userId;
     statusCondition.type = ProblemType.NORMAL.ordinal();
+    statusCondition.isVisible = Boolean.TRUE;
     return statusDao.customCount("distinct problemId", statusCondition.getCondition());
   }
 
@@ -72,6 +73,7 @@ public class StatusServiceImpl extends AbstractService implements StatusService 
     statusCondition.userId = userId;
     statusCondition.results.add(OnlineJudgeResultType.OJ_AC);
     statusCondition.type = ProblemType.NORMAL.ordinal();
+    statusCondition.isVisible = Boolean.TRUE;
     return statusDao.customCount("distinct problemId", statusCondition.getCondition());
   }
 
