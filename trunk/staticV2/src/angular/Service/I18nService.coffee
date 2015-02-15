@@ -1,4 +1,4 @@
-angular.module("cdojV2").factory("msg", [
+angular.module("cdojV2").factory("Msg", [
   "$cookies"
   ($cookies) ->
     messages =

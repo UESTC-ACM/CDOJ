@@ -1,5 +1,5 @@
 angular.module("cdojV2").controller("MenuController", [
-  "msg", "$scope"
+  "Msg", "$scope"
   (msg, $scope) ->
     $scope.pages = []
     createMenuItem = (title, icon, label, href) ->
