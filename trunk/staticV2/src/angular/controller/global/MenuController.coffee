@@ -12,15 +12,15 @@ angular.module("cdojV2").controller("MenuController", [
         current: false
       $scope.pages.push(page)
 
-    createMenuItem("Home", "action:home", "Go to home page", "#/")
+    createMenuItem("Home", "home", "Go to home page", "#/")
     createMenuItem(
-      "Problems", "action:assignment", "Go to problem list", "#/problem/list")
+      "Problems", "puzzle", "Go to problem list", "#/problem/list")
     createMenuItem(
-      "Contests", "action:extension", "Go to contest list", "#/contest/list")
+      "Contests", "trophy", "Go to contest list", "#/contest/list")
     createMenuItem(
-      "Status", "action:info", "Go to status list", "#/status/list")
+      "Status", "timetable", "Go to status list", "#/status/list")
     createMenuItem(
-      "Users", "social:people", "Go to user list", "#/user/list")
+      "Users", "account-multiple", "Go to user list", "#/user/list")
 
     setCurrentPage = (where) ->
       _.each($scope.pages, (data) ->

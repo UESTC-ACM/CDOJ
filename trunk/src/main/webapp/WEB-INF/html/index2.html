@@ -13,8 +13,8 @@
 
   <title ng-bind="pageTitle"></title>
 
-  <link rel="stylesheet"
-        href="/distV2/css/cdoj.css"/>
+  <link rel="stylesheet" href="/distV2/css/cdoj.css"/>
+  <link rel="stylesheet" href="/bower_componentsV2/mdi/materialdesignicons.css" />
 </head>
 <body layout="row">
 <md-sidenav id="cdoj-sidenav" class="md-sidenav-left md-whiteframe-z2 md-closed md-locked-open"
@@ -32,7 +32,7 @@
   <md-toolbar class="md-default-theme">
     <h1 class="md-toolbar-tools" layout="row" flex>
       <md-button class="md-toolbar-item" hide-gt-sm aria-label="Show menu button" ng-click="openMenu()">
-        <md-icon md-svg-icon="navigation:menu"></md-icon>
+        <i class="mdi mdi-menu" style="font-size: 26px;"></i>
       </md-button>
       <span flex></span>
       <cdoj-user />
@@ -45,7 +45,7 @@
   </div>
 </div>
 
-<script src="/bower_components/MathJax/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<script src="/bower_componentsV2/MathJax/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
 <script src="/distV2/js/cdoj.js"></script>
 </body>
 </html>
