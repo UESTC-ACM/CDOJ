@@ -26,7 +26,7 @@ public class CriteriaITTest extends AbstractTestNGSpringContextTests {
   @Autowired
   ArticleDao articleDao;
 
-  public void test_fetch_article_with_specified_fields() throws AppException {
+  public void testFetchArticle_withSpecifiedFields() throws AppException {
     ArticleCriteria articleCriteria = new ArticleCriteria(new Fields() {
       @Override
       public FieldProjection[] getProjections() {

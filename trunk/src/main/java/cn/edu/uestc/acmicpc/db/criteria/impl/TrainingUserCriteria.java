@@ -19,13 +19,9 @@ public class TrainingUserCriteria extends BaseCriteria<TrainingUser, TrainingUse
     super(TrainingUser.class, TrainingUserDto.class, resultFields);
   }
 
-  public TrainingUserCriteria() {
-    super(TrainingUser.class, TrainingUserDto.class);
-  }
 
-  @Override
-  public void setResultFields(Fields resultFields) {
-    super.setResultFields(resultFields);
+  public TrainingUserCriteria() {
+    this(null);
   }
 
   public Integer trainingId;

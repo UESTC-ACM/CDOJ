@@ -1,0 +1,29 @@
+{
+  "entity": "Language",
+  "fields": [
+    {
+      "name": "languageId",
+      "type": "Integer",
+      "projectionParameters": [],
+      "projections": ["ALL_FIELDS"]
+    },
+    {
+      "name": "name",
+      "type": "String",
+      "projectionParameters": [],
+      "projections": ["ALL_FIELDS"]
+    },
+    {
+      "name": "extension",
+      "type": "String",
+      "projectionParameters": [],
+      "projections": ["ALL_FIELDS"]
+    },
+    {
+      "name": "param",
+      "type": "String",
+      "projectionParameters": [],
+      "projections": ["ALL_FIELDS"]
+    }
+  ]
+}

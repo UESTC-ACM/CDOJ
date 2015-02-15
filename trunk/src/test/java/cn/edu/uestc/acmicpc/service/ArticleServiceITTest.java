@@ -59,21 +59,21 @@ public class ArticleServiceITTest extends AbstractTransactionalTestNGSpringConte
 
   @Test
   public void testCount_byStartId() throws AppException {
-    ArticleCriteria articleCriteria = new ArticleCriteria();
+    ArticleCriteria articleCriteria = new ArticleCriteria(ArticleFields.ALL_FIELDS);
     articleCriteria.startId = 2;
     Assert.assertEquals(articleService.count(articleCriteria), Long.valueOf(3L));
   }
 
   @Test
   public void testCount_byEndId() throws AppException {
-    ArticleCriteria articleCriteria = new ArticleCriteria();
+    ArticleCriteria articleCriteria = new ArticleCriteria(ArticleFields.ALL_FIELDS);
     articleCriteria.endId = 2;
     Assert.assertEquals(articleService.count(articleCriteria), Long.valueOf(2L));
   }
 
   @Test
   public void testCount_byStartIdAndEndId() throws AppException {
-    ArticleCriteria articleCriteria = new ArticleCriteria();
+    ArticleCriteria articleCriteria = new ArticleCriteria(ArticleFields.ALL_FIELDS);
     articleCriteria.startId = 2;
     articleCriteria.endId = 3;
     Assert.assertEquals(articleService.count(articleCriteria), Long.valueOf(2L));
@@ -81,7 +81,7 @@ public class ArticleServiceITTest extends AbstractTransactionalTestNGSpringConte
 
   @Test
   public void testCount_byStartIdAndEndId_emptyResult() throws AppException {
-    ArticleCriteria articleCriteria = new ArticleCriteria();
+    ArticleCriteria articleCriteria = new ArticleCriteria(ArticleFields.ALL_FIELDS);
     articleCriteria.startId = 5;
     articleCriteria.endId = 4;
     Assert.assertEquals(articleService.count(articleCriteria), Long.valueOf(0L));
@@ -89,35 +89,35 @@ public class ArticleServiceITTest extends AbstractTransactionalTestNGSpringConte
 
   @Test
   public void testCount_byTitle() throws AppException {
-    ArticleCriteria articleCriteria = new ArticleCriteria();
+    ArticleCriteria articleCriteria = new ArticleCriteria(ArticleFields.ALL_FIELDS);
     articleCriteria.title = "About";
     Assert.assertEquals(articleService.count(articleCriteria), Long.valueOf(1L));
   }
 
   @Test
   public void testCount_byTitle_emptyResult() throws AppException {
-    ArticleCriteria articleCriteria = new ArticleCriteria();
+    ArticleCriteria articleCriteria = new ArticleCriteria(ArticleFields.ALL_FIELDS);
     articleCriteria.title = "About 1";
     Assert.assertEquals(articleService.count(articleCriteria), Long.valueOf(0L));
   }
 
   @Test
   public void testCount_byType() throws AppException {
-    ArticleCriteria articleCriteria = new ArticleCriteria();
+    ArticleCriteria articleCriteria = new ArticleCriteria(ArticleFields.ALL_FIELDS);
     articleCriteria.type = ArticleType.NOTICE.ordinal();
     Assert.assertEquals(articleService.count(articleCriteria), Long.valueOf(4L));
   }
 
   @Test
   public void testCount_byType_emptyResult() throws AppException {
-    ArticleCriteria articleCriteria = new ArticleCriteria();
+    ArticleCriteria articleCriteria = new ArticleCriteria(ArticleFields.ALL_FIELDS);
     articleCriteria.type = ArticleType.COMMENT.ordinal();
     Assert.assertEquals(articleService.count(articleCriteria), Long.valueOf(0L));
   }
 
   @Test
   public void testOperator_title() throws AppException {
-    ArticleCriteria articleCriteria = new ArticleCriteria();
+    ArticleCriteria articleCriteria = new ArticleCriteria(ArticleFields.ALL_FIELDS);
     articleCriteria.title = "new title";
     Assert.assertEquals(articleService.count(articleCriteria), Long.valueOf(0L));
     articleService.applyOperation("title", "1, 2", "new title");
@@ -128,7 +128,7 @@ public class ArticleServiceITTest extends AbstractTransactionalTestNGSpringConte
 
   @Test
   public void testOperator_contestId() throws AppException {
-    ArticleCriteria articleCriteria = new ArticleCriteria();
+    ArticleCriteria articleCriteria = new ArticleCriteria(ArticleFields.ALL_FIELDS);
     articleCriteria.contestId = 1;
     Assert.assertEquals(articleService.count(articleCriteria), Long.valueOf(0L));
     articleService.applyOperation("contestId", "1, 2", "1");
@@ -148,7 +148,7 @@ public class ArticleServiceITTest extends AbstractTransactionalTestNGSpringConte
 
   @Test
   public void testOperator_problemId() throws AppException {
-    ArticleCriteria articleCriteria = new ArticleCriteria();
+    ArticleCriteria articleCriteria = new ArticleCriteria(ArticleFields.ALL_FIELDS);
     articleCriteria.problemId = 1;
     Assert.assertEquals(articleService.count(articleCriteria), Long.valueOf(0L));
     articleService.applyOperation("problemId", "1, 2", "1");
@@ -168,7 +168,7 @@ public class ArticleServiceITTest extends AbstractTransactionalTestNGSpringConte
 
   @Test
   public void testOperator_parentId() throws AppException {
-    ArticleCriteria articleCriteria = new ArticleCriteria();
+    ArticleCriteria articleCriteria = new ArticleCriteria(ArticleFields.ALL_FIELDS);
     articleCriteria.parentId = 1;
     Assert.assertEquals(articleService.count(articleCriteria), Long.valueOf(0L));
     articleService.applyOperation("parentId", "3, 4", "1");
@@ -188,7 +188,7 @@ public class ArticleServiceITTest extends AbstractTransactionalTestNGSpringConte
 
   @Test
   public void testOperator_userId() throws AppException {
-    ArticleCriteria articleCriteria = new ArticleCriteria();
+    ArticleCriteria articleCriteria = new ArticleCriteria(ArticleFields.ALL_FIELDS);
     articleCriteria.userId = 2;
     Assert.assertEquals(articleService.count(articleCriteria), Long.valueOf(0L));
     articleService.applyOperation("userId", "3, 4", "2");

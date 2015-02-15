@@ -18,6 +18,10 @@ public class CodeCriteria extends BaseCriteria<Code, CodeDto> {
     super(Code.class, CodeDto.class, resultFields);
   }
 
+  public CodeCriteria() {
+    this(null);
+  }
+
   public Integer codeId;
 
   @Override
