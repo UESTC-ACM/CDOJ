@@ -5,3 +5,5 @@ window.messages_en =
   "Status": "Status"
   "Users": "Users"
   "SignIn": "Sign in"
+  "NetworkError": "Unable load data from server, please retry"
+  "OK": "OK"

@@ -5,3 +5,5 @@ window.messages_zh =
   "Status": "提交"
   "Users": "用户"
   "SignIn": "登录"
+  "NetworkError": "网络连接异常，请重试"
+  "OK": "好的"

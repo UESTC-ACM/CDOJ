@@ -14,6 +14,8 @@ angular.module("cdojV2").controller("IndexPageController", [
         $scope.onLoading = false
       , 10)
     , (data) ->
+      $scope.onLoading = false
+
       # Do something
       #setIsLoading(false)
     )
