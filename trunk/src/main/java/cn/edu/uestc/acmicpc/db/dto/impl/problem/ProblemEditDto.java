@@ -147,7 +147,6 @@ public class ProblemEditDto {
   }
 
   public void setAction(String action) {
-    System.out.println("fuck:" + action);
     this.action = action;
   }
 
@@ -224,12 +223,10 @@ public class ProblemEditDto {
   }
 
   public ProblemType getType() {
-    System.out.println("fuck1");
     return type;
   }
 
   public void setType(ProblemType type) {
-    System.out.println("fuck2");
     this.type = type;
   }
 

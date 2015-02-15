@@ -24,6 +24,14 @@ public interface ProblemService {
   public List<Integer> getAllVisibleProblemIds() throws AppException;
 
   /**
+   * Gets all visible normal problems' id without any statements.
+   *
+   * @return all visible normal problem id list.
+   * @throws AppException
+   */
+  public List<Integer> getAllVisibleNormalProblemIds() throws AppException;
+
+  /**
    * Gets {@link ProblemDto} entity by problem's ID.
    *
    * @param problemId

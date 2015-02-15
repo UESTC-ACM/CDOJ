@@ -21,6 +21,7 @@ import cn.edu.uestc.acmicpc.service.iface.StatusService;
 import cn.edu.uestc.acmicpc.service.iface.UserService;
 import cn.edu.uestc.acmicpc.util.annotation.LoginPermit;
 import cn.edu.uestc.acmicpc.util.enums.AuthenticationType;
+import cn.edu.uestc.acmicpc.util.enums.ProblemType;
 import cn.edu.uestc.acmicpc.util.enums.ContestType;
 import cn.edu.uestc.acmicpc.util.enums.OnlineJudgeResultType;
 import cn.edu.uestc.acmicpc.util.enums.OnlineJudgeReturnType;
@@ -133,6 +134,15 @@ public class StatusController extends BaseController {
         } else {
           // Only show status submitted for visible problem
           statusCondition.isVisible = true;
+          statusCondition.type = ProblemType.NORMAL.ordinal();
+          if(statusCondition.problemId != null) {
+            ProblemDto problemDto = problemService.getProblemDtoByProblemId(statusCondition.problemId);
+            UserDto currentUser = getCurrentUser(session);
+            if(currentUser != null && problemDto != null && problemDto.getType() == ProblemType.INTERNAL
+             && currentUser.getType() == AuthenticationType.INTERNAL.ordinal()) {
+              statusCondition.type = ProblemType.INTERNAL.ordinal();
+            }
+          }
         }
       } else {
         if (statusCondition.contestId != -1) {
@@ -299,7 +309,10 @@ public class StatusController extends BaseController {
           // We don't allow normal user to submit code to a stashed problem.
           if (!isAdmin(session)) {
             if (!problemDto.getIsVisible()) {
-              throw new AppException("You have no permission to submit this problem.");
+              throw new AppException("No such problem.");
+            }
+            if (problemDto.getType() == ProblemType.INTERNAL && (currentUser == null || currentUser.getType() != AuthenticationType.INTERNAL.ordinal())) {
+              throw new AppException("No such problem.");
             }
           }
         }

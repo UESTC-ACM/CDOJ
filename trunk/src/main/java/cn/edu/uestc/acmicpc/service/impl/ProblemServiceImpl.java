@@ -7,6 +7,7 @@ import cn.edu.uestc.acmicpc.db.dto.impl.problem.ProblemDto;
 import cn.edu.uestc.acmicpc.db.dto.impl.problem.ProblemListDto;
 import cn.edu.uestc.acmicpc.db.entity.Problem;
 import cn.edu.uestc.acmicpc.service.iface.ProblemService;
+import cn.edu.uestc.acmicpc.util.enums.ProblemType;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
 import cn.edu.uestc.acmicpc.util.exception.AppExceptionUtil;
 import cn.edu.uestc.acmicpc.web.dto.PageInfo;
@@ -36,6 +37,16 @@ public class ProblemServiceImpl extends AbstractService implements ProblemServic
   public List<Integer> getAllVisibleProblemIds() throws AppException {
     ProblemCondition problemCondition = new ProblemCondition();
     problemCondition.isVisible = true;
+    return (List<Integer>) problemDao.findAll("problemId",
+        problemCondition.getCondition());
+  }
+
+  @SuppressWarnings("unchecked")
+  @Override
+  public List<Integer> getAllVisibleNormalProblemIds() throws AppException {
+    ProblemCondition problemCondition = new ProblemCondition();
+    problemCondition.isVisible = true;
+    problemCondition.type = ProblemType.NORMAL;
     return (List<Integer>) problemDao.findAll("problemId",
         problemCondition.getCondition());
   }

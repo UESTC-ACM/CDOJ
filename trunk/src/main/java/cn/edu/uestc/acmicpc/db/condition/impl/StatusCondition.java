@@ -6,6 +6,7 @@ import cn.edu.uestc.acmicpc.db.condition.base.Condition.ConditionType;
 import cn.edu.uestc.acmicpc.db.condition.base.Condition.JoinedType;
 import cn.edu.uestc.acmicpc.util.enums.AuthenticationType;
 import cn.edu.uestc.acmicpc.util.enums.OnlineJudgeResultType;
+import cn.edu.uestc.acmicpc.util.enums.ProblemType;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
 import cn.edu.uestc.acmicpc.util.helper.StringUtil;
 
@@ -103,6 +104,9 @@ public class StatusCondition extends BaseCondition {
   @Exp(mapField = "problemByProblemId.isVisible", type = ConditionType.EQUALS)
   public Boolean isVisible;
 
+  @Exp(mapField = "problemByProblemId.type", type = ConditionType.EQUALS)
+  public Integer type;
+
   @Override
   public Condition getCondition() throws AppException {
     Condition condition = super.getCondition();
@@ -115,7 +119,6 @@ public class StatusCondition extends BaseCondition {
             contestId);
       }
     }
-
     if (!StringUtil.isNullOrWhiteSpace(userName)) {
       condition.addEntry("userByUserId.userName", ConditionType.LIKE,
           userName);
