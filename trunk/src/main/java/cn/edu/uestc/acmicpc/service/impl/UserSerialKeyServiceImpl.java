@@ -1,7 +1,9 @@
 package cn.edu.uestc.acmicpc.service.impl;
 
+import cn.edu.uestc.acmicpc.db.criteria.impl.UserSerialKeyCriteria;
 import cn.edu.uestc.acmicpc.db.dao.iface.UserSerialKeyDao;
-import cn.edu.uestc.acmicpc.db.dto.impl.userSerialKey.UserSerialKeyDto;
+import cn.edu.uestc.acmicpc.db.dto.field.UserSerialKeyFields;
+import cn.edu.uestc.acmicpc.db.dto.impl.UserSerialKeyDto;
 import cn.edu.uestc.acmicpc.db.entity.UserSerialKey;
 import cn.edu.uestc.acmicpc.service.iface.UserSerialKeyService;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
@@ -29,8 +31,9 @@ public class UserSerialKeyServiceImpl extends AbstractService implements UserSer
 
   @Override
   public UserSerialKeyDto findUserSerialKeyDtoByUserId(Integer userId) throws AppException {
-    return userSerialKeyDao.getDtoByUniqueField(UserSerialKeyDto.class, UserSerialKeyDto.builder(),
-        "userId", userId);
+    UserSerialKeyCriteria criteria = new UserSerialKeyCriteria(UserSerialKeyFields.ALL_FIELDS);
+    criteria.userId = userId;
+    return userSerialKeyDao.getDtoByUniqueField(criteria.getCriteria());
   }
 
   @Override

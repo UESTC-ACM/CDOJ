@@ -1,7 +1,7 @@
 package cn.edu.uestc.acmicpc.service.impl;
 
+import cn.edu.uestc.acmicpc.db.dto.impl.UserSerialKeyDto;
 import cn.edu.uestc.acmicpc.db.dto.impl.user.UserDto;
-import cn.edu.uestc.acmicpc.db.dto.impl.userSerialKey.UserSerialKeyDto;
 import cn.edu.uestc.acmicpc.service.iface.EmailService;
 import cn.edu.uestc.acmicpc.service.iface.UserService;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
