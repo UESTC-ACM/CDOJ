@@ -1,5 +1,5 @@
 angular.module("cdojV2").controller("MainController", [
-  "$scope", "$mdSidenav", "msg"
+  "$scope", "$mdSidenav", "Msg"
   ($scope, $mdSidenav, msg) ->
     LEFT_SIDEBAR_ID = "left-sidenav"
 

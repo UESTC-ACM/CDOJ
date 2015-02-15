@@ -1,4 +1,4 @@
-<div layout="column">
+<div layout="column" cdoj-loading-decorator on-loading="onLoading">
   <md-card ng-repeat="article in articleList">
     <md-card-content>
       <h2 ng-bind="article.title"></h2>
