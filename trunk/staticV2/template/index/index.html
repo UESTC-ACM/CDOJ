@@ -1,8 +1,9 @@
 <div layout="column" cdoj-loading-decorator on-loading="onLoading">
   <md-card ng-repeat="article in articleList">
+    <h3 ng-bind="article.title"></h3>
+    <md-divider></md-divider>
     <md-card-content>
-      <h2 ng-bind="article.title"></h2>
-      <p ng-bind="article.content"></p>
+      <p markdown markdown-content="article.content"></p>
     </md-card-content>
   </md-card>
 </div>
