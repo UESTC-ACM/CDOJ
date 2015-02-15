@@ -1,0 +1,29 @@
+{
+  "entity": "UserSerialKey",
+  "fields": [
+    {
+      "name": "userSerialKeyId",
+      "type": "Integer",
+      "projectionParameters": [],
+      "projections": ["ALL_FIELDS"]
+    },
+    {
+      "name": "time",
+      "type": "Timestamp",
+      "projectionParameters": [],
+      "projections": ["ALL_FIELDS"]
+    },
+    {
+      "name": "serialKey",
+      "type": "String",
+      "projectionParameters": [],
+      "projections": ["ALL_FIELDS"]
+    },
+    {
+      "name": "userId",
+      "type": "Integer",
+      "projectionParameters": [],
+      "projections": ["ALL_FIELDS"]
+    }
+  ]
+}
