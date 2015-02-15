@@ -46,8 +46,17 @@ module.exports = (grunt) ->
           "bower_components/angular-material/angular-material.js"
           "bower_components/angular-route/angular-route.js"
           "bower_components/underscore/underscore.js"
+          "bower_components/underscore.string/lib/underscore.string.js"
+          "bower_components/marked/lib/marked.js"
+          "bower_components/google-code-prettify/src/prettify.js"
         ]
         dest: "temp/js/cdoj.deps.js"
+      cdojDepsUnminimized:
+        src: [
+          "bower_components/marked/lib/marked.js"
+          "bower_components/google-code-prettify/src/prettify.js"
+        ]
+        dest: "temp/js/unminimizedDeps.js"
       # All dependencies scripts (minimized)
       cdojDepsMinimized:
         src: [
@@ -58,6 +67,8 @@ module.exports = (grunt) ->
           "bower_components/angular-material/angular-material.min.js"
           "bower_components/angular-route/angular-route.min.js"
           "temp/js/underscore.min.js"
+          "bower_components/underscore.string/dist/underscore.string.min.js"
+          "temp/js/unminimizedDeps.min.js"
         ]
         dest: "temp/js/cdoj.deps.min.js"
       # CDOJ css file
@@ -91,6 +102,9 @@ module.exports = (grunt) ->
       minimizeUnderscore:
         src: "bower_components/underscore/underscore.js"
         dest: "temp/js/underscore.min.js"
+      minimizeUnminimizedDeps:
+        src: "temp/js/unminimizedDeps.js"
+        dest: "temp/js/unminimizedDeps.min.js"
       minimizeCdojAngualr:
         src: "temp/angular/cdoj.angular.js"
         dest: "temp/angular/cdoj.angular.min.js"
@@ -121,6 +135,8 @@ module.exports = (grunt) ->
   grunt.registerTask "minifyResult", [
     "cssmin:minimizeCss"
 
+    "concat:cdojDepsUnminimized"
+    "min:minimizeUnminimizedDeps"
     "min:minimizeUnderscore"
     "concat:cdojDepsMinimized"
 
