@@ -1,6 +1,6 @@
 angular.module("cdojV2").factory("ArticleService", [
-  "BaseRpcService"
-  (baseRpcService) ->
+  "BaseRpcService", "ToastService"
+  (baseRpcService, toast) ->
     ArticleCondition =
       currentPage: null
       startId: undefined
@@ -28,7 +28,10 @@ angular.module("cdojV2").factory("ArticleService", [
 
       baseRpcService.post(Url.SEARCH, condition, onSuccess, onError)
 
+    showError = (data) ->
+      toast.error(data.error_msg)
+
     return {
-      getAllNotice: (onSuccess, onError) -> _getAllNotice(onSuccess, onError)
+      getAllNotice: (onSuccess) -> _getAllNotice(onSuccess, showError)
     }
 ])
