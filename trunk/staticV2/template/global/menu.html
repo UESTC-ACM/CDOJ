@@ -2,8 +2,8 @@
   <md-item flex layout="row" ng-repeat="page in pages">
     <md-item-content flex>
       <md-button flex class="md-default-theme cdoj-menu-button" aria-label="page.label"
-          ng-href="{{page.href}}">
-        <md-icon md-svg-icon="{{page.icon}}" class="cdoj-menu-icon"></md-icon>
+          ng-href="{{page.href}}" style="vertical-align: middle;">
+        <i class="cdoj-menu-icon mdi mdi-{{page.icon}}"></i>
         <span ng-bind="page.displayedText" ng-class="{active: page.current}" class="cdoj-menu-text"></span>
       </md-button>
     </md-item-content>
