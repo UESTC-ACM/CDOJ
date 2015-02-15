@@ -176,8 +176,8 @@ def generateDto(input_file, output_dir):
     field_file = open(field_file_name, "w")
 
     importList = [
-        "cn.edu.uestc.acmicpc.db.dto.base.BaseDto",
-        "cn.edu.uestc.acmicpc.db.dto.base.BaseDtoBuilder",
+        "cn.edu.uestc.acmicpc.db.dto.BaseDto",
+        "cn.edu.uestc.acmicpc.db.dto.BaseDtoBuilder",
         "cn.edu.uestc.acmicpc.db.entity.{0}".format(entity),
         "javax.validation.constraints.*",
         "org.hibernate.validator.constraints.*",
@@ -306,7 +306,10 @@ public class {0}Dto implements BaseDto<{1}> {{
     # field class
     field_file.write("""package cn.edu.uestc.acmicpc.db.dto.field;
 
-import static cn.edu.uestc.acmicpc.db.dto.field.FieldProjection.*;
+import static cn.edu.uestc.acmicpc.db.dto.FieldProjection.*;
+
+import cn.edu.uestc.acmicpc.db.dto.FieldProjection;
+import cn.edu.uestc.acmicpc.db.dto.Fields;
 
 """)
     field_file.write("""

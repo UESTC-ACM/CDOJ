@@ -1,4 +1,4 @@
-package cn.edu.uestc.acmicpc.db.dto.field;
+package cn.edu.uestc.acmicpc.db.dto;
 
 /**
  * Field projection
