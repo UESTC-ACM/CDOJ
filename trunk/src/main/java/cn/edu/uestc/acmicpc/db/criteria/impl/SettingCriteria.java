@@ -18,6 +18,10 @@ public class SettingCriteria extends BaseCriteria<Setting, SettingDto> {
     super(Setting.class, SettingDto.class, resultFields);
   }
 
+  public SettingCriteria() {
+    this(null);
+  }
+
   public Integer settingId;
 
   @Override
