@@ -1,6 +1,6 @@
 angular.module("cdojV2").factory("BaseRpcService", [
-  "$http", "$mdToast", "Msg"
-  ($http, $mdToast, msg) ->
+  "$http", "ToastService"
+  ($http, toast) ->
     showError = ->
       # Show error
 
@@ -11,19 +11,11 @@ angular.module("cdojV2").factory("BaseRpcService", [
         else
           onError(data)
     serverError = ->
-      return ->
-        message = msg("NetworkError")
-        toast = $mdToast.simple()
-          .content(message)
-          .action(msg("OK"))
-          .hideDelay(0)
-          .highlightAction(false)
-          .position("top right")
-        $mdToast.show(toast)
+      return -> toast.error(msg("NetworkError"))
 
     getFinalAddress = (address) ->
       # We can support remote api server in the feature.
-      return "http://acm.uestc.edu.cn" + address
+      return address
 
     _get = (address, onSuccess, onError) ->
       $http.get(getFinalAddress(address))
