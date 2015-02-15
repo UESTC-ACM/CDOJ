@@ -14,16 +14,32 @@ cdoj.modeul("cdojV2").factory("DropdownService", [
         close: -> if instance then instance.close() else $q.reject(errorMsg)
       }
 ]).controller("DropdownController", [
-  "$scope", "$mdComponentRegistry", "$q", "$attrs"
-  ($scope, $mdComponentRegistry, $q, $attrs) ->
+  "$scope", "$mdComponentRegistry", "$q", "$attrs", "$timeout"
+  ($scope, $mdComponentRegistry, $q, $attrs, $timeout) ->
     self = this
-
     promise = $q.when(true)
+
+    $scope.$watch('isOpen', updateIsOpen)
+    updateIsOpen = (isOpen) ->
+      dropdownMenuRect = self.dropdownMenu.outerWidth()
+      dropdownMenuHeight = self.dropdownMenu.outerHeight()
+
+      return promise = $q.all([
+
+      ])
+
     self.$toggleOpen = (isOpen) ->
       if $scope.isOpen == isOpen
         return $q.when(true)
       else
         deferred = $q.defer()
+        $scope.isOpen = isOpen
+        $timeout( ->
+          # When the current `updateIsOpen()` animation finishes
+          promise.then((result) ->
+            deferred.resolve(result)
+          )
+        )
         return deferred.promise()
 
     self.isOpen = -> false
@@ -32,14 +48,12 @@ cdoj.modeul("cdojV2").factory("DropdownService", [
     self.toggle -> self.$toggleOpen(!$scope.isOpen)
 
     self.destroy = $mdComponentRegistry.register(self, $attrs.mdComponentId)
-
 ]).directive("cdojDropdown", ->
   restrict: "E"
   scope:
     isOpen: "="
   controller: "DropdownController"
   link = ($scope, $element, $attr, $ctrl) ->
-    $ctrl.dropdown = $element
     if !angular.isDefined($scope.isOpen)
       $scope.isOpen = false
 ).directive("cdojDropdownToggle", ->
@@ -47,6 +61,10 @@ cdoj.modeul("cdojV2").factory("DropdownService", [
   require: "^cdojDropdown"
   link = ($scope, $element, $attr, $ctrl) ->
     $ctrl.dropdownToggle = $element
+    $element.bind("click", (event) ->
+      event.stopPropagation()
+      $ctrl.open()
+    )
 ).directive("cdojDropdownMenu", ->
   restrict: "E"
   require: "^cdojDropdown"
