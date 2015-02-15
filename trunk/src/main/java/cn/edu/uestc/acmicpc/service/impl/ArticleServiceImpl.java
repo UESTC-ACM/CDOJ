@@ -126,7 +126,7 @@ public class ArticleServiceImpl extends AbstractService implements ArticleServic
   @Override
   public Boolean checkArticleExists(Integer articleId) throws AppException {
     AppExceptionUtil.assertNotNull(articleId);
-    ArticleCriteria articleCriteria = new ArticleCriteria();
+    ArticleCriteria articleCriteria = new ArticleCriteria(ArticleFields.ALL_FIELDS);
     articleCriteria.startId = articleId;
     articleCriteria.endId = articleId;
     return articleDao.count(articleCriteria.getCriteria()) == 1;

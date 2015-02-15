@@ -19,7 +19,7 @@ public class ArticleCriteria extends BaseCriteria<Article, ArticleDto> {
   }
 
   public ArticleCriteria() {
-    super(Article.class, ArticleDto.class);
+    this(null);
   }
 
   public Integer startId;
@@ -43,11 +43,6 @@ public class ArticleCriteria extends BaseCriteria<Article, ArticleDto> {
   public Integer type;
 
   public String userName;
-
-  @Override
-  public void setResultFields(Fields resultFields) {
-    super.setResultFields(resultFields);
-  }
 
   @Override
   public DetachedCriteria getCriteria() throws AppException {

@@ -19,12 +19,7 @@ public class TrainingCriteria extends BaseCriteria<Training, TrainingDto> {
   }
 
   public TrainingCriteria() {
-    super(Training.class, TrainingDto.class);
-  }
-
-  @Override
-  public void setResultFields(Fields resultFields) {
-    super.setResultFields(resultFields);
+    this(null);
   }
 
   public Integer startId;

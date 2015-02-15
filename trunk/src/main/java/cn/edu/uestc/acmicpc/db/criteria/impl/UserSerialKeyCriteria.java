@@ -15,6 +15,10 @@ public class UserSerialKeyCriteria extends BaseCriteria<UserSerialKey, UserSeria
     super(UserSerialKey.class, UserSerialKeyDto.class, resultFields);
   }
 
+  public UserSerialKeyCriteria() {
+    this(null);
+  }
+
   public Integer userId;
 
   @Override

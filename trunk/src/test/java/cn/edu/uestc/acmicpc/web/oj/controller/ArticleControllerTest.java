@@ -50,7 +50,7 @@ import java.util.UUID;
  * Test cases for {@link ArticleController}.
  */
 @WebAppConfiguration
-@ContextConfiguration(classes = {TestContext.class, WebMVCConfig.class})
+@ContextConfiguration(classes = { TestContext.class, WebMVCConfig.class })
 public class ArticleControllerTest extends ControllerTest {
 
   @Autowired
@@ -162,7 +162,7 @@ public class ArticleControllerTest extends ControllerTest {
 
   @Test
   public void testCommentSearchSuccessful() throws Exception {
-    ArticleCriteria articleCriteria = new ArticleCriteria();
+    ArticleCriteria articleCriteria = new ArticleCriteria(ArticleFields.ALL_FIELDS);
     articleCriteria.startId = 1;
     articleCriteria.endId = 5;
 
@@ -171,7 +171,8 @@ public class ArticleControllerTest extends ControllerTest {
       result.add(ArticleDto.builder().setArticleId(i + 1).build());
     }
     when(articleService.count(any(ArticleCriteria.class))).thenReturn(5L);
-    when(articleService.getArticleList(any(ArticleCriteria.class), any(PageInfo.class))).thenReturn(result);
+    when(articleService.getArticleList(any(ArticleCriteria.class), any(PageInfo.class)))
+        .thenReturn(result);
 
     mockMvc.perform(post("/article/commentSearch")
         .contentType(APPLICATION_JSON_UTF8)
@@ -186,15 +187,17 @@ public class ArticleControllerTest extends ControllerTest {
         .andExpect(jsonPath("$.list[4].articleId", is(5)));
 
     // Check ArticleCriteria argument in count method
-    ArgumentCaptor<ArticleCriteria> articleCriteriaCaptor = ArgumentCaptor.forClass(ArticleCriteria.class);
+    ArgumentCaptor<ArticleCriteria> articleCriteriaCaptor = ArgumentCaptor
+        .forClass(ArticleCriteria.class);
     verify(articleService).count(articleCriteriaCaptor.capture());
     Assert.assertEquals(Boolean.TRUE, articleCriteriaCaptor.getValue().isVisible);
-    Assert.assertEquals(Integer.valueOf(ArticleType.COMMENT.ordinal()), articleCriteriaCaptor.getValue().type);
+    Assert.assertEquals(Integer.valueOf(ArticleType.COMMENT.ordinal()),
+        articleCriteriaCaptor.getValue().type);
   }
 
   @Test
   public void testCommentSearchByAdmin() throws Exception {
-    ArticleCriteria articleCriteria = new ArticleCriteria();
+    ArticleCriteria articleCriteria = new ArticleCriteria(ArticleFields.ALL_FIELDS);
     articleCriteria.startId = 1;
     articleCriteria.endId = 5;
 
@@ -203,7 +206,8 @@ public class ArticleControllerTest extends ControllerTest {
       result.add(ArticleDto.builder().setArticleId(i + 1).build());
     }
     when(articleService.count(any(ArticleCriteria.class))).thenReturn(5L);
-    when(articleService.getArticleList(any(ArticleCriteria.class), any(PageInfo.class))).thenReturn(result);
+    when(articleService.getArticleList(any(ArticleCriteria.class), any(PageInfo.class)))
+        .thenReturn(result);
 
     UserDto currentUserDto = UserDto.builder()
         .setType(AuthenticationType.ADMIN.ordinal())
@@ -222,17 +226,20 @@ public class ArticleControllerTest extends ControllerTest {
         .andExpect(jsonPath("$.list[4].articleId", is(5)));
 
     // Check ArticleCriteria argument in count method
-    ArgumentCaptor<ArticleCriteria> articleCriteriaCaptor = ArgumentCaptor.forClass(ArticleCriteria.class);
+    ArgumentCaptor<ArticleCriteria> articleCriteriaCaptor = ArgumentCaptor
+        .forClass(ArticleCriteria.class);
     verify(articleService).count(articleCriteriaCaptor.capture());
     Assert.assertNull(articleCriteriaCaptor.getValue().isVisible);
-    Assert.assertEquals(Integer.valueOf(ArticleType.COMMENT.ordinal()), articleCriteriaCaptor.getValue().type);
+    Assert.assertEquals(Integer.valueOf(ArticleType.COMMENT.ordinal()),
+        articleCriteriaCaptor.getValue().type);
   }
 
   @Test
   public void testCommentSearchWithAppException() throws Exception {
-    ArticleCriteria articleCriteria = new ArticleCriteria();
+    ArticleCriteria articleCriteria = new ArticleCriteria(ArticleFields.ALL_FIELDS);
 
-    when(articleService.count(any(ArticleCriteria.class))).thenThrow(new AppException("error message"));
+    when(articleService.count(any(ArticleCriteria.class))).thenThrow(
+        new AppException("error message"));
 
     mockMvc.perform(post("/article/commentSearch")
         .contentType(APPLICATION_JSON_UTF8)
@@ -244,7 +251,7 @@ public class ArticleControllerTest extends ControllerTest {
 
   @Test
   public void testSearchSuccessful() throws Exception {
-    ArticleCriteria articleCriteria = new ArticleCriteria();
+    ArticleCriteria articleCriteria = new ArticleCriteria(ArticleFields.ALL_FIELDS);
     articleCriteria.startId = 1;
     articleCriteria.endId = 5;
 
@@ -254,7 +261,8 @@ public class ArticleControllerTest extends ControllerTest {
     }
 
     when(articleService.count(any(ArticleCriteria.class))).thenReturn(5L);
-    when(articleService.getArticleList(any(ArticleCriteria.class), any(PageInfo.class))).thenReturn(result);
+    when(articleService.getArticleList(any(ArticleCriteria.class), any(PageInfo.class)))
+        .thenReturn(result);
 
     mockMvc.perform(post("/article/search")
         .contentType(APPLICATION_JSON_UTF8)
@@ -269,7 +277,8 @@ public class ArticleControllerTest extends ControllerTest {
         .andExpect(jsonPath("$.list[4].articleId", is(5)));
 
     // Check ArticleCriteria argument in count method
-    ArgumentCaptor<ArticleCriteria> articleCriteriaCaptor = ArgumentCaptor.forClass(ArticleCriteria.class);
+    ArgumentCaptor<ArticleCriteria> articleCriteriaCaptor = ArgumentCaptor
+        .forClass(ArticleCriteria.class);
     verify(articleService).count(articleCriteriaCaptor.capture());
     Assert.assertEquals(Boolean.TRUE, articleCriteriaCaptor.getValue().isVisible);
     Assert.assertEquals(Integer.valueOf(-1), articleCriteriaCaptor.getValue().problemId);
@@ -279,7 +288,7 @@ public class ArticleControllerTest extends ControllerTest {
 
   @Test
   public void testSearchByAdminSuccessful() throws Exception {
-    ArticleCriteria articleCriteria = new ArticleCriteria();
+    ArticleCriteria articleCriteria = new ArticleCriteria(ArticleFields.ALL_FIELDS);
     articleCriteria.startId = 1;
     articleCriteria.endId = 5;
 
@@ -289,7 +298,8 @@ public class ArticleControllerTest extends ControllerTest {
     }
 
     when(articleService.count(any(ArticleCriteria.class))).thenReturn(5L);
-    when(articleService.getArticleList(any(ArticleCriteria.class), any(PageInfo.class))).thenReturn(result);
+    when(articleService.getArticleList(any(ArticleCriteria.class), any(PageInfo.class)))
+        .thenReturn(result);
 
     UserDto currentUserDto = UserDto.builder()
         .setType(AuthenticationType.ADMIN.ordinal())
@@ -308,7 +318,8 @@ public class ArticleControllerTest extends ControllerTest {
         .andExpect(jsonPath("$.list[4].articleId", is(5)));
 
     // Check ArticleCriteria argument in count method
-    ArgumentCaptor<ArticleCriteria> articleCriteriaCaptor = ArgumentCaptor.forClass(ArticleCriteria.class);
+    ArgumentCaptor<ArticleCriteria> articleCriteriaCaptor = ArgumentCaptor
+        .forClass(ArticleCriteria.class);
     verify(articleService).count(articleCriteriaCaptor.capture());
     Assert.assertNull(articleCriteriaCaptor.getValue().isVisible);
     Assert.assertEquals(Integer.valueOf(-1), articleCriteriaCaptor.getValue().problemId);
@@ -318,9 +329,10 @@ public class ArticleControllerTest extends ControllerTest {
 
   @Test
   public void testSearchWithAppException() throws Exception {
-    ArticleCriteria articleCriteria = new ArticleCriteria();
+    ArticleCriteria articleCriteria = new ArticleCriteria(ArticleFields.ALL_FIELDS);
 
-    when(articleService.count(any(ArticleCriteria.class))).thenThrow(new AppException("error message"));
+    when(articleService.count(any(ArticleCriteria.class))).thenThrow(
+        new AppException("error message"));
 
     mockMvc.perform(post("/article/search")
         .contentType(APPLICATION_JSON_UTF8)
@@ -351,7 +363,8 @@ public class ArticleControllerTest extends ControllerTest {
 
   @Test
   public void testOperationWithAppException() throws Exception {
-    doThrow(new AppException("error message")).when(articleService).applyOperation(anyString(), anyString(), anyString());
+    doThrow(new AppException("error message")).when(articleService).applyOperation(anyString(),
+        anyString(), anyString());
     UserDto currentUserDto = UserDto.builder()
         .setType(AuthenticationType.ADMIN.ordinal())
         .build();
@@ -372,17 +385,17 @@ public class ArticleControllerTest extends ControllerTest {
             .setArticleId(1)
             .setType(ArticleType.ARTICLE.ordinal())
             .build()
-    );
+        );
     when(articleService.getArticleDto(2, ArticleFields.ALL_FIELDS)).thenReturn(
         ArticleDto.builder()
             .setArticleId(2)
             .build()
-    );
+        );
     when(articleService.getArticleDto(3, ArticleFields.ALL_FIELDS)).thenReturn(
         ArticleDto.builder()
             .setArticleId(3)
             .build()
-    );
+        );
 
     mockMvc.perform(post("/article/changeNoticeOrder")
         .sessionAttr("currentUser", currentUserDto)
@@ -394,11 +407,14 @@ public class ArticleControllerTest extends ControllerTest {
     ArgumentCaptor<ArticleDto> updateArticleCaptor = ArgumentCaptor.forClass(ArticleDto.class);
     verify(articleService, times(3)).updateArticle(updateArticleCaptor.capture());
     Assert.assertEquals(updateArticleCaptor.getAllValues().size(), 3);
-    Assert.assertEquals(updateArticleCaptor.getAllValues().get(0).getArticleId(), Integer.valueOf(3));
+    Assert.assertEquals(updateArticleCaptor.getAllValues().get(0).getArticleId(),
+        Integer.valueOf(3));
     Assert.assertEquals(updateArticleCaptor.getAllValues().get(0).getOrder(), Integer.valueOf(0));
-    Assert.assertEquals(updateArticleCaptor.getAllValues().get(1).getArticleId(), Integer.valueOf(2));
+    Assert.assertEquals(updateArticleCaptor.getAllValues().get(1).getArticleId(),
+        Integer.valueOf(2));
     Assert.assertEquals(updateArticleCaptor.getAllValues().get(1).getOrder(), Integer.valueOf(1));
-    Assert.assertEquals(updateArticleCaptor.getAllValues().get(2).getArticleId(), Integer.valueOf(1));
+    Assert.assertEquals(updateArticleCaptor.getAllValues().get(2).getArticleId(),
+        Integer.valueOf(1));
     Assert.assertEquals(updateArticleCaptor.getAllValues().get(2).getOrder(), Integer.valueOf(2));
   }
 
@@ -470,7 +486,7 @@ public class ArticleControllerTest extends ControllerTest {
         .build();
     when(articleService.getArticleDto(1, ArticleFields.ALL_FIELDS)).thenReturn(
         articleDtoInCommentEditTest
-    );
+        );
     mockMvc.perform(post("/article/edit")
         .sessionAttr("currentUser", currentUserDto)
         .contentType(APPLICATION_JSON_UTF8)
@@ -482,14 +498,19 @@ public class ArticleControllerTest extends ControllerTest {
     ArgumentCaptor<ArticleDto> articleDtoArgumentCaptor = ArgumentCaptor.forClass(ArticleDto.class);
     verify(articleService, times(1)).updateArticle(articleDtoArgumentCaptor.capture());
     Assert.assertEquals(articleDtoArgumentCaptor.getValue().getTitle(), "Comment");
-    Assert.assertEquals(articleDtoArgumentCaptor.getValue().getContent(), articleEditDto.getContent());
+    Assert.assertEquals(articleDtoArgumentCaptor.getValue().getContent(),
+        articleEditDto.getContent());
     Assert.assertEquals(articleDtoArgumentCaptor.getValue().getType(),
         Integer.valueOf(ArticleType.COMMENT.ordinal())
-    );
-    Assert.assertEquals(articleDtoArgumentCaptor.getValue().getUserId(), currentUserDto.getUserId());
-    Assert.assertEquals(articleDtoArgumentCaptor.getValue().getProblemId(), articleEditDto.getProblemId());
-    Assert.assertEquals(articleDtoArgumentCaptor.getValue().getContestId(), articleEditDto.getContestId());
-    Assert.assertEquals(articleDtoArgumentCaptor.getValue().getParentId(), articleEditDto.getParentId());
+        );
+    Assert
+        .assertEquals(articleDtoArgumentCaptor.getValue().getUserId(), currentUserDto.getUserId());
+    Assert.assertEquals(articleDtoArgumentCaptor.getValue().getProblemId(),
+        articleEditDto.getProblemId());
+    Assert.assertEquals(articleDtoArgumentCaptor.getValue().getContestId(),
+        articleEditDto.getContestId());
+    Assert.assertEquals(articleDtoArgumentCaptor.getValue().getParentId(),
+        articleEditDto.getParentId());
   }
 
   @Test
@@ -503,7 +524,7 @@ public class ArticleControllerTest extends ControllerTest {
             .setProblemId(1)
             .setType(ArticleType.COMMENT.ordinal())
             .build()
-    );
+        );
     String jsonDataString = JSON.toJSONString(jsonData);
     UserDto currentUserDto = UserDto.builder()
         .setType(AuthenticationType.NORMAL.ordinal())
@@ -511,7 +532,7 @@ public class ArticleControllerTest extends ControllerTest {
         .build();
     when(articleService.getArticleDto(1, ArticleFields.ALL_FIELDS)).thenReturn(
         articleDtoInCommentEditTest
-    );
+        );
     mockMvc.perform(post("/article/edit")
         .sessionAttr("currentUser", currentUserDto)
         .contentType(APPLICATION_JSON_UTF8)
@@ -532,7 +553,7 @@ public class ArticleControllerTest extends ControllerTest {
             .setProblemId(1)
             .setType(ArticleType.COMMENT.ordinal())
             .build()
-    );
+        );
     String jsonDataString = JSON.toJSONString(jsonData);
     UserDto currentUserDto = UserDto.builder()
         .setType(AuthenticationType.NORMAL.ordinal())
@@ -540,14 +561,16 @@ public class ArticleControllerTest extends ControllerTest {
         .build();
     when(articleService.getArticleDto(1, ArticleFields.ALL_FIELDS)).thenReturn(
         articleDtoInCommentEditTest
-    );
-    mockMvc.perform(post("/article/edit")
-        .sessionAttr("currentUser", currentUserDto)
-        .contentType(APPLICATION_JSON_UTF8)
-        .content(jsonDataString))
+        );
+    mockMvc
+        .perform(post("/article/edit")
+            .sessionAttr("currentUser", currentUserDto)
+            .contentType(APPLICATION_JSON_UTF8)
+            .content(jsonDataString))
         .andExpect(status().isOk())
         .andExpect(jsonPath("$.result", is("error")))
-        .andExpect(jsonPath("$.error_msg", is("Comment should contain no more than 233 characters.")));
+        .andExpect(
+            jsonPath("$.error_msg", is("Comment should contain no more than 233 characters.")));
   }
 
   @Test
@@ -560,7 +583,7 @@ public class ArticleControllerTest extends ControllerTest {
             .setProblemId(1)
             .setType(ArticleType.COMMENT.ordinal())
             .build()
-    );
+        );
     String jsonDataString = JSON.toJSONString(jsonData);
     UserDto currentUserDto = UserDto.builder()
         .setType(AuthenticationType.NORMAL.ordinal())
@@ -568,14 +591,16 @@ public class ArticleControllerTest extends ControllerTest {
         .build();
     when(articleService.getArticleDto(1, ArticleFields.ALL_FIELDS)).thenReturn(
         articleDtoInCommentEditTest
-    );
-    mockMvc.perform(post("/article/edit")
-        .sessionAttr("currentUser", currentUserDto)
-        .contentType(APPLICATION_JSON_UTF8)
-        .content(jsonDataString))
+        );
+    mockMvc
+        .perform(post("/article/edit")
+            .sessionAttr("currentUser", currentUserDto)
+            .contentType(APPLICATION_JSON_UTF8)
+            .content(jsonDataString))
         .andExpect(status().isOk())
         .andExpect(jsonPath("$.result", is("error")))
-        .andExpect(jsonPath("$.error_msg", is("Comment should contain no more than 233 characters.")));
+        .andExpect(
+            jsonPath("$.error_msg", is("Comment should contain no more than 233 characters.")));
   }
 
   @Test
@@ -589,7 +614,7 @@ public class ArticleControllerTest extends ControllerTest {
             .setProblemId(1)
             .setType(ArticleType.COMMENT.ordinal())
             .build()
-    );
+        );
     String jsonDataString = JSON.toJSONString(jsonData);
     UserDto currentUserDto = UserDto.builder()
         .setType(AuthenticationType.NORMAL.ordinal())
@@ -597,14 +622,16 @@ public class ArticleControllerTest extends ControllerTest {
         .build();
     when(articleService.getArticleDto(1, ArticleFields.ALL_FIELDS)).thenReturn(
         articleDtoInCommentEditTest
-    );
-    mockMvc.perform(post("/article/edit")
-        .sessionAttr("currentUser", currentUserDto)
-        .contentType(APPLICATION_JSON_UTF8)
-        .content(jsonDataString))
+        );
+    mockMvc
+        .perform(post("/article/edit")
+            .sessionAttr("currentUser", currentUserDto)
+            .contentType(APPLICATION_JSON_UTF8)
+            .content(jsonDataString))
         .andExpect(status().isOk())
         .andExpect(jsonPath("$.result", is("error")))
-        .andExpect(jsonPath("$.error_msg", is("Comment should contain no more than 233 characters.")));
+        .andExpect(
+            jsonPath("$.error_msg", is("Comment should contain no more than 233 characters.")));
   }
 
   @Test
@@ -618,7 +645,7 @@ public class ArticleControllerTest extends ControllerTest {
             .setProblemId(1)
             .setType(ArticleType.COMMENT.ordinal())
             .build()
-    );
+        );
     String jsonDataString = JSON.toJSONString(jsonData);
     UserDto currentUserDto = UserDto.builder()
         .setType(AuthenticationType.NORMAL.ordinal())
@@ -626,7 +653,7 @@ public class ArticleControllerTest extends ControllerTest {
         .build();
     when(articleService.getArticleDto(1, ArticleFields.ALL_FIELDS)).thenReturn(
         null
-    );
+        );
     mockMvc.perform(post("/article/edit")
         .sessionAttr("currentUser", currentUserDto)
         .contentType(APPLICATION_JSON_UTF8)
@@ -654,7 +681,7 @@ public class ArticleControllerTest extends ControllerTest {
     when(articleService.createNewArticle(currentUserDto.getUserId())).thenReturn(1);
     when(articleService.getArticleDto(1, ArticleFields.ALL_FIELDS)).thenReturn(
         articleDtoInCommentEditTest
-    );
+        );
     mockMvc.perform(post("/article/edit")
         .sessionAttr("currentUser", currentUserDto)
         .contentType(APPLICATION_JSON_UTF8)
@@ -683,7 +710,7 @@ public class ArticleControllerTest extends ControllerTest {
     when(articleService.createNewArticle(currentUserDto.getUserId())).thenReturn(1);
     when(articleService.getArticleDto(1, ArticleFields.ALL_FIELDS)).thenReturn(
         null
-    );
+        );
     mockMvc.perform(post("/article/edit")
         .sessionAttr("currentUser", currentUserDto)
         .contentType(APPLICATION_JSON_UTF8)
@@ -717,7 +744,7 @@ public class ArticleControllerTest extends ControllerTest {
             .setUserId(100)
             .setType(ArticleType.ARTICLE.ordinal())
             .build()
-    );
+        );
     mockMvc.perform(post("/article/edit")
         .sessionAttr("currentUser", currentUserDto)
         .contentType(APPLICATION_JSON_UTF8)
@@ -729,11 +756,13 @@ public class ArticleControllerTest extends ControllerTest {
     ArgumentCaptor<ArticleDto> articleDtoArgumentCaptor = ArgumentCaptor.forClass(ArticleDto.class);
     verify(articleService, times(1)).updateArticle(articleDtoArgumentCaptor.capture());
     Assert.assertEquals(articleDtoArgumentCaptor.getValue().getTitle(), articleEditDto.getTitle());
-    Assert.assertEquals(articleDtoArgumentCaptor.getValue().getContent(), articleEditDto.getContent());
+    Assert.assertEquals(articleDtoArgumentCaptor.getValue().getContent(),
+        articleEditDto.getContent());
     Assert.assertEquals(articleDtoArgumentCaptor.getValue().getType(),
         Integer.valueOf(ArticleType.ARTICLE.ordinal())
-    );
-    Assert.assertEquals(articleDtoArgumentCaptor.getValue().getUserId(), currentUserDto.getUserId());
+        );
+    Assert
+        .assertEquals(articleDtoArgumentCaptor.getValue().getUserId(), currentUserDto.getUserId());
   }
 
   @Test
@@ -760,7 +789,7 @@ public class ArticleControllerTest extends ControllerTest {
             .setUserId(100)
             .setType(ArticleType.ARTICLE.ordinal())
             .build()
-    );
+        );
     mockMvc.perform(post("/article/edit")
         .sessionAttr("currentUser", currentUserDto)
         .contentType(APPLICATION_JSON_UTF8)
@@ -797,7 +826,7 @@ public class ArticleControllerTest extends ControllerTest {
             .setUserId(100)
             .setType(ArticleType.ARTICLE.ordinal())
             .build()
-    );
+        );
     mockMvc.perform(post("/article/edit")
         .sessionAttr("currentUser", currentUserDto)
         .contentType(APPLICATION_JSON_UTF8)
@@ -835,7 +864,7 @@ public class ArticleControllerTest extends ControllerTest {
             .setUserId(100)
             .setType(ArticleType.ARTICLE.ordinal())
             .build()
-    );
+        );
     mockMvc.perform(post("/article/edit")
         .sessionAttr("currentUser", currentUserDto)
         .contentType(APPLICATION_JSON_UTF8)
