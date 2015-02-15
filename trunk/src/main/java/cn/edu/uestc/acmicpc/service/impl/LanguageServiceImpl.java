@@ -1,16 +1,19 @@
 package cn.edu.uestc.acmicpc.service.impl;
 
-import cn.edu.uestc.acmicpc.db.condition.base.Condition;
+import cn.edu.uestc.acmicpc.db.criteria.impl.LanguageCriteria;
 import cn.edu.uestc.acmicpc.db.dao.iface.LanguageDao;
-import cn.edu.uestc.acmicpc.db.dto.impl.language.LanguageDto;
+import cn.edu.uestc.acmicpc.db.dto.field.LanguageFields;
+import cn.edu.uestc.acmicpc.db.dto.impl.LanguageDto;
 import cn.edu.uestc.acmicpc.service.iface.LanguageService;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.PostConstruct;
 
@@ -21,35 +24,32 @@ import javax.annotation.PostConstruct;
 public class LanguageServiceImpl extends AbstractService implements LanguageService {
 
   private final LanguageDao languageDao;
-  private List<LanguageDto> languageDtoList;
+  private final Map<Integer, LanguageDto> languages;
 
   @Autowired
   public LanguageServiceImpl(LanguageDao languageDao) {
     this.languageDao = languageDao;
+    this.languages = new HashMap<>();
   }
 
   @PostConstruct
   public void init() throws AppException {
+    languages.clear();
     try {
-      languageDtoList = languageDao.findAll(LanguageDto.class, LanguageDto.builder(),
-          new Condition());
+      LanguageCriteria criteria = new LanguageCriteria(LanguageFields.ALL_FIELDS);
+      List<LanguageDto> languageDtoList = languageDao.findAll(criteria.getCriteria(), null);
+      languageDtoList.stream().forEach(dto -> languages.put(dto.getLanguageId(), dto));
     } catch (NullPointerException e) {
-      languageDtoList = new LinkedList<>();
     }
   }
 
   @Override
   public List<LanguageDto> getLanguageList() {
-    return languageDtoList;
+    return new LinkedList<>(languages.values());
   }
 
   private LanguageDto getLanguage(Integer languageId) {
-    for (LanguageDto languageDto : languageDtoList) {
-      if (languageDto.getLanguageId().equals(languageId)) {
-        return languageDto;
-      }
-    }
-    return null;
+    return languages.get(languageId);
   }
 
   @Override
