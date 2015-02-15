@@ -4,3 +4,4 @@ window.messages_en =
   "Contests": "Contests"
   "Status": "Status"
   "Users": "Users"
+  "SignIn": "Sign in"

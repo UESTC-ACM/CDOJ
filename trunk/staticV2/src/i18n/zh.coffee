@@ -4,3 +4,4 @@ window.messages_zh =
   "Contests": "比赛"
   "Status": "提交"
   "Users": "用户"
+  "SignIn": "登录"
