@@ -1,8 +1,8 @@
 package cn.edu.uestc.acmicpc.db.dao.iface;
 
 import cn.edu.uestc.acmicpc.db.condition.base.Condition;
-import cn.edu.uestc.acmicpc.db.dto.base.BaseDto;
-import cn.edu.uestc.acmicpc.db.dto.base.BaseDtoBuilder;
+import cn.edu.uestc.acmicpc.db.dto.BaseDto;
+import cn.edu.uestc.acmicpc.db.dto.BaseDtoBuilder;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
 import cn.edu.uestc.acmicpc.web.dto.PageInfo;
 

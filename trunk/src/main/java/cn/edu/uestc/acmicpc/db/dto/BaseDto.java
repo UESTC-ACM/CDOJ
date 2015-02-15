@@ -1,4 +1,4 @@
-package cn.edu.uestc.acmicpc.db.dto.base;
+package cn.edu.uestc.acmicpc.db.dto;
 
 import java.io.Serializable;
 
