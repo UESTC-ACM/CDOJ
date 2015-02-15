@@ -113,12 +113,8 @@ public class ProblemController extends BaseController {
       if (!isAdmin(session)) {
         problemCondition.isVisible = true;
         UserDto user = getCurrentUser(session);
-        if(user != null) {
-          System.out.println(user.getType() + " | " + AuthenticationType.INTERNAL.ordinal());
-        }
         if (user == null || user.getType() != AuthenticationType.INTERNAL.ordinal()) {
           problemCondition.type = ProblemType.NORMAL;
-          System.out.println(problemCondition.type  + " || " + ProblemType.NORMAL);
         }
       }
       Long count = problemService.count(problemCondition);

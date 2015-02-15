@@ -313,7 +313,6 @@ public class Problem implements Serializable {
   }
 
   private ProblemType type = ProblemType.NORMAL;
-
   @Column(name = "type", nullable = false, insertable = true, updatable = true, length = 10,
       precision = 0)
   @Enumerated(EnumType.ORDINAL)

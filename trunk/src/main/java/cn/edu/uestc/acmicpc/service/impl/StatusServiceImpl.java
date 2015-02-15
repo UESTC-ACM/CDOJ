@@ -11,6 +11,7 @@ import cn.edu.uestc.acmicpc.db.entity.Status;
 import cn.edu.uestc.acmicpc.service.iface.StatusService;
 import cn.edu.uestc.acmicpc.util.enums.OnlineJudgeResultType;
 import cn.edu.uestc.acmicpc.util.enums.OnlineJudgeReturnType;
+import cn.edu.uestc.acmicpc.util.enums.ProblemType;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
 import cn.edu.uestc.acmicpc.web.dto.PageInfo;
 
@@ -61,6 +62,7 @@ public class StatusServiceImpl extends AbstractService implements StatusService 
   public Long countProblemsUserTried(Integer userId) throws AppException {
     StatusCondition statusCondition = new StatusCondition();
     statusCondition.userId = userId;
+    statusCondition.type = ProblemType.NORMAL.ordinal();
     return statusDao.customCount("distinct problemId", statusCondition.getCondition());
   }
 
@@ -69,6 +71,7 @@ public class StatusServiceImpl extends AbstractService implements StatusService 
     StatusCondition statusCondition = new StatusCondition();
     statusCondition.userId = userId;
     statusCondition.results.add(OnlineJudgeResultType.OJ_AC);
+    statusCondition.type = ProblemType.NORMAL.ordinal();
     return statusDao.customCount("distinct problemId", statusCondition.getCondition());
   }
 

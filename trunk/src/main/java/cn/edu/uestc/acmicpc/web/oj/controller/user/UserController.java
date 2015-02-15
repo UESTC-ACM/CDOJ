@@ -286,7 +286,7 @@ public class UserController extends BaseController {
       }
       Map<Integer, ProblemSolveStatusType> problemStatus = new TreeMap<>();
 
-      List<Integer> results = problemService.getAllVisibleProblemIds();
+      List<Integer> results = problemService.getAllVisibleNormalProblemIds();
       for (Integer result : results) {
         problemStatus.put(result, ProblemSolveStatusType.NONE);
       }
