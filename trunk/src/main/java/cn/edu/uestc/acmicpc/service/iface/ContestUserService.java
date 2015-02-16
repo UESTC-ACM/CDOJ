@@ -1,6 +1,6 @@
 package cn.edu.uestc.acmicpc.service.iface;
 
-import cn.edu.uestc.acmicpc.db.dto.impl.contestUser.ContestUserDto;
+import cn.edu.uestc.acmicpc.db.dto.impl.ContestUserDto;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
 
 /**

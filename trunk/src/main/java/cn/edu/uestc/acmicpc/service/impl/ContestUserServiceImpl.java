@@ -1,7 +1,7 @@
 package cn.edu.uestc.acmicpc.service.impl;
 
 import cn.edu.uestc.acmicpc.db.dao.iface.ContestUserDao;
-import cn.edu.uestc.acmicpc.db.dto.impl.contestUser.ContestUserDto;
+import cn.edu.uestc.acmicpc.db.dto.impl.ContestUserDto;
 import cn.edu.uestc.acmicpc.db.entity.ContestUser;
 import cn.edu.uestc.acmicpc.service.iface.ContestUserService;
 import cn.edu.uestc.acmicpc.util.enums.ContestRegistryStatusType;

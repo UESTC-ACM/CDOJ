@@ -4,6 +4,7 @@ import cn.edu.uestc.acmicpc.db.condition.impl.ContestCondition;
 import cn.edu.uestc.acmicpc.db.condition.impl.ContestTeamCondition;
 import cn.edu.uestc.acmicpc.db.condition.impl.StatusCondition;
 import cn.edu.uestc.acmicpc.db.condition.impl.TeamUserCondition;
+import cn.edu.uestc.acmicpc.db.dto.impl.ContestUserDto;
 import cn.edu.uestc.acmicpc.db.dto.impl.LanguageDto;
 import cn.edu.uestc.acmicpc.db.dto.impl.TeamDto;
 import cn.edu.uestc.acmicpc.db.dto.impl.contest.ContestDto;
@@ -11,7 +12,6 @@ import cn.edu.uestc.acmicpc.db.dto.impl.contest.ContestEditDto;
 import cn.edu.uestc.acmicpc.db.dto.impl.contest.ContestListDto;
 import cn.edu.uestc.acmicpc.db.dto.impl.contest.ContestLoginDto;
 import cn.edu.uestc.acmicpc.db.dto.impl.contest.ContestShowDto;
-import cn.edu.uestc.acmicpc.db.dto.impl.contestUser.ContestUserDto;
 import cn.edu.uestc.acmicpc.db.dto.impl.contestproblem.ContestProblemDetailDto;
 import cn.edu.uestc.acmicpc.db.dto.impl.contestproblem.ContestProblemDto;
 import cn.edu.uestc.acmicpc.db.dto.impl.contestproblem.ContestProblemSummaryDto;
@@ -1239,7 +1239,7 @@ public class ContestController extends BaseController {
           .getUserList());
       for (Integer userID : newUsersIDList) {
         contestUserService.createNewContestUser(
-            ContestUserDto.Builder()
+            ContestUserDto.builder()
                 .setContestId(contestId)
                 .setUserId(userID)
                 .setStatus((byte) ContestRegistryStatusType.ACCEPTED.ordinal())
