@@ -1,0 +1,11 @@
+<md-list layout="column" flex>
+  <md-item flex layout="row" ng-repeat="page in pages">
+    <md-item-content flex>
+      <md-button flex class="md-default-theme cdoj-sidenav-menu-button" aria-label="page.label"
+          ng-href="{{page.href}}" style="vertical-align: middle;">
+        <i class="cdoj-sidenav-menu-icon mdi mdi-{{page.icon}}"></i>
+        <span ng-bind="page.displayedText" ng-class="{active: page.current}" class="cdoj-sidenav-menu-text"></span>
+      </md-button>
+    </md-item-content>
+  </md-item>
+</md-list>

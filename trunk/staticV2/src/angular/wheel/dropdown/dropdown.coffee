@@ -28,7 +28,7 @@ angular.module("cdojV2").factory("DropdownService", [
       dropdownMenu = self.dropdownMenu
       dropdown = self.dropdown
 
-      top = dropdown.prop("offsetHeight")
+      top = 0
       right = 0
 
       dropdownMenu.css(
@@ -82,9 +82,11 @@ angular.module("cdojV2").factory("DropdownService", [
   transclude: true
   replace: true
   template: """
-    <md-card class="cdoj-dropdown-menu cdoj-dropdown-menu-closed"
-         ng-transclude>
-    </md-card>
+    <div class="cdoj-dropdown-menu cdoj-dropdown-menu-closed md-whiteframe-z2">
+      <md-content class="cdoj-dropdown-menu-content md-padding"
+        layout="column" ng-transclude>
+      </md-content>
+    </div>
   """
   link: ($scope, $element, $attr, $ctrl) ->
     $ctrl.dropdownMenu = $element
