@@ -1,17 +1,15 @@
 package cn.edu.uestc.acmicpc.db.condition;
 
-import cn.edu.uestc.acmicpc.config.IntegrationTestContext;
 import cn.edu.uestc.acmicpc.db.condition.base.Condition;
 import cn.edu.uestc.acmicpc.db.condition.impl.UserCondition;
 import cn.edu.uestc.acmicpc.db.dao.iface.ProblemDao;
 import cn.edu.uestc.acmicpc.db.dao.iface.StatusDao;
 import cn.edu.uestc.acmicpc.db.dao.iface.UserDao;
 import cn.edu.uestc.acmicpc.db.dto.impl.user.UserDto;
+import cn.edu.uestc.acmicpc.testing.PersistenceITTest;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.testng.AbstractTestNGSpringContextTests;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
@@ -20,8 +18,7 @@ import java.util.List;
 /**
  * Test cases for conditions entities.
  */
-@ContextConfiguration(classes = {IntegrationTestContext.class})
-public class ConditionITTest extends AbstractTestNGSpringContextTests {
+public class ConditionITTest extends PersistenceITTest {
 
   @Autowired
   private ProblemDao problemDao;

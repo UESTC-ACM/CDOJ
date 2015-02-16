@@ -1,17 +1,15 @@
 package cn.edu.uestc.acmicpc.service;
 
-import cn.edu.uestc.acmicpc.config.IntegrationTestContext;
 import cn.edu.uestc.acmicpc.db.condition.impl.StatusCondition;
 import cn.edu.uestc.acmicpc.db.dto.impl.status.StatusInformationDto;
 import cn.edu.uestc.acmicpc.db.dto.impl.status.StatusListDto;
 import cn.edu.uestc.acmicpc.service.iface.StatusService;
+import cn.edu.uestc.acmicpc.testing.PersistenceITTest;
 import cn.edu.uestc.acmicpc.util.enums.OnlineJudgeResultType;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
 import cn.edu.uestc.acmicpc.web.dto.PageInfo;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.testng.AbstractTestNGSpringContextTests;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
@@ -23,8 +21,7 @@ import java.util.List;
 /**
  * test cases for {@link cn.edu.uestc.acmicpc.service.iface.StatusService}
  */
-@ContextConfiguration(classes = {IntegrationTestContext.class})
-public class StatusServiceITTest extends AbstractTestNGSpringContextTests {
+public class StatusServiceITTest extends PersistenceITTest {
 
   @Autowired
   private StatusService statusService;

@@ -1,9 +1,9 @@
 package cn.edu.uestc.acmicpc.db.dao;
 
-import cn.edu.uestc.acmicpc.config.IntegrationTestContext;
 import cn.edu.uestc.acmicpc.db.dao.iface.ArticleDao;
 import cn.edu.uestc.acmicpc.db.dto.impl.ArticleDto;
 import cn.edu.uestc.acmicpc.db.entity.Article;
+import cn.edu.uestc.acmicpc.testing.PersistenceITTest;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
 import cn.edu.uestc.acmicpc.web.dto.PageInfo;
 
@@ -11,8 +11,6 @@ import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Projections;
 import org.hibernate.transform.AliasToBeanResultTransformer;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.testng.AbstractTestNGSpringContextTests;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
@@ -21,8 +19,7 @@ import java.util.List;
 /**
  * Test cases for Daos.
  */
-@ContextConfiguration(classes = {IntegrationTestContext.class})
-public class DaoImplITTest extends AbstractTestNGSpringContextTests {
+public class DaoImplITTest extends PersistenceITTest {
 
   @Autowired
   ArticleDao articleDao;
