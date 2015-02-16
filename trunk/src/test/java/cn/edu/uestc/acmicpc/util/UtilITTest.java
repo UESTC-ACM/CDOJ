@@ -1,9 +1,5 @@
 package cn.edu.uestc.acmicpc.util;
 
-import cn.edu.uestc.acmicpc.config.IntegrationTestContext;
-
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.testng.AbstractTestNGSpringContextTests;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
@@ -11,10 +7,9 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
- * Util class test
+ * Utility class test
  */
-@ContextConfiguration(classes = {IntegrationTestContext.class})
-public class UtilITTest extends AbstractTestNGSpringContextTests {
+public class UtilITTest {
 
   private static String VJ_1Y = "^(\\d{1,2})\\s*:\\s*(\\d{2})\\s*:\\s*(\\d{2})$";
   private static String VJ_NORMAL =
