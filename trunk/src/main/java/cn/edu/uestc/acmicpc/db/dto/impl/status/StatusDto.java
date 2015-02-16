@@ -11,9 +11,7 @@ import java.util.Map;
 import java.util.Objects;
 
 /**
- * Dto for status entity. <br/>
- * <code>@Fields({ "statusId", "result", "memoryCost", "timeCost", "length", "time", "caseNumber", "codeId",
- * "compileInfoId", "contestId", "languageId", "problemId", "userId" })</code>
+ * Dto for status entity.
  */
 @Fields({ "statusId", "result", "memoryCost", "timeCost", "length", "time", "caseNumber", "codeId",
     "compileInfoId", "contestId", "languageId", "problemId", "userId" })

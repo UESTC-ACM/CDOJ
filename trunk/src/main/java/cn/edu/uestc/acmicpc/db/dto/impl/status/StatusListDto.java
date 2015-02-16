@@ -10,10 +10,7 @@ import java.util.Map;
 import java.util.Objects;
 
 /**
- * Dto used in status list. <br/>
- * <code>@Fields({ "statusId", "userByUserId.userName", "problemId", "contestId",
- * "result", "length",
- * "languageByLanguageId.name", "timeCost", "memoryCost", "time", "caseNumber" })</code>
+ * Dto used in status list.
  */
 @Fields({ "statusId", "userByUserId.userName", "userByUserId.nickName", "problemId", "contestId",
     "result", "length", "languageByLanguageId.name", "timeCost", "memoryCost", "time",

@@ -9,9 +9,7 @@ import java.util.Map;
 import java.util.Objects;
 
 /**
- * Dto used in problem list. <br/>
- * <code>@Fields({"problemId", "title", "source", "solved", "tried", "isSpj", "isVisible",
- * "difficulty"})</code>
+ * Dto used in problem list.
  */
 @Fields({ "problemId", "title", "source", "solved", "tried", "isSpj", "isVisible",
     "difficulty" })

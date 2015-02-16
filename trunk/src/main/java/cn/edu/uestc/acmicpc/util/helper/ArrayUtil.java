@@ -62,7 +62,7 @@ public class ArrayUtil {
 
   /**
    * Transform string array into integer array.
-   * <p/>
+   * <p>
    * Set element null if it can not be parsed to integer.
    *
    * @param s
