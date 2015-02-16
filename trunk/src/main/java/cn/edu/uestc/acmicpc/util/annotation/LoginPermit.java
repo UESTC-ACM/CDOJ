@@ -10,7 +10,7 @@ import java.lang.annotation.Target;
 
 /**
  * Login permission controller.
- * <p/>
+ * <p>
  * Use this annotation to validate users' types.
  */
 @Retention(RetentionPolicy.RUNTIME)

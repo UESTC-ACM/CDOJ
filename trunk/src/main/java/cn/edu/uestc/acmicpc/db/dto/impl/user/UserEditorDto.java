@@ -8,9 +8,7 @@ import cn.edu.uestc.acmicpc.util.annotation.Fields;
 import java.util.Map;
 
 /**
- * Dto for user entity. <br/>
- * <code>@Fields({ "userName", "studentId", "school", "nickName", "email",
- * "type", "motto", "departmentId"})</code>
+ * Dto for user entity.
  */
 @Fields({ "userName", "studentId", "school", "nickName",
     "email", "type", "motto", "departmentId", "name", "sex", "grade", "phone", "size" })
