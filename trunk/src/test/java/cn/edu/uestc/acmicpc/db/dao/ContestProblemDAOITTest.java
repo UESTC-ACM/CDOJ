@@ -1,21 +1,18 @@
 package cn.edu.uestc.acmicpc.db.dao;
 
-import cn.edu.uestc.acmicpc.config.IntegrationTestContext;
 import cn.edu.uestc.acmicpc.db.dao.iface.ContestProblemDao;
 import cn.edu.uestc.acmicpc.db.dao.impl.ContestProblemDaoImpl;
 import cn.edu.uestc.acmicpc.db.entity.ContestProblem;
+import cn.edu.uestc.acmicpc.testing.PersistenceITTest;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.testng.AbstractTestNGSpringContextTests;
 import org.testng.annotations.Test;
 
 /**
  * Test case for {@link ContestProblemDaoImpl}.
  */
-@ContextConfiguration(classes = {IntegrationTestContext.class})
-public class ContestProblemDAOITTest extends AbstractTestNGSpringContextTests {
+public class ContestProblemDAOITTest extends PersistenceITTest {
 
   @Autowired
   private ContestProblemDao contestProblemDao;

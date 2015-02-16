@@ -1,6 +1,5 @@
 package cn.edu.uestc.acmicpc.db;
 
-import cn.edu.uestc.acmicpc.config.IntegrationTestContext;
 import cn.edu.uestc.acmicpc.db.condition.base.Condition;
 import cn.edu.uestc.acmicpc.db.condition.impl.StatusCondition;
 import cn.edu.uestc.acmicpc.db.condition.impl.UserCondition;
@@ -10,13 +9,12 @@ import cn.edu.uestc.acmicpc.db.dao.iface.StatusDao;
 import cn.edu.uestc.acmicpc.db.dao.iface.UserDao;
 import cn.edu.uestc.acmicpc.db.dto.impl.user.UserListDto;
 import cn.edu.uestc.acmicpc.db.entity.User;
+import cn.edu.uestc.acmicpc.testing.PersistenceITTest;
 import cn.edu.uestc.acmicpc.util.enums.OnlineJudgeReturnType;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
 import cn.edu.uestc.acmicpc.web.dto.PageInfo;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.testng.AbstractTestNGSpringContextTests;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
@@ -27,8 +25,7 @@ import java.util.Map;
 /**
  * Simple database test class.
  */
-@ContextConfiguration(classes = {IntegrationTestContext.class})
-public class DatabaseITTest extends AbstractTestNGSpringContextTests {
+public class DatabaseITTest extends PersistenceITTest {
 
   @Autowired
   private UserDao userDao;

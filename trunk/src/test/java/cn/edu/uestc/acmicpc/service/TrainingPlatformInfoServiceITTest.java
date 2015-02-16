@@ -1,16 +1,14 @@
 package cn.edu.uestc.acmicpc.service;
 
-import cn.edu.uestc.acmicpc.config.IntegrationTestContext;
 import cn.edu.uestc.acmicpc.db.criteria.impl.TrainingPlatformInfoCriteria;
 import cn.edu.uestc.acmicpc.db.dto.field.TrainingPlatformInfoFields;
 import cn.edu.uestc.acmicpc.db.dto.impl.TrainingPlatformInfoDto;
 import cn.edu.uestc.acmicpc.service.iface.TrainingPlatformInfoService;
+import cn.edu.uestc.acmicpc.testing.PersistenceITTest;
 import cn.edu.uestc.acmicpc.util.enums.TrainingPlatformType;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.testng.AbstractTestNGSpringContextTests;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
@@ -20,8 +18,7 @@ import java.util.List;
  * Integration test case for
  * {@link cn.edu.uestc.acmicpc.service.iface.TrainingPlatformInfoService}
  */
-@ContextConfiguration(classes = { IntegrationTestContext.class })
-public class TrainingPlatformInfoServiceITTest extends AbstractTestNGSpringContextTests {
+public class TrainingPlatformInfoServiceITTest extends PersistenceITTest {
 
   @Autowired
   private TrainingPlatformInfoService trainingPlatformInfoService;
