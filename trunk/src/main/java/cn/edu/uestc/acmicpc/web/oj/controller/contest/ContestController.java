@@ -5,6 +5,7 @@ import cn.edu.uestc.acmicpc.db.condition.impl.ContestTeamCondition;
 import cn.edu.uestc.acmicpc.db.condition.impl.StatusCondition;
 import cn.edu.uestc.acmicpc.db.condition.impl.TeamUserCondition;
 import cn.edu.uestc.acmicpc.db.dto.impl.LanguageDto;
+import cn.edu.uestc.acmicpc.db.dto.impl.TeamDto;
 import cn.edu.uestc.acmicpc.db.dto.impl.contest.ContestDto;
 import cn.edu.uestc.acmicpc.db.dto.impl.contest.ContestEditDto;
 import cn.edu.uestc.acmicpc.db.dto.impl.contest.ContestListDto;
@@ -21,7 +22,6 @@ import cn.edu.uestc.acmicpc.db.dto.impl.contestteam.ContestTeamReviewDto;
 import cn.edu.uestc.acmicpc.db.dto.impl.message.MessageDto;
 import cn.edu.uestc.acmicpc.db.dto.impl.status.StatusInformationDto;
 import cn.edu.uestc.acmicpc.db.dto.impl.status.StatusListDto;
-import cn.edu.uestc.acmicpc.db.dto.impl.team.TeamDto;
 import cn.edu.uestc.acmicpc.db.dto.impl.teamUser.TeamUserListDto;
 import cn.edu.uestc.acmicpc.db.dto.impl.teamUser.TeamUserReportDto;
 import cn.edu.uestc.acmicpc.db.dto.impl.user.OnsiteUserDto;
@@ -105,7 +105,7 @@ import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 
 /**
- * @author liverliu
+ * Contest controller.
  */
 @Controller
 @RequestMapping("/contest")
