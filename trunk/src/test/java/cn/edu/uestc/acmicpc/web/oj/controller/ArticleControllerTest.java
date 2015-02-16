@@ -15,12 +15,11 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.request;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import cn.edu.uestc.acmicpc.config.TestContext;
-import cn.edu.uestc.acmicpc.config.WebMVCConfig;
 import cn.edu.uestc.acmicpc.db.criteria.impl.ArticleCriteria;
 import cn.edu.uestc.acmicpc.db.dto.field.ArticleFields;
 import cn.edu.uestc.acmicpc.db.dto.impl.ArticleDto;
 import cn.edu.uestc.acmicpc.db.dto.impl.user.UserDto;
+import cn.edu.uestc.acmicpc.testing.ControllerTest;
 import cn.edu.uestc.acmicpc.util.enums.ArticleType;
 import cn.edu.uestc.acmicpc.util.enums.AuthenticationType;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
@@ -31,8 +30,6 @@ import cn.edu.uestc.acmicpc.web.oj.controller.article.ArticleController;
 import org.mockito.ArgumentCaptor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mock.web.MockHttpSession;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.web.WebAppConfiguration;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
@@ -49,8 +46,6 @@ import java.util.UUID;
 /**
  * Test cases for {@link ArticleController}.
  */
-@WebAppConfiguration
-@ContextConfiguration(classes = { TestContext.class, WebMVCConfig.class })
 public class ArticleControllerTest extends ControllerTest {
 
   @Autowired

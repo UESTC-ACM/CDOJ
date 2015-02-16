@@ -12,8 +12,6 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import cn.edu.uestc.acmicpc.config.TestContext;
-import cn.edu.uestc.acmicpc.config.WebMVCConfig;
 import cn.edu.uestc.acmicpc.db.criteria.impl.TrainingCriteria;
 import cn.edu.uestc.acmicpc.db.criteria.impl.TrainingPlatformInfoCriteria;
 import cn.edu.uestc.acmicpc.db.criteria.impl.TrainingUserCriteria;
@@ -24,6 +22,7 @@ import cn.edu.uestc.acmicpc.db.dto.impl.TrainingDto;
 import cn.edu.uestc.acmicpc.db.dto.impl.TrainingPlatformInfoDto;
 import cn.edu.uestc.acmicpc.db.dto.impl.TrainingUserDto;
 import cn.edu.uestc.acmicpc.db.dto.impl.user.UserDto;
+import cn.edu.uestc.acmicpc.testing.ControllerTest;
 import cn.edu.uestc.acmicpc.util.enums.AuthenticationType;
 import cn.edu.uestc.acmicpc.util.enums.TrainingPlatformType;
 import cn.edu.uestc.acmicpc.util.enums.TrainingUserType;
@@ -34,8 +33,6 @@ import cn.edu.uestc.acmicpc.web.oj.controller.training.TrainingController;
 import org.mockito.ArgumentCaptor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mock.web.MockHttpSession;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.web.WebAppConfiguration;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
@@ -51,8 +48,6 @@ import java.util.UUID;
 /**
  * Mock test for {@link TrainingController}
  */
-@WebAppConfiguration
-@ContextConfiguration(classes = { TestContext.class, WebMVCConfig.class })
 public class TrainingControllerTest extends ControllerTest {
 
   @Autowired
