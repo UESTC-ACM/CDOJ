@@ -1,9 +1,7 @@
 package cn.edu.uestc.acmicpc.service.iface;
 
-import cn.edu.uestc.acmicpc.db.condition.impl.TeamCondition;
-import cn.edu.uestc.acmicpc.db.dto.impl.team.TeamDto;
-import cn.edu.uestc.acmicpc.db.dto.impl.team.TeamListDto;
-import cn.edu.uestc.acmicpc.db.dto.impl.team.TeamTypeAHeadDto;
+import cn.edu.uestc.acmicpc.db.criteria.impl.TeamCriteria;
+import cn.edu.uestc.acmicpc.db.dto.impl.TeamDto;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
 import cn.edu.uestc.acmicpc.web.dto.PageInfo;
 
@@ -41,7 +39,7 @@ public interface TeamService {
    *
    * @param teamId
    *          team's id
-   * @return {@link cn.edu.uestc.acmicpc.db.dto.impl.team.TeamDto} entity
+   * @return {@link cn.edu.uestc.acmicpc.db.dto.impl.TeamDto} entity
    * @throws AppException
    */
   public TeamDto getTeamDtoByTeamId(Integer teamId) throws AppException;
@@ -49,55 +47,24 @@ public interface TeamService {
   /**
    * Counts the number of team fit in condition.
    *
-   * @param condition
-   *          {@link cn.edu.uestc.acmicpc.db.condition.impl.TeamCondition}
-   *          entity.
+   * @param criteria
+   *          {@link cn.edu.uestc.acmicpc.db.criteria.impl.TeamCriteria} entity.
    * @return total number of team fit in the condition.
    * @throws AppException
    */
-  public Long count(TeamCondition condition) throws AppException;
+  public Long count(TeamCriteria criteria) throws AppException;
 
   /**
-   * Get the teams fit in condition and page range.
+   * Get the teams fit in the criteria and page range.
    *
-   * @param condition
-   *          {@link TeamCondition} entity.
+   * @param criteria
+   *          {@link TeamCriteria} entity.
    * @param pageInfo
    *          {@link PageInfo} entity.
-   * @return List of {@link TeamDto} entities.
+   * @return List of {@link cn.edu.uestc.acmicpc.db.dto.impl.TeamDto} entities.
    * @throws AppException
    */
-  public List<TeamListDto> getTeamList(TeamCondition condition,
-      PageInfo pageInfo) throws AppException;
-
-  /**
-   * Get HQL query by
-   * {@link cn.edu.uestc.acmicpc.db.condition.impl.TeamCondition} entity
-   * Example: <code>from Team team, TeamUser teamUser
-   * where team.teamId = teamUser.teamId and teamUser.userId = 2 and team.teamName like '%Izayoi%' order by team.teamId desc</code>
-   *
-   * @param teamCondition
-   *          {@link cn.edu.uestc.acmicpc.db.condition.impl.TeamCondition}
-   *          entity
-   * @return HQL query
-   * @throws AppException
-   */
-  public String getHQLString(TeamCondition teamCondition) throws AppException;
-
-  /**
-   * Get the teams fit in condition and page range.(for type-ahead list)
-   *
-   * @param teamCondition
-   *          {@link TeamCondition} entity.
-   * @param pageInfo
-   *          {@link PageInfo} entity.
-   * @return List of
-   *         {@link cn.edu.uestc.acmicpc.db.dto.impl.team.TeamTypeAHeadDto}
-   *         entities.
-   * @throws AppException
-   */
-  public List<TeamTypeAHeadDto> getTeamTypeAHeadList(TeamCondition teamCondition,
-      PageInfo pageInfo) throws AppException;
+  public List<TeamDto> getTeams(TeamCriteria criteria, PageInfo pageInfo) throws AppException;
 
   /**
    * Get team id by team name
