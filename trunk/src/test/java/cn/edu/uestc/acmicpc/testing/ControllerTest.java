@@ -1,4 +1,4 @@
-package cn.edu.uestc.acmicpc.web.oj.controller;
+package cn.edu.uestc.acmicpc.testing;
 
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.setup.MockMvcBuilders.standaloneSetup;
