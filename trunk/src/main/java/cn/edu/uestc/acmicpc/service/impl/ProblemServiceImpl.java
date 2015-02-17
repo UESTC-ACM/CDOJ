@@ -34,19 +34,10 @@ public class ProblemServiceImpl extends AbstractService implements ProblemServic
 
   @SuppressWarnings("unchecked")
   @Override
-  public List<Integer> getAllVisibleProblemIds() throws AppException {
+  public List<Integer> getAllProblemIds(boolean isVisible, ProblemType problemType) throws AppException {
     ProblemCondition problemCondition = new ProblemCondition();
-    problemCondition.isVisible = true;
-    return (List<Integer>) problemDao.findAll("problemId",
-        problemCondition.getCondition());
-  }
-
-  @SuppressWarnings("unchecked")
-  @Override
-  public List<Integer> getAllVisibleNormalProblemIds() throws AppException {
-    ProblemCondition problemCondition = new ProblemCondition();
-    problemCondition.isVisible = true;
-    problemCondition.type = ProblemType.NORMAL;
+    problemCondition.isVisible = isVisible;
+    problemCondition.type = problemType;
     return (List<Integer>) problemDao.findAll("problemId",
         problemCondition.getCondition());
   }

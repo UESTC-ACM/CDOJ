@@ -3,6 +3,7 @@ package cn.edu.uestc.acmicpc.service.iface;
 import cn.edu.uestc.acmicpc.db.condition.impl.ProblemCondition;
 import cn.edu.uestc.acmicpc.db.dto.impl.problem.ProblemDto;
 import cn.edu.uestc.acmicpc.db.dto.impl.problem.ProblemListDto;
+import cn.edu.uestc.acmicpc.util.enums.ProblemType;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
 import cn.edu.uestc.acmicpc.web.dto.PageInfo;
 
@@ -16,20 +17,12 @@ import java.util.Map;
 public interface ProblemService {
 
   /**
-   * Gets all visible problems' id without any statements.
+   * Gets all problems' id according to the parameters.
    *
    * @return all problem id list.
    * @throws AppException
    */
-  public List<Integer> getAllVisibleProblemIds() throws AppException;
-
-  /**
-   * Gets all visible normal problems' id without any statements.
-   *
-   * @return all visible normal problem id list.
-   * @throws AppException
-   */
-  public List<Integer> getAllVisibleNormalProblemIds() throws AppException;
+  public List<Integer> getAllProblemIds(boolean isVisible, ProblemType problemType) throws AppException;
 
   /**
    * Gets {@link ProblemDto} entity by problem's ID.

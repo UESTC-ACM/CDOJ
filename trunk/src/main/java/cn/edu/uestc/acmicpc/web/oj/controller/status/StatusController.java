@@ -130,18 +130,18 @@ public class StatusController extends BaseController {
           statusCondition.startTime = contestShowDto.getStartTime();
           statusCondition.endTime = contestShowDto.getEndTime();
           // Some problems is stashed when contest is running
-          statusCondition.isVisible = null;
+          statusCondition.isProblemVisible = null;
         } else {
           // Only show status submitted for visible problem
-          statusCondition.isVisible = true;
-          statusCondition.type = ProblemType.NORMAL.ordinal();
+          statusCondition.isProblemVisible = true;
+          statusCondition.problemType = ProblemType.NORMAL;
           if(statusCondition.problemId != null) {
             ProblemDto problemDto = problemService.getProblemDtoByProblemId(statusCondition.problemId);
             UserDto currentUser = getCurrentUser(session);
             //internal problem' status only show for internal user who are searching.
             if(currentUser != null && problemDto != null && problemDto.getType() == ProblemType.INTERNAL
              && currentUser.getType() == AuthenticationType.INTERNAL.ordinal()) {
-              statusCondition.type = ProblemType.INTERNAL.ordinal();
+              statusCondition.problemType = ProblemType.INTERNAL;
             }
           }
         }

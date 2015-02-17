@@ -62,8 +62,8 @@ public class StatusServiceImpl extends AbstractService implements StatusService 
   public Long countProblemsUserTried(Integer userId) throws AppException {
     StatusCondition statusCondition = new StatusCondition();
     statusCondition.userId = userId;
-    statusCondition.type = ProblemType.NORMAL.ordinal();
-    statusCondition.isVisible = Boolean.TRUE;
+    statusCondition.problemType = ProblemType.NORMAL;
+    statusCondition.isProblemVisible = Boolean.TRUE;
     return statusDao.customCount("distinct problemId", statusCondition.getCondition());
   }
 
@@ -72,8 +72,8 @@ public class StatusServiceImpl extends AbstractService implements StatusService 
     StatusCondition statusCondition = new StatusCondition();
     statusCondition.userId = userId;
     statusCondition.results.add(OnlineJudgeResultType.OJ_AC);
-    statusCondition.type = ProblemType.NORMAL.ordinal();
-    statusCondition.isVisible = Boolean.TRUE;
+    statusCondition.problemType = ProblemType.NORMAL;
+    statusCondition.isProblemVisible = Boolean.TRUE;
     return statusDao.customCount("distinct problemId", statusCondition.getCondition());
   }
 
@@ -169,7 +169,7 @@ public class StatusServiceImpl extends AbstractService implements StatusService 
   public void rejudge(StatusCondition statusCondition) throws AppException {
     Map<String, Object> properties = new HashMap<>();
     properties.put("result", OnlineJudgeReturnType.OJ_REJUDGING.ordinal());
-    statusCondition.isVisible = null;
+    statusCondition.isProblemVisible = null;
     statusCondition.userName = null;
     statusCondition.isForAdmin = true;
     statusDao.updateEntitiesByCondition(properties,
