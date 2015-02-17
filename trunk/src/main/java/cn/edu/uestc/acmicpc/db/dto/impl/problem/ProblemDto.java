@@ -10,11 +10,7 @@ import java.util.Map;
 import java.util.Objects;
 
 /**
- * Dto for problem entity. <br/>
- * <code>@Fields({"problemId", "title", "description", "input", "output", "sampleInput",
- * "sampleOutput", "hint", "source", "timeLimit", "memoryLimit", "solved", "tried",
- * "isSpj", "isVisible", "outputLimit", "javaTimeLimit", "javaMemoryLimit", "dataCount",
- * "difficulty"})</code>
+ * Dto for problem entity.
  */
 @Fields({ "problemId", "title", "description", "input", "output", "sampleInput",
     "sampleOutput", "hint", "source", "timeLimit", "memoryLimit", "solved", "tried",

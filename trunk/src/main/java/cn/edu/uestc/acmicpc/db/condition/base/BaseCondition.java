@@ -13,43 +13,43 @@ import java.lang.reflect.Field;
 
 /**
  * We can use this class to get {@link Condition} entity.
- * <p/>
+ * <p>
  * <strong>USAGE</strong>
- * <p/>
+ * <p>
  * We can write a simple class than extends this class, and add the {@link Exp}
  * annotation to each field of the class. If we do not do with, the field will
  * be handled in subclass {@code getCondition} method.
- * <p/>
+ * <p>
  * <strong>For developer</strong>:
  * <ul>
  * <li>
  * In default, the map field's name is equal to the data field's name. If you
  * want to map the class field into another data field, use the
  * {@code Exp#mapField()} parameter please.
- * <p/>
+ * <p>
  * For example:
- * <p/>
+ * <p>
  * <code>
- * {@literal @}Exp(mapField = "userId", type = ConditionType.EQUALS)<br/>
+ * {@literal @}Exp(mapField = "userId", type = ConditionType.EQUALS)<br>
  * public Integer id;
  * </code></li>
  * <li>
  * {@code ConditionType.LIKE} type will add % in two ends of the string,
  * otherwise please handle this case in {@code getCondition} by yourself.
- * <p/>
+ * <p>
  * For example:
- * <p/>
+ * <p>
  * <code>
  * public String userName;
- * <br/>
- * {@literal @}Override<br/>
- * public Condition getCondition() {<br/>
- * &nbsp;&nbsp;Condition condition = super.getCondition();<br/>
- * &nbsp;&nbsp;if (userName != null) {<br/>
+ * <br>
+ * {@literal @}Override<br>
+ * public Condition getCondition() {<br>
+ * &nbsp;&nbsp;Condition condition = super.getCondition();<br>
+ * &nbsp;&nbsp;if (userName != null) {<br>
  * &nbsp;&nbsp;&nbsp;&nbsp;conditions.addEntry("userName", ConditionType.STRING_EQUALS,
- * "%" + userName);<br/>
- * &nbsp;&nbsp;}<br/>
- * &nbsp;&nbsp;return condition;<br/>
+ * "%" + userName);<br>
+ * &nbsp;&nbsp;}<br>
+ * &nbsp;&nbsp;return condition;<br>
  * }
  * </code></li>
  * </ul>

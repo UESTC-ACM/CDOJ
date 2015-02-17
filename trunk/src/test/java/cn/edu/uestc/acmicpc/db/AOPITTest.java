@@ -1,14 +1,12 @@
 package cn.edu.uestc.acmicpc.db;
 
-import cn.edu.uestc.acmicpc.config.IntegrationTestContext;
 import cn.edu.uestc.acmicpc.db.dao.iface.UserDao;
 import cn.edu.uestc.acmicpc.db.entity.User;
+import cn.edu.uestc.acmicpc.testing.PersistenceITTest;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
 import cn.edu.uestc.acmicpc.util.exception.FieldNotUniqueException;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.testng.AbstractTestNGSpringContextTests;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
@@ -17,8 +15,7 @@ import com.alibaba.druid.pool.DruidDataSource;
 /**
  * Test cases for AOP framework
  */
-@ContextConfiguration(classes = {IntegrationTestContext.class})
-public class AOPITTest extends AbstractTestNGSpringContextTests {
+public class AOPITTest extends PersistenceITTest {
 
   @Autowired
   UserDao userDao;

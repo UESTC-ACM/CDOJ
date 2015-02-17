@@ -3,7 +3,6 @@ jdk:
   - oraclejdk8
 
 install:
-  - sudo apt-get install protobuf-compiler
   - cd trunk
 
 script:

@@ -16,7 +16,7 @@ public class ZipUtil {
 
   /**
    * Unzip the zip file and put all the files in the zip file to the path.
-   * <p/>
+   * <p>
    * <strong>WARN:</strong> If the file list can not pass the checker's
    * validation, delete all the contents in the {@code path}, and the
    * {@code path} itself.

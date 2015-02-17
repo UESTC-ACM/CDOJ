@@ -1,0 +1,59 @@
+{
+  "entity": "Team",
+  "fields": [
+    {
+      "name": "teamId",
+      "type": "Integer",
+      "projectionParameters": [],
+      "projections": [
+        "BASIC_FIELDS",
+        "FIELDS_FOR_EDIT_PAGE",
+        "FIELDS_FOR_LIST_PAGE",
+        "FIELDS_FOR_ADHEAD_TYPE"
+      ]
+    },
+    {
+      "name": "teamName",
+      "type": "String",
+      "projectionParameters": [],
+      "projections": [
+        "BASIC_FIELDS",
+        "FIELDS_FOR_EDIT_PAGE",
+        "FIELDS_FOR_LIST_PAGE",
+        "FIELDS_FOR_ADHEAD_TYPE"
+      ]
+    },
+    {
+      "name": "leaderId",
+      "type": "Integer",
+      "projectionParameters": [],
+      "projections": ["BASIC_FIELDS", "FIELDS_FOR_LIST_PAGE"]
+    },
+    {
+      "name": "memberList",
+      "type": "String",
+      "projectionParameters": [],
+      "projections": ["FIELDS_FOR_EDIT_PAGE"]
+    },
+    {
+      "name": "teamUsers",
+      "type": "List<TeamUserListDto>",
+      "classpath": "cn.edu.uestc.acmicpc.db.dto.impl.teamUser.TeamUserListDto",
+      "projectionParameters": [],
+      "projections": ["FIELDS_FOR_LIST_PAGE"]
+    },
+    {
+      "name": "invitedUsers",
+      "type": "List<TeamUserListDto>",
+      "classpath": "cn.edu.uestc.acmicpc.db.dto.impl.teamUser.TeamUserListDto",
+      "projectionParameters": [],
+      "projections": ["FIELDS_FOR_LIST_PAGE"]
+    },
+    {
+      "name": "allow",
+      "type": "Boolean",
+      "projectionParameters": [],
+      "projections": ["FIELDS_FOR_LIST_PAGE"]
+    }
+  ]
+}

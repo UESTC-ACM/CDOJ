@@ -10,8 +10,7 @@ import java.util.Map;
 import java.util.Objects;
 
 /**
- * Dto for code and compile information query. <br/>
- * <code>@Fields({ "statusId", "userId", "codeByCodeId.content", "compileInfoId", "contestId", "problemId" })</code>
+ * Dto for code and compile information query.
  */
 @Fields({ "statusId", "userId", "codeByCodeId.content", "compileInfoId",
     "contestId", "problemId", "languageByLanguageId.extension",

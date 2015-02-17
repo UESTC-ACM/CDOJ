@@ -61,7 +61,7 @@ public interface ContestTeamService {
    *          search condition.
    * @param pageInfo
    *          page range.
-   * @return list of {@ContestTeamListDto} entities.
+   * @return list of {@link ContestTeamListDto} entities.
    * @throws AppException
    */
   public List<ContestTeamListDto>

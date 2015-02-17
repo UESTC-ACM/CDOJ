@@ -97,9 +97,9 @@ public class BaseController {
   /**
    * Build a page html content according to number of records, records per page,
    * base URL and display distance.
-   * <p/>
+   * <p>
    * <strong>Example:</strong> Get total and set it into {@code buildPageInfo}
-   * method: <br />
+   * method: <br>
    * {@code PageInfo pageInfo = buildPageInfo(articleDAO.count(), RECORD_PER_PAGE,
    * getContextPath("") + "/Problem", null);}
    *

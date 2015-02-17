@@ -1,24 +1,21 @@
 package cn.edu.uestc.acmicpc.db;
 
-import cn.edu.uestc.acmicpc.config.IntegrationTestContext;
 import cn.edu.uestc.acmicpc.db.dao.iface.UserDao;
 import cn.edu.uestc.acmicpc.db.dao.iface.UserSerialKeyDao;
 import cn.edu.uestc.acmicpc.db.entity.User;
 import cn.edu.uestc.acmicpc.db.entity.UserSerialKey;
+import cn.edu.uestc.acmicpc.testing.PersistenceITTest;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
 import cn.edu.uestc.acmicpc.util.exception.FieldNotUniqueException;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.testng.AbstractTestNGSpringContextTests;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
 /**
  * Test cases for {@link UserSerialKey}.
  */
-@ContextConfiguration(classes = {IntegrationTestContext.class})
-public class UserSerialKeyDatabaseITTest extends AbstractTestNGSpringContextTests {
+public class UserSerialKeyDatabaseITTest extends PersistenceITTest {
 
   @Autowired
   private UserDao userDao;
