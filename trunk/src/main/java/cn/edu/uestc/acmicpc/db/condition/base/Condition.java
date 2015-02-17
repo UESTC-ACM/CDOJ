@@ -12,9 +12,9 @@ import java.util.Objects;
  * Conditions setting for
  * {@link cn.edu.uestc.acmicpc.db.dao.iface.Dao#findAll(String, Condition)} and
  * {@link cn.edu.uestc.acmicpc.db.dao.iface.Dao#count(Condition)}.
- * <p/>
+ * <p>
  * <strong>For Developers</strong>:
- * <p/>
+ * <p>
  * If this condition is stored as {@link Entry#getValue()}, we ignore the order
  * of it.
  *

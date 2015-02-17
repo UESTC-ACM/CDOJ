@@ -52,7 +52,7 @@ public interface Dao<E extends Serializable> {
 
   /**
    * List all entities in tables by fields name and condition entity.
-   * <p/>
+   * <p>
    * <strong>For developers:</strong> The return list's element type is
    * {@link Object}[], every element of the array is the field value.
    *
@@ -67,7 +67,7 @@ public interface Dao<E extends Serializable> {
 
   /**
    * List all entities in tables by fields name and condition statement.
-   * <p/>
+   * <p>
    * <strong>For developers:</strong> The return list's element type is
    * {@link Object}[], every element of the array is the field value.
    *

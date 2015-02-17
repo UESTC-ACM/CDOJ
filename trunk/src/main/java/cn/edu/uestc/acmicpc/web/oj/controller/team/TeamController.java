@@ -1,11 +1,10 @@
 package cn.edu.uestc.acmicpc.web.oj.controller.team;
 
-import cn.edu.uestc.acmicpc.db.condition.impl.TeamCondition;
 import cn.edu.uestc.acmicpc.db.condition.impl.TeamUserCondition;
+import cn.edu.uestc.acmicpc.db.criteria.impl.TeamCriteria;
+import cn.edu.uestc.acmicpc.db.dto.field.TeamFields;
+import cn.edu.uestc.acmicpc.db.dto.impl.TeamDto;
 import cn.edu.uestc.acmicpc.db.dto.impl.message.MessageDto;
-import cn.edu.uestc.acmicpc.db.dto.impl.team.TeamDto;
-import cn.edu.uestc.acmicpc.db.dto.impl.team.TeamEditDto;
-import cn.edu.uestc.acmicpc.db.dto.impl.team.TeamListDto;
 import cn.edu.uestc.acmicpc.db.dto.impl.teamUser.TeamUserDto;
 import cn.edu.uestc.acmicpc.db.dto.impl.teamUser.TeamUserListDto;
 import cn.edu.uestc.acmicpc.db.dto.impl.user.UserDto;
@@ -65,10 +64,10 @@ public class TeamController extends BaseController {
     Map<String, Object> json = new HashMap<>();
     try {
       Integer teamId = teamService.getTeamIdByTeamName(teamName);
-      TeamCondition teamCondition = new TeamCondition();
-      teamCondition.teamId = teamId;
+      TeamCriteria criteria = new TeamCriteria(TeamFields.FIELDS_FOR_LIST_PAGE);
+      criteria.teamId = teamId;
       PageInfo pageInfo = buildPageInfo(1L, 1L, 1L, null);
-      List<TeamListDto> teamList = getTeamListDto(teamCondition, pageInfo, session);
+      List<TeamDto> teamList = getTeamListDto(criteria, pageInfo, session);
       if (teamList == null || teamList.size() != 1) {
         throw new AppException("Fetch team error.");
       }
@@ -83,17 +82,17 @@ public class TeamController extends BaseController {
 
   @RequestMapping("typeAHeadSearch")
   @LoginPermit(NeedLogin = true)
-  public @ResponseBody Map<String, Object> typeAHeadSearch(@RequestBody TeamCondition teamCondition) {
+  public @ResponseBody Map<String, Object> typeAHeadSearch(@RequestBody TeamCriteria criteria) {
     Map<String, Object> json = new HashMap<>();
     try {
-      if (teamCondition.teamName == null) {
-        teamCondition.teamName = "";
+      if (criteria.teamName == null) {
+        criteria.teamName = "";
       }
+      criteria.setResultFields(TeamFields.FIELDS_FOR_ADHEAD_TYPE);
       // Search teams
-      Long count = teamService.count(teamCondition);
-      PageInfo pageInfo = buildPageInfo(count, 1L,
-          6L, null);
-      json.put("list", teamService.getTeamTypeAHeadList(teamCondition, pageInfo));
+      Long count = teamService.count(criteria);
+      PageInfo pageInfo = buildPageInfo(count, 1L, 6L, null);
+      json.put("list", teamService.getTeams(criteria, pageInfo));
       json.put("result", "success");
     } catch (AppException e) {
       json.put("result", "error");
@@ -102,9 +101,9 @@ public class TeamController extends BaseController {
     return json;
   }
 
-  private List<TeamListDto> getTeamListDto(TeamCondition teamCondition, PageInfo pageInfo,
+  private List<TeamDto> getTeamListDto(TeamCriteria criteria, PageInfo pageInfo,
       HttpSession session) throws AppException {
-    List<TeamListDto> teamList = teamService.getTeamList(teamCondition, pageInfo);
+    List<TeamDto> teamList = teamService.getTeams(criteria, pageInfo);
 
     if (teamList.size() == 0) {
       return teamList;
@@ -112,7 +111,7 @@ public class TeamController extends BaseController {
 
     // At most 20 records
     List<Integer> teamIdList = new LinkedList<>();
-    for (TeamListDto teamListDto : teamList) {
+    for (TeamDto teamListDto : teamList) {
       teamIdList.add(teamListDto.getTeamId());
     }
     TeamUserCondition teamUserCondition = new TeamUserCondition();
@@ -123,7 +122,7 @@ public class TeamController extends BaseController {
     List<TeamUserListDto> teamUserList = teamUserService.getTeamUserList(teamUserCondition);
 
     // Put users into teams
-    for (TeamListDto teamListDto : teamList) {
+    for (TeamDto teamListDto : teamList) {
       teamListDto.setTeamUsers(new LinkedList<TeamUserListDto>());
       teamListDto.setInvitedUsers(new LinkedList<TeamUserListDto>());
       for (TeamUserListDto teamUserListDto : teamUserList) {
@@ -131,12 +130,12 @@ public class TeamController extends BaseController {
           // Put users into current users / inactive users
           if (teamUserListDto.getAllow()) {
             teamListDto.getTeamUsers().add(teamUserListDto);
-          } else if (checkPermission(session, teamCondition.userId)) {
+          } else if (checkPermission(session, criteria.leaderId)) {
             teamListDto.getInvitedUsers().add(teamUserListDto);
           }
 
-          if (checkPermission(session, teamCondition.userId)
-              && teamUserListDto.getUserId().equals(teamCondition.userId)) {
+          if (checkPermission(session, criteria.leaderId)
+              && teamUserListDto.getUserId().equals(criteria.leaderId)) {
             teamListDto.setAllow(teamUserListDto.getAllow());
           }
         }
@@ -147,21 +146,21 @@ public class TeamController extends BaseController {
 
   @RequestMapping("search")
   @LoginPermit(NeedLogin = false)
-  public @ResponseBody Map<String, Object> search(@RequestBody TeamCondition teamCondition,
+  public @ResponseBody Map<String, Object> search(@RequestBody TeamCriteria criteria,
       HttpSession session) {
     Map<String, Object> json = new HashMap<>();
     try {
-      if (teamCondition.userId != null) {
-        if (!checkPermission(session, teamCondition.userId)) {
-          teamCondition.allow = true;
+      if (criteria.leaderId != null) {
+        if (!checkPermission(session, criteria.leaderId)) {
+          criteria.allow = true;
         }
         // Search teams
-        Long count = teamService.count(teamCondition);
-        PageInfo pageInfo = buildPageInfo(count, teamCondition.currentPage,
+        Long count = teamService.count(criteria);
+        PageInfo pageInfo = buildPageInfo(count, criteria.currentPage,
             settings.RECORD_PER_PAGE, null);
 
         json.put("pageInfo", pageInfo);
-        json.put("list", getTeamListDto(teamCondition, pageInfo, session));
+        json.put("list", getTeamListDto(criteria, pageInfo, session));
       } else {
         PageInfo pageInfo = buildPageInfo(0L, 1L,
             settings.RECORD_PER_PAGE, null);
@@ -200,7 +199,7 @@ public class TeamController extends BaseController {
 
   @RequestMapping("deleteTeam")
   @LoginPermit(NeedLogin = true)
-  public @ResponseBody Map<String, Object> deleteTeam(@RequestBody TeamEditDto teamEditDto,
+  public @ResponseBody Map<String, Object> deleteTeam(@RequestBody TeamDto teamEditDto,
       HttpSession session) {
     Map<String, Object> json = new HashMap<>();
     try {
@@ -242,15 +241,15 @@ public class TeamController extends BaseController {
 
   @RequestMapping("createTeam")
   @LoginPermit(NeedLogin = true)
-  public @ResponseBody Map<String, Object> createTeam(@RequestBody TeamEditDto teamEditDto,
+  public @ResponseBody Map<String, Object> createTeam(@RequestBody TeamDto teamEditDto,
       HttpSession session) {
     Map<String, Object> json = new HashMap<>();
     try {
       AppExceptionUtil.assertNotNull(teamEditDto.getTeamName(), "Please input a valid team name.");
       teamEditDto.setTeamName(StringUtil.trimAllSpace(teamEditDto.getTeamName()));
       AppExceptionUtil.assertTrue(
-          teamEditDto.getTeamName().length() > 0 && teamEditDto.getTeamName().length() < 50
-          , "Please input a valid team name.");
+          teamEditDto.getTeamName().length() > 0 && teamEditDto.getTeamName().length() < 50,
+          "Please input a valid team name.");
       if (teamService.checkTeamExists(teamEditDto.getTeamName())) {
         throw new AppException("Team name has been used!");
       }
@@ -281,7 +280,7 @@ public class TeamController extends BaseController {
 
   @RequestMapping("removeMember")
   @LoginPermit(NeedLogin = true)
-  public @ResponseBody Map<String, Object> removeMember(@RequestBody TeamEditDto teamEditDto,
+  public @ResponseBody Map<String, Object> removeMember(@RequestBody TeamDto teamEditDto,
       HttpSession session) {
     Map<String, Object> json = new HashMap<>();
     try {
@@ -346,7 +345,7 @@ public class TeamController extends BaseController {
 
   @RequestMapping("addMember")
   @LoginPermit(NeedLogin = true)
-  public @ResponseBody Map<String, Object> addMember(@RequestBody TeamEditDto teamEditDto,
+  public @ResponseBody Map<String, Object> addMember(@RequestBody TeamDto teamEditDto,
       HttpSession session) {
     Map<String, Object> json = new HashMap<>();
     try {

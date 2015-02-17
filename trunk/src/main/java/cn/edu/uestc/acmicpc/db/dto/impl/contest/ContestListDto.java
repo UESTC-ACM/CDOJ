@@ -11,8 +11,7 @@ import java.util.Map;
 import java.util.Objects;
 
 /**
- * Dto used in contest list. <br/>
- * <code>@Fields({ "contestId", "title", "type", "time", "length", "isVisible" })</code>
+ * Dto used in contest list.
  */
 @Fields({ "contestId", "title", "type", "time", "length", "isVisible", "parentId" })
 public class ContestListDto implements BaseDto<Contest> {

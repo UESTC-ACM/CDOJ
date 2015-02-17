@@ -9,21 +9,20 @@ import java.util.Arrays;
 
 /**
  * Data checker for data.zip files.
- * <p/>
+ * <p>
  * <strong>Check items</strong>:
  * <ul>
  * <li>
- * Only a XML File named "contestInfo.xml" in the root directory.</li>
+ * Only a XML File named "contestInfo.xml" in the root directory.
  * <li>
  * In each sub-directory contains all information and test data of one problem</li>
- * </li>
  * <li>
  * In a sub-directory, a XML File named "problemInfo.xml" and input/output data
  * named with "*.in" and "*.out"</li>
  * </ul>
- * <p/>
+ * <p>
  * <strong>For administrators</strong>:
- * <p/>
+ * <p>
  * Please check carefully whether the structure of zip is valid.
  */
 public class ContestZipChecker implements Checker<File> {

@@ -9,9 +9,7 @@ import java.sql.Timestamp;
 import java.util.Map;
 
 /**
- * Dto used in user summary list. <br/>
- * <code>@Fields({ "userId", "email", "userName", "nickName", "type", "school", "motto", "lastLogin", "solved",
- * "tried" })</code>
+ * Dto used in user summary list.
  */
 @Fields({ "userId", "email", "userName", "nickName", "type", "school", "motto", "lastLogin",
     "solved",

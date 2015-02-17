@@ -11,8 +11,7 @@ import java.util.Map;
 import java.util.Objects;
 
 /**
- * Dto for contest entity. <br/>
- * <code>@Fields({ "contestId", "title", "description", "time", "length", "type" })</code>
+ * Dto for contest entity.
  */
 @Fields({ "contestId", "title", "description", "time", "length", "type",
     "isVisible", "parentId", "frozenTime" })

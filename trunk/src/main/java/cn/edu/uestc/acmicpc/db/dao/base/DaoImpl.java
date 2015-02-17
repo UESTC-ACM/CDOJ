@@ -30,7 +30,7 @@ import java.util.Map;
 
 /**
  * Global DAO implementation.
- * <p/>
+ * <p>
  * <strong>WARN</strong>: This class is only a abstract class, please create
  * subclass by overriding {@code getReference} method.
  *
