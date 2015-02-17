@@ -12,10 +12,8 @@ import cn.edu.uestc.acmicpc.util.helper.StringUtil;
 
 import java.sql.Timestamp;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
-
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
 
 /**
  * Status database condition entity.
@@ -120,7 +118,19 @@ public class StatusCondition extends BaseCondition {
 
   @Override
   public Condition getCondition() throws AppException {
-    Condition condition = super.getCondition();
+    Condition preCondition = super.getCondition();
+    Condition condition = new Condition();
+    List<Condition.Entry> entries = preCondition.getEntries();
+    for(int i = 0; i < entries.size(); i++) {
+      Condition.Entry entry =entries.get(i);
+      if(entry.getValue() instanceof Enum) {
+        Enum tmpValue = (Enum)entry.getValue();
+        condition.addEntry(entry.getFieldName(), entry.getConditionType(), tmpValue.ordinal());
+      } else {
+        condition.addEntry(entry);
+      }
+    }
+
     if (contestId != null) {
       if (contestId == -1) {
         condition.addEntry("contestId", Condition.ConditionType.IS_NULL,

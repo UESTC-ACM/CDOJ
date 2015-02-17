@@ -1,6 +1,7 @@
 package cn.edu.uestc.acmicpc.db.condition.base;
 
 import cn.edu.uestc.acmicpc.db.condition.base.Condition.ConditionType;
+import cn.edu.uestc.acmicpc.db.condition.impl.StatusCondition;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
 import cn.edu.uestc.acmicpc.util.exception.AppExceptionUtil;
 
@@ -117,6 +118,11 @@ public abstract class BaseCondition {
           Object value = field.get(this);
           if (value == null) {
             continue;
+          }
+          if(this.getClass() == StatusCondition.class) {
+            if(value instanceof Enum) {
+
+            }
           }
           if (value instanceof Boolean) {
             value = (Boolean) value ? "1" : "0";

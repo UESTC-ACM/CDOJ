@@ -137,27 +137,16 @@ public class ProblemServiceTest extends AbstractTestNGSpringContextTests {
   }
 
   @Test
-  public void testGetAllVisibleProblemIds() throws AppException {
+  public void testGetAllProblemIds() throws AppException {
     ArgumentCaptor<Condition> captor = ArgumentCaptor.forClass(Condition.class);
-    problemService.getAllVisibleProblemIds();
-    verify(problemDao).findAll(eq("problemId"), captor.capture());
-    Condition condition = captor.getValue();
-    List<Entry> entries = condition.getEntries();
-    Assert.assertEquals(Entry.of("isVisible",
-        ConditionType.STRING_EQUALS, "1"), entries.get(0));
-  }
-
-  @Test
-  public void testGetAllVisibleNormalProblemIds() throws AppException {
-    ArgumentCaptor<Condition> captor = ArgumentCaptor.forClass(Condition.class);
-    problemService.getAllVisibleNormalProblemIds();
+    problemService.getAllProblemIds(true, ProblemType.NORMAL);
     verify(problemDao).findAll(eq("problemId"), captor.capture());
     Condition condition = captor.getValue();
     List<Entry> entries = condition.getEntries();
     Assert.assertEquals(Entry.of("isVisible",
         ConditionType.STRING_EQUALS, "1"), entries.get(0));
     Assert.assertEquals(Entry.of("type",
-        ConditionType.EQUALS, ProblemType.NORMAL), entries.get(1));
+        ConditionType.EQUALS, ProblemType.NORMAL.ordinal()), entries.get(1));
   }
 
 }
