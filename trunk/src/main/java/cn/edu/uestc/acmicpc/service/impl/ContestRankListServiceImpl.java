@@ -3,8 +3,8 @@ package cn.edu.uestc.acmicpc.service.impl;
 import cn.edu.uestc.acmicpc.db.condition.impl.ContestTeamCondition;
 import cn.edu.uestc.acmicpc.db.condition.impl.StatusCondition;
 import cn.edu.uestc.acmicpc.db.condition.impl.TeamUserCondition;
-import cn.edu.uestc.acmicpc.db.dto.impl.contest.ContestDto;
-import cn.edu.uestc.acmicpc.db.dto.impl.contest.ContestShowDto;
+import cn.edu.uestc.acmicpc.db.dto.field.ContestFields;
+import cn.edu.uestc.acmicpc.db.dto.impl.ContestDto;
 import cn.edu.uestc.acmicpc.db.dto.impl.contestproblem.ContestProblemSummaryDto;
 import cn.edu.uestc.acmicpc.db.dto.impl.contestteam.ContestTeamListDto;
 import cn.edu.uestc.acmicpc.db.dto.impl.status.StatusListDto;
@@ -70,9 +70,11 @@ public class ContestRankListServiceImpl implements ContestRankListService {
   }
 
   private List<ContestTeamListDto> fetchTeamList(Integer contestId) throws AppException {
-    ContestDto contestDto = contestService.getContestDtoByContestId(contestId);
+    ContestDto contestDto = contestService.getContestDtoByContestId(
+        contestId, ContestFields.BASIC_FIELDS);
     if (contestDto.getType() == ContestType.INHERIT.ordinal()) {
-      contestDto = contestService.getContestDtoByContestId(contestDto.getParentId());
+      contestDto = contestService.getContestDtoByContestId(
+          contestDto.getParentId(), ContestFields.BASIC_FIELDS);
     }
     contestId = contestDto.getContestId();
 
@@ -123,7 +125,8 @@ public class ContestRankListServiceImpl implements ContestRankListService {
     RankList lastModified = rankListPool.get(rankListName);
     if (lastModified == null ||
         (System.currentTimeMillis() - lastModified.lastFetched.getTime()) > FETCH_INTERVAL) {
-      ContestShowDto contestShowDto = contestService.getContestShowDtoByContestId(contestId);
+      ContestDto contestShowDto = contestService.getContestDtoByContestId(
+          contestId, ContestFields.FIELDS_FOR_SHOWING);
       if (contestShowDto == null) {
         throw new AppException("No such contest.");
       }
