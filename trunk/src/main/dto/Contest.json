@@ -1,0 +1,218 @@
+{
+  "entity": "Contest",
+  "fields": [
+    {
+      "name": "contestId",
+      "type": "Integer",
+      "projectionParameters": [],
+      "projections": [
+        "BASIC_FIELDS",
+        "FIELDS_FOR_EDIT_PAGE",
+        "FIELDS_FOR_LIST_PAGE",
+        "FIELDS_FOR_LOGIN",
+        "FIELDS_FOR_SHOWING"
+      ]
+    },
+    {
+      "name": "title",
+      "type": "String",
+      "projectionParameters": [],
+      "projections": [
+        "BASIC_FIELDS",
+        "FIELDS_FOR_EDIT_PAGE",
+        "FIELDS_FOR_LIST_PAGE",
+        "FIELDS_FOR_SHOWING"
+      ]
+    },
+    {
+      "name": "description",
+      "type": "String",
+      "projectionParameters": [],
+      "projections": [
+        "BASIC_FIELDS",
+        "FIELDS_FOR_EDIT_PAGE",
+        "FIELDS_FOR_LIST_PAGE",
+        "FIELDS_FOR_SHOWING"
+      ]
+    },
+    {
+      "name": "time",
+      "type": "Timestamp",
+      "projectionParameters": [],
+      "projections": ["BASIC_FIELDS", "FIELDS_FOR_EDIT_PAGE", "FIELDS_FOR_LIST_PAGE"]
+    },
+    {
+      "name": "length",
+      "type": "Integer",
+      "projectionParameters": [],
+      "projections": ["BASIC_FIELDS", "FIELDS_FOR_LIST_PAGE", "FIELDS_FOR_SHOWING"]
+    },
+    {
+      "name": "type",
+      "type": "Byte",
+      "projectionParameters": [],
+      "projections": [
+        "BASIC_FIELDS",
+        "FIELDS_FOR_EDIT_PAGE",
+        "FIELDS_FOR_LIST_PAGE",
+        "FIELDS_FOR_SHOWING"
+      ]
+    },
+    {
+      "name": "isVisible",
+      "type": "Boolean",
+      "projectionParameters": [],
+      "projections": ["BASIC_FIELDS", "FIELDS_FOR_LIST_PAGE", "FIELDS_FOR_SHOWING"]
+    },
+    {
+      "name": "password",
+      "type": "String",
+      "validator": [
+        {
+          "type": "NotNull",
+          "message": "Please enter your password."
+        },
+        {
+          "type": "Length",
+          "min": 40,
+          "max": 40,
+          "message": "Please enter your password."
+        }
+      ],
+      "projectionParameters": [],
+      "projections": ["BASIC_FIELDS", "FIELDS_FOR_EDIT_PAGE", "FIELDS_FOR_LOGIN"]
+    },
+    {
+      "name": "parentId",
+      "type": "Integer",
+      "projectionParameters": [],
+      "projections": [
+        "BASIC_FIELDS",
+        "FIELDS_FOR_EDIT_PAGE",
+        "FIELDS_FOR_LIST_PAGE",
+        "FIELDS_FOR_SHOWING"
+      ]
+    },
+    {
+      "name": "frozenTime",
+      "type": "Integer",
+      "projectionParameters": [],
+      "projections": ["BASIC_FIELDS", "FIELDS_FOR_SHOWING"]
+    },
+    {
+      "name": "action",
+      "type": "String",
+      "projectionParameters": [],
+      "projections": ["FIELDS_FOR_EDIT_PAGE"]
+    },
+    {
+      "name": "lengthDays",
+      "type": "Integer",
+      "projectionParameters": [],
+      "projections": ["FIELDS_FOR_EDIT_PAGE"]
+    },
+    {
+      "name": "lengthHours",
+      "type": "Integer",
+      "projectionParameters": [],
+      "projections": ["FIELDS_FOR_EDIT_PAGE"]
+    },
+    {
+      "name": "lengthMinutes",
+      "type": "Integer",
+      "projectionParameters": [],
+      "projections": ["FIELDS_FOR_EDIT_PAGE"]
+    },
+    {
+      "name": "problemList",
+      "type": "String",
+      "projectionParameters": [],
+      "projections": ["FIELDS_FOR_EDIT_PAGE"]
+    },
+    {
+      "name": "passwordRepeat",
+      "type": "String",
+      "projectionParameters": [],
+      "projections": ["FIELDS_FOR_EDIT_PAGE"]
+    },
+    {
+      "name": "needFrozen",
+      "type": "Boolean",
+      "projectionParameters": [],
+      "projections": ["FIELDS_FOR_EDIT_PAGE"]
+    },
+    {
+      "name": "frozenLengthMinutes",
+      "type": "Integer",
+      "projectionParameters": [],
+      "projections": ["FIELDS_FOR_EDIT_PAGE"]
+    },
+    {
+      "name": "frozenLengthHours",
+      "type": "Integer",
+      "projectionParameters": [],
+      "projections": ["FIELDS_FOR_EDIT_PAGE"]
+    },
+    {
+      "name": "frozenLengthDays",
+      "type": "Integer",
+      "projectionParameters": [],
+      "projections": ["FIELDS_FOR_EDIT_PAGE"]
+    },
+    {
+      "name": "userList",
+      "type": "List<UserDto>",
+      "classpath": "cn.edu.uestc.acmicpc.db.dto.impl.user.UserDto",
+      "projectionParameters": [],
+      "projections": ["FIELDS_FOR_EDIT_PAGE"]
+    },
+    {
+      "name": "typeName",
+      "type": "String",
+      "projectionParameters": [],
+      "projections": ["FIELDS_FOR_LIST_PAGE", "FIELDS_FOR_SHOWING"]
+    },
+    {
+      "name": "status",
+      "type": "String",
+      "projectionParameters": [],
+      "projections": ["FIELDS_FOR_LIST_PAGE", "FIELDS_FOR_SHOWING"]
+    },
+    {
+      "name": "parentType",
+      "type": "Byte",
+      "projectionParameters": [],
+      "projections": ["FIELDS_FOR_LIST_PAGE"]
+    },
+    {
+      "name": "parentTypeName",
+      "type": "String",
+      "projectionParameters": [],
+      "projections": ["FIELDS_FOR_LIST_PAGE"]
+    },
+    {
+      "name": "startTime",
+      "type": "Timestamp",
+      "projectionParameters": [],
+      "projections": ["FIELDS_FOR_SHOWING"]
+    },
+    {
+      "name": "endTime",
+      "type": "Timestamp",
+      "projectionParameters": [],
+      "projections": ["FIELDS_FOR_SHOWING"]
+    },
+    {
+      "name": "currentTime",
+      "type": "Timestamp",
+      "projectionParameters": [],
+      "projections": ["FIELDS_FOR_SHOWING"]
+    },
+    {
+      "name": "timeLeft",
+      "type": "Long",
+      "projectionParameters": [],
+      "projections": ["FIELDS_FOR_SHOWING"]
+    }
+  ]
+}

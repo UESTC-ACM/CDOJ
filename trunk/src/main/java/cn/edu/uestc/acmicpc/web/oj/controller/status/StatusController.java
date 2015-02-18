@@ -1,8 +1,9 @@
 package cn.edu.uestc.acmicpc.web.oj.controller.status;
 
 import cn.edu.uestc.acmicpc.db.condition.impl.StatusCondition;
+import cn.edu.uestc.acmicpc.db.dto.field.ContestFields;
 import cn.edu.uestc.acmicpc.db.dto.impl.CodeDto;
-import cn.edu.uestc.acmicpc.db.dto.impl.contest.ContestShowDto;
+import cn.edu.uestc.acmicpc.db.dto.impl.ContestDto;
 import cn.edu.uestc.acmicpc.db.dto.impl.message.MessageDto;
 import cn.edu.uestc.acmicpc.db.dto.impl.problem.ProblemDto;
 import cn.edu.uestc.acmicpc.db.dto.impl.status.StatusDto;
@@ -102,8 +103,8 @@ public class StatusController extends BaseController {
       if (!isAdmin(session)) {
         statusCondition.isForAdmin = false;
         if (statusCondition.contestId != -1) {
-          ContestShowDto contestShowDto = contestService
-              .getContestShowDtoByContestId(statusCondition.contestId);
+          ContestDto contestShowDto = contestService.getContestDtoByContestId(
+              statusCondition.contestId, ContestFields.FIELDS_FOR_SHOWING);
           if (contestShowDto == null) {
             throw new AppException("No such contest.");
           }
@@ -136,8 +137,8 @@ public class StatusController extends BaseController {
         }
       } else {
         if (statusCondition.contestId != -1) {
-          ContestShowDto contestShowDto = contestService
-              .getContestShowDtoByContestId(statusCondition.contestId);
+          ContestDto contestShowDto = contestService.getContestDtoByContestId(
+              statusCondition.contestId, ContestFields.FIELDS_FOR_SHOWING);
           if (contestShowDto == null) {
             throw new AppException("No such contest.");
           }
@@ -278,8 +279,8 @@ public class StatusController extends BaseController {
         }
         // Status in contest
         if (submitDto.getContestId() != null) {
-          ContestShowDto contestShowDto = contestService.getContestShowDtoByContestId(submitDto
-              .getContestId());
+          ContestDto contestShowDto = contestService.getContestDtoByContestId(
+              submitDto.getContestId(), ContestFields.FIELDS_FOR_SHOWING);
           if (contestShowDto == null) {
             throw new AppException("Wrong contest id.");
           }

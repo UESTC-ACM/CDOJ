@@ -9,6 +9,7 @@ import java.sql.Timestamp;
 /**
  * Contest database condition entity.
  */
+@Deprecated
 public class ContestCondition extends BaseCondition {
 
   public ContestCondition() {
