@@ -4,6 +4,7 @@ import cn.edu.uestc.acmicpc.db.dto.BaseDto;
 import cn.edu.uestc.acmicpc.db.dto.BaseDtoBuilder;
 import cn.edu.uestc.acmicpc.db.entity.Problem;
 import cn.edu.uestc.acmicpc.util.annotation.Fields;
+import cn.edu.uestc.acmicpc.util.enums.ProblemType;
 
 import java.util.Map;
 import java.util.Objects;
@@ -12,7 +13,7 @@ import java.util.Objects;
  * Dto used in problem list.
  */
 @Fields({ "problemId", "title", "source", "solved", "tried", "isSpj", "isVisible",
-    "difficulty" })
+    "type", "difficulty" })
 public class ProblemListDto implements BaseDto<Problem> {
 
   private Integer problemId;
@@ -21,7 +22,8 @@ public class ProblemListDto implements BaseDto<Problem> {
   private Integer solved;
   private Integer tried;
   private Boolean isSpj;
-  private Boolean isVisible;
+  private Boolean isVisible;;
+  private ProblemType type;
   private Integer difficulty;
   private Integer status;
 
@@ -29,7 +31,7 @@ public class ProblemListDto implements BaseDto<Problem> {
   }
 
   private ProblemListDto(Integer problemId, String title, String source, Integer solved,
-      Integer tried, Boolean isSpj, Boolean isVisible, Integer difficulty) {
+      Integer tried, Boolean isSpj, Boolean isVisible, ProblemType type, Integer difficulty) {
     this.problemId = problemId;
     this.title = title;
     this.source = source;
@@ -37,6 +39,7 @@ public class ProblemListDto implements BaseDto<Problem> {
     this.tried = tried;
     this.isSpj = isSpj;
     this.isVisible = isVisible;
+    this.type = type;
     this.difficulty = difficulty;
   }
 
@@ -96,6 +99,14 @@ public class ProblemListDto implements BaseDto<Problem> {
     this.isVisible = isVisible;
   }
 
+  public ProblemType getType() {
+    return type;
+  }
+
+  public void setType(ProblemType type) {
+    this.type = type;
+  }
+
   public Integer getDifficulty() {
     return difficulty;
   }
@@ -125,6 +136,7 @@ public class ProblemListDto implements BaseDto<Problem> {
     return Objects.equals(this.difficulty, that.difficulty)
         && Objects.equals(this.isSpj, that.isSpj)
         && Objects.equals(this.isVisible, that.isVisible)
+        && Objects.equals(this.type, that.type)
         && Objects.equals(this.problemId, that.problemId)
         && Objects.equals(this.solved, that.solved)
         && Objects.equals(this.source, that.source)
@@ -142,6 +154,7 @@ public class ProblemListDto implements BaseDto<Problem> {
     result = 31 * result + (tried != null ? tried.hashCode() : 0);
     result = 31 * result + (isSpj != null ? isSpj.hashCode() : 0);
     result = 31 * result + (isVisible != null ? isVisible.hashCode() : 0);
+    result = 31 * result + (type != null ? type.hashCode() : 0);
     result = 31 * result + (difficulty != null ? difficulty.hashCode() : 0);
     result = 31 * result + (status != null ? status.hashCode() : 0);
     return result;
@@ -166,12 +179,13 @@ public class ProblemListDto implements BaseDto<Problem> {
     private Integer tried;
     private Boolean isSpj;
     private Boolean isVisible;
+    private ProblemType type;
     private Integer difficulty;
 
     @Override
     public ProblemListDto build() {
       return new ProblemListDto(problemId, title, source, solved, tried, isSpj,
-          isVisible, difficulty);
+          isVisible, type, difficulty);
     }
 
     @Override
@@ -183,6 +197,7 @@ public class ProblemListDto implements BaseDto<Problem> {
       tried = (Integer) properties.get("tried");
       isSpj = (Boolean) properties.get("isSpj");
       isVisible = (Boolean) properties.get("isVisible");
+      type = (ProblemType) properties.get("type");
       difficulty = (Integer) properties.get("difficulty");
       return build();
     }
@@ -219,6 +234,11 @@ public class ProblemListDto implements BaseDto<Problem> {
 
     public Builder setIsVisible(Boolean isVisivle) {
       this.isVisible = isVisivle;
+      return this;
+    }
+
+    public Builder setType(ProblemType type) {
+      this.type = type;
       return this;
     }
 

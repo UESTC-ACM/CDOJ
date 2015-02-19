@@ -73,7 +73,11 @@ public class ProblemServiceImpl extends AbstractService implements ProblemServic
     if (field.equals("isVisible")) {
       value = Boolean.valueOf(sValue);
     } else if(field.equals("type")) {
-      value = Boolean.valueOf(sValue);
+      if(sValue.equals(ProblemType.INTERNAL.name())) {
+        value = ProblemType.INTERNAL.ordinal();
+      } else {
+        value = ProblemType.NORMAL.ordinal();
+      }
     } else {
       value = sValue;
     }

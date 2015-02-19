@@ -19,13 +19,15 @@ cdoj.directive("uiProblemAdminSpan",
         ).error(->
           $window.alert "Network error."
         )
-    ($scope, $http, $window) ->
       $scope.editType = ->
+        changeTo = "INTERNAL"
+        if $scope.type == "INTERNAL"
+          changeTo = "NORMAL"
         queryString = "/problem/operator/" +
-            $scope.problemId + "/type/" + (!$scope.type)
+          $scope.problemId + "/type/" + changeTo;
         $http.post(queryString).success((data) ->
           if data.result == "success"
-            $scope.type = !$scope.type
+            $scope.type = changeTo
           else
             $window.alert data.error_msg
         ).error(->
@@ -35,6 +37,16 @@ cdoj.directive("uiProblemAdminSpan",
   template: """
 <div class="btn-toolbar" role="toolbar">
   <div class="btn-group">
+    <button type="button"
+            class="btn btn-default btn-sm"
+            ng-click="editType()"
+            style="padding: 1px 5px;">
+      <i class="fa"
+         ng-class="{
+          'fa-lock': type == 'INTERNAL',
+          'fa-unlock': type == 'NORMAL'
+         }"></i>
+    </button>
     <button type="button"
             class="btn btn-default btn-sm"
             ng-click="editVisible()"
