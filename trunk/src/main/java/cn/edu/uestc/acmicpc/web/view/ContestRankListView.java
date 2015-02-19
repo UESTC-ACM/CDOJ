@@ -1,6 +1,6 @@
 package cn.edu.uestc.acmicpc.web.view;
 
-import cn.edu.uestc.acmicpc.db.dto.impl.contest.ContestDto;
+import cn.edu.uestc.acmicpc.db.dto.impl.ContestDto;
 import cn.edu.uestc.acmicpc.db.dto.impl.contestteam.ContestTeamReportDto;
 import cn.edu.uestc.acmicpc.db.dto.impl.teamUser.TeamUserReportDto;
 import cn.edu.uestc.acmicpc.util.enums.ContestType;

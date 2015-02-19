@@ -91,8 +91,7 @@ public abstract class BaseCriteria<E, D> {
           // Set projection
           projectionList = projectionList.add(
               Projections.property(fieldProjection.getField()),
-              fieldProjection.getAlias()
-              );
+              fieldProjection.getAlias());
         }
       }
       criteria.setProjection(projectionList);
