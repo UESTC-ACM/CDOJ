@@ -6,8 +6,6 @@ import cn.edu.uestc.acmicpc.util.enums.ProblemType;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
 import cn.edu.uestc.acmicpc.util.helper.EnumTypeUtil;
 
-import java.util.List;
-
 /**
  * Problem database condition entity.
  */
