@@ -8,6 +8,7 @@ import cn.edu.uestc.acmicpc.util.enums.AuthenticationType;
 import cn.edu.uestc.acmicpc.util.enums.OnlineJudgeResultType;
 import cn.edu.uestc.acmicpc.util.enums.ProblemType;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
+import cn.edu.uestc.acmicpc.util.helper.EnumTypeUtil;
 import cn.edu.uestc.acmicpc.util.helper.StringUtil;
 
 import java.sql.Timestamp;
@@ -118,19 +119,7 @@ public class StatusCondition extends BaseCondition {
 
   @Override
   public Condition getCondition() throws AppException {
-    Condition preCondition = super.getCondition();
-    Condition condition = new Condition();
-    List<Condition.Entry> entries = preCondition.getEntries();
-    for(int i = 0; i < entries.size(); i++) {
-      Condition.Entry entry =entries.get(i);
-      if(entry.getValue() instanceof Enum) {
-        Enum tmpValue = (Enum)entry.getValue();
-        condition.addEntry(entry.getFieldName(), entry.getConditionType(), tmpValue.ordinal());
-      } else {
-        condition.addEntry(entry);
-      }
-    }
-
+    Condition condition = EnumTypeUtil.toOrdinalCondition(super.getCondition());
     if (contestId != null) {
       if (contestId == -1) {
         condition.addEntry("contestId", Condition.ConditionType.IS_NULL,

@@ -4,6 +4,7 @@ cdoj.directive("uiProblemAdminSpan",
   scope:
     problemId: "="
     isVisible: "="
+    type: "="
   controller: [
     "$scope", "$http", "$window"
     ($scope, $http, $window) ->
@@ -18,6 +19,18 @@ cdoj.directive("uiProblemAdminSpan",
         ).error(->
           $window.alert "Network error."
         )
+    ($scope, $http, $window) ->
+      $scope.editType = ->
+        queryString = "/problem/operator/" +
+            $scope.problemId + "/type/" + (!$scope.type)
+        $http.post(queryString).success((data) ->
+          if data.result == "success"
+            $scope.type = !$scope.type
+          else
+            $window.alert data.error_msg
+        ).error(->
+          $window.alert "Network error."
+        );
   ]
   template: """
 <div class="btn-toolbar" role="toolbar">

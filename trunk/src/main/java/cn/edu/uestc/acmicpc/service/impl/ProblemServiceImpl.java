@@ -72,6 +72,8 @@ public class ProblemServiceImpl extends AbstractService implements ProblemServic
     Object value;
     if (field.equals("isVisible")) {
       value = Boolean.valueOf(sValue);
+    } else if(field.equals("type")) {
+      value = Boolean.valueOf(sValue);
     } else {
       value = sValue;
     }

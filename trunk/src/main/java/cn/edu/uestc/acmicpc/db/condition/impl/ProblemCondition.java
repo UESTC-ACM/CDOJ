@@ -4,6 +4,7 @@ import cn.edu.uestc.acmicpc.db.condition.base.BaseCondition;
 import cn.edu.uestc.acmicpc.db.condition.base.Condition;
 import cn.edu.uestc.acmicpc.util.enums.ProblemType;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
+import cn.edu.uestc.acmicpc.util.helper.EnumTypeUtil;
 
 import java.util.List;
 
@@ -82,19 +83,7 @@ public class ProblemCondition extends BaseCondition {
 
   @Override
   public Condition getCondition() throws AppException {
-
-    Condition preCondition = super.getCondition();
-    Condition condition = new Condition();
-    List<Condition.Entry> entries = preCondition.getEntries();
-    for(int i = 0; i < entries.size(); i++) {
-      Condition.Entry entry =entries.get(i);
-      if(entry.getValue() instanceof Enum) {
-        Enum tmpValue = (Enum)entry.getValue();
-        condition.addEntry(entry.getFieldName(), entry.getConditionType(), tmpValue.ordinal());
-      } else {
-        condition.addEntry(entry);
-      }
-    }
+    Condition condition = EnumTypeUtil.toOrdinalCondition(super.getCondition());
     if (isTitleEmpty != null) {
       if (isTitleEmpty) {
         condition.addEntry("title", Condition.ConditionType.STRING_EQUALS, "");

@@ -1,8 +1,10 @@
 package cn.edu.uestc.acmicpc.util.helper;
 
+import cn.edu.uestc.acmicpc.db.condition.base.Condition;
 import cn.edu.uestc.acmicpc.util.enums.AuthenticationType;
 import cn.edu.uestc.acmicpc.util.enums.EnumType;
 import cn.edu.uestc.acmicpc.util.enums.OnlineJudgeReturnType;
+import cn.edu.uestc.acmicpc.util.exception.AppException;
 
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -44,5 +46,20 @@ public class EnumTypeUtil {
       }
     }
     return null;
+  }
+
+  public static Condition toOrdinalCondition(Condition preCondition) throws AppException {
+    Condition condition = new Condition();
+    List<Condition.Entry> entries = preCondition.getEntries();
+    for(int i = 0; i < entries.size(); i++) {
+      Condition.Entry entry =entries.get(i);
+      if(entry.getValue() instanceof Enum) {
+        Enum tmpValue = (Enum)entry.getValue();
+        condition.addEntry(entry.getFieldName(), entry.getConditionType(), tmpValue.ordinal());
+      } else {
+        condition.addEntry(entry);
+      }
+    }
+    return condition;
   }
 }
