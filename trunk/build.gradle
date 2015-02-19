@@ -4,6 +4,7 @@ apply plugin: 'checkstyle'
 apply plugin: 'jacoco'
 apply plugin: 'idea'
 apply plugin: 'eclipse'
+apply plugin: 'jetty'
 
 group = 'cn.edu.uestc.acmicpc'
 version = '2.2.3'
@@ -13,25 +14,8 @@ description = """UESTC Online Judge"""
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
 
-buildscript {
-  repositories {
-    jcenter()
-    mavenCentral()
-    mavenLocal()
-  }
-  dependencies {
-    classpath 'com.sahlbach.gradle:gradle-jetty-eclipse-plugin:1.9.2'
-  }
-}
-
-apply plugin: 'jettyEclipse'
-
-// Build cdoj subproject first
-jettyEclipseRun {
-  doFirst {
-    tasks.getByPath(":static:build").execute()
-  }
-}
+// Run under http://host/
+jettyRun.contextPath = ""
 
 task checkControllerDoNotContainDaos(type: Exec) {
   commandLine "python2",
@@ -121,6 +105,13 @@ generateData.dependsOn(createSchema)
 compileJava.dependsOn(generateMainPropertyFile)
 compileTestJava.dependsOn(generateTestPropertyFile)
 clean.dependsOn(cleanResources)
+
+// Build cdoj subproject after compile
+compileJava {
+  doLast {
+    tasks.getByPath(":static:build").execute()
+  }
+}
 
 configurations {
   provided
@@ -218,11 +209,11 @@ dependencies {
 
 test {
   doFirst {
-    jettyEclipse.daemon = true
-    task(":jettyEclipseRun").execute()
+    jettyRun.daemon = true
+    task(":jettyRun").execute()
   }
   doLast {
-    task(":jettyEclipseStop").execute()
+    task(":jettyStop").execute()
   }
   useTestNG()
 }
@@ -238,4 +229,3 @@ jacoco {
 }
 
 [compileJava, compileTestJava]*.options*.encoding = 'UTF-8'
-

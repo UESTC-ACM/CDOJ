@@ -1,9 +1,8 @@
 package cn.edu.uestc.acmicpc.service.iface;
 
-import cn.edu.uestc.acmicpc.db.condition.impl.ContestCondition;
-import cn.edu.uestc.acmicpc.db.dto.impl.contest.ContestDto;
-import cn.edu.uestc.acmicpc.db.dto.impl.contest.ContestListDto;
-import cn.edu.uestc.acmicpc.db.dto.impl.contest.ContestShowDto;
+import cn.edu.uestc.acmicpc.db.criteria.impl.ContestCriteria;
+import cn.edu.uestc.acmicpc.db.dto.field.ContestFields;
+import cn.edu.uestc.acmicpc.db.dto.impl.ContestDto;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
 import cn.edu.uestc.acmicpc.web.dto.PageInfo;
 
@@ -23,29 +22,18 @@ public interface ContestService {
   public List<Integer> getAllVisibleContestIds() throws AppException;
 
   /**
-   * Get {@link cn.edu.uestc.acmicpc.db.dto.impl.contest.ContestDto} entity by
-   * contest id.
+   * Get {@link cn.edu.uestc.acmicpc.db.dto.impl.ContestDto} entity by contest
+   * id.
    *
    * @param contestId
    *          contest id.
-   * @return {@link cn.edu.uestc.acmicpc.db.dto.impl.contest.ContestDto} entity.
+   * @param fields
+   *          {@link ContestFields} entity indicating fields to be fetched.
+   * @return {@link cn.edu.uestc.acmicpc.db.dto.impl.ContestDto} entity.
    * @throws AppException
    */
-  public ContestDto getContestDtoByContestId(Integer contestId)
-      throws AppException;
-
-  /**
-   * Get {@link cn.edu.uestc.acmicpc.db.dto.impl.contest.ContestShowDto} entity
-   * by contest id.
-   *
-   * @param contestId
-   *          contest id.
-   * @return {@link cn.edu.uestc.acmicpc.db.dto.impl.contest.ContestShowDto}
-   *         entity.
-   * @throws AppException
-   */
-  public ContestShowDto getContestShowDtoByContestId(Integer contestId)
-      throws AppException;
+  public ContestDto getContestDtoByContestId(
+      Integer contestId, ContestFields fields) throws AppException;
 
   /**
    * Check if specified contest exists.
@@ -59,11 +47,10 @@ public interface ContestService {
 
   /**
    * Updates contest record by
-   * {@link cn.edu.uestc.acmicpc.db.dto.impl.contest.ContestDto} entity.
+   * {@link cn.edu.uestc.acmicpc.db.dto.impl.ContestDto} entity.
    *
    * @param contestDto
-   *          {@link cn.edu.uestc.acmicpc.db.dto.impl.contest.ContestDto}
-   *          entity.
+   *          {@link cn.edu.uestc.acmicpc.db.dto.impl.ContestDto} entity.
    * @throws AppException
    */
   public void updateContest(ContestDto contestDto) throws AppException;
@@ -71,26 +58,25 @@ public interface ContestService {
   /**
    * Counts the number of contests fit in condition.
    *
-   * @param condition
-   *          {@link ContestCondition} entity.
+   * @param criteria
+   *          {@link ContestCriteria} entity.
    * @return total number of contests fit in the condition.
    * @throws AppException
    */
-  public Long count(ContestCondition condition) throws AppException;
+  public Long count(ContestCriteria criteria) throws AppException;
 
   /**
    * Get the contests fit in condition and page range.
    *
-   * @param condition
-   *          {@link ContestCondition} entity.
+   * @param criteria
+   *          {@link ContestCriteria} entity.
    * @param pageInfo
    *          {@link PageInfo} entity.
-   * @return List of {@link ContestListDto} entities.
+   * @return List of {@link ContestDto} entities.
    * @throws AppException
    */
-  public List<ContestListDto> getContestListDtoList(
-      ContestCondition condition,
-      PageInfo pageInfo) throws AppException;
+  public List<ContestDto> getContestListDtoList(ContestCriteria criteria, PageInfo pageInfo)
+      throws AppException;
 
   /**
    * Modify one filed of multiply entities as value.
