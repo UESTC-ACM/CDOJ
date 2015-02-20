@@ -42,7 +42,7 @@ public interface StatusService {
       Boolean isAdmin) throws AppException;
 
   /**
-   * Counts user's tried problems.
+   * Counts user's tried visible normal problems.
    *
    * @param userId
    *          user's id.
@@ -52,7 +52,7 @@ public interface StatusService {
   public Long countProblemsUserTried(Integer userId) throws AppException;
 
   /**
-   * Counts user's accepted problems.
+   * Counts user's accepted visible normal problems.
    *
    * @param userId
    *          user's id.

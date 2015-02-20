@@ -6,7 +6,9 @@ import cn.edu.uestc.acmicpc.db.condition.base.Condition.ConditionType;
 import cn.edu.uestc.acmicpc.db.condition.base.Condition.JoinedType;
 import cn.edu.uestc.acmicpc.util.enums.AuthenticationType;
 import cn.edu.uestc.acmicpc.util.enums.OnlineJudgeResultType;
+import cn.edu.uestc.acmicpc.util.enums.ProblemType;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
+import cn.edu.uestc.acmicpc.util.helper.EnumTypeUtil;
 import cn.edu.uestc.acmicpc.util.helper.StringUtil;
 
 import java.sql.Timestamp;
@@ -100,12 +102,23 @@ public class StatusCondition extends BaseCondition {
    */
   public OnlineJudgeResultType result;
 
+  /**
+   * is problem visible for users excluding admin.
+   */
   @Exp(mapField = "problemByProblemId.isVisible", type = ConditionType.EQUALS)
-  public Boolean isVisible;
+  public Boolean isProblemVisible;
+
+  /**
+   * type of the corresponding problem
+   *
+   * @see ProblemType
+   */
+  @Exp(mapField = "problemByProblemId.type", type = Condition.ConditionType.EQUALS)
+  public ProblemType problemType;
 
   @Override
   public Condition getCondition() throws AppException {
-    Condition condition = super.getCondition();
+    Condition condition = EnumTypeUtil.toOrdinalCondition(super.getCondition());
     if (contestId != null) {
       if (contestId == -1) {
         condition.addEntry("contestId", Condition.ConditionType.IS_NULL,
@@ -115,7 +128,6 @@ public class StatusCondition extends BaseCondition {
             contestId);
       }
     }
-
     if (!StringUtil.isNullOrWhiteSpace(userName)) {
       condition.addEntry("userByUserId.userName", ConditionType.LIKE,
           userName);

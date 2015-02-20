@@ -22,6 +22,7 @@ import cn.edu.uestc.acmicpc.service.iface.UserService;
 import cn.edu.uestc.acmicpc.util.annotation.LoginPermit;
 import cn.edu.uestc.acmicpc.util.enums.AuthenticationType;
 import cn.edu.uestc.acmicpc.util.enums.ProblemSolveStatusType;
+import cn.edu.uestc.acmicpc.util.enums.ProblemType;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
 import cn.edu.uestc.acmicpc.util.exception.AppExceptionUtil;
 import cn.edu.uestc.acmicpc.util.exception.FieldException;
@@ -286,7 +287,7 @@ public class UserController extends BaseController {
       }
       Map<Integer, ProblemSolveStatusType> problemStatus = new TreeMap<>();
 
-      List<Integer> results = problemService.getAllVisibleProblemIds();
+      List<Integer> results = problemService.getAllProblemIds(true, ProblemType.NORMAL);
       for (Integer result : results) {
         problemStatus.put(result, ProblemSolveStatusType.NONE);
       }

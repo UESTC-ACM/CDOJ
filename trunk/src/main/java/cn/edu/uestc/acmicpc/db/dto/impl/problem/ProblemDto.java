@@ -4,6 +4,7 @@ import cn.edu.uestc.acmicpc.db.dto.BaseDto;
 import cn.edu.uestc.acmicpc.db.dto.BaseDtoBuilder;
 import cn.edu.uestc.acmicpc.db.entity.Problem;
 import cn.edu.uestc.acmicpc.util.annotation.Fields;
+import cn.edu.uestc.acmicpc.util.enums.ProblemType;
 
 import java.util.Map;
 import java.util.Objects;
@@ -14,7 +15,7 @@ import java.util.Objects;
 @Fields({ "problemId", "title", "description", "input", "output", "sampleInput",
     "sampleOutput", "hint", "source", "timeLimit", "memoryLimit", "solved", "tried",
     "isSpj", "isVisible", "outputLimit", "javaTimeLimit", "javaMemoryLimit", "dataCount",
-    "difficulty" })
+    "difficulty", "type" })
 public class ProblemDto implements BaseDto<Problem> {
 
   private Integer problemId;
@@ -37,6 +38,7 @@ public class ProblemDto implements BaseDto<Problem> {
   private Integer javaMemoryLimit;
   private Integer dataCount;
   private Integer difficulty;
+  private ProblemType type;
 
   public ProblemDto() {
   }
@@ -45,7 +47,7 @@ public class ProblemDto implements BaseDto<Problem> {
       String output, String sampleInput, String sampleOutput, String hint, String source,
       Integer timeLimit, Integer memoryLimit, Integer solved, Integer tried, Boolean isSpj,
       Boolean isVisible, Integer outputLimit, Integer javaTimeLimit, Integer javaMemoryLimit,
-      Integer dataCount, Integer difficulty) {
+      Integer dataCount, Integer difficulty, ProblemType type) {
     this.problemId = problemId;
     this.title = title;
     this.description = description;
@@ -66,6 +68,7 @@ public class ProblemDto implements BaseDto<Problem> {
     this.javaMemoryLimit = javaMemoryLimit;
     this.dataCount = dataCount;
     this.difficulty = difficulty;
+    this.type = type;
   }
 
   public Boolean getIsVisible() {
@@ -98,6 +101,14 @@ public class ProblemDto implements BaseDto<Problem> {
 
   public void setDifficulty(Integer difficulty) {
     this.difficulty = difficulty;
+  }
+
+  public ProblemType getType() {
+    return type;
+  }
+
+  public void setType(ProblemType type) {
+    this.type = type;
   }
 
   public String getTitle() {
@@ -257,7 +268,8 @@ public class ProblemDto implements BaseDto<Problem> {
         && Objects.equals(this.source, that.source)
         && Objects.equals(this.timeLimit, that.timeLimit)
         && Objects.equals(this.title, that.title)
-        && Objects.equals(this.tried, that.tried);
+        && Objects.equals(this.tried, that.tried)
+        && Objects.equals(this.type, that.type);
   }
 
   @Override
@@ -282,6 +294,7 @@ public class ProblemDto implements BaseDto<Problem> {
     result = 31 * result + (javaMemoryLimit != null ? javaMemoryLimit.hashCode() : 0);
     result = 31 * result + (dataCount != null ? dataCount.hashCode() : 0);
     result = 31 * result + (difficulty != null ? difficulty.hashCode() : 0);
+    result = 31 * result + (type != null ? type.hashCode() : 0);
     return result;
   }
 
@@ -317,12 +330,13 @@ public class ProblemDto implements BaseDto<Problem> {
     private Integer javaMemoryLimit = 65536;
     private Integer dataCount = 1;
     private Integer difficulty = 1;
+    private ProblemType type = ProblemType.NORMAL;
 
     @Override
     public ProblemDto build() {
       return new ProblemDto(problemId, title, description, input, output, sampleInput,
           sampleOutput, hint, source, timeLimit, memoryLimit, solved, tried, isSpj, isVisible,
-          outputLimit, javaTimeLimit, javaMemoryLimit, dataCount, difficulty);
+          outputLimit, javaTimeLimit, javaMemoryLimit, dataCount, difficulty, type);
     }
 
     @Override
@@ -347,6 +361,7 @@ public class ProblemDto implements BaseDto<Problem> {
       javaMemoryLimit = (Integer) properties.get("javaMemoryLimit");
       dataCount = (Integer) properties.get("dataCount");
       difficulty = (Integer) properties.get("difficulty");
+      type = (ProblemType) properties.get("type");
       return build();
     }
 
@@ -432,6 +447,11 @@ public class ProblemDto implements BaseDto<Problem> {
 
     public Builder setIsVisible(Boolean isVisible) {
       this.isVisible = isVisible;
+      return this;
+    }
+
+    public Builder setType(ProblemType type) {
+      this.type = type;
       return this;
     }
 
