@@ -85,6 +85,7 @@ CREATE  TABLE IF NOT EXISTS `uestcoj`.`problem` (
   `javaMemoryLimit` INT NOT NULL DEFAULT 65535 ,
   `dataCount` INT NOT NULL DEFAULT 0 ,
   `difficulty` INT NOT NULL DEFAULT 1 ,
+  'type' INT NOT NULL DEFAULT 1 ,
   `OPTLOCK` INT NULL DEFAULT 0 ,
   PRIMARY KEY (`problemId`) ,
   UNIQUE INDEX `problemId_UNIQUE` (`problemId` ASC) )

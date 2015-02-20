@@ -7,6 +7,7 @@ import cn.edu.uestc.acmicpc.db.dto.impl.problem.ProblemDto;
 import cn.edu.uestc.acmicpc.db.dto.impl.problem.ProblemListDto;
 import cn.edu.uestc.acmicpc.db.entity.Problem;
 import cn.edu.uestc.acmicpc.service.iface.ProblemService;
+import cn.edu.uestc.acmicpc.util.enums.ProblemType;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
 import cn.edu.uestc.acmicpc.util.exception.AppExceptionUtil;
 import cn.edu.uestc.acmicpc.web.dto.PageInfo;
@@ -33,9 +34,10 @@ public class ProblemServiceImpl extends AbstractService implements ProblemServic
 
   @SuppressWarnings("unchecked")
   @Override
-  public List<Integer> getAllVisibleProblemIds() throws AppException {
+  public List<Integer> getAllProblemIds(boolean isVisible, ProblemType problemType) throws AppException {
     ProblemCondition problemCondition = new ProblemCondition();
-    problemCondition.isVisible = true;
+    problemCondition.isVisible = isVisible;
+    problemCondition.type = problemType;
     return (List<Integer>) problemDao.findAll("problemId",
         problemCondition.getCondition());
   }
@@ -70,6 +72,12 @@ public class ProblemServiceImpl extends AbstractService implements ProblemServic
     Object value;
     if (field.equals("isVisible")) {
       value = Boolean.valueOf(sValue);
+    } else if(field.equals("type")) {
+      if(sValue.equals(ProblemType.INTERNAL.name())) {
+        value = ProblemType.INTERNAL.ordinal();
+      } else {
+        value = ProblemType.NORMAL.ordinal();
+      }
     } else {
       value = sValue;
     }

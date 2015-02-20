@@ -12,6 +12,7 @@ import cn.edu.uestc.acmicpc.service.iface.StatusService;
 import cn.edu.uestc.acmicpc.util.annotation.LoginPermit;
 import cn.edu.uestc.acmicpc.util.enums.AuthenticationType;
 import cn.edu.uestc.acmicpc.util.enums.ProblemSolveStatusType;
+import cn.edu.uestc.acmicpc.util.enums.ProblemType;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
 import cn.edu.uestc.acmicpc.util.exception.FieldException;
 import cn.edu.uestc.acmicpc.util.helper.StringUtil;
@@ -72,10 +73,17 @@ public class ProblemController extends BaseController {
       if (problemDto == null) {
         throw new AppException("No such problem.");
       }
-      if (!problemDto.getIsVisible() && !isAdmin(session)) {
-        throw new AppException("No such problem.");
+      if(!isAdmin(session)) {
+        if(!problemDto.getIsVisible()) {
+          throw new AppException("No such problem.");
+        }
+        if(problemDto.getType() == ProblemType.INTERNAL) {
+          UserDto currentUser = getCurrentUser(session);
+          if(currentUser == null || currentUser.getType() != AuthenticationType.INTERNAL.ordinal()) {
+            throw new AppException("No such problem.");
+          }
+        }
       }
-
       json.put("problem", problemDto);
       json.put("result", "success");
     } catch (AppException e) {
@@ -104,6 +112,10 @@ public class ProblemController extends BaseController {
     try {
       if (!isAdmin(session)) {
         problemCondition.isVisible = true;
+        UserDto user = getCurrentUser(session);
+        if (user == null || user.getType() != AuthenticationType.INTERNAL.ordinal()) {
+          problemCondition.type = ProblemType.NORMAL;
+        }
       }
       Long count = problemService.count(problemCondition);
       PageInfo pageInfo = buildPageInfo(count, problemCondition.currentPage,
@@ -244,6 +256,7 @@ public class ProblemController extends BaseController {
         problemDto.setJavaMemoryLimit(problemEditDto.getJavaMemoryLimit());
         problemDto.setOutputLimit(problemEditDto.getOutputLimit());
         problemDto.setIsSpj(problemEditDto.getIsSpj());
+        problemDto.setType(problemEditDto.getType());
 
         Integer dataCount;
         if (problemEditDto.getAction().equals("new")) {

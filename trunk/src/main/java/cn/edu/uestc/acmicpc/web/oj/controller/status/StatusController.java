@@ -25,6 +25,7 @@ import cn.edu.uestc.acmicpc.util.enums.AuthenticationType;
 import cn.edu.uestc.acmicpc.util.enums.ContestType;
 import cn.edu.uestc.acmicpc.util.enums.OnlineJudgeResultType;
 import cn.edu.uestc.acmicpc.util.enums.OnlineJudgeReturnType;
+import cn.edu.uestc.acmicpc.util.enums.ProblemType;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
 import cn.edu.uestc.acmicpc.util.helper.ArrayUtil;
 import cn.edu.uestc.acmicpc.util.helper.EnumTypeUtil;
@@ -130,10 +131,20 @@ public class StatusController extends BaseController {
           statusCondition.startTime = contestShowDto.getStartTime();
           statusCondition.endTime = contestShowDto.getEndTime();
           // Some problems is stashed when contest is running
-          statusCondition.isVisible = null;
+          statusCondition.isProblemVisible = null;
         } else {
           // Only show status submitted for visible problem
-          statusCondition.isVisible = true;
+          statusCondition.isProblemVisible = true;
+          statusCondition.problemType = ProblemType.NORMAL;
+          if(statusCondition.problemId != null) {
+            ProblemDto problemDto = problemService.getProblemDtoByProblemId(statusCondition.problemId);
+            UserDto currentUser = getCurrentUser(session);
+            //internal problem' status only show for internal user who are searching.
+            if(currentUser != null && problemDto != null && problemDto.getType() == ProblemType.INTERNAL
+             && currentUser.getType() == AuthenticationType.INTERNAL.ordinal()) {
+              statusCondition.problemType = ProblemType.INTERNAL;
+            }
+          }
         }
       } else {
         if (statusCondition.contestId != -1) {
@@ -300,7 +311,10 @@ public class StatusController extends BaseController {
           // We don't allow normal user to submit code to a stashed problem.
           if (!isAdmin(session)) {
             if (!problemDto.getIsVisible()) {
-              throw new AppException("You have no permission to submit this problem.");
+              throw new AppException("No such problem.");
+            }
+            if (problemDto.getType() == ProblemType.INTERNAL && (currentUser == null || currentUser.getType() != AuthenticationType.INTERNAL.ordinal())) {
+              throw new AppException("No such problem.");
             }
           }
         }
