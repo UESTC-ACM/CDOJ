@@ -16,6 +16,7 @@ targetCompatibility = 1.8
 
 // Run under http://host/
 jettyRun.contextPath = ""
+jettyRunWar.contextPath = ""
 
 task checkControllerDoNotContainDaos(type: Exec) {
   commandLine "python2",
@@ -229,3 +230,41 @@ jacoco {
 }
 
 [compileJava, compileTestJava]*.options*.encoding = 'UTF-8'
+
+task release {
+  doFirst {
+    delete "build/release"
+    // War
+    war.execute()
+  }
+  doLast {
+    copy {
+      from war
+      into "build/release/war"
+    }
+    // js
+    copy {
+      into "build/release/resources/dist/js"
+      from("static/dist/js") {
+        include "cdoj.min.js"
+      }
+    }
+    // css
+    copy {
+      into "build/release/resources/dist/css"
+      from("static/dist/css") {
+        include "cdoj.min.css"
+      }
+    }
+    // MathJax
+    copy {
+      into "build/release/resources/bower_components/MathJax"
+      from "static/bower_components/MathJax"
+    }
+    // font-awesome
+    copy {
+      into "build/release/resources/bower_components/font-awesome"
+      from "static/bower_components/font-awesome"
+    }
+  }
+}
