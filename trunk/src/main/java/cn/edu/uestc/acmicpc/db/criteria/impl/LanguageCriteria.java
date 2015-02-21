@@ -5,12 +5,14 @@ import cn.edu.uestc.acmicpc.db.dto.Fields;
 import cn.edu.uestc.acmicpc.db.dto.impl.LanguageDto;
 import cn.edu.uestc.acmicpc.db.entity.Language;
 
+import java.util.Set;
+
 /**
  * Article database criteria entity.
  */
 public class LanguageCriteria extends BaseCriteria<Language, LanguageDto> {
 
-  public LanguageCriteria(Fields resultFields) {
+  public LanguageCriteria(Set<Fields> resultFields) {
     super(Language.class, LanguageDto.class, resultFields);
   }
 

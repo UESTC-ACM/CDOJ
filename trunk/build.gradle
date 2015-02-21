@@ -4,6 +4,7 @@ apply plugin: 'checkstyle'
 apply plugin: 'jacoco'
 apply plugin: 'idea'
 apply plugin: 'eclipse'
+apply plugin: 'jetty'
 
 group = 'cn.edu.uestc.acmicpc'
 version = '2.2.3'
@@ -13,25 +14,9 @@ description = """UESTC Online Judge"""
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
 
-buildscript {
-  repositories {
-    jcenter()
-    mavenCentral()
-    mavenLocal()
-  }
-  dependencies {
-    classpath 'com.sahlbach.gradle:gradle-jetty-eclipse-plugin:1.9.2'
-  }
-}
-
-apply plugin: 'jettyEclipse'
-
-// Build cdoj subproject first
-jettyEclipseRun {
-  doFirst {
-    tasks.getByPath(":staticV2:build").execute()
-  }
-}
+// Run under http://host/
+jettyRun.contextPath = ""
+jettyRunWar.contextPath = ""
 
 task checkControllerDoNotContainDaos(type: Exec) {
   commandLine "python2",
@@ -121,9 +106,15 @@ compileJava.dependsOn(createSchema)
 compileJava.dependsOn(generateData)
 generateData.dependsOn(createSchema)
 compileJava.dependsOn(generateMainPropertyFile)
-compileJava.dependsOn(generateTestPropertyFile)
+compileTestJava.dependsOn(generateTestPropertyFile)
 clean.dependsOn(cleanResources)
-test.dependsOn(war)
+
+// Build cdoj subproject after compile
+compileJava {
+  doLast {
+    tasks.getByPath(":static:build").execute()
+  }
+}
 
 configurations {
   provided
@@ -205,6 +196,8 @@ dependencies {
 
   compile "net.sf.opencsv:opencsv:2.3"
 
+  compile "com.google.collections:google-collections:1.0"
+
   testCompile "$springGroup:spring-test:$springVersion"
   testCompile "org.hamcrest:hamcrest-all:1.3"
   testCompile "com.jayway.jsonpath:json-path:0.8.1"
@@ -221,11 +214,11 @@ dependencies {
 
 test {
   doFirst {
-    jettyEclipse.daemon = true
-    task(":jettyEclipseRun").execute()
+    jettyRun.daemon = true
+    task(":jettyRun").execute()
   }
   doLast {
-    task(":jettyEclipseStop").execute()
+    task(":jettyStop").execute()
   }
   useTestNG()
 }
@@ -235,7 +228,6 @@ checkstyle {
 }
 
 checkstyleMain.source = "src/main/java"
-//checkstyleMain.exclude 'src/gen/**'
 
 jacoco {
   toolVersion = "0.7.0.201403182114"
@@ -243,3 +235,40 @@ jacoco {
 
 [compileJava, compileTestJava]*.options*.encoding = 'UTF-8'
 
+task release {
+  doFirst {
+    delete "build/release"
+    // War
+    war.execute()
+  }
+  doLast {
+    copy {
+      from war
+      into "build/release/war"
+    }
+    // js
+    copy {
+      into "build/release/resources/dist/js"
+      from("static/dist/js") {
+        include "cdoj.min.js"
+      }
+    }
+    // css
+    copy {
+      into "build/release/resources/dist/css"
+      from("static/dist/css") {
+        include "cdoj.min.css"
+      }
+    }
+    // MathJax
+    copy {
+      into "build/release/resources/bower_components/MathJax"
+      from "static/bower_components/MathJax"
+    }
+    // font-awesome
+    copy {
+      into "build/release/resources/bower_components/font-awesome"
+      from "static/bower_components/font-awesome"
+    }
+  }
+}

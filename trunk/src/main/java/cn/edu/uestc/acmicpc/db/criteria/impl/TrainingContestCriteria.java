@@ -11,12 +11,14 @@ import cn.edu.uestc.acmicpc.util.exception.AppException;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Restrictions;
 
+import java.util.Set;
+
 /**
  * Training contest database criteria entity.
  */
 public class TrainingContestCriteria extends BaseCriteria<TrainingContest, TrainingContestDto> {
 
-  public TrainingContestCriteria(Fields resultFields) {
+  public TrainingContestCriteria(Set<Fields> resultFields) {
     super(TrainingContest.class, TrainingContestDto.class, resultFields);
   }
 

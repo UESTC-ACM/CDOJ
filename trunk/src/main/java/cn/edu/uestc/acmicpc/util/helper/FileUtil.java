@@ -61,7 +61,7 @@ public class FileUtil {
   /**
    * Recursively delete the contents of {@code targetFile}, but not the
    * {@code targetFile} itself.
-   * <p/>
+   * <p>
    * If the {@code targetFile} does not exist or it is not a directory, return
    * {@code 0}.
    *
@@ -79,7 +79,7 @@ public class FileUtil {
 
   /**
    * Clear all the files under the path and delete the directory.
-   * <p/>
+   * <p>
    * <strong>WARN</strong>: this operation cannot be reverted.
    *
    * @param path

@@ -9,10 +9,7 @@ import java.sql.Timestamp;
 import java.util.Map;
 
 /**
- * Dto used in user center. <br/>
- * <code>@Fields({"userId", "userName", "nickName", "email", "school", "departmentId",
- * "departmentByDepartmentId.name", "studentId", "tried", "solved",
- * "type", "motto", "lastLogin" })</code>
+ * Dto used in user center.
  */
 @Fields({ "userId", "userName", "nickName", "email", "school", "departmentId",
     "departmentByDepartmentId.name", "studentId", "tried", "solved",

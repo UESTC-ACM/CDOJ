@@ -7,7 +7,7 @@ import stat
 import getopt
 import json
 import shutil
-
+import re
 
 def parseOpt(argv):
     help_info = "generate_dtos.py -i <input> -o <output>"
@@ -103,52 +103,60 @@ def writeProperties(indent, out, fields, builder):
         out.write("}\n")
 
 
+def getFieldName(name):
+    name = fetchName(name)
+    return "_".join(l.upper() for l in re.findall('[A-Z][^A-Z]*', name))
+
+
 def writeFields(indent, out, fields, aliases):
     projections = {}
-    for i in range(len(fields)):
-        field = fields[i]
+    for field in fields:
+        fieldName = getFieldName(field["name"])
+        params = []
+        if "alias" in field:
+            params.append("\"{0}\"".format(field["alias"]))
+        params.append("\"{0}\"".format(field["name"]))
+        method = "dbField"
+        if "dbField" in field and field["dbField"] is False:
+            method = "field"
+        fieldParam = "{0}({1})".format(method, ", ".join(params))
+        out.write(indent * ' ')
+        out.write("{0}({1}),\n".format(fieldName, fieldParam))
+
         if "projections" in field:
             for j in range(len(field["projections"])):
                 projection = field["projections"][j]
                 if projection not in projections:
                     projections[projection] = []
-                params = []
-                if "projectionParameters" in field:
-                    for k in range(len(field["projectionParameters"])):
-                        params.append(
-                            "\"{0}\"".format(field["projectionParameters"][k]))
-                params.append("\"{0}\"".format(field["name"]))
-                projections[projection].append(
-                    "property({0})".format(", ".join(params)))
-
-    first = True
-    for key in projections:
-        if first:
-            first = False
-        else:
-            out.write(",\n")
+                projections[projection].append(fieldName)
+    for field in aliases:
+        fieldName = "ALIAS_" + getFieldName(field["name"])
+        fieldValue = field["value"]
         out.write(indent * ' ')
-        out.write("{0}(".format(key))
-        second = True
-        for i in range(len(aliases)):
-            if second:
-                second = False
-            else:
-                out.write(',\n')
-            out.write((indent + 4) * ' ')
-            out.write("alias(\"{0}\", \"{1}\")".format(
-                aliases[i]["value"], aliases[i]["name"]))
+        out.write("{0}(alias(\"{1}\", \"{2}\")),\n".format(fieldName, fieldValue, field["name"]))
+
+        if "projections" in field:
+            for j in range(len(field["projections"])):
+                projection = field["projections"][j]
+                if projection not in projections:
+                    projections[projection] = []
+                projections[projection].append(fieldName)
+    out.write(indent * ' ')
+    out.write(";\n\n")
+
+    for key in projections:
+        out.write(indent * ' ')
+        out.write("public static final Set<Fields> {0} = ImmutableSet.of(\n".format(key))
+        first = True
         for i in range(len(projections[key])):
             projection = projections[key][i]
-            if second:
-                second = False
+            if first:
+                first = False
             else:
                 out.write(',\n')
             out.write((indent + 4) * ' ')
             out.write(projection)
-        out.write(")")
-    out.write(indent * ' ')
-    out.write(";\n")
+        out.write(");\n")
 
 
 def generateDto(input_file, output_dir):
@@ -311,6 +319,9 @@ import static cn.edu.uestc.acmicpc.db.dto.FieldProjection.*;
 import cn.edu.uestc.acmicpc.db.dto.FieldProjection;
 import cn.edu.uestc.acmicpc.db.dto.Fields;
 
+import com.google.common.collect.ImmutableSet;
+
+import java.util.Set;
 """)
     field_file.write("""
 public enum {0}Fields implements Fields {{
@@ -320,14 +331,15 @@ public enum {0}Fields implements Fields {{
     writeFields(2, field_file, fields, aliases)
 
     field_file.write("""
-  private final FieldProjection[] projections;
+  private final FieldProjection projection;
 
-  public FieldProjection[] getProjections() {{
-    return projections;
+  @Override
+  public FieldProjection getProjection() {{
+    return projection;
   }}
 
-  {0}Fields(FieldProjection... projections) {{
-    this.projections = projections;
+  {0}Fields(FieldProjection projection) {{
+    this.projection = projection;
   }}
 }}
 

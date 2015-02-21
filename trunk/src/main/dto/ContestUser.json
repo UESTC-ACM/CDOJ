@@ -1,0 +1,30 @@
+{
+  "entity": "ContestUser",
+  "fields": [
+    {
+      "name": "contestUserId",
+      "type": "Integer",
+      "projections": ["ALL_FIELDS"]
+    },
+    {
+      "name": "contestId",
+      "type": "Integer",
+      "projections": ["ALL_FIELDS"]
+    },
+    {
+      "name": "userId",
+      "type": "Integer",
+      "projections": ["ALL_FIELDS"]
+    },
+    {
+      "name": "status",
+      "type": "Byte",
+      "projections": ["ALL_FIELDS"]
+    },
+    {
+      "name": "comment",
+      "type": "String",
+      "projections": ["ALL_FIELDS"]
+    }
+  ]
+}

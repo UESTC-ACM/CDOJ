@@ -4,43 +4,36 @@
     {
       "name": "trainingContestId",
       "type": "Integer",
-      "projectionParameters": [],
       "projections": ["ALL_FIELDS", "FIELDS_FOR_LIST_PAGE"]
     },
     {
       "name": "trainingId",
       "type": "Integer",
-      "projectionParameters": [],
       "projections": ["ALL_FIELDS", "FIELDS_FOR_LIST_PAGE"]
     },
     {
       "name": "title",
       "type": "String",
-      "projectionParameters": [],
       "projections": ["ALL_FIELDS", "FIELDS_FOR_LIST_PAGE"]
     },
     {
       "name": "link",
       "type": "String",
-      "projectionParameters": [],
       "projections": ["ALL_FIELDS", "FIELDS_FOR_LIST_PAGE"]
     },
     {
       "name": "rankList",
       "type": "String",
-      "projectionParameters": [],
       "projections": ["ALL_FIELDS"]
     },
     {
       "name": "type",
       "type": "Integer",
-      "projectionParameters": [],
       "projections": ["ALL_FIELDS", "FIELDS_FOR_LIST_PAGE"]
     },
     {
       "name": "platformType",
       "type": "Integer",
-      "projectionParameters": [],
       "projections": ["ALL_FIELDS", "FIELDS_FOR_LIST_PAGE"]
     }
   ]

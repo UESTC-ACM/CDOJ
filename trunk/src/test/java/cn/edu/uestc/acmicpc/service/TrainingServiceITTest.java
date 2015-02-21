@@ -1,17 +1,13 @@
 package cn.edu.uestc.acmicpc.service;
 
-import cn.edu.uestc.acmicpc.config.IntegrationTestContext;
 import cn.edu.uestc.acmicpc.db.criteria.impl.TrainingCriteria;
 import cn.edu.uestc.acmicpc.db.dto.field.TrainingFields;
 import cn.edu.uestc.acmicpc.db.dto.impl.TrainingDto;
 import cn.edu.uestc.acmicpc.service.iface.TrainingService;
+import cn.edu.uestc.acmicpc.testing.PersistenceITTest;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.testng.AbstractTransactionalTestNGSpringContextTests;
-import org.springframework.test.context.transaction.TransactionConfiguration;
-import org.springframework.transaction.annotation.Transactional;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
@@ -21,10 +17,7 @@ import java.util.List;
  * Integration test cases for
  * {@link cn.edu.uestc.acmicpc.service.iface.TrainingService}
  */
-@ContextConfiguration(classes = { IntegrationTestContext.class })
-@Transactional
-@TransactionConfiguration(transactionManager = "transactionManager", defaultRollback = true)
-public class TrainingServiceITTest extends AbstractTransactionalTestNGSpringContextTests {
+public class TrainingServiceITTest extends PersistenceITTest {
 
   @Autowired
   private TrainingService trainingService;

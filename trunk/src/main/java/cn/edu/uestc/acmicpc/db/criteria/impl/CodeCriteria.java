@@ -9,12 +9,14 @@ import cn.edu.uestc.acmicpc.util.exception.AppException;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Restrictions;
 
+import java.util.Set;
+
 /**
  * Code database criteria entity.
  */
 public class CodeCriteria extends BaseCriteria<Code, CodeDto> {
 
-  public CodeCriteria(Fields resultFields) {
+  public CodeCriteria(Set<Fields> resultFields) {
     super(Code.class, CodeDto.class, resultFields);
   }
 

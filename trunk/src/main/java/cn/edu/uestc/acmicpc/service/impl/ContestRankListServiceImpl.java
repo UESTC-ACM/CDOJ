@@ -3,18 +3,13 @@ package cn.edu.uestc.acmicpc.service.impl;
 import cn.edu.uestc.acmicpc.db.condition.impl.ContestTeamCondition;
 import cn.edu.uestc.acmicpc.db.condition.impl.StatusCondition;
 import cn.edu.uestc.acmicpc.db.condition.impl.TeamUserCondition;
-import cn.edu.uestc.acmicpc.db.dto.impl.contest.ContestDto;
-import cn.edu.uestc.acmicpc.db.dto.impl.contest.ContestShowDto;
+import cn.edu.uestc.acmicpc.db.dto.field.ContestFields;
+import cn.edu.uestc.acmicpc.db.dto.impl.ContestDto;
 import cn.edu.uestc.acmicpc.db.dto.impl.contestproblem.ContestProblemSummaryDto;
 import cn.edu.uestc.acmicpc.db.dto.impl.contestteam.ContestTeamListDto;
 import cn.edu.uestc.acmicpc.db.dto.impl.status.StatusListDto;
 import cn.edu.uestc.acmicpc.db.dto.impl.teamUser.TeamUserListDto;
-import cn.edu.uestc.acmicpc.service.iface.ContestProblemService;
-import cn.edu.uestc.acmicpc.service.iface.ContestRankListService;
-import cn.edu.uestc.acmicpc.service.iface.ContestService;
-import cn.edu.uestc.acmicpc.service.iface.ContestTeamService;
-import cn.edu.uestc.acmicpc.service.iface.StatusService;
-import cn.edu.uestc.acmicpc.service.iface.TeamUserService;
+import cn.edu.uestc.acmicpc.service.iface.*;
 import cn.edu.uestc.acmicpc.util.enums.ContestRegistryStatusType;
 import cn.edu.uestc.acmicpc.util.enums.ContestType;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
@@ -22,7 +17,6 @@ import cn.edu.uestc.acmicpc.util.helper.ArrayUtil;
 import cn.edu.uestc.acmicpc.web.rank.RankList;
 import cn.edu.uestc.acmicpc.web.rank.RankListBuilder;
 import cn.edu.uestc.acmicpc.web.rank.RankListStatus;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -70,9 +64,11 @@ public class ContestRankListServiceImpl implements ContestRankListService {
   }
 
   private List<ContestTeamListDto> fetchTeamList(Integer contestId) throws AppException {
-    ContestDto contestDto = contestService.getContestDtoByContestId(contestId);
+    ContestDto contestDto = contestService.getContestDtoByContestId(
+        contestId, ContestFields.BASIC_FIELDS);
     if (contestDto.getType() == ContestType.INHERIT.ordinal()) {
-      contestDto = contestService.getContestDtoByContestId(contestDto.getParentId());
+      contestDto = contestService.getContestDtoByContestId(
+          contestDto.getParentId(), ContestFields.BASIC_FIELDS);
     }
     contestId = contestDto.getContestId();
 
@@ -123,7 +119,8 @@ public class ContestRankListServiceImpl implements ContestRankListService {
     RankList lastModified = rankListPool.get(rankListName);
     if (lastModified == null ||
         (System.currentTimeMillis() - lastModified.lastFetched.getTime()) > FETCH_INTERVAL) {
-      ContestShowDto contestShowDto = contestService.getContestShowDtoByContestId(contestId);
+      ContestDto contestShowDto = contestService.getContestDtoByContestId(
+          contestId, ContestFields.FIELDS_FOR_SHOWING);
       if (contestShowDto == null) {
         throw new AppException("No such contest.");
       }

@@ -1,8 +1,10 @@
 package cn.edu.uestc.acmicpc.service.iface;
 
-import cn.edu.uestc.acmicpc.db.dto.field.CodeFields;
+import cn.edu.uestc.acmicpc.db.dto.Fields;
 import cn.edu.uestc.acmicpc.db.dto.impl.CodeDto;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
+
+import java.util.Set;
 
 /**
  * Code service interface.
@@ -20,7 +22,7 @@ public interface CodeService {
    * @throws AppException
    */
   public CodeDto getCodeDto(Integer codeId,
-      CodeFields codeFields) throws AppException;
+      Set<Fields> codeFields) throws AppException;
 
   /**
    * Create a new code record by {@link CodeDto}.

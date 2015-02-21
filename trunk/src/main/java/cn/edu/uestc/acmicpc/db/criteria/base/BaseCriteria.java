@@ -5,11 +5,14 @@ import cn.edu.uestc.acmicpc.db.dto.Fields;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
 import cn.edu.uestc.acmicpc.util.exception.AppExceptionUtil;
 
+import cn.edu.uestc.acmicpc.util.helper.ObjectUtil;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.ProjectionList;
 import org.hibernate.criterion.Projections;
 import org.hibernate.transform.AliasToBeanResultTransformer;
+
+import java.util.Set;
 
 /**
  * We can use this class to get {@link DetachedCriteria} entity.
@@ -55,17 +58,17 @@ public abstract class BaseCriteria<E, D> {
   /**
    * Specify the fields we need when build query criteria
    */
-  private Fields resultFields;
+  private Set<Fields> resultFields;
 
   protected BaseCriteria(Class<E> referenceClass,
       Class<D> resultClass,
-      Fields resultFields) {
+      Set<Fields> resultFields) {
     this.referenceClass = referenceClass;
     this.resultClass = resultClass;
     this.resultFields = resultFields;
   }
 
-  public void setResultFields(Fields resultFields) {
+  public void setResultFields(Set<Fields> resultFields) {
     this.resultFields = resultFields;
   }
 
@@ -79,20 +82,16 @@ public abstract class BaseCriteria<E, D> {
     DetachedCriteria criteria = DetachedCriteria.forClass(referenceClass);
 
     if (resultFields != null) {
-      // Get field projection list
-      FieldProjection[] fieldProjectionList = resultFields.getProjections();
-
       ProjectionList projectionList = Projections.projectionList();
-      for (FieldProjection fieldProjection : fieldProjectionList) {
-        if (fieldProjection.getType().equals("alias")) {
+      for (Fields field : resultFields) {
+        FieldProjection fieldProjection = field.getProjection();
+        if (fieldProjection.getType() == FieldProjection.ProjectionType.ALIAS) {
           // Set alias
           criteria.createAlias(fieldProjection.getField(), fieldProjection.getAlias());
-        } else {
+        } else if (fieldProjection.getType() == FieldProjection.ProjectionType.DB_FIELD) {
           // Set projection
-          projectionList = projectionList.add(
-              Projections.property(fieldProjection.getField()),
-              fieldProjection.getAlias()
-              );
+          projectionList.add(Projections.property(fieldProjection.getField()),
+              fieldProjection.getAlias());
         }
       }
       criteria.setProjection(projectionList);

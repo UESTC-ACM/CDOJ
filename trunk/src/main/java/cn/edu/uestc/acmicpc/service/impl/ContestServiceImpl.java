@@ -1,23 +1,24 @@
 package cn.edu.uestc.acmicpc.service.impl;
 
-import cn.edu.uestc.acmicpc.db.condition.base.Condition;
-import cn.edu.uestc.acmicpc.db.condition.impl.ContestCondition;
+import cn.edu.uestc.acmicpc.db.criteria.impl.ContestCriteria;
 import cn.edu.uestc.acmicpc.db.dao.iface.ContestDao;
-import cn.edu.uestc.acmicpc.db.dto.impl.contest.ContestDto;
-import cn.edu.uestc.acmicpc.db.dto.impl.contest.ContestListDto;
-import cn.edu.uestc.acmicpc.db.dto.impl.contest.ContestShowDto;
+import cn.edu.uestc.acmicpc.db.dto.Fields;
+import cn.edu.uestc.acmicpc.db.dto.field.ContestFields;
+import cn.edu.uestc.acmicpc.db.dto.impl.ContestDto;
 import cn.edu.uestc.acmicpc.db.entity.Contest;
 import cn.edu.uestc.acmicpc.service.iface.ContestService;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
 import cn.edu.uestc.acmicpc.util.exception.AppExceptionUtil;
 import cn.edu.uestc.acmicpc.util.settings.Settings;
 import cn.edu.uestc.acmicpc.web.dto.PageInfo;
-
+import com.google.common.collect.ImmutableSet;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 @Service
 @Primary
@@ -33,37 +34,31 @@ public class ContestServiceImpl extends AbstractService implements ContestServic
     this.settings = settings;
   }
 
-  @SuppressWarnings("unchecked")
   @Override
   public List<Integer> getAllVisibleContestIds() throws AppException {
-    ContestCondition contestCondition = new ContestCondition();
-    contestCondition.isVisible = true;
-    return (List<Integer>) contestDao.findAll("contestId",
-        contestCondition.getCondition());
+    ContestCriteria criteria = new ContestCriteria(ImmutableSet.of(ContestFields.CONTEST_ID));
+    criteria.isVisible = true;
+    List<ContestDto> contests = contestDao.findAll(criteria.getCriteria(), null);
+    List<Integer> results = new ArrayList<>(contests.size());
+    contests.stream().forEach(dto -> results.add(dto.getContestId()));
+    return results;
   }
 
   @Override
   public ContestDto getContestDtoByContestId(
-      Integer contestId)
-      throws AppException {
+      Integer contestId, Set<Fields> fields) throws AppException {
     AppExceptionUtil.assertNotNull(contestId);
-    return contestDao.getDtoByUniqueField(ContestDto.class,
-        ContestDto.builder(), "contestId", contestId);
-  }
-
-  @Override
-  public ContestShowDto getContestShowDtoByContestId(Integer contestId) throws AppException {
-    AppExceptionUtil.assertNotNull(contestId);
-    return contestDao.getDtoByUniqueField(ContestShowDto.class,
-        ContestShowDto.builder(), "contestId", contestId);
+    ContestCriteria criteria = new ContestCriteria(fields);
+    criteria.contestId = contestId;
+    return contestDao.getDtoByUniqueField(criteria.getCriteria());
   }
 
   @Override
   public Boolean checkContestExists(Integer contestId) throws AppException {
-    ContestCondition contestCondition = new ContestCondition();
-    contestCondition.startId = contestId;
-    contestCondition.endId = contestId;
-    return contestDao.count(contestCondition.getCondition()) == 1;
+    AppExceptionUtil.assertNotNull(contestId);
+    ContestCriteria criteria = new ContestCriteria(ImmutableSet.of(ContestFields.CONTEST_ID));
+    criteria.contestId = contestId;
+    return contestDao.count(criteria.getCriteria()) == 1;
   }
 
   private void updateContestByContestDto(Contest contest, ContestDto contestDto) {
@@ -102,18 +97,14 @@ public class ContestServiceImpl extends AbstractService implements ContestServic
   }
 
   @Override
-  public Long count(ContestCondition contestCondition) throws AppException {
-    return contestDao.count(contestCondition.getCondition());
+  public Long count(ContestCriteria criteria) throws AppException {
+    return contestDao.count(criteria.getCriteria());
   }
 
   @Override
-  public List<ContestListDto> getContestListDtoList(
-      ContestCondition contestCondition,
-      PageInfo pageInfo) throws AppException {
-    Condition condition = contestCondition.getCondition();
-    condition.setPageInfo(pageInfo);
-    return contestDao.findAll(ContestListDto.class, ContestListDto.builder(),
-        condition);
+  public List<ContestDto> getContestListDtoList(
+      ContestCriteria criteria, PageInfo pageInfo) throws AppException {
+    return contestDao.findAll(criteria.getCriteria(), pageInfo);
   }
 
   @Override

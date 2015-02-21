@@ -1,5 +1,7 @@
 package cn.edu.uestc.acmicpc.db.dto.impl.problem;
 
+import cn.edu.uestc.acmicpc.util.enums.ProblemType;
+
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.Range;
 
@@ -61,10 +63,12 @@ public class ProblemEditDto {
 
   private String source;
 
+  private ProblemType type;
+
   public ProblemEditDto(String action, Integer problemId, String description, String title,
       Boolean isSpj, Integer timeLimit, Integer javaTimeLimit, Integer memoryLimit,
       Integer javaMemoryLimit, Integer outputLimit, Boolean isVisible, String input, String output,
-      String sampleInput, String sampleOutput, String hint, String source) {
+      String sampleInput, String sampleOutput, String hint, String source, ProblemType type) {
     this.action = action;
     this.problemId = problemId;
     this.description = description;
@@ -82,6 +86,7 @@ public class ProblemEditDto {
     this.sampleOutput = sampleOutput;
     this.hint = hint;
     this.source = source;
+    this.type = type;
   }
 
   @Override
@@ -110,7 +115,8 @@ public class ProblemEditDto {
         && Objects.equals(this.sampleOutput, that.sampleOutput)
         && Objects.equals(this.source, that.source)
         && Objects.equals(this.timeLimit, that.timeLimit)
-        && Objects.equals(this.title, that.title);
+        && Objects.equals(this.title, that.title)
+        && Objects.equals(this.type, that.type);
   }
 
   @Override
@@ -132,6 +138,7 @@ public class ProblemEditDto {
     result = 31 * result + (sampleOutput != null ? sampleOutput.hashCode() : 0);
     result = 31 * result + (hint != null ? hint.hashCode() : 0);
     result = 31 * result + (source != null ? source.hashCode() : 0);
+    result = 31 * result + (type != null ? type.hashCode() : 0);
     return result;
   }
 
@@ -213,6 +220,14 @@ public class ProblemEditDto {
 
   public void setIsVisible(Boolean isVisible) {
     this.isVisible = isVisible;
+  }
+
+  public ProblemType getType() {
+    return type;
+  }
+
+  public void setType(ProblemType type) {
+    this.type = type;
   }
 
   public String getInput() {

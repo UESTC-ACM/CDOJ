@@ -3,11 +3,12 @@ package cn.edu.uestc.acmicpc.db.dto;
 /**
  * Field projection settings interface
  */
+@FunctionalInterface
 public interface Fields {
   /**
-   * Get projection list
+   * Get projection
    *
-   * @return List of {@link cn.edu.uestc.acmicpc.db.dto.FieldProjection}
+   * @return {@link cn.edu.uestc.acmicpc.db.dto.FieldProjection} entity
    */
-  public FieldProjection[] getProjections();
+  public FieldProjection getProjection();
 }

@@ -1,16 +1,14 @@
 package cn.edu.uestc.acmicpc.web.oj.controller.contest;
 
-import cn.edu.uestc.acmicpc.db.condition.impl.ContestCondition;
 import cn.edu.uestc.acmicpc.db.condition.impl.ContestTeamCondition;
 import cn.edu.uestc.acmicpc.db.condition.impl.StatusCondition;
 import cn.edu.uestc.acmicpc.db.condition.impl.TeamUserCondition;
+import cn.edu.uestc.acmicpc.db.criteria.impl.ContestCriteria;
+import cn.edu.uestc.acmicpc.db.dto.field.ContestFields;
+import cn.edu.uestc.acmicpc.db.dto.impl.ContestDto;
+import cn.edu.uestc.acmicpc.db.dto.impl.ContestUserDto;
 import cn.edu.uestc.acmicpc.db.dto.impl.LanguageDto;
-import cn.edu.uestc.acmicpc.db.dto.impl.contest.ContestDto;
-import cn.edu.uestc.acmicpc.db.dto.impl.contest.ContestEditDto;
-import cn.edu.uestc.acmicpc.db.dto.impl.contest.ContestListDto;
-import cn.edu.uestc.acmicpc.db.dto.impl.contest.ContestLoginDto;
-import cn.edu.uestc.acmicpc.db.dto.impl.contest.ContestShowDto;
-import cn.edu.uestc.acmicpc.db.dto.impl.contestUser.ContestUserDto;
+import cn.edu.uestc.acmicpc.db.dto.impl.TeamDto;
 import cn.edu.uestc.acmicpc.db.dto.impl.contestproblem.ContestProblemDetailDto;
 import cn.edu.uestc.acmicpc.db.dto.impl.contestproblem.ContestProblemDto;
 import cn.edu.uestc.acmicpc.db.dto.impl.contestproblem.ContestProblemSummaryDto;
@@ -21,7 +19,6 @@ import cn.edu.uestc.acmicpc.db.dto.impl.contestteam.ContestTeamReviewDto;
 import cn.edu.uestc.acmicpc.db.dto.impl.message.MessageDto;
 import cn.edu.uestc.acmicpc.db.dto.impl.status.StatusInformationDto;
 import cn.edu.uestc.acmicpc.db.dto.impl.status.StatusListDto;
-import cn.edu.uestc.acmicpc.db.dto.impl.team.TeamDto;
 import cn.edu.uestc.acmicpc.db.dto.impl.teamUser.TeamUserListDto;
 import cn.edu.uestc.acmicpc.db.dto.impl.teamUser.TeamUserReportDto;
 import cn.edu.uestc.acmicpc.db.dto.impl.user.OnsiteUserDto;
@@ -105,7 +102,7 @@ import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 
 /**
- * @author liverliu
+ * Contest controller.
  */
 @Controller
 @RequestMapping("/contest")
@@ -173,7 +170,7 @@ public class ContestController extends BaseController {
     return new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(time);
   }
 
-  private void generateScoreboard(ContestShowDto contestShowDto,
+  private void generateScoreboard(ContestDto contestShowDto,
       List<UserDto> contestUserList,
       List<ContestProblemSummaryDto> contestProblemList,
       List<LanguageDto> languageDtoList,
@@ -254,7 +251,7 @@ public class ContestController extends BaseController {
     transformer.transform(domSource, streamResult);
   }
 
-  private void generateEvent(ContestShowDto contestShowDto,
+  private void generateEvent(ContestDto contestShowDto,
       List<LanguageDto> languageDtoList,
       List<ContestProblemSummaryDto> contestProblemList,
       List<StatusListDto> statusList,
@@ -350,7 +347,8 @@ public class ContestController extends BaseController {
       throw new AppException("Permission denied!");
     }
     // Fetch contest detail
-    ContestShowDto contestShowDto = contestService.getContestShowDtoByContestId(contestId);
+    ContestDto contestShowDto =
+        contestService.getContestDtoByContestId(contestId, ContestFields.FIELDS_FOR_SHOWING);
     if (contestId == null) {
       throw new AppException("Contest not found.");
     }
@@ -406,7 +404,8 @@ public class ContestController extends BaseController {
       if (!isAdmin(session)) {
         throw new AppException("Permission denied!");
       }
-      ContestShowDto contestShowDto = contestService.getContestShowDtoByContestId(contestId);
+      ContestDto contestShowDto =
+          contestService.getContestDtoByContestId(contestId, ContestFields.FIELDS_FOR_SHOWING);
       if (contestId == null) {
         throw new AppException("Contest not found.");
       }
@@ -472,12 +471,13 @@ public class ContestController extends BaseController {
 
       // Login first
       loginContest(session,
-          ContestLoginDto.builder()
+          ContestDto.builder()
               .setContestId(contestId)
               .setPassword("")
               .build());
 
-      result.addObject("contest", contestService.getContestDtoByContestId(contestId));
+      result.addObject("contest",
+          contestService.getContestDtoByContestId(contestId, ContestFields.BASIC_FIELDS));
       result.addObject("rankList", getRankList(contestId, session));
       Byte contestType = getContestType(session, contestId);
       result.addObject("type", contestType);
@@ -494,9 +494,11 @@ public class ContestController extends BaseController {
 
   private List<ContestTeamReportDto> getContestTeamReportDtoList(Integer contestId,
       HttpSession session) throws AppException {
-    ContestDto contestDto = contestService.getContestDtoByContestId(contestId);
+    ContestDto contestDto = contestService.getContestDtoByContestId(
+        contestId, ContestFields.BASIC_FIELDS);
     if (contestDto.getType() == ContestType.INHERIT.ordinal()) {
-      contestDto = contestService.getContestDtoByContestId(contestDto.getParentId());
+      contestDto = contestService.getContestDtoByContestId(
+          contestDto.getParentId(), ContestFields.BASIC_FIELDS);
     }
     contestId = contestDto.getContestId();
 
@@ -552,9 +554,9 @@ public class ContestController extends BaseController {
     return result;
   }
 
-  private void loginContest(HttpSession session,
-      ContestLoginDto contestLoginDto) throws AppException {
-    ContestDto contestDto = contestService.getContestDtoByContestId(contestLoginDto.getContestId());
+  private void loginContest(HttpSession session, ContestDto contestLoginDto) throws AppException {
+    ContestDto contestDto = contestService.getContestDtoByContestId(
+        contestLoginDto.getContestId(), ContestFields.BASIC_FIELDS);
     if (contestDto == null ||
         (!contestDto.getIsVisible() && !isAdmin(session))) {
       throw new AppException("Contest not found.");
@@ -563,7 +565,8 @@ public class ContestController extends BaseController {
     Integer registeredContestId = contestDto.getContestId();
     if (contestDto.getType() == ContestType.INHERIT.ordinal()) {
       // Get parent contest
-      ContestDto parentContest = contestService.getContestDtoByContestId(contestDto.getParentId());
+      ContestDto parentContest = contestService.getContestDtoByContestId(
+          contestDto.getParentId(), ContestFields.BASIC_FIELDS);
       if (parentContest == null) {
         // No parent contest.
         throw new AppException("Incorrect contest type.");
@@ -635,7 +638,7 @@ public class ContestController extends BaseController {
   @RequestMapping("loginContest")
   @LoginPermit(NeedLogin = true)
   public @ResponseBody Map<String, Object> loginContest(HttpSession session,
-      @RequestBody @Valid ContestLoginDto contestLoginDto,
+      @RequestBody @Valid ContestDto contestLoginDto,
       BindingResult validateResult) {
     Map<String, Object> json = new HashMap<>();
     if (validateResult.hasErrors()) {
@@ -773,7 +776,8 @@ public class ContestController extends BaseController {
       if (teamDto == null || !teamDto.getTeamId().equals(teamId)) {
         throw new AppException("Team not found!");
       }
-      ContestShowDto contestShowDto = contestService.getContestShowDtoByContestId(contestId);
+      ContestDto contestShowDto = contestService.getContestDtoByContestId(
+          contestId, ContestFields.FIELDS_FOR_SHOWING);
       if (contestShowDto == null || !contestShowDto.getContestId().equals(contestId)) {
         throw new AppException("Contest not found!");
       }
@@ -818,7 +822,8 @@ public class ContestController extends BaseController {
     Map<String, Object> json = new HashMap<>();
     try {
       UserDto currentUser = getCurrentUser(session);
-      ContestShowDto contestShowDto = contestService.getContestShowDtoByContestId(contestId);
+      ContestDto contestShowDto = contestService.getContestDtoByContestId(
+          contestId, ContestFields.FIELDS_FOR_SHOWING);
       if (contestShowDto == null) {
         throw new AppException("No such contest.");
       }
@@ -870,7 +875,8 @@ public class ContestController extends BaseController {
 
   private RankList getRankList(Integer contestId,
       HttpSession session) throws AppException {
-    ContestShowDto contestShowDto = contestService.getContestShowDtoByContestId(contestId);
+    ContestDto contestShowDto = contestService.getContestDtoByContestId(
+        contestId, ContestFields.FIELDS_FOR_SHOWING);
     if (contestShowDto == null) {
       throw new AppException("No such contest.");
     }
@@ -928,7 +934,8 @@ public class ContestController extends BaseController {
       HttpSession session) {
     Map<String, Object> json = new HashMap<>();
     try {
-      ContestShowDto contestShowDto = contestService.getContestShowDtoByContestId(contestId);
+      ContestDto contestShowDto = contestService.getContestDtoByContestId(
+          contestId, ContestFields.FIELDS_FOR_SHOWING);
       if (contestShowDto == null) {
         throw new AppException("No such contest.");
       }
@@ -943,7 +950,7 @@ public class ContestController extends BaseController {
         // Not login before
         // Try to auto re-login
         loginContest(session,
-            ContestLoginDto.builder()
+            ContestDto.builder()
                 .setContestId(contestId)
                 .setPassword("")
                 .build());
@@ -985,25 +992,25 @@ public class ContestController extends BaseController {
   @RequestMapping("search")
   @LoginPermit(NeedLogin = false)
   public @ResponseBody Map<String, Object> search(HttpSession session,
-      @RequestBody(required = false) ContestCondition contestCondition) {
+      @RequestBody(required = false) ContestCriteria criteria) {
     Map<String, Object> json = new HashMap<>();
     try {
       // Avoid null pointer exception
-      if (contestCondition == null) {
-        contestCondition = new ContestCondition();
+      if (criteria == null) {
+        criteria = new ContestCriteria();
       }
       if (!isAdmin(session)) {
-        contestCondition.isVisible = true;
+        criteria.isVisible = true;
       }
-      Long count = contestService.count(contestCondition);
-      PageInfo pageInfo = buildPageInfo(count, contestCondition.currentPage,
+      Long count = contestService.count(criteria);
+      PageInfo pageInfo = buildPageInfo(count, criteria.currentPage,
           settings.RECORD_PER_PAGE, null);
-      List<ContestListDto> contestListDtoList = contestService.
-          getContestListDtoList(contestCondition, pageInfo);
-      for (ContestListDto contestListDto : contestListDtoList) {
+      List<ContestDto> contestListDtoList = contestService.
+          getContestListDtoList(criteria, pageInfo);
+      for (ContestDto contestListDto : contestListDtoList) {
         if (contestListDto.getType() == ContestType.INHERIT.ordinal()) {
-          ContestDto contestDto = contestService.getContestDtoByContestId(contestListDto
-              .getParentId());
+          ContestDto contestDto = contestService.getContestDtoByContestId(
+              contestListDto.getParentId(), ContestFields.BASIC_FIELDS);
           contestListDto.setParentType(contestDto.getType());
           contestListDto.setParentTypeName(ContestType.values()[contestDto.getType()]
               .getDescription());
@@ -1043,7 +1050,7 @@ public class ContestController extends BaseController {
 
   @RequestMapping("edit")
   @LoginPermit(AuthenticationType.ADMIN)
-  public @ResponseBody Map<String, Object> edit(@RequestBody @Valid ContestEditDto contestEditDto,
+  public @ResponseBody Map<String, Object> edit(@RequestBody @Valid ContestDto contestEditDto,
       BindingResult validateResult) {
     Map<String, Object> json = new HashMap<>();
     if (validateResult.hasErrors()) {
@@ -1070,7 +1077,8 @@ public class ContestController extends BaseController {
         ContestDto contestDto;
         if (contestEditDto.getAction().compareTo("new") == 0) {
           Integer contestId = contestService.createNewContest();
-          contestDto = contestService.getContestDtoByContestId(contestId);
+          contestDto = contestService.getContestDtoByContestId(
+              contestId, ContestFields.BASIC_FIELDS);
           if (contestDto == null
               || contestDto.getContestId().compareTo(contestId) != 0) {
             throw new AppException("Error while creating contest.");
@@ -1085,7 +1093,8 @@ public class ContestController extends BaseController {
               contestEditDto.getDescription(), oldDirectory, newDirectory
               ));
         } else {
-          contestDto = contestService.getContestDtoByContestId(contestEditDto.getContestId());
+          contestDto = contestService.getContestDtoByContestId(
+              contestEditDto.getContestId(), ContestFields.BASIC_FIELDS);
           if (contestDto == null) {
             throw new AppException("No such contest.");
           }
@@ -1228,7 +1237,7 @@ public class ContestController extends BaseController {
   @RequestMapping("updateOnsiteUser")
   @LoginPermit(AuthenticationType.ADMIN)
   public @ResponseBody Map<String, Object> updateOnsiteUser(
-      @RequestBody ContestEditDto contestEditDto) {
+      @RequestBody ContestDto contestEditDto) {
     Map<String, Object> json = new HashMap<>();
     try {
       Integer contestId = contestEditDto.getContestId();
@@ -1239,7 +1248,7 @@ public class ContestController extends BaseController {
           .getUserList());
       for (Integer userID : newUsersIDList) {
         contestUserService.createNewContestUser(
-            ContestUserDto.Builder()
+            ContestUserDto.builder()
                 .setContestId(contestId)
                 .setUserId(userID)
                 .setStatus((byte) ContestRegistryStatusType.ACCEPTED.ordinal())
