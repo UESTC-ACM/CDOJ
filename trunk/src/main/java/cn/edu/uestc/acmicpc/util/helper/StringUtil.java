@@ -82,7 +82,7 @@ public class StringUtil {
 
   /**
    * repeat a string many times
-   * <p/>
+   * <p>
    * <strong>EXAMPLE</strong> repeat("hello#", 2) it means "hello#hello#"
    *
    * @param s

@@ -2,6 +2,7 @@ package cn.edu.uestc.acmicpc.service.impl;
 
 import cn.edu.uestc.acmicpc.db.criteria.impl.ArticleCriteria;
 import cn.edu.uestc.acmicpc.db.dao.iface.ArticleDao;
+import cn.edu.uestc.acmicpc.db.dto.Fields;
 import cn.edu.uestc.acmicpc.db.dto.field.ArticleFields;
 import cn.edu.uestc.acmicpc.db.dto.impl.ArticleDto;
 import cn.edu.uestc.acmicpc.db.entity.Article;
@@ -9,15 +10,11 @@ import cn.edu.uestc.acmicpc.service.iface.ArticleService;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
 import cn.edu.uestc.acmicpc.util.exception.AppExceptionUtil;
 import cn.edu.uestc.acmicpc.web.dto.PageInfo;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Service
 public class ArticleServiceImpl extends AbstractService implements ArticleService {
@@ -30,8 +27,7 @@ public class ArticleServiceImpl extends AbstractService implements ArticleServic
   }
 
   @Override
-  public ArticleDto getArticleDto(Integer articleId,
-      ArticleFields articleFields)
+  public ArticleDto getArticleDto(Integer articleId, Set<Fields> articleFields)
       throws AppException {
     ArticleCriteria articleCriteria = new ArticleCriteria(articleFields);
     articleCriteria.startId = articleId;

@@ -1,12 +1,13 @@
 package cn.edu.uestc.acmicpc.service.iface;
 
 import cn.edu.uestc.acmicpc.db.criteria.impl.TrainingCriteria;
-import cn.edu.uestc.acmicpc.db.dto.field.TrainingFields;
+import cn.edu.uestc.acmicpc.db.dto.Fields;
 import cn.edu.uestc.acmicpc.db.dto.impl.TrainingDto;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
 import cn.edu.uestc.acmicpc.web.dto.PageInfo;
 
 import java.util.List;
+import java.util.Set;
 
 /**
  * Training service interface.
@@ -24,7 +25,7 @@ public interface TrainingService {
    * @throws AppException
    */
   public TrainingDto getTrainingDto(Integer trainingId,
-      TrainingFields trainingFields) throws AppException;
+      Set<Fields> trainingFields) throws AppException;
 
   /**
    * Count number of trainings fit in criteria.

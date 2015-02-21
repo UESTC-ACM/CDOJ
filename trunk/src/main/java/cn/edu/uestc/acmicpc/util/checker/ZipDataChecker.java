@@ -13,7 +13,7 @@ import java.util.Set;
 
 /**
  * Data checker for data.zip files.
- * <p/>
+ * <p>
  * <strong>Check items</strong>:
  * <ul>
  * <li>
@@ -23,14 +23,14 @@ import java.util.Set;
  * <li>
  * For all the data files, input file and output file will match.</li>
  * </ul>
- * <p/>
+ * <p>
  * <strong>For developers</strong>:
- * <p/>
+ * <p>
  * This checker will not consider the folders in the zip file, that means if the
  * zip file only contains a folder and the folder contains a valid file
  * structure, this checker will not check the files in the folder. <strong>For
  * administrators</strong>:
- * <p/>
+ * <p>
  * Please put all data files in the zip file's root, rather than a specific
  * folder.
  */

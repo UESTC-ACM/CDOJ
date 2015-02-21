@@ -1,11 +1,12 @@
 package cn.edu.uestc.acmicpc.service.iface;
 
 import cn.edu.uestc.acmicpc.db.criteria.impl.TrainingContestCriteria;
-import cn.edu.uestc.acmicpc.db.dto.field.TrainingContestFields;
+import cn.edu.uestc.acmicpc.db.dto.Fields;
 import cn.edu.uestc.acmicpc.db.dto.impl.TrainingContestDto;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
 
 import java.util.List;
+import java.util.Set;
 
 /**
  * Training contest service interface.
@@ -24,8 +25,8 @@ public interface TrainingContestService {
    *         entity.
    * @throws AppException
    */
-  public TrainingContestDto getTrainingContestDto(Integer trainingContestId,
-      TrainingContestFields trainingContestFields) throws AppException;
+  TrainingContestDto getTrainingContestDto(Integer trainingContestId,
+      Set<Fields> trainingContestFields) throws AppException;
 
   /**
    * Get all {@link cn.edu.uestc.acmicpc.db.dto.impl.TrainingContestDto} fit in

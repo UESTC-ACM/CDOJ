@@ -9,9 +9,7 @@ import java.util.Map;
 import java.util.Objects;
 
 /**
- * Dto for contest problem entity. <br/>
- * <code>@Fields({ "problemId", "problemByProblemId.title",
- * "problemByProblemId.source" })</code>
+ * Dto for contest problem entity.
  */
 @Fields({ "problemId", "order", "problemByProblemId.title",
     "problemByProblemId.source" })

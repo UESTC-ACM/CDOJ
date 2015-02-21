@@ -1,6 +1,5 @@
 package cn.edu.uestc.acmicpc.db;
 
-import cn.edu.uestc.acmicpc.config.IntegrationTestContext;
 import cn.edu.uestc.acmicpc.db.condition.base.Condition;
 import cn.edu.uestc.acmicpc.db.condition.base.Condition.ConditionType;
 import cn.edu.uestc.acmicpc.db.condition.base.Condition.Entry;
@@ -8,11 +7,10 @@ import cn.edu.uestc.acmicpc.db.condition.impl.ProblemCondition;
 import cn.edu.uestc.acmicpc.db.dao.iface.ProblemDao;
 import cn.edu.uestc.acmicpc.db.dto.impl.problem.ProblemDto;
 import cn.edu.uestc.acmicpc.db.entity.Problem;
+import cn.edu.uestc.acmicpc.testing.PersistenceITTest;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.testng.AbstractTestNGSpringContextTests;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
@@ -22,8 +20,7 @@ import java.util.Random;
 /**
  * Test cases for {@link Problem}.
  */
-@ContextConfiguration(classes = {IntegrationTestContext.class})
-public class ProblemDatabaseITTest extends AbstractTestNGSpringContextTests {
+public class ProblemDatabaseITTest extends PersistenceITTest {
 
   // TODO(fish): use problem service to query.
 

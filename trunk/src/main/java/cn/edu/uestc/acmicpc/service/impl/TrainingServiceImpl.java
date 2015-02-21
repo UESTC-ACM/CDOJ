@@ -2,18 +2,18 @@ package cn.edu.uestc.acmicpc.service.impl;
 
 import cn.edu.uestc.acmicpc.db.criteria.impl.TrainingCriteria;
 import cn.edu.uestc.acmicpc.db.dao.iface.TrainingDao;
-import cn.edu.uestc.acmicpc.db.dto.field.TrainingFields;
+import cn.edu.uestc.acmicpc.db.dto.Fields;
 import cn.edu.uestc.acmicpc.db.dto.impl.TrainingDto;
 import cn.edu.uestc.acmicpc.db.entity.Training;
 import cn.edu.uestc.acmicpc.service.iface.TrainingService;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
 import cn.edu.uestc.acmicpc.util.exception.AppExceptionUtil;
 import cn.edu.uestc.acmicpc.web.dto.PageInfo;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Set;
 
 @Service
 public class TrainingServiceImpl extends AbstractService implements TrainingService {
@@ -26,7 +26,7 @@ public class TrainingServiceImpl extends AbstractService implements TrainingServ
   }
 
   @Override
-  public TrainingDto getTrainingDto(Integer trainingId, TrainingFields trainingFields)
+  public TrainingDto getTrainingDto(Integer trainingId, Set<Fields> trainingFields)
       throws AppException {
     AppExceptionUtil.assertNotNull(trainingId);
     TrainingCriteria trainingCriteria = new TrainingCriteria(trainingFields);

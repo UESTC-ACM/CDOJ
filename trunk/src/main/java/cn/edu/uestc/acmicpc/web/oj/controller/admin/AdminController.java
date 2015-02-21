@@ -8,10 +8,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 /**
- * Administrator controller for these pages:
- * <table>
- * <tr><td>admin/index</td><td>dashboard</td></tr>
- * </table>
+ * Administrator controller.
  */
 @Controller
 @RequestMapping("/admin")
@@ -20,7 +17,7 @@ public class AdminController extends BaseController {
   public AdminController() {
   }
 
-  @RequestMapping(value = {"index", "/"})
+  @RequestMapping(value = { "index", "/" })
   @LoginPermit(AuthenticationType.ADMIN)
   public String index() {
     return "admin/index";

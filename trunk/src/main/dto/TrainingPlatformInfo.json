@@ -4,44 +4,40 @@
     {
       "name": "trainingPlatformInfoId",
       "type": "Integer",
-      "projectionParameters": [],
       "projections": ["ALL_FIELDS"]
     },
     {
       "name": "trainingUserId",
       "type": "Integer",
-      "projectionParameters": [],
       "projections": ["ALL_FIELDS"]
     },
     {
       "name": "trainingUserName",
       "type": "String",
-      "projectionParameters": ["trainingUser.trainingUserName"],
+      "alias": "trainingUser.trainingUserName",
       "projections": ["ALL_FIELDS"]
     },
     {
       "name": "userName",
       "type": "String",
-      "projectionParameters": [],
       "projections": ["ALL_FIELDS"]
     },
     {
       "name": "userId",
       "type": "String",
-      "projectionParameters": [],
       "projections": ["ALL_FIELDS"]
     },
     {
       "name": "type",
       "type": "Integer",
-      "projectionParameters": [],
       "projections": ["ALL_FIELDS"]
     }
   ],
   "aliases": [
     {
       "name": "trainingUser",
-      "value": "trainingUserByTrainingUserId"
+      "value": "trainingUserByTrainingUserId",
+      "projections": ["ALL_FIELDS"]
     }
   ]
 }

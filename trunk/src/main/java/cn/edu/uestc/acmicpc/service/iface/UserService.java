@@ -1,11 +1,7 @@
 package cn.edu.uestc.acmicpc.service.iface;
 
 import cn.edu.uestc.acmicpc.db.condition.impl.UserCondition;
-import cn.edu.uestc.acmicpc.db.dto.impl.user.UserCenterDto;
-import cn.edu.uestc.acmicpc.db.dto.impl.user.UserDto;
-import cn.edu.uestc.acmicpc.db.dto.impl.user.UserEditorDto;
-import cn.edu.uestc.acmicpc.db.dto.impl.user.UserListDto;
-import cn.edu.uestc.acmicpc.db.dto.impl.user.UserTypeAheadDto;
+import cn.edu.uestc.acmicpc.db.dto.impl.user.*;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
 import cn.edu.uestc.acmicpc.web.dto.PageInfo;
 

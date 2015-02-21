@@ -2,17 +2,17 @@ package cn.edu.uestc.acmicpc.service.impl;
 
 import cn.edu.uestc.acmicpc.db.criteria.impl.TrainingPlatformInfoCriteria;
 import cn.edu.uestc.acmicpc.db.dao.iface.TrainingPlatformInfoDao;
-import cn.edu.uestc.acmicpc.db.dto.field.TrainingPlatformInfoFields;
+import cn.edu.uestc.acmicpc.db.dto.Fields;
 import cn.edu.uestc.acmicpc.db.dto.impl.TrainingPlatformInfoDto;
 import cn.edu.uestc.acmicpc.db.entity.TrainingPlatformInfo;
 import cn.edu.uestc.acmicpc.service.iface.TrainingPlatformInfoService;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
 import cn.edu.uestc.acmicpc.util.exception.AppExceptionUtil;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Set;
 
 @Service
 public class TrainingPlatformInfoServiceImpl extends AbstractService
@@ -27,7 +27,7 @@ public class TrainingPlatformInfoServiceImpl extends AbstractService
 
   @Override
   public TrainingPlatformInfoDto getTrainingPlatformInfoDto(Integer trainingPlatformInfoId,
-      TrainingPlatformInfoFields trainingPlatformInfoFields) throws AppException {
+      Set<Fields> trainingPlatformInfoFields) throws AppException {
     AppExceptionUtil.assertNotNull(trainingPlatformInfoId);
     TrainingPlatformInfoCriteria trainingPlatformInfoCriteria = new TrainingPlatformInfoCriteria(
         trainingPlatformInfoFields);

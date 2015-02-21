@@ -9,19 +9,16 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import cn.edu.uestc.acmicpc.config.TestContext;
-import cn.edu.uestc.acmicpc.config.WebMVCConfig;
 import cn.edu.uestc.acmicpc.db.dto.impl.user.UserDto;
 import cn.edu.uestc.acmicpc.db.dto.impl.user.UserLoginDto;
 import cn.edu.uestc.acmicpc.db.dto.impl.user.UserRegisterDto;
+import cn.edu.uestc.acmicpc.testing.ControllerTest;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
 import cn.edu.uestc.acmicpc.util.helper.StringUtil;
 import cn.edu.uestc.acmicpc.web.oj.controller.user.UserController;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mock.web.MockHttpSession;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.web.WebAppConfiguration;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
@@ -33,8 +30,6 @@ import java.util.UUID;
 /**
  * Mock test for {@link UserController}.
  */
-@WebAppConfiguration
-@ContextConfiguration(classes = {TestContext.class, WebMVCConfig.class})
 public class UserControllerTest extends ControllerTest {
 
   private final String URL_LOGIN = "/user/login";

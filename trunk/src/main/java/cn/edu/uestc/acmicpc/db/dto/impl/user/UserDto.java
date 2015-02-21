@@ -10,9 +10,7 @@ import java.util.Date;
 import java.util.Map;
 
 /**
- * Dto for user entity. <br/>
- * <code>@Fields({ "userId", "userName", "studentId", "password", "school", "nickName", "email", "solved",
- * "tried", "type", "motto", "lastLogin", "departmentId", "departmentByDepartmentId.name" })</code>
+ * Dto for user entity.
  */
 @Fields({ "userId", "userName", "studentId", "password", "school", "nickName",
     "email", "solved",

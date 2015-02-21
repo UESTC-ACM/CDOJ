@@ -9,16 +9,7 @@ import java.util.Map;
 import java.util.Objects;
 
 /**
- * Dto for contest problem entity. <br/>
- * <code>@Fields({ "order", "problemId", "problemByProblemId.title",
- * "problemByProblemId.isSpj",
- * "problemByProblemId.javaTimeLimit", "problemByProblemId.javaMemoryLimit",
- * "problemByProblemId.timeLimit", "problemByProblemId.memoryLimit",
- * "problemByProblemId.description", "problemByProblemId.input",
- * "problemByProblemId.output",
- * "problemByProblemId.sampleInput", "problemByProblemId.sampleOutput",
- * "problemByProblemId.hint",
- * "problemByProblemId.source" })</code>
+ * Dto for contest problem entity.
  */
 @Fields({ "order", "problemId", "problemByProblemId.title",
     "problemByProblemId.isSpj",

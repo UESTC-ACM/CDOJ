@@ -1,13 +1,11 @@
 package cn.edu.uestc.acmicpc.service;
 
-import cn.edu.uestc.acmicpc.config.IntegrationTestContext;
 import cn.edu.uestc.acmicpc.db.dto.impl.LanguageDto;
 import cn.edu.uestc.acmicpc.service.iface.LanguageService;
+import cn.edu.uestc.acmicpc.testing.PersistenceITTest;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.testng.AbstractTestNGSpringContextTests;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
@@ -16,8 +14,7 @@ import java.util.List;
 /**
  * Integration test cases for {@link cn.edu.uestc.acmicpc.service.iface.LanguageService}.
  */
-@ContextConfiguration(classes = {IntegrationTestContext.class})
-public class LanguageServiceITTest extends AbstractTestNGSpringContextTests {
+public class LanguageServiceITTest extends PersistenceITTest {
 
   @Autowired
   private LanguageService languageService;

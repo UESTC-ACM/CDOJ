@@ -8,8 +8,7 @@ import cn.edu.uestc.acmicpc.util.annotation.Fields;
 import java.util.Map;
 
 /**
- * Dto used in user type ahead search list. <br/>
- * <code>@Fields({"userId", "email", "userName", "nickName"})</code>
+ * Dto used in user type ahead search list.
  */
 @Fields({ "userId", "email", "userName", "nickName" })
 public class UserTypeAheadDto implements BaseDto<User> {

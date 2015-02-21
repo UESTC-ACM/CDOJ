@@ -4,19 +4,16 @@
     {
       "name": "trainingId",
       "type": "Integer",
-      "projectionParameters": [],
       "projections": ["ALL_FIELDS", "FIELDS_FOR_LIST_PAGE"]
     },
     {
       "name": "title",
       "type": "String",
-      "projectionParameters": [],
       "projections": ["ALL_FIELDS", "FIELDS_FOR_LIST_PAGE"]
     },
     {
       "name": "description",
       "type": "String",
-      "projectionParameters": [],
       "projections": ["ALL_FIELDS"]
     }
   ]
