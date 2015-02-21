@@ -9,12 +9,14 @@ import cn.edu.uestc.acmicpc.util.exception.AppException;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Restrictions;
 
+import java.util.Set;
+
 /**
  * Team database criteria entity.
  */
 public class TeamCriteria extends BaseCriteria<Team, TeamDto> {
 
-  public TeamCriteria(Fields resultFields) {
+  public TeamCriteria(Set<Fields> resultFields) {
     super(Team.class, TeamDto.class, resultFields);
   }
 

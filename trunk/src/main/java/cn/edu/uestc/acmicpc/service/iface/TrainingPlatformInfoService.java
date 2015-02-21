@@ -1,11 +1,12 @@
 package cn.edu.uestc.acmicpc.service.iface;
 
 import cn.edu.uestc.acmicpc.db.criteria.impl.TrainingPlatformInfoCriteria;
-import cn.edu.uestc.acmicpc.db.dto.field.TrainingPlatformInfoFields;
+import cn.edu.uestc.acmicpc.db.dto.Fields;
 import cn.edu.uestc.acmicpc.db.dto.impl.TrainingPlatformInfoDto;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
 
 import java.util.List;
+import java.util.Set;
 
 /**
  * Training platform info service interface
@@ -22,8 +23,8 @@ public interface TrainingPlatformInfoService {
    * @return result
    * @throws AppException
    */
-  public TrainingPlatformInfoDto getTrainingPlatformInfoDto(Integer trainingPlatformInfoId,
-      TrainingPlatformInfoFields trainingPlatformInfoFields) throws AppException;
+  TrainingPlatformInfoDto getTrainingPlatformInfoDto(Integer trainingPlatformInfoId,
+      Set<Fields> trainingPlatformInfoFields) throws AppException;
 
   /**
    * Get all {@link TrainingPlatformInfoDto} fit in criteria.

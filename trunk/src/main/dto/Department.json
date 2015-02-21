@@ -4,13 +4,11 @@
     {
       "name": "departmentId",
       "type": "Integer",
-      "projectionParameters": [],
       "projections": ["ALL_FIELDS"]
     },
     {
       "name": "name",
       "type": "String",
-      "projectionParameters": [],
       "projections": ["ALL_FIELDS"]
     }
   ]

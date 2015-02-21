@@ -9,6 +9,7 @@ import cn.edu.uestc.acmicpc.db.dto.impl.ArticleDto;
 import cn.edu.uestc.acmicpc.testing.PersistenceITTest;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
 
+import com.google.common.collect.ImmutableSet;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.testng.Assert;
 import org.testng.annotations.Test;
@@ -24,14 +25,8 @@ public class CriteriaITTest extends PersistenceITTest {
   ArticleDao articleDao;
 
   public void testFetchArticle_withSpecifiedFields() throws AppException {
-    ArticleCriteria articleCriteria = new ArticleCriteria(new Fields() {
-      @Override
-      public FieldProjection[] getProjections() {
-        FieldProjection[] projection = new FieldProjection[1];
-        projection[0] = FieldProjection.property("articleId");
-        return projection;
-      }
-    });
+    ArticleCriteria articleCriteria = new ArticleCriteria(
+        ImmutableSet.of(ArticleFields.ARTICLE_ID));
 
     articleCriteria.startId = 1;
     articleCriteria.endId = 1;

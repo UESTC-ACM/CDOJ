@@ -1,12 +1,13 @@
 package cn.edu.uestc.acmicpc.service.iface;
 
 import cn.edu.uestc.acmicpc.db.criteria.impl.ArticleCriteria;
-import cn.edu.uestc.acmicpc.db.dto.field.ArticleFields;
+import cn.edu.uestc.acmicpc.db.dto.Fields;
 import cn.edu.uestc.acmicpc.db.dto.impl.ArticleDto;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
 import cn.edu.uestc.acmicpc.web.dto.PageInfo;
 
 import java.util.List;
+import java.util.Set;
 
 /**
  * Article service interface.
@@ -32,8 +33,7 @@ public interface ArticleService {
    * @return {@link ArticleDto} entity.
    * @throws AppException
    */
-  public ArticleDto getArticleDto(Integer articleId,
-      ArticleFields articleFields)
+  public ArticleDto getArticleDto(Integer articleId, Set<Fields> articleFields)
       throws AppException;
 
   /**

@@ -1,12 +1,14 @@
 package cn.edu.uestc.acmicpc.service.iface;
 
 import cn.edu.uestc.acmicpc.db.criteria.impl.ContestCriteria;
+import cn.edu.uestc.acmicpc.db.dto.Fields;
 import cn.edu.uestc.acmicpc.db.dto.field.ContestFields;
 import cn.edu.uestc.acmicpc.db.dto.impl.ContestDto;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
 import cn.edu.uestc.acmicpc.web.dto.PageInfo;
 
 import java.util.List;
+import java.util.Set;
 
 /**
  * Contest service interface.
@@ -33,7 +35,7 @@ public interface ContestService {
    * @throws AppException
    */
   public ContestDto getContestDtoByContestId(
-      Integer contestId, ContestFields fields) throws AppException;
+      Integer contestId, Set<Fields> fields) throws AppException;
 
   /**
    * Check if specified contest exists.

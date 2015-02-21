@@ -10,13 +10,15 @@ import cn.edu.uestc.acmicpc.util.exception.AppException;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Restrictions;
 
+import java.util.Set;
+
 /**
  * TrainingPlatform database criteria entity.
  */
 public class TrainingPlatformInfoCriteria extends
     BaseCriteria<TrainingPlatformInfo, TrainingPlatformInfoDto> {
 
-  public TrainingPlatformInfoCriteria(Fields resultFields) {
+  public TrainingPlatformInfoCriteria(Set<Fields> resultFields) {
     super(TrainingPlatformInfo.class, TrainingPlatformInfoDto.class, resultFields);
   }
 

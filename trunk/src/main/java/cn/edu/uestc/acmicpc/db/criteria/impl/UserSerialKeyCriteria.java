@@ -9,9 +9,11 @@ import cn.edu.uestc.acmicpc.util.exception.AppException;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Restrictions;
 
+import java.util.Set;
+
 public class UserSerialKeyCriteria extends BaseCriteria<UserSerialKey, UserSerialKeyDto> {
 
-  public UserSerialKeyCriteria(Fields resultFields) {
+  public UserSerialKeyCriteria(Set<Fields> resultFields) {
     super(UserSerialKey.class, UserSerialKeyDto.class, resultFields);
   }
 

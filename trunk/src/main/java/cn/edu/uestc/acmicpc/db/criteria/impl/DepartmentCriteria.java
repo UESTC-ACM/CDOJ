@@ -5,12 +5,14 @@ import cn.edu.uestc.acmicpc.db.dto.Fields;
 import cn.edu.uestc.acmicpc.db.dto.impl.DepartmentDto;
 import cn.edu.uestc.acmicpc.db.entity.Department;
 
+import java.util.Set;
+
 /**
  * Article database criteria entity.
  */
 public class DepartmentCriteria extends BaseCriteria<Department, DepartmentDto> {
 
-  public DepartmentCriteria(Fields resultFields) {
+  public DepartmentCriteria(Set<Fields> resultFields) {
     super(Department.class, DepartmentDto.class, resultFields);
   }
 
