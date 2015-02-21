@@ -5,6 +5,12 @@ package cn.edu.uestc.acmicpc.db.dto;
  */
 public class FieldProjection {
 
+  public enum ProjectionType {
+    ALIAS,
+    DB_FIELD,
+    FIELD,
+  }
+
   /**
    * Field in database
    */
@@ -18,7 +24,7 @@ public class FieldProjection {
   /**
    * Projection type
    */
-  private String type;
+  private ProjectionType type;
 
   public String getField() {
     return field;
@@ -36,29 +42,37 @@ public class FieldProjection {
     this.alias = alias;
   }
 
-  public String getType() {
+  public ProjectionType getType() {
     return type;
   }
 
-  public void setType(String type) {
+  public void setType(ProjectionType type) {
     this.type = type;
   }
 
-  public FieldProjection(String field, String alias, String type) {
+  public FieldProjection(String field, String alias, ProjectionType type) {
     this.field = field;
     this.alias = alias;
     this.type = type;
   }
 
-  public static FieldProjection property(String field, String alias) {
-    return new FieldProjection(field, alias, "property");
+  public static FieldProjection dbField(String field, String alias) {
+    return new FieldProjection(field, alias, ProjectionType.DB_FIELD);
   }
 
-  public static FieldProjection property(String field) {
-    return new FieldProjection(field, field, "property");
+  public static FieldProjection dbField(String field) {
+    return dbField(field, field);
+  }
+
+  public static FieldProjection field(String field, String alias) {
+    return new FieldProjection(field, alias, ProjectionType.FIELD);
+  }
+
+  public static FieldProjection field(String field) {
+    return field(field, field);
   }
 
   public static FieldProjection alias(String field, String alias) {
-    return new FieldProjection(field, alias, "alias");
+    return new FieldProjection(field, alias, ProjectionType.ALIAS);
   }
 }

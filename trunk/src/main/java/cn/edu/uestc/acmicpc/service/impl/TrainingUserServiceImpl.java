@@ -2,18 +2,18 @@ package cn.edu.uestc.acmicpc.service.impl;
 
 import cn.edu.uestc.acmicpc.db.criteria.impl.TrainingUserCriteria;
 import cn.edu.uestc.acmicpc.db.dao.iface.TrainingUserDao;
-import cn.edu.uestc.acmicpc.db.dto.field.TrainingUserFields;
+import cn.edu.uestc.acmicpc.db.dto.Fields;
 import cn.edu.uestc.acmicpc.db.dto.impl.TrainingUserDto;
 import cn.edu.uestc.acmicpc.db.entity.TrainingUser;
 import cn.edu.uestc.acmicpc.service.iface.TrainingUserService;
 import cn.edu.uestc.acmicpc.util.enums.TrainingUserType;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
 import cn.edu.uestc.acmicpc.util.exception.AppExceptionUtil;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Set;
 
 @Service
 public class TrainingUserServiceImpl extends AbstractService implements TrainingUserService {
@@ -27,7 +27,7 @@ public class TrainingUserServiceImpl extends AbstractService implements Training
 
   @Override
   public TrainingUserDto getTrainingUserDto(Integer trainingUserId,
-      TrainingUserFields trainingUserFields) throws AppException {
+      Set<Fields> trainingUserFields) throws AppException {
     AppExceptionUtil.assertNotNull(trainingUserId);
     TrainingUserCriteria trainingUserCriteria = new TrainingUserCriteria(trainingUserFields);
     trainingUserCriteria.startId = trainingUserCriteria.endId = trainingUserId;

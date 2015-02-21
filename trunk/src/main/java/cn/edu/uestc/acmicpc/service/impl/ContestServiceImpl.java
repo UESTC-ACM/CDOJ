@@ -2,7 +2,7 @@ package cn.edu.uestc.acmicpc.service.impl;
 
 import cn.edu.uestc.acmicpc.db.criteria.impl.ContestCriteria;
 import cn.edu.uestc.acmicpc.db.dao.iface.ContestDao;
-import cn.edu.uestc.acmicpc.db.dto.FieldProjection;
+import cn.edu.uestc.acmicpc.db.dto.Fields;
 import cn.edu.uestc.acmicpc.db.dto.field.ContestFields;
 import cn.edu.uestc.acmicpc.db.dto.impl.ContestDto;
 import cn.edu.uestc.acmicpc.db.entity.Contest;
@@ -11,13 +11,14 @@ import cn.edu.uestc.acmicpc.util.exception.AppException;
 import cn.edu.uestc.acmicpc.util.exception.AppExceptionUtil;
 import cn.edu.uestc.acmicpc.util.settings.Settings;
 import cn.edu.uestc.acmicpc.web.dto.PageInfo;
-
+import com.google.common.collect.ImmutableSet;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 @Service
 @Primary
@@ -35,8 +36,7 @@ public class ContestServiceImpl extends AbstractService implements ContestServic
 
   @Override
   public List<Integer> getAllVisibleContestIds() throws AppException {
-    ContestCriteria criteria = new ContestCriteria(
-        () -> new FieldProjection[] { FieldProjection.property("contestId") });
+    ContestCriteria criteria = new ContestCriteria(ImmutableSet.of(ContestFields.CONTEST_ID));
     criteria.isVisible = true;
     List<ContestDto> contests = contestDao.findAll(criteria.getCriteria(), null);
     List<Integer> results = new ArrayList<>(contests.size());
@@ -46,7 +46,7 @@ public class ContestServiceImpl extends AbstractService implements ContestServic
 
   @Override
   public ContestDto getContestDtoByContestId(
-      Integer contestId, ContestFields fields) throws AppException {
+      Integer contestId, Set<Fields> fields) throws AppException {
     AppExceptionUtil.assertNotNull(contestId);
     ContestCriteria criteria = new ContestCriteria(fields);
     criteria.contestId = contestId;
@@ -56,8 +56,7 @@ public class ContestServiceImpl extends AbstractService implements ContestServic
   @Override
   public Boolean checkContestExists(Integer contestId) throws AppException {
     AppExceptionUtil.assertNotNull(contestId);
-    ContestCriteria criteria = new ContestCriteria(
-        () -> new FieldProjection[] { FieldProjection.property("contestId") });
+    ContestCriteria criteria = new ContestCriteria(ImmutableSet.of(ContestFields.CONTEST_ID));
     criteria.contestId = contestId;
     return contestDao.count(criteria.getCriteria()) == 1;
   }

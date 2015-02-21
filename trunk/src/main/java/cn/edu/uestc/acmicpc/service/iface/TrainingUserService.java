@@ -1,11 +1,12 @@
 package cn.edu.uestc.acmicpc.service.iface;
 
 import cn.edu.uestc.acmicpc.db.criteria.impl.TrainingUserCriteria;
-import cn.edu.uestc.acmicpc.db.dto.field.TrainingUserFields;
+import cn.edu.uestc.acmicpc.db.dto.Fields;
 import cn.edu.uestc.acmicpc.db.dto.impl.TrainingUserDto;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
 
 import java.util.List;
+import java.util.Set;
 
 /**
  * Training user service interface.
@@ -23,7 +24,7 @@ public interface TrainingUserService {
    * @throws AppException
    */
   public TrainingUserDto getTrainingUserDto(Integer trainingUserId,
-      TrainingUserFields trainingUserFields) throws AppException;
+      Set<Fields> trainingUserFields) throws AppException;
 
   /**
    * Get all {@link TrainingUserDto} fit in criteria.

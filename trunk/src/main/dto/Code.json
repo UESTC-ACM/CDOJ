@@ -4,19 +4,16 @@
     {
       "name": "codeId",
       "type": "Integer",
-      "projectionParameters": [],
       "projections": ["ALL_FIELDS"]
     },
     {
       "name": "content",
       "type": "String",
-      "projectionParameters": [],
       "projections": ["ALL_FIELDS"]
     },
     {
       "name": "share",
       "type": "Boolean",
-      "projectionParameters": [],
       "projections": ["ALL_FIELDS"]
     }
   ]

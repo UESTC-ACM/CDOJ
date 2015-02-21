@@ -11,10 +11,11 @@ import org.hibernate.criterion.LogicalExpression;
 import org.hibernate.criterion.Restrictions;
 
 import java.sql.Timestamp;
+import java.util.Set;
 
 public class ContestCriteria extends BaseCriteria<Contest, ContestDto> {
 
-  public ContestCriteria(Fields resultFields) {
+  public ContestCriteria(Set<Fields> resultFields) {
     super(Contest.class, ContestDto.class, resultFields);
   }
 

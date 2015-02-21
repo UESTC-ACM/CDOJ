@@ -4,31 +4,26 @@
     {
       "name": "contestUserId",
       "type": "Integer",
-      "projectionParameters": [],
       "projections": ["ALL_FIELDS"]
     },
     {
       "name": "contestId",
       "type": "Integer",
-      "projectionParameters": [],
       "projections": ["ALL_FIELDS"]
     },
     {
       "name": "userId",
       "type": "Integer",
-      "projectionParameters": [],
       "projections": ["ALL_FIELDS"]
     },
     {
       "name": "status",
       "type": "Byte",
-      "projectionParameters": [],
       "projections": ["ALL_FIELDS"]
     },
     {
       "name": "comment",
       "type": "String",
-      "projectionParameters": [],
       "projections": ["ALL_FIELDS"]
     }
   ]

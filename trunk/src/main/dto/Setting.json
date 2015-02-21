@@ -4,25 +4,21 @@
     {
       "name": "settingId",
       "type": "Integer",
-      "projectionParameters": [],
       "projections": ["ALL_FIELDS"]
     },
     {
       "name": "name",
       "type": "String",
-      "projectionParameters": [],
       "projections": ["ALL_FIELDS"]
     },
     {
       "name": "description",
       "type": "String",
-      "projectionParameters": [],
       "projections": ["ALL_FIELDS"]
     },
     {
       "name": "value",
       "type": "String",
-      "projectionParameters": [],
       "projections": ["ALL_FIELDS"]
     }
   ]

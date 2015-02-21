@@ -9,12 +9,14 @@ import cn.edu.uestc.acmicpc.util.exception.AppException;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Restrictions;
 
+import java.util.Set;
+
 /**
  * Article database criteria entity.
  */
 public class ArticleCriteria extends BaseCriteria<Article, ArticleDto> {
 
-  public ArticleCriteria(Fields resultFields) {
+  public ArticleCriteria(Set<Fields> resultFields) {
     super(Article.class, ArticleDto.class, resultFields);
   }
 
