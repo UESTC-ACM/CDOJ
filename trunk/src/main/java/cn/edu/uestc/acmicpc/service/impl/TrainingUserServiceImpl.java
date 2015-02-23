@@ -9,6 +9,7 @@ import cn.edu.uestc.acmicpc.service.iface.TrainingUserService;
 import cn.edu.uestc.acmicpc.util.enums.TrainingUserType;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
 import cn.edu.uestc.acmicpc.util.exception.AppExceptionUtil;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
