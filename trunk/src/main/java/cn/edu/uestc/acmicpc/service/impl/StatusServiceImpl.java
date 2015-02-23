@@ -1,25 +1,27 @@
 package cn.edu.uestc.acmicpc.service.impl;
 
-import cn.edu.uestc.acmicpc.db.condition.base.Condition;
-import cn.edu.uestc.acmicpc.db.condition.impl.StatusCondition;
+import cn.edu.uestc.acmicpc.db.criteria.StatusCriteria;
 import cn.edu.uestc.acmicpc.db.dao.iface.StatusDao;
-import cn.edu.uestc.acmicpc.db.dto.impl.status.StatusDto;
-import cn.edu.uestc.acmicpc.db.dto.impl.status.StatusForJudgeDto;
-import cn.edu.uestc.acmicpc.db.dto.impl.status.StatusInformationDto;
-import cn.edu.uestc.acmicpc.db.dto.impl.status.StatusListDto;
+import cn.edu.uestc.acmicpc.db.dto.field.StatusFields;
+import cn.edu.uestc.acmicpc.db.dto.impl.StatusDto;
 import cn.edu.uestc.acmicpc.db.entity.Status;
 import cn.edu.uestc.acmicpc.service.iface.StatusService;
 import cn.edu.uestc.acmicpc.util.enums.OnlineJudgeResultType;
 import cn.edu.uestc.acmicpc.util.enums.OnlineJudgeReturnType;
-import cn.edu.uestc.acmicpc.util.enums.ProblemType;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
+import cn.edu.uestc.acmicpc.util.exception.AppExceptionUtil;
+import cn.edu.uestc.acmicpc.util.helper.EnumTypeUtil;
 import cn.edu.uestc.acmicpc.web.dto.PageInfo;
+
+import org.hibernate.criterion.DetachedCriteria;
+import org.hibernate.criterion.Projections;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * Implementation for {@link StatusService}.
@@ -34,86 +36,119 @@ public class StatusServiceImpl extends AbstractService implements StatusService 
     this.statusDao = statusDao;
   }
 
-  @SuppressWarnings("unchecked")
   @Override
-  public List<Integer> findAllUserAcceptedProblemIds(Integer userId, Boolean isAdmin)
+  public List<Integer> findAllProblemIdsThatUserSolved(Integer userId, Boolean isAdmin)
       throws AppException {
-    StatusCondition statusCondition = new StatusCondition();
-    statusCondition.userId = userId;
-    statusCondition.results.add(OnlineJudgeResultType.OJ_AC);
-    statusCondition.isForAdmin = isAdmin;
-    return (List<Integer>) statusDao.findAll("distinct problemByProblemId.problemId",
-        statusCondition.getCondition());
+    return findAllProblemIdsThatUser(true, userId, isAdmin);
   }
 
-  @SuppressWarnings("unchecked")
   @Override
-  public List<Integer> findAllUserTriedProblemIds(Integer userId, Boolean isAdmin)
+  public List<Integer> findAllProblemIdsThatUserTried(Integer userId, Boolean isAdmin)
       throws AppException {
-    StatusCondition statusCondition = new StatusCondition();
-    statusCondition.userId = userId;
-    statusCondition.isForAdmin = isAdmin;
-    return (List<Integer>) statusDao.findAll("distinct problemByProblemId.problemId",
-        statusCondition.getCondition());
+    return findAllProblemIdsThatUser(false, userId, isAdmin);
+  }
+
+  private List<Integer> findAllProblemIdsThatUser(Boolean solved, Integer userId, Boolean isAdmin)
+      throws AppException {
+    StatusCriteria statusCriteria = new StatusCriteria();
+    statusCriteria.userId = userId;
+    if (solved) {
+      statusCriteria.results.add(OnlineJudgeResultType.OJ_AC);
+    }
+    statusCriteria.isForAdmin = isAdmin;
+    DetachedCriteria criteria = statusCriteria.getCriteria();
+    criteria.setProjection(Projections.distinct(
+        Projections.property(StatusFields.PROBLEM_ID.getProjection().getName())));
+
+    return (List<Integer>) statusDao.customFindAll(criteria, null, null);
   }
 
   @Override
-  public Long countProblemsUserTried(Integer userId) throws AppException {
-    StatusCondition statusCondition = new StatusCondition();
-    statusCondition.userId = userId;
-    statusCondition.problemType = ProblemType.NORMAL;
-    statusCondition.isProblemVisible = Boolean.TRUE;
-    return statusDao.customCount("distinct problemId", statusCondition.getCondition());
+  public Long countProblemsThatUserSolved(Integer userId, Boolean isAdmin) throws AppException {
+    return countProblemsThatUser(true, userId, isAdmin);
   }
 
   @Override
-  public Long countProblemsUserAccepted(Integer userId) throws AppException {
-    StatusCondition statusCondition = new StatusCondition();
-    statusCondition.userId = userId;
-    statusCondition.results.add(OnlineJudgeResultType.OJ_AC);
-    statusCondition.problemType = ProblemType.NORMAL;
-    statusCondition.isProblemVisible = Boolean.TRUE;
-    return statusDao.customCount("distinct problemId", statusCondition.getCondition());
+  public Long countProblemsThatUserTried(Integer userId, Boolean isAdmin) throws AppException {
+    return countProblemsThatUser(false, userId, isAdmin);
+  }
+
+  private Long countProblemsThatUser(Boolean solved, Integer userId, Boolean isAdmin)
+      throws AppException {
+    StatusCriteria statusCriteria = new StatusCriteria();
+    statusCriteria.userId = userId;
+    if (solved) {
+      statusCriteria.results.add(OnlineJudgeResultType.OJ_AC);
+    }
+    statusCriteria.isForAdmin = isAdmin;
+    DetachedCriteria criteria = statusCriteria.getCriteria();
+    criteria.setProjection(
+        Projections.countDistinct(StatusFields.PROBLEM_ID.getProjection().getName()));
+
+    return statusDao.customCount(criteria);
   }
 
   @Override
-  public Long countUsersTriedProblem(Integer problemId) throws AppException {
-    StatusCondition statusCondition = new StatusCondition();
-    statusCondition.problemId = problemId;
-    return statusDao.customCount("distinct userId", statusCondition.getCondition());
+  public Long countUsersThatTriedThisProblem(Integer problemId) throws AppException {
+    return countUsersThatDoingThisProblem(false, problemId);
   }
 
   @Override
-  public Long countUsersAcceptedProblem(Integer problemId) throws AppException {
-    StatusCondition statusCondition = new StatusCondition();
-    statusCondition.problemId = problemId;
-    statusCondition.results.add(OnlineJudgeResultType.OJ_AC);
-    return statusDao.customCount("distinct userId", statusCondition.getCondition());
+  public Long countUsersThatSolvedThisProblem(Integer problemId)
+      throws AppException {
+    return countUsersThatDoingThisProblem(true, problemId);
+  }
+
+  private Long countUsersThatDoingThisProblem(Boolean solved, Integer problemId)
+      throws AppException {
+    StatusCriteria statusCriteria = new StatusCriteria();
+    statusCriteria.problemId = problemId;
+    if (solved) {
+      statusCriteria.results.add(OnlineJudgeResultType.OJ_AC);
+    }
+    statusCriteria.isForAdmin = false;
+    DetachedCriteria criteria = statusCriteria.getCriteria();
+    criteria.setProjection(
+        Projections.countDistinct(StatusFields.USER_ID.getProjection().getName()));
+
+    return statusDao.customCount(criteria);
   }
 
   @Override
-  public Long count(StatusCondition condition) throws AppException {
-    return statusDao.count(condition.getCondition());
+  public Long count(StatusCriteria criteria) throws AppException {
+    return statusDao.count(criteria);
   }
 
   @Override
-  public List<StatusListDto> getStatusList(StatusCondition statusCondition,
-      PageInfo pageInfo) throws AppException {
-    Condition condition = statusCondition.getCondition();
-    condition.setPageInfo(pageInfo);
-    return statusDao.findAll(StatusListDto.class, StatusListDto.builder(),
-        condition);
+  public List<StatusDto> getStatusList(StatusCriteria statusCriteria,
+      PageInfo pageInfo, Set<StatusFields> fields) throws AppException {
+    List<StatusDto> result = statusDao.findAll(statusCriteria, pageInfo, fields);
+    for (StatusDto statusDto : result) {
+      updateStatusDto(statusDto, fields);
+    }
+    return result;
   }
 
-  @Override
-  public List<StatusListDto> getStatusList(StatusCondition condition) throws AppException {
-    return statusDao
-        .findAll(StatusListDto.class, StatusListDto.builder(), condition.getCondition());
+  private void updateStatusDto(StatusDto statusDto, Set<StatusFields> fields) {
+    for (StatusFields field : fields) {
+      switch (field) {
+        case RESULT:
+          statusDto.setResult(EnumTypeUtil.getReturnDescription(
+              statusDto.getResultId(), statusDto.getCaseNumber()));
+          if (statusDto.getResultId() != OnlineJudgeReturnType.OJ_AC.ordinal()) {
+            statusDto.setTimeCost(null);
+            statusDto.setMemoryCost(null);
+          }
+          break;
+        default:
+          break;
+      }
+    }
   }
 
   private void updateStatusByStatusDto(Status status, StatusDto statusDto) {
-    if (statusDto.getResult() != null) {
-      status.setResult(statusDto.getResult());
+    if (statusDto.getResultId() != null) {
+      status.setResult(statusDto.getResultId());
     }
     if (statusDto.getMemoryCost() != null) {
       status.setMemoryCost(statusDto.getMemoryCost());
@@ -158,65 +193,46 @@ public class StatusServiceImpl extends AbstractService implements StatusService 
   }
 
   @Override
-  public StatusInformationDto getStatusInformation(Integer statusId)
+  public StatusDto getStatusDto(Integer statusId, Set<StatusFields> fields)
       throws AppException {
-    return statusDao.getDtoByUniqueField(StatusInformationDto.class,
-        StatusInformationDto.builder(), "statusId", statusId);
+    StatusCriteria statusCriteria = new StatusCriteria();
+    statusCriteria.startId = statusId;
+    statusCriteria.endId = statusId;
+    statusCriteria.isForAdmin = true;
+    return statusDao.getDtoByUniqueField(statusCriteria, fields);
   }
 
   @Override
-  public void rejudge(StatusCondition statusCondition) throws AppException {
+  public void rejudge(StatusCriteria statusCriteria) throws AppException {
     Map<String, Object> properties = new HashMap<>();
     properties.put("result", OnlineJudgeReturnType.OJ_REJUDGING.ordinal());
-    statusCondition.isProblemVisible = null;
-    statusCondition.userName = null;
-    statusCondition.isForAdmin = true;
-    statusDao.updateEntitiesByCondition(properties,
-        statusCondition.getCondition());
+    statusCriteria.isProblemVisible = null;
+    statusCriteria.userName = null;
+    statusCriteria.isForAdmin = true;
+    // TODO(Yun Li): Implement it.
+    //statusDao.updateEntitiesByCondition(properties,
+    //    statusCondition.getCondition());
   }
 
   @Override
-  public List<StatusInformationDto> getStatusInformationDtoList(StatusCondition statusCondition)
-      throws AppException {
-    return statusDao.findAll(StatusInformationDto.class,
-        StatusInformationDto.builder(), statusCondition.getCondition());
-  }
-
-  @Override
-  public List<StatusForJudgeDto> getQueuingStatus(boolean isFirstTime) throws AppException {
-    StatusCondition statusCondition = new StatusCondition();
-    statusCondition.results.add(OnlineJudgeResultType.OJ_WAIT);
+  public List<StatusDto> getQueuingStatus(boolean isFirstTime) throws AppException {
+    StatusCriteria statusCriteria = new StatusCriteria();
+    statusCriteria.results.add(OnlineJudgeResultType.OJ_WAIT);
     if (isFirstTime) {
-      statusCondition.results.add(OnlineJudgeResultType.OJ_JUDGING);
+      statusCriteria.results.add(OnlineJudgeResultType.OJ_JUDGING);
     }
-    statusCondition.isForAdmin = true;
-    statusCondition.orderFields = "statusId";
-    statusCondition.orderAsc = "true";
-    return statusDao.findAll(StatusForJudgeDto.class,
-        StatusForJudgeDto.builder(), statusCondition.getCondition());
+    statusCriteria.isForAdmin = true;
+    statusCriteria.orderFields = "statusId";
+    statusCriteria.orderAsc = "true";
+    return statusDao.findAll(statusCriteria, null, StatusFields.FIELDS_FOR_JUDGE);
   }
 
   @Override
-  public void updateStatusByStatusForJudgeDto(
-      StatusForJudgeDto statusForJudgeDto) throws AppException {
-    Map<String, Object> properties = new HashMap<>();
-    if (statusForJudgeDto.getResult() != null) {
-      properties.put("result", statusForJudgeDto.getResult());
-    }
-    if (statusForJudgeDto.getCaseNumber() != null) {
-      properties.put("caseNumber", statusForJudgeDto.getCaseNumber());
-    }
-    if (statusForJudgeDto.getTimeCost() != null) {
-      properties.put("timeCost", statusForJudgeDto.getTimeCost());
-    }
-    if (statusForJudgeDto.getMemoryCost() != null) {
-      properties.put("memoryCost", statusForJudgeDto.getMemoryCost());
-    }
-    if (statusForJudgeDto.getCompileInfoId() != null) {
-      properties.put("compileInfoId", statusForJudgeDto.getCompileInfoId());
-    }
-    statusDao.updateEntitiesByField(properties, "statusId", statusForJudgeDto
-        .getStatusId().toString());
+  public void updateStatus(StatusDto statusDto) throws AppException {
+    Status status = statusDao.get(statusDto.getStatusId());
+    AppExceptionUtil.assertNotNull(status);
+    AppExceptionUtil.assertNotNull(status.getStatusId());
+    updateStatusByStatusDto(status, statusDto);
+    statusDao.addOrUpdate(status);
   }
-
 }

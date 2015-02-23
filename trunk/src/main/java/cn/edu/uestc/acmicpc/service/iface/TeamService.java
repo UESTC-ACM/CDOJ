@@ -1,11 +1,13 @@
 package cn.edu.uestc.acmicpc.service.iface;
 
-import cn.edu.uestc.acmicpc.db.criteria.impl.TeamCriteria;
+import cn.edu.uestc.acmicpc.db.criteria.TeamCriteria;
+import cn.edu.uestc.acmicpc.db.dto.field.TeamFields;
 import cn.edu.uestc.acmicpc.db.dto.impl.TeamDto;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
 import cn.edu.uestc.acmicpc.web.dto.PageInfo;
 
 import java.util.List;
+import java.util.Set;
 
 /**
  * Team service interface.
@@ -15,8 +17,7 @@ public interface TeamService {
   /**
    * Check whether a team exists.
    *
-   * @param teamName
-   *          team name
+   * @param teamName team name
    * @return true if exists
    * @throws AppException
    */
@@ -25,10 +26,8 @@ public interface TeamService {
   /**
    * Create a new team.
    *
-   * @param teamName
-   *          team's name
-   * @param leaderId
-   *          team leader's user id
+   * @param teamName team's name
+   * @param leaderId team leader's user id
    * @return team id
    * @throws AppException
    */
@@ -37,18 +36,16 @@ public interface TeamService {
   /**
    * Get {@link TeamDto} entity by team's id
    *
-   * @param teamId
-   *          team's id
+   * @param teamId team's id
    * @return {@link cn.edu.uestc.acmicpc.db.dto.impl.TeamDto} entity
    * @throws AppException
    */
-  public TeamDto getTeamDtoByTeamId(Integer teamId) throws AppException;
+  public TeamDto getTeamDtoByTeamId(Integer teamId, Set<TeamFields> fields) throws AppException;
 
   /**
    * Counts the number of team fit in condition.
    *
-   * @param criteria
-   *          {@link cn.edu.uestc.acmicpc.db.criteria.impl.TeamCriteria} entity.
+   * @param criteria {@link cn.edu.uestc.acmicpc.db.criteria.TeamCriteria} entity.
    * @return total number of team fit in the condition.
    * @throws AppException
    */
@@ -57,20 +54,18 @@ public interface TeamService {
   /**
    * Get the teams fit in the criteria and page range.
    *
-   * @param criteria
-   *          {@link TeamCriteria} entity.
-   * @param pageInfo
-   *          {@link PageInfo} entity.
+   * @param criteria {@link TeamCriteria} entity.
+   * @param pageInfo {@link PageInfo} entity.
    * @return List of {@link cn.edu.uestc.acmicpc.db.dto.impl.TeamDto} entities.
    * @throws AppException
    */
-  public List<TeamDto> getTeams(TeamCriteria criteria, PageInfo pageInfo) throws AppException;
+  public List<TeamDto> getTeams(TeamCriteria criteria, PageInfo pageInfo, Set<TeamFields> fields)
+      throws AppException;
 
   /**
    * Get team id by team name
    *
-   * @param teamName
-   *          team's name
+   * @param teamName team's name
    * @return team's id
    * @throws AppException
    */
@@ -79,8 +74,7 @@ public interface TeamService {
   /**
    * Delete team in database.
    *
-   * @param teamDto
-   *          {@link TeamDto} entity
+   * @param teamDto {@link TeamDto} entity
    * @throws AppException
    */
   public void deleteTeam(TeamDto teamDto) throws AppException;

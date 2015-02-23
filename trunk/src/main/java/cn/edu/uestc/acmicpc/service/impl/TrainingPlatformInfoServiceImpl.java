@@ -1,13 +1,14 @@
 package cn.edu.uestc.acmicpc.service.impl;
 
-import cn.edu.uestc.acmicpc.db.criteria.impl.TrainingPlatformInfoCriteria;
+import cn.edu.uestc.acmicpc.db.criteria.TrainingPlatformInfoCriteria;
 import cn.edu.uestc.acmicpc.db.dao.iface.TrainingPlatformInfoDao;
-import cn.edu.uestc.acmicpc.db.dto.Fields;
+import cn.edu.uestc.acmicpc.db.dto.field.TrainingPlatformInfoFields;
 import cn.edu.uestc.acmicpc.db.dto.impl.TrainingPlatformInfoDto;
 import cn.edu.uestc.acmicpc.db.entity.TrainingPlatformInfo;
 import cn.edu.uestc.acmicpc.service.iface.TrainingPlatformInfoService;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
 import cn.edu.uestc.acmicpc.util.exception.AppExceptionUtil;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -27,18 +28,19 @@ public class TrainingPlatformInfoServiceImpl extends AbstractService
 
   @Override
   public TrainingPlatformInfoDto getTrainingPlatformInfoDto(Integer trainingPlatformInfoId,
-      Set<Fields> trainingPlatformInfoFields) throws AppException {
+      Set<TrainingPlatformInfoFields> fields) throws AppException {
     AppExceptionUtil.assertNotNull(trainingPlatformInfoId);
-    TrainingPlatformInfoCriteria trainingPlatformInfoCriteria = new TrainingPlatformInfoCriteria(
-        trainingPlatformInfoFields);
-    trainingPlatformInfoCriteria.startId = trainingPlatformInfoCriteria.endId = trainingPlatformInfoId;
-    return trainingPlatformInfoDao.getDtoByUniqueField(trainingPlatformInfoCriteria.getCriteria());
+    TrainingPlatformInfoCriteria trainingPlatformInfoCriteria = new TrainingPlatformInfoCriteria();
+    trainingPlatformInfoCriteria.startId = trainingPlatformInfoCriteria.endId =
+        trainingPlatformInfoId;
+    return trainingPlatformInfoDao.getDtoByUniqueField(trainingPlatformInfoCriteria, fields);
   }
 
   @Override
   public List<TrainingPlatformInfoDto> getTrainingPlatformInfoList(
-      TrainingPlatformInfoCriteria trainingPlatformInfoCriteria) throws AppException {
-    return trainingPlatformInfoDao.findAll(trainingPlatformInfoCriteria.getCriteria(), null);
+      TrainingPlatformInfoCriteria trainingPlatformInfoCriteria,
+      Set<TrainingPlatformInfoFields> fields) throws AppException {
+    return trainingPlatformInfoDao.findAll(trainingPlatformInfoCriteria, null, fields);
   }
 
   @Override

@@ -12,6 +12,7 @@ import cn.edu.uestc.acmicpc.util.enums.ContestRegistryStatusType;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
 import cn.edu.uestc.acmicpc.util.exception.AppExceptionUtil;
 import cn.edu.uestc.acmicpc.web.dto.PageInfo;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
@@ -110,12 +111,12 @@ public class ContestTeamServiceImpl extends AbstractService implements ContestTe
     StringBuilder hqlBuilder = new StringBuilder();
     hqlBuilder
         .append("select contestTeam.teamId from ContestTeam contestTeam, TeamUser teamUser where")
-        // Contest id
+            // Contest id
         .append(" contestTeam.contestId = ").append(contestId)
         // Team should be accepted
         .append(" and contestTeam.status = ").append(ContestRegistryStatusType.ACCEPTED.ordinal())
         .append(" and contestTeam.teamId = teamUser.teamId")
-        // User id
+            // User id
         .append(" and teamUser.userId = ").append(userId)
         // User should be allowed
         .append(" and teamUser.allow = true");

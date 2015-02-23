@@ -64,13 +64,15 @@
     {
       "name": "ownerName",
       "type": "String",
-      "alias": "owner.userName",
+      "field": "owner.userName",
+      "aliases": ["owner"],
       "projections": ["ALL_FIELDS", "FIELDS_FOR_LIST_PAGE"]
     },
     {
       "name": "ownerEmail",
       "type": "String",
-      "alias": "owner.email",
+      "field": "owner.email",
+      "aliases": ["owner"],
       "projections": ["ALL_FIELDS", "FIELDS_FOR_LIST_PAGE"]
     },
     {
@@ -83,8 +85,7 @@
   "aliases": [
     {
       "name": "owner",
-      "value": "userByUserId",
-      "projections": ["ALL_FIELDS", "FIELDS_FOR_LIST_PAGE"]
+      "value": "userByUserId"
     }
   ]
 }

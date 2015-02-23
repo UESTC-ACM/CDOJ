@@ -11,8 +11,7 @@ public interface SettingService {
   /**
    * Get settings detail by settings name.
    *
-   * @param settingId
-   *          setting's id
+   * @param settingId setting's id
    * @return {@link cn.edu.uestc.acmicpc.db.dto.impl.SettingDto} entity.
    * @throws AppException
    */
@@ -22,8 +21,7 @@ public interface SettingService {
    * Update setting by content of
    * {@link cn.edu.uestc.acmicpc.db.dto.impl.SettingDto} entity.
    *
-   * @param settingDto
-   *          {@link cn.edu.uestc.acmicpc.db.dto.impl.SettingDto} entity.
+   * @param settingDto {@link cn.edu.uestc.acmicpc.db.dto.impl.SettingDto} entity.
    * @throws AppException
    */
   public void updateSettingBySettingDto(SettingDto settingDto) throws AppException;

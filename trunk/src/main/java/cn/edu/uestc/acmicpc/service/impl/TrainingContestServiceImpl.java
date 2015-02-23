@@ -1,8 +1,8 @@
 package cn.edu.uestc.acmicpc.service.impl;
 
-import cn.edu.uestc.acmicpc.db.criteria.impl.TrainingContestCriteria;
+import cn.edu.uestc.acmicpc.db.criteria.TrainingContestCriteria;
 import cn.edu.uestc.acmicpc.db.dao.iface.TrainingContestDao;
-import cn.edu.uestc.acmicpc.db.dto.Fields;
+import cn.edu.uestc.acmicpc.db.dto.field.TrainingContestFields;
 import cn.edu.uestc.acmicpc.db.dto.impl.TrainingContestDto;
 import cn.edu.uestc.acmicpc.db.entity.TrainingContest;
 import cn.edu.uestc.acmicpc.service.iface.TrainingContestService;
@@ -10,6 +10,7 @@ import cn.edu.uestc.acmicpc.util.enums.TrainingContestType;
 import cn.edu.uestc.acmicpc.util.enums.TrainingPlatformType;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
 import cn.edu.uestc.acmicpc.util.exception.AppExceptionUtil;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -29,18 +30,20 @@ public class TrainingContestServiceImpl extends AbstractService
 
   @Override
   public TrainingContestDto getTrainingContestDto(Integer trainingContestId,
-      Set<Fields> trainingContestFields) throws AppException {
+      Set<TrainingContestFields> trainingContestFields) throws AppException {
     AppExceptionUtil.assertNotNull(trainingContestId);
-    TrainingContestCriteria trainingContestCriteria = new TrainingContestCriteria(
-        trainingContestFields);
+    TrainingContestCriteria trainingContestCriteria = new TrainingContestCriteria();
     trainingContestCriteria.startId = trainingContestCriteria.endId = trainingContestId;
-    return trainingContestDao.getDtoByUniqueField(trainingContestCriteria.getCriteria());
+    return trainingContestDao.getDtoByUniqueField(trainingContestCriteria,
+        trainingContestFields);
   }
 
   @Override
   public List<TrainingContestDto> getTrainingContestList(
-      TrainingContestCriteria trainingContestCriteria) throws AppException {
-    return trainingContestDao.findAll(trainingContestCriteria.getCriteria(), null);
+      TrainingContestCriteria trainingContestCriteria,
+      Set<TrainingContestFields> trainingContestFields) throws AppException {
+    return trainingContestDao.findAll(trainingContestCriteria, null,
+        trainingContestFields);
   }
 
   @Override

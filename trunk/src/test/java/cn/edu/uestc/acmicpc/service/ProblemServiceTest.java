@@ -1,11 +1,5 @@
 package cn.edu.uestc.acmicpc.service;
 
-import static org.mockito.Matchers.eq;
-import static org.mockito.Matchers.isA;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-
 import cn.edu.uestc.acmicpc.config.TestContext;
 import cn.edu.uestc.acmicpc.db.condition.base.Condition;
 import cn.edu.uestc.acmicpc.db.condition.base.Condition.ConditionType;
@@ -21,6 +15,12 @@ import cn.edu.uestc.acmicpc.util.enums.ProblemType;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
 import cn.edu.uestc.acmicpc.util.helper.ObjectUtil;
 import cn.edu.uestc.acmicpc.web.dto.PageInfo;
+
+import static org.mockito.Matchers.eq;
+import static org.mockito.Matchers.isA;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mockito;

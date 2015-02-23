@@ -19,7 +19,8 @@
     {
       "name": "userName",
       "type": "String",
-      "alias": "user.userName",
+      "field": "user.userName",
+      "aliases": ["user"],
       "projections": ["ALL_FIELDS"]
     },
     {
@@ -98,8 +99,7 @@
   "aliases": [
     {
       "name": "user",
-      "value": "userByUserId",
-      "projections": ["ALL_FIELDS"]
+      "value": "userByUserId"
     }
   ]
 }

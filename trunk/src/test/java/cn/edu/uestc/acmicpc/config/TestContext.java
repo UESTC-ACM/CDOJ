@@ -1,8 +1,5 @@
 package cn.edu.uestc.acmicpc.config;
 
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
-
 import cn.edu.uestc.acmicpc.db.dao.iface.ProblemDao;
 import cn.edu.uestc.acmicpc.db.dao.iface.UserDao;
 import cn.edu.uestc.acmicpc.db.dto.impl.SettingDto;
@@ -25,6 +22,9 @@ import cn.edu.uestc.acmicpc.service.impl.ProblemServiceImpl;
 import cn.edu.uestc.acmicpc.service.impl.UserServiceImpl;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
 import cn.edu.uestc.acmicpc.util.settings.SettingsID;
+
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
