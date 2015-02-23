@@ -1,8 +1,7 @@
 package cn.edu.uestc.acmicpc.service.impl;
 
-import cn.edu.uestc.acmicpc.db.criteria.impl.ContestCriteria;
+import cn.edu.uestc.acmicpc.db.criteria.ContestCriteria;
 import cn.edu.uestc.acmicpc.db.dao.iface.ContestDao;
-import cn.edu.uestc.acmicpc.db.dto.Fields;
 import cn.edu.uestc.acmicpc.db.dto.field.ContestFields;
 import cn.edu.uestc.acmicpc.db.dto.impl.ContestDto;
 import cn.edu.uestc.acmicpc.db.entity.Contest;
@@ -11,10 +10,12 @@ import cn.edu.uestc.acmicpc.util.exception.AppException;
 import cn.edu.uestc.acmicpc.util.exception.AppExceptionUtil;
 import cn.edu.uestc.acmicpc.util.settings.Settings;
 import cn.edu.uestc.acmicpc.web.dto.PageInfo;
-import com.google.common.collect.ImmutableSet;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
+
+import com.google.common.collect.ImmutableSet;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,9 +37,10 @@ public class ContestServiceImpl extends AbstractService implements ContestServic
 
   @Override
   public List<Integer> getAllVisibleContestIds() throws AppException {
-    ContestCriteria criteria = new ContestCriteria(ImmutableSet.of(ContestFields.CONTEST_ID));
+    ContestCriteria criteria = new ContestCriteria();
     criteria.isVisible = true;
-    List<ContestDto> contests = contestDao.findAll(criteria.getCriteria(), null);
+    List<ContestDto> contests = contestDao.findAll(criteria, null,
+        ImmutableSet.of(ContestFields.CONTEST_ID));
     List<Integer> results = new ArrayList<>(contests.size());
     contests.stream().forEach(dto -> results.add(dto.getContestId()));
     return results;
@@ -46,19 +48,19 @@ public class ContestServiceImpl extends AbstractService implements ContestServic
 
   @Override
   public ContestDto getContestDtoByContestId(
-      Integer contestId, Set<Fields> fields) throws AppException {
+      Integer contestId, Set<ContestFields> fields) throws AppException {
     AppExceptionUtil.assertNotNull(contestId);
-    ContestCriteria criteria = new ContestCriteria(fields);
+    ContestCriteria criteria = new ContestCriteria();
     criteria.contestId = contestId;
-    return contestDao.getDtoByUniqueField(criteria.getCriteria());
+    return contestDao.getDtoByUniqueField(criteria, fields);
   }
 
   @Override
   public Boolean checkContestExists(Integer contestId) throws AppException {
     AppExceptionUtil.assertNotNull(contestId);
-    ContestCriteria criteria = new ContestCriteria(ImmutableSet.of(ContestFields.CONTEST_ID));
+    ContestCriteria criteria = new ContestCriteria();
     criteria.contestId = contestId;
-    return contestDao.count(criteria.getCriteria()) == 1;
+    return contestDao.count(criteria) == 1;
   }
 
   private void updateContestByContestDto(Contest contest, ContestDto contestDto) {
@@ -98,13 +100,13 @@ public class ContestServiceImpl extends AbstractService implements ContestServic
 
   @Override
   public Long count(ContestCriteria criteria) throws AppException {
-    return contestDao.count(criteria.getCriteria());
+    return contestDao.count(criteria);
   }
 
   @Override
-  public List<ContestDto> getContestListDtoList(
-      ContestCriteria criteria, PageInfo pageInfo) throws AppException {
-    return contestDao.findAll(criteria.getCriteria(), pageInfo);
+  public List<ContestDto> getContestList(
+      ContestCriteria criteria, PageInfo pageInfo, Set<ContestFields> fields) throws AppException {
+    return contestDao.findAll(criteria, pageInfo, fields);
   }
 
   @Override

@@ -12,10 +12,8 @@ public interface FileService {
   /**
    * Move file from source to target.
    *
-   * @param source
-   *          source address.
-   * @param target
-   *          target address.
+   * @param source source address.
+   * @param target target address.
    * @throws AppException
    */
   public void moveFile(String source, String target) throws AppException;
@@ -23,11 +21,9 @@ public interface FileService {
   /**
    * Upload problem data file and return the number of data cases.
    *
-   * @param fileUploadDto
-   *          {@link FileUploadDto} entity.
-   * @param problemId
-   *          problem's id, if this data is uploaded in add new problem page, it
-   *          just named 'new'.
+   * @param fileUploadDto {@link FileUploadDto} entity.
+   * @param problemId     problem's id, if this data is uploaded in add new problem page, it
+   *                      just named 'new'.
    * @return the number of data cases.
    * @throws AppException
    */
@@ -38,10 +34,8 @@ public interface FileService {
    * Move problem data files from temporary into judge directory and return the
    * number of data cases.
    *
-   * @param uploadFolder
-   *          uploaded data folder.
-   * @param problemId
-   *          problem's id.
+   * @param uploadFolder uploaded data folder.
+   * @param problemId    problem's id.
    * @return and return the number of data cases.
    * @throws AppException
    */
@@ -50,8 +44,7 @@ public interface FileService {
   /**
    * Upload contest archive ZIP file and return its FileInformationDto.
    *
-   * @param fileUploadDto
-   *          {@link FileUploadDto} entity.
+   * @param fileUploadDto {@link FileUploadDto} entity.
    * @return the FileInformationDto of the archive file.
    * @throws AppException
    */

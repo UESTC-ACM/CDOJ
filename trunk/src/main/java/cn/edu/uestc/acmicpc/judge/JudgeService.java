@@ -13,7 +13,6 @@ import org.springframework.context.ApplicationContext;
 
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
-
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 

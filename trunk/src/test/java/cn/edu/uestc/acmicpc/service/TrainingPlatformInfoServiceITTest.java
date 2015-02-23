@@ -1,6 +1,6 @@
 package cn.edu.uestc.acmicpc.service;
 
-import cn.edu.uestc.acmicpc.db.criteria.impl.TrainingPlatformInfoCriteria;
+import cn.edu.uestc.acmicpc.db.criteria.TrainingPlatformInfoCriteria;
 import cn.edu.uestc.acmicpc.db.dto.field.TrainingPlatformInfoFields;
 import cn.edu.uestc.acmicpc.db.dto.impl.TrainingPlatformInfoDto;
 import cn.edu.uestc.acmicpc.service.iface.TrainingPlatformInfoService;
@@ -58,10 +58,10 @@ public class TrainingPlatformInfoServiceITTest extends PersistenceITTest {
 
   @Test
   public void testGetTrainingPlatformInfoList() throws AppException {
-    TrainingPlatformInfoCriteria trainingPlatformInfoCriteria = new TrainingPlatformInfoCriteria(
-        TrainingPlatformInfoFields.ALL_FIELDS);
+    TrainingPlatformInfoCriteria trainingPlatformInfoCriteria = new TrainingPlatformInfoCriteria();
     List<TrainingPlatformInfoDto> result = trainingPlatformInfoService
-        .getTrainingPlatformInfoList(trainingPlatformInfoCriteria);
+        .getTrainingPlatformInfoList(trainingPlatformInfoCriteria,
+            TrainingPlatformInfoFields.ALL_FIELDS);
     Assert.assertEquals(result.size(), 8);
     for (int i = 0; i < 8; i++) {
       Assert.assertEquals(result.get(i).getTrainingPlatformInfoId(), Integer.valueOf(i + 1));
@@ -70,12 +70,12 @@ public class TrainingPlatformInfoServiceITTest extends PersistenceITTest {
 
   @Test
   public void testGetTrainingPlatformInfoList_byIdRange() throws AppException {
-    TrainingPlatformInfoCriteria trainingPlatformInfoCriteria = new TrainingPlatformInfoCriteria(
-        TrainingPlatformInfoFields.ALL_FIELDS);
+    TrainingPlatformInfoCriteria trainingPlatformInfoCriteria = new TrainingPlatformInfoCriteria();
     trainingPlatformInfoCriteria.startId = 2;
     trainingPlatformInfoCriteria.endId = 5;
     List<TrainingPlatformInfoDto> result = trainingPlatformInfoService
-        .getTrainingPlatformInfoList(trainingPlatformInfoCriteria);
+        .getTrainingPlatformInfoList(trainingPlatformInfoCriteria,
+            TrainingPlatformInfoFields.ALL_FIELDS);
     Assert.assertEquals(result.size(), 4);
     for (int i = 0; i < 4; i++) {
       Assert.assertEquals(result.get(i).getTrainingPlatformInfoId(), Integer.valueOf(i + 2));
@@ -84,11 +84,11 @@ public class TrainingPlatformInfoServiceITTest extends PersistenceITTest {
 
   @Test
   public void testGetTrainingPlatformInfoList_byTrainingUserId() throws AppException {
-    TrainingPlatformInfoCriteria trainingPlatformInfoCriteria = new TrainingPlatformInfoCriteria(
-        TrainingPlatformInfoFields.ALL_FIELDS);
+    TrainingPlatformInfoCriteria trainingPlatformInfoCriteria = new TrainingPlatformInfoCriteria();
     trainingPlatformInfoCriteria.trainingUserId = 1;
     List<TrainingPlatformInfoDto> result = trainingPlatformInfoService
-        .getTrainingPlatformInfoList(trainingPlatformInfoCriteria);
+        .getTrainingPlatformInfoList(trainingPlatformInfoCriteria,
+            TrainingPlatformInfoFields.ALL_FIELDS);
     Assert.assertEquals(result.size(), 5);
     for (int i = 0; i < 5; i++) {
       Assert.assertEquals(result.get(i).getTrainingUserId(), Integer.valueOf(1));
@@ -97,11 +97,11 @@ public class TrainingPlatformInfoServiceITTest extends PersistenceITTest {
 
   @Test
   public void testGetTrainingPlatformInfoList_byUserName() throws AppException {
-    TrainingPlatformInfoCriteria trainingPlatformInfoCriteria = new TrainingPlatformInfoCriteria(
-        TrainingPlatformInfoFields.ALL_FIELDS);
+    TrainingPlatformInfoCriteria trainingPlatformInfoCriteria = new TrainingPlatformInfoCriteria();
     trainingPlatformInfoCriteria.userName = "UESTC_Izayoi";
     List<TrainingPlatformInfoDto> result = trainingPlatformInfoService
-        .getTrainingPlatformInfoList(trainingPlatformInfoCriteria);
+        .getTrainingPlatformInfoList(trainingPlatformInfoCriteria,
+            TrainingPlatformInfoFields.ALL_FIELDS);
     Assert.assertEquals(result.size(), 2);
     for (int i = 0; i < 2; i++) {
       Assert.assertEquals(result.get(i).getUserName(), "UESTC_Izayoi");
@@ -110,11 +110,11 @@ public class TrainingPlatformInfoServiceITTest extends PersistenceITTest {
 
   @Test
   public void testGetTrainingPlatformInfoList_byUserId() throws AppException {
-    TrainingPlatformInfoCriteria trainingPlatformInfoCriteria = new TrainingPlatformInfoCriteria(
-        TrainingPlatformInfoFields.ALL_FIELDS);
+    TrainingPlatformInfoCriteria trainingPlatformInfoCriteria = new TrainingPlatformInfoCriteria();
     trainingPlatformInfoCriteria.userId = "123";
     List<TrainingPlatformInfoDto> result = trainingPlatformInfoService
-        .getTrainingPlatformInfoList(trainingPlatformInfoCriteria);
+        .getTrainingPlatformInfoList(trainingPlatformInfoCriteria,
+            TrainingPlatformInfoFields.ALL_FIELDS);
     Assert.assertEquals(result.size(), 7);
     for (int i = 0; i < 7; i++) {
       Assert.assertEquals(result.get(i).getUserId(), "123");
@@ -123,11 +123,11 @@ public class TrainingPlatformInfoServiceITTest extends PersistenceITTest {
 
   @Test
   public void testGetTrainingPlatformInfoList_byType() throws AppException {
-    TrainingPlatformInfoCriteria trainingPlatformInfoCriteria = new TrainingPlatformInfoCriteria(
-        TrainingPlatformInfoFields.ALL_FIELDS);
+    TrainingPlatformInfoCriteria trainingPlatformInfoCriteria = new TrainingPlatformInfoCriteria();
     trainingPlatformInfoCriteria.type = TrainingPlatformType.TC;
     List<TrainingPlatformInfoDto> result = trainingPlatformInfoService
-        .getTrainingPlatformInfoList(trainingPlatformInfoCriteria);
+        .getTrainingPlatformInfoList(trainingPlatformInfoCriteria,
+            TrainingPlatformInfoFields.ALL_FIELDS);
     Assert.assertEquals(result.size(), 4);
     for (int i = 0; i < 4; i++) {
       Assert.assertEquals(result.get(i).getType(),
@@ -137,11 +137,11 @@ public class TrainingPlatformInfoServiceITTest extends PersistenceITTest {
 
   @Test
   public void testGetTrainingPlatformInfoList_byKeyword() throws AppException {
-    TrainingPlatformInfoCriteria trainingPlatformInfoCriteria = new TrainingPlatformInfoCriteria(
-        TrainingPlatformInfoFields.ALL_FIELDS);
+    TrainingPlatformInfoCriteria trainingPlatformInfoCriteria = new TrainingPlatformInfoCriteria();
     trainingPlatformInfoCriteria.keyword = "Mzry";
     List<TrainingPlatformInfoDto> result = trainingPlatformInfoService
-        .getTrainingPlatformInfoList(trainingPlatformInfoCriteria);
+        .getTrainingPlatformInfoList(trainingPlatformInfoCriteria,
+            TrainingPlatformInfoFields.ALL_FIELDS);
     Assert.assertEquals(result.size(), 2);
   }
 

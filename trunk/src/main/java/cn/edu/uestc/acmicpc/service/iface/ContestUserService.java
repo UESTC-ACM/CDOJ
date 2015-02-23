@@ -12,8 +12,7 @@ public interface ContestUserService {
    * Create a new contest user record in database by {@link ContestUserDto}
    * entity.
    *
-   * @param contestUserDto
-   *          {@link ContestUserDto} entity, specified the field value.
+   * @param contestUserDto {@link ContestUserDto} entity, specified the field value.
    * @return new record's id.
    * @throws AppException
    */
@@ -23,8 +22,7 @@ public interface ContestUserService {
    * Remove all contest users (include the corresponding user record) in
    * database.
    *
-   * @param contestId
-   *          contest's id.
+   * @param contestId contest's id.
    * @throws AppException
    */
   public void removeContestUsersByContestId(Integer contestId) throws AppException;
@@ -32,10 +30,8 @@ public interface ContestUserService {
   /**
    * Check whether a user has registered in a specified contest.
    *
-   * @param userId
-   *          user's id.
-   * @param contestId
-   *          contest's id.
+   * @param userId    user's id.
+   * @param contestId contest's id.
    * @return true if this user has registered in this contest.
    * @throws AppException
    */

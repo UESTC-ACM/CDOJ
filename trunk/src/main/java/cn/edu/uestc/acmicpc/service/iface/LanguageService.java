@@ -19,8 +19,7 @@ public interface LanguageService {
   /**
    * Get language extension by language id.
    *
-   * @param languageId
-   *          language's id.
+   * @param languageId language's id.
    * @return language's extension.
    * @see LanguageDto
    */
@@ -29,8 +28,7 @@ public interface LanguageService {
   /**
    * Get language name by language id.
    *
-   * @param languageId
-   *          language's id.
+   * @param languageId language's id.
    * @return language's name.
    * @see LanguageDto
    */

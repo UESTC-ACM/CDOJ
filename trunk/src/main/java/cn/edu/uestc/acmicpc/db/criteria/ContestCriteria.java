@@ -1,7 +1,5 @@
-package cn.edu.uestc.acmicpc.db.criteria.impl;
+package cn.edu.uestc.acmicpc.db.criteria;
 
-import cn.edu.uestc.acmicpc.db.criteria.base.BaseCriteria;
-import cn.edu.uestc.acmicpc.db.dto.Fields;
 import cn.edu.uestc.acmicpc.db.dto.impl.ContestDto;
 import cn.edu.uestc.acmicpc.db.entity.Contest;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
@@ -11,16 +9,11 @@ import org.hibernate.criterion.LogicalExpression;
 import org.hibernate.criterion.Restrictions;
 
 import java.sql.Timestamp;
-import java.util.Set;
 
 public class ContestCriteria extends BaseCriteria<Contest, ContestDto> {
 
-  public ContestCriteria(Set<Fields> resultFields) {
-    super(Contest.class, ContestDto.class, resultFields);
-  }
-
   public ContestCriteria() {
-    this(null);
+    super(Contest.class, ContestDto.class);
   }
 
   public Integer contestId;
@@ -33,8 +26,7 @@ public class ContestCriteria extends BaseCriteria<Contest, ContestDto> {
   public String keyword;
 
   @Override
-  public DetachedCriteria getCriteria() throws AppException {
-    DetachedCriteria criteria = super.getCriteria();
+  DetachedCriteria updateCriteria(DetachedCriteria criteria) throws AppException {
     if (contestId != null) {
       criteria.add(Restrictions.eq("contestId", contestId));
     }

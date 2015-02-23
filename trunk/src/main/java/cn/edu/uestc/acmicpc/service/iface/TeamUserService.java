@@ -17,9 +17,8 @@ public interface TeamUserService {
    * Create a new record by
    * {@link cn.edu.uestc.acmicpc.db.dto.impl.teamUser.TeamUserDto} entity.
    *
-   * @param teamUserDto
-   *          {@link cn.edu.uestc.acmicpc.db.dto.impl.teamUser.TeamUserDto}
-   *          entity.
+   * @param teamUserDto {@link cn.edu.uestc.acmicpc.db.dto.impl.teamUser.TeamUserDto}
+   *                    entity.
    * @return new record's id.
    * @throws AppException
    */
@@ -29,10 +28,9 @@ public interface TeamUserService {
    * Get {@link cn.edu.uestc.acmicpc.db.dto.impl.teamUser.TeamUserDto} entity by
    * id.
    *
-   * @param teamUserId
-   *          team user's id
+   * @param teamUserId team user's id
    * @return {@link cn.edu.uestc.acmicpc.db.dto.impl.teamUser.TeamUserDto}
-   *         entity.
+   * entity.
    * @throws AppException
    */
   public TeamUserDto getTeamUserDto(Integer teamUserId) throws AppException;
@@ -40,8 +38,7 @@ public interface TeamUserService {
   /**
    * Fetch team users fit in {@link TeamUserCondition}.
    *
-   * @param teamUserCondition
-   *          search condition.
+   * @param teamUserCondition search condition.
    * @return list of {@link TeamUserListDto} entities.
    * @throws AppException
    */
@@ -51,12 +48,9 @@ public interface TeamUserService {
   /**
    * Update specified user's state in team.
    *
-   * @param userId
-   *          user's id.
-   * @param teamId
-   *          team's id.
-   * @param value
-   *          state
+   * @param userId user's id.
+   * @param teamId team's id.
+   * @param value  state
    * @throws AppException
    */
   public void changeAllowState(Integer userId, Integer teamId, Boolean value) throws AppException;
@@ -64,8 +58,7 @@ public interface TeamUserService {
   /**
    * Fetch all team users in specified team.
    *
-   * @param teamId
-   *          team's id.
+   * @param teamId team's id.
    * @return list of {@link TeamUserListDto} entities.
    * @throws AppException
    */
@@ -74,8 +67,7 @@ public interface TeamUserService {
   /**
    * Remove user from team.
    *
-   * @param teamUserId
-   *          team user's id
+   * @param teamUserId team user's id
    * @throws AppException
    */
   public void removeTeamUser(Integer teamUserId) throws AppException;
@@ -83,8 +75,7 @@ public interface TeamUserService {
   /**
    * Fetch team user report fit in {@link TeamUserCondition}
    *
-   * @param teamUserCondition
-   *          search condition.
+   * @param teamUserCondition search condition.
    * @return list of {@link TeamUserReportDto} entities.
    * @throws AppException
    */

@@ -11,6 +11,7 @@ import cn.edu.uestc.acmicpc.util.enums.ProblemType;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
 import cn.edu.uestc.acmicpc.util.exception.AppExceptionUtil;
 import cn.edu.uestc.acmicpc.web.dto.PageInfo;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -71,8 +72,8 @@ public class ProblemServiceImpl extends AbstractService implements ProblemServic
     Object value;
     if (field.equals("isVisible")) {
       value = Boolean.valueOf(sValue);
-    } else if(field.equals("type")) {
-      if(sValue.equals(ProblemType.INTERNAL.name())) {
+    } else if (field.equals("type")) {
+      if (sValue.equals(ProblemType.INTERNAL.name())) {
         value = ProblemType.INTERNAL.ordinal();
       } else {
         value = ProblemType.NORMAL.ordinal();

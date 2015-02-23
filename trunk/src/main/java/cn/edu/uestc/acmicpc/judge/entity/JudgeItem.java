@@ -1,6 +1,6 @@
 package cn.edu.uestc.acmicpc.judge.entity;
 
-import cn.edu.uestc.acmicpc.db.dto.impl.status.StatusForJudgeDto;
+import cn.edu.uestc.acmicpc.db.dto.impl.StatusDto;
 import cn.edu.uestc.acmicpc.service.iface.CompileInfoService;
 import cn.edu.uestc.acmicpc.service.iface.ProblemService;
 import cn.edu.uestc.acmicpc.service.iface.StatusService;
@@ -22,7 +22,7 @@ import java.util.Map;
 @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
 public class JudgeItem {
 
-  private StatusForJudgeDto status;
+  private StatusDto status;
   private String compileInfo;
   private final CompileInfoService compileInfoService;
   private final StatusService statusService;
@@ -41,11 +41,11 @@ public class JudgeItem {
     this.problemService = problemService;
   }
 
-  public void setStatusForJudgeDto(StatusForJudgeDto status) {
+  public void setStatus(StatusDto status) {
     this.status = status;
   }
 
-  public StatusForJudgeDto getStatusForJudgeDto() {
+  public StatusDto getStatus() {
     return status;
   }
 
@@ -58,7 +58,7 @@ public class JudgeItem {
   }
 
   public String getSourceName() {
-    return "Main" + status.getLanguageExtension();
+    return "Main" + status.getExtension();
   }
 
   /**
@@ -86,7 +86,7 @@ public class JudgeItem {
           status.setCompileInfoId(newCompileInfoId);
         }
       }
-      statusService.updateStatusByStatusForJudgeDto(status);
+      statusService.updateStatus(status);
     } catch (AppException ignored) {
       // TODO(fish) Why not set result as OJ_REJUDGING or something else
       // to rejudge it.
@@ -99,16 +99,16 @@ public class JudgeItem {
 
         Map<String, Object> properties = new HashMap<>();
         properties.put("solved",
-            statusService.countProblemsUserAccepted(userId));
+            statusService.countProblemsThatUserSolved(userId, false));
         properties.put("tried",
-            statusService.countProblemsUserTried(userId));
+            statusService.countProblemsThatUserTried(userId, false));
         userService.updateUserByUserId(properties, userId);
 
         properties.clear();
         properties.put("solved",
-            statusService.countUsersAcceptedProblem(problemId));
+            statusService.countUsersThatSolvedThisProblem(problemId));
         properties.put("tried",
-            statusService.countUsersTriedProblem(problemId));
+            statusService.countUsersThatTriedThisProblem(problemId));
         problemService.updateProblemByProblemId(properties, problemId);
       } catch (Exception e) {
       }
