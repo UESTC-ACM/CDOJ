@@ -2,14 +2,13 @@ package cn.edu.uestc.acmicpc.service.impl;
 
 import cn.edu.uestc.acmicpc.service.iface.RecentContestService;
 import cn.edu.uestc.acmicpc.util.dto.RecentContestDto;
-
+import com.alibaba.fastjson.JSON;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
 
-import com.alibaba.fastjson.JSON;
-
+import javax.annotation.PostConstruct;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -19,8 +18,6 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
-
-import javax.annotation.PostConstruct;
 
 /**
  * Description
