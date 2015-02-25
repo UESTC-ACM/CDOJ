@@ -7,11 +7,13 @@ import cn.edu.uestc.acmicpc.util.exception.AppException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * Description
  */
 @Service
+@Transactional(rollbackFor = Exception.class)
 public class CompileInfoServiceImpl extends AbstractService implements CompileInfoService {
 
   private final CompileInfoDao compileInfoDao;

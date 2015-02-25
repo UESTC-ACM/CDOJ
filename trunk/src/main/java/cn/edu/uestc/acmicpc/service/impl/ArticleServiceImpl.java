@@ -12,6 +12,7 @@ import cn.edu.uestc.acmicpc.web.dto.PageInfo;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.Timestamp;
 import java.util.Date;
@@ -21,6 +22,7 @@ import java.util.Map;
 import java.util.Set;
 
 @Service
+@Transactional(rollbackFor = Exception.class)
 public class ArticleServiceImpl extends AbstractService implements ArticleService {
 
   private final ArticleDao articleDao;

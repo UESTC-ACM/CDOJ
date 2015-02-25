@@ -10,6 +10,7 @@ import cn.edu.uestc.acmicpc.util.exception.AppException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Set;
 
@@ -17,6 +18,7 @@ import java.util.Set;
  * Description
  */
 @Service
+@Transactional(rollbackFor = Exception.class)
 public class CodeServiceImpl extends AbstractService implements CodeService {
 
   private final CodeDao codeDao;
