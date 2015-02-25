@@ -20,6 +20,7 @@ import cn.edu.uestc.acmicpc.web.dto.PageInfo;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.Timestamp;
 import java.util.Date;
@@ -31,6 +32,7 @@ import java.util.Map;
  * Implementation for {@link UserService}.
  */
 @Service
+@Transactional(rollbackFor = Exception.class)
 public class UserServiceImpl extends AbstractService implements UserService {
 
   private final UserDao userDao;

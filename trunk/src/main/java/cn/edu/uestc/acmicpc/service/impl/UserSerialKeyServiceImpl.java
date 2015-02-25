@@ -10,6 +10,7 @@ import cn.edu.uestc.acmicpc.util.exception.AppException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.Timestamp;
 import java.util.Date;
@@ -19,6 +20,7 @@ import java.util.Random;
  * Implementation for {@link UserSerialKeyService}.
  */
 @Service
+@Transactional(rollbackFor = Exception.class)
 public class UserSerialKeyServiceImpl extends AbstractService implements UserSerialKeyService {
 
   private final UserSerialKeyDao userSerialKeyDao;

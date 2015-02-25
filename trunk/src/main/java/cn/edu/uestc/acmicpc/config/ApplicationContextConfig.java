@@ -35,7 +35,7 @@ import org.springframework.context.annotation.Lazy;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.context.annotation.Scope;
 import org.springframework.core.env.Environment;
-import org.springframework.orm.hibernate4.HibernateTransactionManager;
+import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 import org.springframework.orm.hibernate4.LocalSessionFactoryBean;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
@@ -169,17 +169,10 @@ public class ApplicationContextConfig {
    *
    * @return transactionManagerBean
    */
-  // TODO(fish) add txAdvise
   @Bean(name = "transactionManager")
-  public HibernateTransactionManager transactionManager() {
-    HibernateTransactionManager transactionManager = new HibernateTransactionManager();
-    transactionManager.setSessionFactory(this.sessionFactory());
-    /*
-     * <tx:method name="save*" propagation="REQUIRED" /> <tx:method name="add*"
-     * propagation="REQUIRED" /> <tx:method name="update*"
-     * propagation="REQUIRED" /> <tx:method name="del*" propagation="REQUIRED"
-     * /> <tx:method name="find*" propagation="REQUIRED" read-only="true" />
-     */
+  public DataSourceTransactionManager transactionManager() {
+    DataSourceTransactionManager transactionManager = new DataSourceTransactionManager();
+    transactionManager.setDataSource(this.dataSource());
     return transactionManager;
   }
 

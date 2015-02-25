@@ -22,6 +22,7 @@ import cn.edu.uestc.acmicpc.util.annotation.LoginPermit;
 import cn.edu.uestc.acmicpc.util.enums.AuthenticationType;
 import cn.edu.uestc.acmicpc.util.enums.ContestType;
 import cn.edu.uestc.acmicpc.util.enums.OnlineJudgeResultType;
+import cn.edu.uestc.acmicpc.util.enums.OnlineJudgeReturnType;
 import cn.edu.uestc.acmicpc.util.enums.ProblemType;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
 import cn.edu.uestc.acmicpc.util.helper.StringUtil;
@@ -318,6 +319,7 @@ public class StatusController extends BaseController {
         }
 
         statusService.createNewStatus(StatusDto.builder()
+            .setResultId(OnlineJudgeReturnType.OJ_WAIT.ordinal())
             .setCodeId(codeId)
             .setContestId(submitDto.getContestId())
             .setLanguageId(submitDto.getLanguageId())

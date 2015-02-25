@@ -16,6 +16,7 @@ import cn.edu.uestc.acmicpc.web.dto.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -24,6 +25,7 @@ import java.util.List;
  */
 @Service
 @Primary
+@Transactional(rollbackFor = Exception.class)
 public class ContestTeamServiceImpl extends AbstractService implements ContestTeamService {
 
   private final ContestTeamDao contestTeamDao;

@@ -21,11 +21,13 @@
     {
       "name": "memoryCost",
       "type": "Integer",
+      "default": 0,
       "projections": ["ALL_FIELDS", "FIELDS_FOR_LIST_PAGE", "FIELDS_FOR_JUDGE"]
     },
     {
       "name": "timeCost",
       "type": "Integer",
+      "default": 0,
       "projections": ["ALL_FIELDS", "FIELDS_FOR_LIST_PAGE", "FIELDS_FOR_JUDGE"]
     },
     {
@@ -41,6 +43,7 @@
     {
       "name": "caseNumber",
       "type": "Integer",
+      "default": 0,
       "projections": ["ALL_FIELDS", "FIELDS_FOR_LIST_PAGE", "FIELDS_FOR_JUDGE"]
     },
     {
