@@ -199,7 +199,11 @@ public class StatusServiceImpl extends AbstractService implements StatusService 
     statusCriteria.startId = statusId;
     statusCriteria.endId = statusId;
     statusCriteria.isForAdmin = true;
-    return statusDao.getDtoByUniqueField(statusCriteria, fields);
+    StatusDto statusDto = statusDao.getDtoByUniqueField(statusCriteria, fields);
+    if (statusDto != null) {
+      updateStatusDto(statusDto, fields);
+    }
+    return statusDto;
   }
 
   @Override
@@ -224,7 +228,7 @@ public class StatusServiceImpl extends AbstractService implements StatusService 
     statusCriteria.isForAdmin = true;
     statusCriteria.orderFields = "statusId";
     statusCriteria.orderAsc = "true";
-    return statusDao.findAll(statusCriteria, null, StatusFields.FIELDS_FOR_JUDGE);
+    return getStatusList(statusCriteria, null, StatusFields.FIELDS_FOR_JUDGE);
   }
 
   @Override
