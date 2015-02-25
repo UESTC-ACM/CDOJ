@@ -51,8 +51,8 @@ public class ContestCriteria extends BaseCriteria<Contest, ContestDto> {
     if (keyword != null) {
       keyword = String.format("%%%s%%", keyword);
       LogicalExpression criterion = Restrictions.or(
-          Restrictions.like("title", keyword),
-          Restrictions.like("description", keyword));
+          Restrictions.ilike("title", keyword),
+          Restrictions.ilike("description", keyword));
       try {
         Integer keywordNumber = Integer.parseInt(keyword);
         criterion = Restrictions.or(criterion, Restrictions.eq("contestId", keywordNumber));
