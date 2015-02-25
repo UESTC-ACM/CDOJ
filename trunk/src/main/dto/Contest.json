@@ -35,7 +35,7 @@
     {
       "name": "time",
       "type": "Timestamp",
-      "projections": ["BASIC_FIELDS", "FIELDS_FOR_EDIT_PAGE", "FIELDS_FOR_LIST_PAGE"]
+      "projections": ["BASIC_FIELDS", "FIELDS_FOR_EDIT_PAGE", "FIELDS_FOR_LIST_PAGE", "FIELDS_FOR_SHOWING"]
     },
     {
       "name": "length",
@@ -184,25 +184,25 @@
       "name": "startTime",
       "type": "Timestamp",
       "dbField": false,
-      "projections": ["FIELDS_FOR_SHOWING"]
+      "projections": ["FIELDS_FOR_LIST_PAGE", "FIELDS_FOR_SHOWING"]
     },
     {
       "name": "endTime",
       "type": "Timestamp",
       "dbField": false,
-      "projections": ["FIELDS_FOR_SHOWING"]
+      "projections": ["FIELDS_FOR_LIST_PAGE", "FIELDS_FOR_SHOWING"]
     },
     {
       "name": "currentTime",
       "type": "Timestamp",
       "dbField": false,
-      "projections": ["FIELDS_FOR_SHOWING"]
+      "projections": ["FIELDS_FOR_LIST_PAGE", "FIELDS_FOR_SHOWING"]
     },
     {
       "name": "timeLeft",
       "type": "Long",
       "dbField": false,
-      "projections": ["FIELDS_FOR_SHOWING"]
+      "projections": ["FIELDS_FOR_LIST_PAGE", "FIELDS_FOR_SHOWING"]
     }
   ]
 }
