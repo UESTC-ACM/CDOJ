@@ -1,5 +1,6 @@
 package cn.edu.uestc.acmicpc.db.criteria;
 
+import cn.edu.uestc.acmicpc.db.dto.field.ArticleFields;
 import cn.edu.uestc.acmicpc.db.dto.impl.ArticleDto;
 import cn.edu.uestc.acmicpc.db.entity.Article;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
@@ -60,6 +61,7 @@ public class ArticleCriteria extends BaseCriteria<Article, ArticleDto> {
     }
     if (userName != null) {
       criteria.add(Restrictions.eq("owner.userName", userName));
+      addAlias(ArticleFields.ALIAS_OWNER);
     }
 
     if (contestId != null) {
@@ -92,6 +94,7 @@ public class ArticleCriteria extends BaseCriteria<Article, ArticleDto> {
           Restrictions.ilike("owner.userName", keyword),
           Restrictions.ilike("owner.nickName", keyword)
           ));
+      addAlias(ArticleFields.ALIAS_OWNER);
     }
 
     return criteria;
