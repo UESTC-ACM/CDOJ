@@ -35,7 +35,7 @@ import org.springframework.context.annotation.Lazy;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.context.annotation.Scope;
 import org.springframework.core.env.Environment;
-import org.springframework.jdbc.datasource.DataSourceTransactionManager;
+import org.springframework.orm.hibernate4.HibernateTransactionManager;
 import org.springframework.orm.hibernate4.LocalSessionFactoryBean;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
@@ -170,9 +170,10 @@ public class ApplicationContextConfig {
    * @return transactionManagerBean
    */
   @Bean(name = "transactionManager")
-  public DataSourceTransactionManager transactionManager() {
-    DataSourceTransactionManager transactionManager = new DataSourceTransactionManager();
-    transactionManager.setDataSource(this.dataSource());
+  public HibernateTransactionManager transactionManager() {
+    HibernateTransactionManager transactionManager = new HibernateTransactionManager();
+    transactionManager.setSessionFactory(sessionFactory());
+    transactionManager.setDataSource(dataSource());
     return transactionManager;
   }
 
