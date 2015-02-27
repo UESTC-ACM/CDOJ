@@ -45,7 +45,8 @@ import com.alibaba.druid.pool.DruidDataSource;
     "cn.edu.uestc.acmicpc.db",
     "cn.edu.uestc.acmicpc.judge",
     "cn.edu.uestc.acmicpc.util",
-    "cn.edu.uestc.acmicpc.service"
+    "cn.edu.uestc.acmicpc.service",
+    "cn.edu.uestc.acmicpc.web.aspect"
 })
 @PropertySource("classpath:resources.properties")
 @EnableTransactionManagement
