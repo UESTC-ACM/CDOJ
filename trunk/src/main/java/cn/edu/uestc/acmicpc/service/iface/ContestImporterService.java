@@ -12,10 +12,9 @@ public interface ContestImporterService {
   /**
    * Parse contest information via a ZIP fileInformationDto.
    *
-   * @param fileInformationDto
-   *          contest archive ZIP.
+   * @param fileInformationDto contest archive ZIP.
    * @return {@link cn.edu.uestc.acmicpc.db.dto.impl.ContestDto} a new
-   *         contest Dto.
+   * contest Dto.
    * @throws AppException
    */
   public ContestDto parseContestZipArchive(FileInformationDto fileInformationDto)

@@ -1,7 +1,5 @@
-package cn.edu.uestc.acmicpc.db.criteria.impl;
+package cn.edu.uestc.acmicpc.db.criteria;
 
-import cn.edu.uestc.acmicpc.db.criteria.base.BaseCriteria;
-import cn.edu.uestc.acmicpc.db.dto.Fields;
 import cn.edu.uestc.acmicpc.db.dto.impl.TrainingDto;
 import cn.edu.uestc.acmicpc.db.entity.Training;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
@@ -9,19 +7,13 @@ import cn.edu.uestc.acmicpc.util.exception.AppException;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Restrictions;
 
-import java.util.Set;
-
 /**
  * Training database criteria entity.
  */
 public class TrainingCriteria extends BaseCriteria<Training, TrainingDto> {
 
-  public TrainingCriteria(Set<Fields> resultFields) {
-    super(Training.class, TrainingDto.class, resultFields);
-  }
-
   public TrainingCriteria() {
-    this(null);
+    super(Training.class, TrainingDto.class);
   }
 
   public Integer startId;
@@ -29,9 +21,7 @@ public class TrainingCriteria extends BaseCriteria<Training, TrainingDto> {
   public String keyword;
 
   @Override
-  public DetachedCriteria getCriteria() throws AppException {
-    DetachedCriteria criteria = super.getCriteria();
-
+  DetachedCriteria updateCriteria(DetachedCriteria criteria) throws AppException {
     if (startId != null) {
       criteria.add(Restrictions.ge("trainingId", startId));
     }

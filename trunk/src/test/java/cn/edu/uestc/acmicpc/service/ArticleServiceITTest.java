@@ -1,6 +1,6 @@
 package cn.edu.uestc.acmicpc.service;
 
-import cn.edu.uestc.acmicpc.db.criteria.impl.ArticleCriteria;
+import cn.edu.uestc.acmicpc.db.criteria.ArticleCriteria;
 import cn.edu.uestc.acmicpc.db.dto.field.ArticleFields;
 import cn.edu.uestc.acmicpc.db.dto.impl.ArticleDto;
 import cn.edu.uestc.acmicpc.service.iface.ArticleService;
@@ -52,21 +52,21 @@ public class ArticleServiceITTest extends PersistenceITTest {
 
   @Test
   public void testCount_byStartId() throws AppException {
-    ArticleCriteria articleCriteria = new ArticleCriteria(ArticleFields.ALL_FIELDS);
+    ArticleCriteria articleCriteria = new ArticleCriteria();
     articleCriteria.startId = 2;
     Assert.assertEquals(articleService.count(articleCriteria), Long.valueOf(3L));
   }
 
   @Test
   public void testCount_byEndId() throws AppException {
-    ArticleCriteria articleCriteria = new ArticleCriteria(ArticleFields.ALL_FIELDS);
+    ArticleCriteria articleCriteria = new ArticleCriteria();
     articleCriteria.endId = 2;
     Assert.assertEquals(articleService.count(articleCriteria), Long.valueOf(2L));
   }
 
   @Test
   public void testCount_byStartIdAndEndId() throws AppException {
-    ArticleCriteria articleCriteria = new ArticleCriteria(ArticleFields.ALL_FIELDS);
+    ArticleCriteria articleCriteria = new ArticleCriteria();
     articleCriteria.startId = 2;
     articleCriteria.endId = 3;
     Assert.assertEquals(articleService.count(articleCriteria), Long.valueOf(2L));
@@ -74,7 +74,7 @@ public class ArticleServiceITTest extends PersistenceITTest {
 
   @Test
   public void testCount_byStartIdAndEndId_emptyResult() throws AppException {
-    ArticleCriteria articleCriteria = new ArticleCriteria(ArticleFields.ALL_FIELDS);
+    ArticleCriteria articleCriteria = new ArticleCriteria();
     articleCriteria.startId = 5;
     articleCriteria.endId = 4;
     Assert.assertEquals(articleService.count(articleCriteria), Long.valueOf(0L));
@@ -82,35 +82,35 @@ public class ArticleServiceITTest extends PersistenceITTest {
 
   @Test
   public void testCount_byTitle() throws AppException {
-    ArticleCriteria articleCriteria = new ArticleCriteria(ArticleFields.ALL_FIELDS);
+    ArticleCriteria articleCriteria = new ArticleCriteria();
     articleCriteria.title = "About";
     Assert.assertEquals(articleService.count(articleCriteria), Long.valueOf(1L));
   }
 
   @Test
   public void testCount_byTitle_emptyResult() throws AppException {
-    ArticleCriteria articleCriteria = new ArticleCriteria(ArticleFields.ALL_FIELDS);
+    ArticleCriteria articleCriteria = new ArticleCriteria();
     articleCriteria.title = "About 1";
     Assert.assertEquals(articleService.count(articleCriteria), Long.valueOf(0L));
   }
 
   @Test
   public void testCount_byType() throws AppException {
-    ArticleCriteria articleCriteria = new ArticleCriteria(ArticleFields.ALL_FIELDS);
+    ArticleCriteria articleCriteria = new ArticleCriteria();
     articleCriteria.type = ArticleType.NOTICE.ordinal();
     Assert.assertEquals(articleService.count(articleCriteria), Long.valueOf(4L));
   }
 
   @Test
   public void testCount_byType_emptyResult() throws AppException {
-    ArticleCriteria articleCriteria = new ArticleCriteria(ArticleFields.ALL_FIELDS);
+    ArticleCriteria articleCriteria = new ArticleCriteria();
     articleCriteria.type = ArticleType.COMMENT.ordinal();
     Assert.assertEquals(articleService.count(articleCriteria), Long.valueOf(0L));
   }
 
   @Test
   public void testOperator_title() throws AppException {
-    ArticleCriteria articleCriteria = new ArticleCriteria(ArticleFields.ALL_FIELDS);
+    ArticleCriteria articleCriteria = new ArticleCriteria();
     articleCriteria.title = "new title";
     Assert.assertEquals(articleService.count(articleCriteria), Long.valueOf(0L));
     articleService.applyOperation("title", "1, 2", "new title");
@@ -121,7 +121,7 @@ public class ArticleServiceITTest extends PersistenceITTest {
 
   @Test
   public void testOperator_contestId() throws AppException {
-    ArticleCriteria articleCriteria = new ArticleCriteria(ArticleFields.ALL_FIELDS);
+    ArticleCriteria articleCriteria = new ArticleCriteria();
     articleCriteria.contestId = 1;
     Assert.assertEquals(articleService.count(articleCriteria), Long.valueOf(0L));
     articleService.applyOperation("contestId", "1, 2", "1");
@@ -141,7 +141,7 @@ public class ArticleServiceITTest extends PersistenceITTest {
 
   @Test
   public void testOperator_problemId() throws AppException {
-    ArticleCriteria articleCriteria = new ArticleCriteria(ArticleFields.ALL_FIELDS);
+    ArticleCriteria articleCriteria = new ArticleCriteria();
     articleCriteria.problemId = 1;
     Assert.assertEquals(articleService.count(articleCriteria), Long.valueOf(0L));
     articleService.applyOperation("problemId", "1, 2", "1");
@@ -161,7 +161,7 @@ public class ArticleServiceITTest extends PersistenceITTest {
 
   @Test
   public void testOperator_parentId() throws AppException {
-    ArticleCriteria articleCriteria = new ArticleCriteria(ArticleFields.ALL_FIELDS);
+    ArticleCriteria articleCriteria = new ArticleCriteria();
     articleCriteria.parentId = 1;
     Assert.assertEquals(articleService.count(articleCriteria), Long.valueOf(0L));
     articleService.applyOperation("parentId", "3, 4", "1");
@@ -181,7 +181,7 @@ public class ArticleServiceITTest extends PersistenceITTest {
 
   @Test
   public void testOperator_userId() throws AppException {
-    ArticleCriteria articleCriteria = new ArticleCriteria(ArticleFields.ALL_FIELDS);
+    ArticleCriteria articleCriteria = new ArticleCriteria();
     articleCriteria.userId = 2;
     Assert.assertEquals(articleService.count(articleCriteria), Long.valueOf(0L));
     articleService.applyOperation("userId", "3, 4", "2");
@@ -389,25 +389,27 @@ public class ArticleServiceITTest extends PersistenceITTest {
 
   @Test
   public void testGetArticleList_withPageInfo() throws AppException {
-    ArticleCriteria articleCriteria = new ArticleCriteria(ArticleFields.FIELDS_FOR_LIST_PAGE);
+    ArticleCriteria articleCriteria = new ArticleCriteria();
     articleCriteria.userId = 1;
     PageInfo pageInfo = PageInfo.create(300L, 3L, 10, 2L);
-    List<ArticleDto> articleListDtos = articleService.getArticleList(articleCriteria, pageInfo);
+    List<ArticleDto> articleListDtos = articleService.getArticleList(articleCriteria, pageInfo,
+        ArticleFields.FIELDS_FOR_LIST_PAGE);
     Assert.assertEquals(articleListDtos.size(), 1);
   }
 
   @Test
   public void testGetArticleList_withPageInfo_emptyResult() throws AppException {
-    ArticleCriteria articleCriteria = new ArticleCriteria(ArticleFields.FIELDS_FOR_LIST_PAGE);
+    ArticleCriteria articleCriteria = new ArticleCriteria();
     articleCriteria.userId = 1;
     PageInfo pageInfo = PageInfo.create(300L, 3L, 10, 3L);
-    List<ArticleDto> articleListDtos = articleService.getArticleList(articleCriteria, pageInfo);
+    List<ArticleDto> articleListDtos = articleService.getArticleList(articleCriteria, pageInfo,
+        ArticleFields.FIELDS_FOR_LIST_PAGE);
     Assert.assertEquals(articleListDtos.size(), 0);
   }
 
   @Test
   public void testCreateArticle() throws AppException {
-    Long exceptedId = articleService.count(new ArticleCriteria(ArticleFields.ALL_FIELDS)) + 1;
+    Long exceptedId = articleService.count(new ArticleCriteria()) + 1;
     Integer newId = articleService.createNewArticle(1);
     Assert.assertEquals(newId.intValue(), exceptedId.intValue());
   }

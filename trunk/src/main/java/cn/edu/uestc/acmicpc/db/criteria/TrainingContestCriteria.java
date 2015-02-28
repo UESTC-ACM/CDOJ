@@ -1,7 +1,5 @@
-package cn.edu.uestc.acmicpc.db.criteria.impl;
+package cn.edu.uestc.acmicpc.db.criteria;
 
-import cn.edu.uestc.acmicpc.db.criteria.base.BaseCriteria;
-import cn.edu.uestc.acmicpc.db.dto.Fields;
 import cn.edu.uestc.acmicpc.db.dto.impl.TrainingContestDto;
 import cn.edu.uestc.acmicpc.db.entity.TrainingContest;
 import cn.edu.uestc.acmicpc.util.enums.TrainingContestType;
@@ -11,19 +9,13 @@ import cn.edu.uestc.acmicpc.util.exception.AppException;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Restrictions;
 
-import java.util.Set;
-
 /**
  * Training contest database criteria entity.
  */
 public class TrainingContestCriteria extends BaseCriteria<TrainingContest, TrainingContestDto> {
 
-  public TrainingContestCriteria(Set<Fields> resultFields) {
-    super(TrainingContest.class, TrainingContestDto.class, resultFields);
-  }
-
   public TrainingContestCriteria() {
-    this(null);
+    super(TrainingContest.class, TrainingContestDto.class);
   }
 
   public Integer startId;
@@ -34,9 +26,7 @@ public class TrainingContestCriteria extends BaseCriteria<TrainingContest, Train
   public TrainingPlatformType trainingPlatformType;
 
   @Override
-  public DetachedCriteria getCriteria() throws AppException {
-    DetachedCriteria criteria = super.getCriteria();
-
+  DetachedCriteria updateCriteria(DetachedCriteria criteria) throws AppException {
     if (startId != null) {
       criteria.add(Restrictions.ge("trainingContestId", startId));
     }

@@ -8,8 +8,10 @@ import cn.edu.uestc.acmicpc.db.dto.impl.teamUser.TeamUserReportDto;
 import cn.edu.uestc.acmicpc.db.entity.TeamUser;
 import cn.edu.uestc.acmicpc.service.iface.TeamUserService;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -17,6 +19,7 @@ import java.util.List;
  * Implementation for {@link cn.edu.uestc.acmicpc.service.iface.TeamUserService}
  */
 @Service
+@Transactional(rollbackFor = Exception.class)
 public class TeamUserServiceImpl extends AbstractService implements TeamUserService {
 
   private final TeamUserDao teamUserDao;

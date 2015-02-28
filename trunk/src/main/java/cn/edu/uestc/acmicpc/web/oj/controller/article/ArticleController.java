@@ -1,6 +1,6 @@
 package cn.edu.uestc.acmicpc.web.oj.controller.article;
 
-import cn.edu.uestc.acmicpc.db.criteria.impl.ArticleCriteria;
+import cn.edu.uestc.acmicpc.db.criteria.ArticleCriteria;
 import cn.edu.uestc.acmicpc.db.dto.field.ArticleFields;
 import cn.edu.uestc.acmicpc.db.dto.impl.ArticleDto;
 import cn.edu.uestc.acmicpc.db.dto.impl.user.UserDto;
@@ -30,7 +30,6 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-
 import javax.servlet.http.HttpSession;
 
 @Controller
@@ -108,7 +107,6 @@ public class ArticleController extends BaseController {
   public @ResponseBody Map<String, Object> commentSearch(HttpSession session,
       @RequestBody ArticleCriteria articleCriteria) throws AppException {
     Map<String, Object> json = new HashMap<>();
-    articleCriteria.setResultFields(ArticleFields.FIELDS_FOR_LIST_PAGE);
     if (!isAdmin(session)) {
       articleCriteria.isVisible = true;
     }
@@ -119,7 +117,7 @@ public class ArticleController extends BaseController {
         settings.RECORD_PER_PAGE, null);
 
     List<ArticleDto> articleListDtoList = articleService.getArticleList(
-        articleCriteria, pageInfo);
+        articleCriteria, pageInfo, ArticleFields.FIELDS_FOR_LIST_PAGE);
 
     json.put("pageInfo", pageInfo);
     json.put("result", "success");
@@ -132,7 +130,6 @@ public class ArticleController extends BaseController {
   public @ResponseBody Map<String, Object> search(HttpSession session,
       @RequestBody ArticleCriteria articleCriteria) throws AppException {
     Map<String, Object> json = new HashMap<>();
-    articleCriteria.setResultFields(ArticleFields.FIELDS_FOR_LIST_PAGE);
     if (!isAdmin(session)) {
       articleCriteria.isVisible = true;
     }
@@ -144,7 +141,7 @@ public class ArticleController extends BaseController {
         settings.RECORD_PER_PAGE, null);
 
     List<ArticleDto> result = articleService.getArticleList(
-        articleCriteria, pageInfo);
+        articleCriteria, pageInfo, ArticleFields.FIELDS_FOR_LIST_PAGE);
     for (ArticleDto articleDto : result) {
       String content = articleDto.getContent();
       if (content.contains("!!!more!!!")) {

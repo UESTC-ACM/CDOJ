@@ -1,21 +1,24 @@
 package cn.edu.uestc.acmicpc.service.impl;
 
-import cn.edu.uestc.acmicpc.db.criteria.impl.TrainingCriteria;
+import cn.edu.uestc.acmicpc.db.criteria.TrainingCriteria;
 import cn.edu.uestc.acmicpc.db.dao.iface.TrainingDao;
-import cn.edu.uestc.acmicpc.db.dto.Fields;
+import cn.edu.uestc.acmicpc.db.dto.field.TrainingFields;
 import cn.edu.uestc.acmicpc.db.dto.impl.TrainingDto;
 import cn.edu.uestc.acmicpc.db.entity.Training;
 import cn.edu.uestc.acmicpc.service.iface.TrainingService;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
 import cn.edu.uestc.acmicpc.util.exception.AppExceptionUtil;
 import cn.edu.uestc.acmicpc.web.dto.PageInfo;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Set;
 
 @Service
+@Transactional(rollbackFor = Exception.class)
 public class TrainingServiceImpl extends AbstractService implements TrainingService {
 
   private final TrainingDao trainingDao;
@@ -26,23 +29,23 @@ public class TrainingServiceImpl extends AbstractService implements TrainingServ
   }
 
   @Override
-  public TrainingDto getTrainingDto(Integer trainingId, Set<Fields> trainingFields)
+  public TrainingDto getTrainingDto(Integer trainingId, Set<TrainingFields> fields)
       throws AppException {
     AppExceptionUtil.assertNotNull(trainingId);
-    TrainingCriteria trainingCriteria = new TrainingCriteria(trainingFields);
+    TrainingCriteria trainingCriteria = new TrainingCriteria();
     trainingCriteria.startId = trainingCriteria.endId = trainingId;
-    return trainingDao.getDtoByUniqueField(trainingCriteria.getCriteria());
+    return trainingDao.getDtoByUniqueField(trainingCriteria, fields);
   }
 
   @Override
   public Long count(TrainingCriteria trainingCriteria) throws AppException {
-    return trainingDao.count(trainingCriteria.getCriteria());
+    return trainingDao.count(trainingCriteria);
   }
 
   @Override
-  public List<TrainingDto> getTrainingList(TrainingCriteria trainingCriteria, PageInfo pageInfo)
-      throws AppException {
-    return trainingDao.findAll(trainingCriteria.getCriteria(), pageInfo);
+  public List<TrainingDto> getTrainingList(TrainingCriteria trainingCriteria, PageInfo pageInfo,
+      Set<TrainingFields> fields) throws AppException {
+    return trainingDao.findAll(trainingCriteria, pageInfo, fields);
   }
 
   @Override

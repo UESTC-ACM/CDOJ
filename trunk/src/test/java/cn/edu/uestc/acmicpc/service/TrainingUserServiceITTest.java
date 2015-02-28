@@ -1,6 +1,6 @@
 package cn.edu.uestc.acmicpc.service;
 
-import cn.edu.uestc.acmicpc.db.criteria.impl.TrainingUserCriteria;
+import cn.edu.uestc.acmicpc.db.criteria.TrainingUserCriteria;
 import cn.edu.uestc.acmicpc.db.dto.field.TrainingUserFields;
 import cn.edu.uestc.acmicpc.db.dto.impl.TrainingUserDto;
 import cn.edu.uestc.acmicpc.service.iface.TrainingUserService;
@@ -43,10 +43,9 @@ public class TrainingUserServiceITTest extends PersistenceITTest {
 
   @Test
   public void testGetTrainingUserList() throws AppException {
-    TrainingUserCriteria trainingUserCriteria = new TrainingUserCriteria(
-        TrainingUserFields.ALL_FIELDS);
+    TrainingUserCriteria trainingUserCriteria = new TrainingUserCriteria();
     List<TrainingUserDto> trainingUserDtoList = trainingUserService
-        .getTrainingUserList(trainingUserCriteria);
+        .getTrainingUserList(trainingUserCriteria, TrainingUserFields.ALL_FIELDS);
     Assert.assertEquals(trainingUserDtoList.size(), 5);
     Integer id = 0;
     for (TrainingUserDto trainingUserDto : trainingUserDtoList) {
@@ -61,11 +60,10 @@ public class TrainingUserServiceITTest extends PersistenceITTest {
 
   @Test
   public void testGetTrainingUserList_keyword() throws AppException {
-    TrainingUserCriteria trainingUserCriteria = new TrainingUserCriteria(
-        TrainingUserFields.ALL_FIELDS);
+    TrainingUserCriteria trainingUserCriteria = new TrainingUserCriteria();
     trainingUserCriteria.keyword = "userA";
     List<TrainingUserDto> trainingUserDtoList = trainingUserService
-        .getTrainingUserList(trainingUserCriteria);
+        .getTrainingUserList(trainingUserCriteria, TrainingUserFields.ALL_FIELDS);
     Assert.assertEquals(trainingUserDtoList.size(), 2);
     Assert.assertEquals(trainingUserDtoList.get(0).getTrainingUserId(), Integer.valueOf(1));
     Assert.assertEquals(trainingUserDtoList.get(1).getTrainingUserId(), Integer.valueOf(5));

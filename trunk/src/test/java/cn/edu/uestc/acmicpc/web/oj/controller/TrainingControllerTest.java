@@ -1,20 +1,8 @@
 package cn.edu.uestc.acmicpc.web.oj.controller;
 
-import static org.hamcrest.Matchers.hasSize;
-import static org.hamcrest.Matchers.is;
-import static org.hamcrest.Matchers.notNullValue;
-import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.anyString;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-
-import cn.edu.uestc.acmicpc.db.criteria.impl.TrainingCriteria;
-import cn.edu.uestc.acmicpc.db.criteria.impl.TrainingPlatformInfoCriteria;
-import cn.edu.uestc.acmicpc.db.criteria.impl.TrainingUserCriteria;
+import cn.edu.uestc.acmicpc.db.criteria.TrainingCriteria;
+import cn.edu.uestc.acmicpc.db.criteria.TrainingPlatformInfoCriteria;
+import cn.edu.uestc.acmicpc.db.criteria.TrainingUserCriteria;
 import cn.edu.uestc.acmicpc.db.dto.field.TrainingFields;
 import cn.edu.uestc.acmicpc.db.dto.field.TrainingPlatformInfoFields;
 import cn.edu.uestc.acmicpc.db.dto.field.TrainingUserFields;
@@ -29,6 +17,19 @@ import cn.edu.uestc.acmicpc.util.enums.TrainingUserType;
 import cn.edu.uestc.acmicpc.util.helper.StringUtil;
 import cn.edu.uestc.acmicpc.web.dto.PageInfo;
 import cn.edu.uestc.acmicpc.web.oj.controller.training.TrainingController;
+
+import static org.hamcrest.Matchers.hasSize;
+import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.notNullValue;
+import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.anySetOf;
+import static org.mockito.Matchers.anyString;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import org.mockito.ArgumentCaptor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -63,7 +64,7 @@ public class TrainingControllerTest extends ControllerTest {
 
   @Test
   public void testSearchSuccessful() throws Exception {
-    TrainingCriteria trainingCriteria = new TrainingCriteria(TrainingFields.ALL_FIELDS);
+    TrainingCriteria trainingCriteria = new TrainingCriteria();
     trainingCriteria.startId = 1;
     trainingCriteria.endId = 3;
 
@@ -73,8 +74,8 @@ public class TrainingControllerTest extends ControllerTest {
     }
 
     when(trainingService.count(any(TrainingCriteria.class))).thenReturn((long) result.size());
-    when(trainingService.getTrainingList(any(TrainingCriteria.class), any(PageInfo.class)))
-        .thenReturn(result);
+    when(trainingService.getTrainingList(any(TrainingCriteria.class), any(PageInfo.class),
+        anySetOf(TrainingFields.class))).thenReturn(result);
 
     mockMvc.perform(post("/training/search")
         .contentType(APPLICATION_JSON_UTF8)
@@ -89,7 +90,7 @@ public class TrainingControllerTest extends ControllerTest {
     ArgumentCaptor<TrainingCriteria> trainingCriteriaArgumentCaptor = ArgumentCaptor
         .forClass(TrainingCriteria.class);
     verify(trainingService).getTrainingList(trainingCriteriaArgumentCaptor.capture(),
-        any(PageInfo.class));
+        any(PageInfo.class), anySetOf(TrainingFields.class));
     Assert
         .assertEquals(trainingCriteria.startId, trainingCriteriaArgumentCaptor.getValue().startId);
     Assert.assertEquals(trainingCriteria.endId, trainingCriteriaArgumentCaptor.getValue().endId);
@@ -103,8 +104,8 @@ public class TrainingControllerTest extends ControllerTest {
     }
 
     when(trainingService.count(any(TrainingCriteria.class))).thenReturn((long) result.size());
-    when(trainingService.getTrainingList(any(TrainingCriteria.class), any(PageInfo.class)))
-        .thenReturn(result);
+    when(trainingService.getTrainingList(any(TrainingCriteria.class), any(PageInfo.class),
+        anySetOf(TrainingFields.class))).thenReturn(result);
 
     mockMvc.perform(get("/training/search"))
         .andExpect(status().isOk())
@@ -634,8 +635,7 @@ public class TrainingControllerTest extends ControllerTest {
 
   @Test
   public void testSearchTrainingUserSuccess() throws Exception {
-    TrainingUserCriteria trainingUserCriteria =
-        new TrainingUserCriteria(TrainingUserFields.ALL_FIELDS);
+    TrainingUserCriteria trainingUserCriteria = new TrainingUserCriteria();
     trainingUserCriteria.startId = 1;
     trainingUserCriteria.endId = 5;
 
@@ -644,10 +644,8 @@ public class TrainingControllerTest extends ControllerTest {
       trainingUserDtoList.add(TrainingUserDto.builder().build());
     }
 
-    when(trainingUserService.getTrainingUserList(any(TrainingUserCriteria.class))).thenReturn(
-        trainingUserDtoList);
-
-    System.out.println(trainingUserDtoList.size());
+    when(trainingUserService.getTrainingUserList(any(TrainingUserCriteria.class),
+        anySetOf(TrainingUserFields.class))).thenReturn(trainingUserDtoList);
 
     mockMvc.perform(post("/training/searchTrainingUser/{trainingId}", 1)
         .contentType(APPLICATION_JSON_UTF8)
@@ -663,7 +661,8 @@ public class TrainingControllerTest extends ControllerTest {
 
     ArgumentCaptor<TrainingUserCriteria> trainingUserCriteriaArgumentCaptor = ArgumentCaptor
         .forClass(TrainingUserCriteria.class);
-    verify(trainingUserService).getTrainingUserList(trainingUserCriteriaArgumentCaptor.capture());
+    verify(trainingUserService).getTrainingUserList(trainingUserCriteriaArgumentCaptor.capture(),
+        anySetOf(TrainingUserFields.class));
     Assert.assertEquals(trainingUserCriteria.startId,
         trainingUserCriteriaArgumentCaptor.getValue().startId);
     Assert.assertEquals(trainingUserCriteria.endId,
@@ -679,8 +678,8 @@ public class TrainingControllerTest extends ControllerTest {
       trainingUserDtoList.add(TrainingUserDto.builder().build());
     }
 
-    when(trainingUserService.getTrainingUserList(any(TrainingUserCriteria.class))).thenReturn(
-        trainingUserDtoList);
+    when(trainingUserService.getTrainingUserList(any(TrainingUserCriteria.class),
+        anySetOf(TrainingUserFields.class))).thenReturn(trainingUserDtoList);
 
     System.out.println(trainingUserDtoList.size());
 
@@ -696,7 +695,8 @@ public class TrainingControllerTest extends ControllerTest {
 
     ArgumentCaptor<TrainingUserCriteria> trainingUserCriteriaArgumentCaptor = ArgumentCaptor
         .forClass(TrainingUserCriteria.class);
-    verify(trainingUserService).getTrainingUserList(trainingUserCriteriaArgumentCaptor.capture());
+    verify(trainingUserService).getTrainingUserList(trainingUserCriteriaArgumentCaptor.capture(),
+        anySetOf(TrainingUserFields.class));
     Assert.assertNull(trainingUserCriteriaArgumentCaptor.getValue().startId);
     Assert.assertNull(trainingUserCriteriaArgumentCaptor.getValue().endId);
     Assert.assertEquals(Integer.valueOf(1),
@@ -715,10 +715,9 @@ public class TrainingControllerTest extends ControllerTest {
       trainingPlatformInfoDtoList.add(TrainingPlatformInfoDto.builder()
           .setTrainingPlatformInfoId(i + 1).build());
     }
-    when(
-        trainingPlatformInfoService
-            .getTrainingPlatformInfoList(any(TrainingPlatformInfoCriteria.class))).thenReturn(
-        trainingPlatformInfoDtoList);
+    when(trainingPlatformInfoService.getTrainingPlatformInfoList(
+        any(TrainingPlatformInfoCriteria.class), anySetOf(TrainingPlatformInfoFields.class))
+    ).thenReturn(trainingPlatformInfoDtoList);
 
     mockMvc.perform(get("/training/trainingUserData/{trainingUserId}", 1))
         .andExpect(status().isOk())

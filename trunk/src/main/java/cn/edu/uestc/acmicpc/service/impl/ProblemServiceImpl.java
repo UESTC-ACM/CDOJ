@@ -11,8 +11,10 @@ import cn.edu.uestc.acmicpc.util.enums.ProblemType;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
 import cn.edu.uestc.acmicpc.util.exception.AppExceptionUtil;
 import cn.edu.uestc.acmicpc.web.dto.PageInfo;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,6 +24,7 @@ import java.util.Map;
  * Implementation for {@link ProblemService}.
  */
 @Service
+@Transactional(rollbackFor = Exception.class)
 public class ProblemServiceImpl extends AbstractService implements ProblemService {
 
   private final ProblemDao problemDao;
@@ -71,8 +74,8 @@ public class ProblemServiceImpl extends AbstractService implements ProblemServic
     Object value;
     if (field.equals("isVisible")) {
       value = Boolean.valueOf(sValue);
-    } else if(field.equals("type")) {
-      if(sValue.equals(ProblemType.INTERNAL.name())) {
+    } else if (field.equals("type")) {
+      if (sValue.equals(ProblemType.INTERNAL.name())) {
         value = ProblemType.INTERNAL.ordinal();
       } else {
         value = ProblemType.NORMAL.ordinal();

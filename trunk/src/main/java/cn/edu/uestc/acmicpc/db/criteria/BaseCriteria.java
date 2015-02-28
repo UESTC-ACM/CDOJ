@@ -1,16 +1,17 @@
-package cn.edu.uestc.acmicpc.db.criteria.base;
+package cn.edu.uestc.acmicpc.db.criteria;
 
 import cn.edu.uestc.acmicpc.db.dto.FieldProjection;
 import cn.edu.uestc.acmicpc.db.dto.Fields;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
 import cn.edu.uestc.acmicpc.util.exception.AppExceptionUtil;
 
-import cn.edu.uestc.acmicpc.util.helper.ObjectUtil;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.ProjectionList;
 import org.hibernate.criterion.Projections;
 import org.hibernate.transform.AliasToBeanResultTransformer;
+
+import com.google.common.collect.Sets;
 
 import java.util.Set;
 
@@ -55,52 +56,66 @@ public abstract class BaseCriteria<E, D> {
    */
   private final Class<D> resultClass;
 
-  /**
-   * Specify the fields we need when build query criteria
-   */
-  private Set<Fields> resultFields;
+  private Set<Fields> aliases;
 
   protected BaseCriteria(Class<E> referenceClass,
-      Class<D> resultClass,
-      Set<Fields> resultFields) {
+      Class<D> resultClass) {
     this.referenceClass = referenceClass;
     this.resultClass = resultClass;
-    this.resultFields = resultFields;
+    this.aliases = Sets.newHashSet();
   }
 
-  public void setResultFields(Set<Fields> resultFields) {
-    this.resultFields = resultFields;
+  public Class<D> getResultClass() {
+    return resultClass;
   }
 
-  /**
-   * Get {@link DetachedCriteria} object.
-   *
-   * @return {@link DetachedCriteria} object we need.
-   * @throws AppException
-   */
+  public void addAlias(Fields field) {
+    aliases.add(field);
+  }
+
+  public Set<Fields> getAliases() {
+    return aliases;
+  }
+
+  abstract DetachedCriteria updateCriteria(DetachedCriteria criteria) throws AppException;
+
   public DetachedCriteria getCriteria() throws AppException {
-    DetachedCriteria criteria = DetachedCriteria.forClass(referenceClass);
+    return getCriteria(null);
+  }
 
-    if (resultFields != null) {
+  public <F extends Fields> DetachedCriteria getCriteria(Set<F> fields) throws AppException {
+    DetachedCriteria criteria = prepareCriteria();
+    updateCriteria(criteria);
+
+    Set<Fields> aliasFields = Sets.newHashSet(getAliases());
+    if (fields != null) {
       ProjectionList projectionList = Projections.projectionList();
-      for (Fields field : resultFields) {
+      for (Fields field : fields) {
         FieldProjection fieldProjection = field.getProjection();
-        if (fieldProjection.getType() == FieldProjection.ProjectionType.ALIAS) {
-          // Set alias
-          criteria.createAlias(fieldProjection.getField(), fieldProjection.getAlias());
-        } else if (fieldProjection.getType() == FieldProjection.ProjectionType.DB_FIELD) {
+        if (fieldProjection.getType() == FieldProjection.ProjectionType.DB_FIELD) {
           // Set projection
-          projectionList.add(Projections.property(fieldProjection.getField()),
-              fieldProjection.getAlias());
+          projectionList.add(Projections.property(fieldProjection.getName()),
+              fieldProjection.getField());
+          aliasFields.addAll(fieldProjection.getAliases());
         }
       }
       criteria.setProjection(projectionList);
+    }
+    for (Fields field : aliasFields) {
+      FieldProjection fieldProjection = field.getProjection();
+      criteria.createAlias(fieldProjection.getName(), fieldProjection.getField());
     }
 
     // Set result transformer
     // We must set the projection first
     // setProjection() method will change the transformer to PROJECTION
-    criteria = criteria.setResultTransformer(new AliasToBeanResultTransformer(resultClass));
+    criteria.setResultTransformer(
+        new AliasToBeanResultTransformer(getResultClass()));
+    return criteria;
+  }
+
+  private DetachedCriteria prepareCriteria() throws AppException {
+    DetachedCriteria criteria = DetachedCriteria.forClass(referenceClass);
 
     // Set order condition
     if (orderFields != null) {
@@ -117,5 +132,4 @@ public abstract class BaseCriteria<E, D> {
     }
     return criteria;
   }
-
 }

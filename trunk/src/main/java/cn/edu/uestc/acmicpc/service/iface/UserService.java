@@ -1,7 +1,11 @@
 package cn.edu.uestc.acmicpc.service.iface;
 
 import cn.edu.uestc.acmicpc.db.condition.impl.UserCondition;
-import cn.edu.uestc.acmicpc.db.dto.impl.user.*;
+import cn.edu.uestc.acmicpc.db.dto.impl.user.UserCenterDto;
+import cn.edu.uestc.acmicpc.db.dto.impl.user.UserDto;
+import cn.edu.uestc.acmicpc.db.dto.impl.user.UserEditorDto;
+import cn.edu.uestc.acmicpc.db.dto.impl.user.UserListDto;
+import cn.edu.uestc.acmicpc.db.dto.impl.user.UserTypeAheadDto;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
 import cn.edu.uestc.acmicpc.web.dto.PageInfo;
 
@@ -16,8 +20,7 @@ public interface UserService {
   /**
    * Get {@link UserDto} by user id.
    *
-   * @param userId
-   *          user's id.
+   * @param userId user's id.
    * @return {@link UserDto} entity.
    * @throws AppException
    */
@@ -26,8 +29,7 @@ public interface UserService {
   /**
    * Get {@link UserDto} by user name.
    *
-   * @param userName
-   *          user's name.
+   * @param userName user's name.
    * @return {@link UserDto} entity.
    * @throws AppException
    */
@@ -37,8 +39,7 @@ public interface UserService {
    * Get {@link cn.edu.uestc.acmicpc.db.dto.impl.user.UserEditorDto} by user
    * name.
    *
-   * @param userName
-   *          user's name.
+   * @param userName user's name.
    * @return {@link cn.edu.uestc.acmicpc.db.dto.impl.user.UserEditorDto} entity.
    * @throws AppException
    */
@@ -47,8 +48,7 @@ public interface UserService {
   /**
    * Get {@link UserCenterDto} by user name.
    *
-   * @param userName
-   *          user's name.
+   * @param userName user's name.
    * @return {@link UserDto} entity.
    * @throws AppException
    */
@@ -57,8 +57,7 @@ public interface UserService {
   /**
    * Get {@link UserDto} by user email.
    *
-   * @param email
-   *          user's email.
+   * @param email user's email.
    * @return {@link UserDto} entity.
    * @throws AppException
    */
@@ -67,8 +66,7 @@ public interface UserService {
   /**
    * Update user by {@link UserDto} entity.
    *
-   * @param userDto
-   *          {@link UserDto} entity.
+   * @param userDto {@link UserDto} entity.
    * @throws AppException
    */
   public void updateUser(UserDto userDto) throws AppException;
@@ -76,8 +74,7 @@ public interface UserService {
   /**
    * Create a new user record {@link UserDto} entity.
    *
-   * @param userDto
-   *          {@link UserDto} entity.
+   * @param userDto {@link UserDto} entity.
    * @return New user's user ID.
    * @throws AppException
    */
@@ -86,8 +83,7 @@ public interface UserService {
   /**
    * Counts the number of users fit in condition.
    *
-   * @param condition
-   *          {@link UserCondition} entity.
+   * @param condition {@link UserCondition} entity.
    * @return total number of users fit in the condition.
    * @throws AppException
    */
@@ -96,10 +92,8 @@ public interface UserService {
   /**
    * Get the users fit in condition and page range.
    *
-   * @param condition
-   *          {@link UserCondition} entity.
-   * @param pageInfo
-   *          {@link PageInfo} entity.
+   * @param condition {@link UserCondition} entity.
+   * @param pageInfo  {@link PageInfo} entity.
    * @return List of {@link UserListDto} entities.
    * @throws AppException
    */
@@ -109,13 +103,11 @@ public interface UserService {
   /**
    * Get the users fit in condition and page range.
    *
-   * @param condition
-   *          {@link UserCondition} entity.
-   * @param pageInfo
-   *          {@link PageInfo} entity.
+   * @param condition {@link UserCondition} entity.
+   * @param pageInfo  {@link PageInfo} entity.
    * @return List of
-   *         {@link cn.edu.uestc.acmicpc.db.dto.impl.user.UserTypeAheadDto}
-   *         entities
+   * {@link cn.edu.uestc.acmicpc.db.dto.impl.user.UserTypeAheadDto}
+   * entities
    * @throws AppException
    */
   public List<UserTypeAheadDto> getUserTypeAheadDtoList(UserCondition condition, PageInfo pageInfo)
@@ -124,10 +116,8 @@ public interface UserService {
   /**
    * Update some fields of one user according the user id.
    *
-   * @param properties
-   *          field name and field value map.
-   * @param userId
-   *          user's id.
+   * @param properties field name and field value map.
+   * @param userId     user's id.
    * @throws AppException
    */
   public void updateUserByUserId(Map<String, Object> properties, Integer userId)
@@ -136,8 +126,7 @@ public interface UserService {
   /**
    * Check whether a user exists.
    *
-   * @param userName
-   *          user's name
+   * @param userName user's name
    * @return true if exists
    * @throws AppException
    */
@@ -146,8 +135,7 @@ public interface UserService {
   /**
    * Check whether a user exists.
    *
-   * @param userId
-   *          user's id
+   * @param userId user's id
    * @return true if exists
    * @throws AppException
    */
@@ -156,8 +144,7 @@ public interface UserService {
   /**
    * Create onsite users by {@link UserDto} list.
    *
-   * @param userList
-   *          {@link cn.edu.uestc.acmicpc.db.dto.impl.user.UserDto} list
+   * @param userList {@link cn.edu.uestc.acmicpc.db.dto.impl.user.UserDto} list
    * @return
    * @throws AppException
    */
@@ -167,8 +154,7 @@ public interface UserService {
    * Fetch all onsite users by contest's id. return as a list of {@link UserDto}
    * entities.
    *
-   * @param contestId
-   *          contest's id.
+   * @param contestId contest's id.
    * @return list of {@link UserDto} entities.
    * @throws AppException
    */

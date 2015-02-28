@@ -1,44 +1,50 @@
 package cn.edu.uestc.acmicpc.service.impl;
 
-import cn.edu.uestc.acmicpc.db.criteria.impl.ContestCriteria;
+import cn.edu.uestc.acmicpc.db.criteria.ContestCriteria;
 import cn.edu.uestc.acmicpc.db.dao.iface.ContestDao;
-import cn.edu.uestc.acmicpc.db.dto.Fields;
 import cn.edu.uestc.acmicpc.db.dto.field.ContestFields;
 import cn.edu.uestc.acmicpc.db.dto.impl.ContestDto;
 import cn.edu.uestc.acmicpc.db.entity.Contest;
 import cn.edu.uestc.acmicpc.service.iface.ContestService;
+import cn.edu.uestc.acmicpc.util.enums.ContestType;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
 import cn.edu.uestc.acmicpc.util.exception.AppExceptionUtil;
-import cn.edu.uestc.acmicpc.util.settings.Settings;
 import cn.edu.uestc.acmicpc.web.dto.PageInfo;
-import com.google.common.collect.ImmutableSet;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import com.google.common.collect.ImmutableSet;
+import com.google.common.collect.Sets;
+
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
 @Service
 @Primary
+@Transactional(rollbackFor = Exception.class)
 public class ContestServiceImpl extends AbstractService implements ContestService {
 
+  // This group of fields make up all progress information of a contest.
+  private final static Set<ContestFields> CONTEST_STATUS_FIELDS = ImmutableSet.of(
+      ContestFields.END_TIME, ContestFields.TIME_LEFT, ContestFields.STATUS);
   private final ContestDao contestDao;
-  @SuppressWarnings("unused")
-  private final Settings settings;
 
   @Autowired
-  public ContestServiceImpl(ContestDao contestDao, Settings settings) {
+  public ContestServiceImpl(ContestDao contestDao) {
     this.contestDao = contestDao;
-    this.settings = settings;
   }
 
   @Override
   public List<Integer> getAllVisibleContestIds() throws AppException {
-    ContestCriteria criteria = new ContestCriteria(ImmutableSet.of(ContestFields.CONTEST_ID));
+    ContestCriteria criteria = new ContestCriteria();
     criteria.isVisible = true;
-    List<ContestDto> contests = contestDao.findAll(criteria.getCriteria(), null);
+    List<ContestDto> contests = contestDao.findAll(criteria, null,
+        ImmutableSet.of(ContestFields.CONTEST_ID));
     List<Integer> results = new ArrayList<>(contests.size());
     contests.stream().forEach(dto -> results.add(dto.getContestId()));
     return results;
@@ -46,19 +52,19 @@ public class ContestServiceImpl extends AbstractService implements ContestServic
 
   @Override
   public ContestDto getContestDtoByContestId(
-      Integer contestId, Set<Fields> fields) throws AppException {
+      Integer contestId, Set<ContestFields> fields) throws AppException {
     AppExceptionUtil.assertNotNull(contestId);
-    ContestCriteria criteria = new ContestCriteria(fields);
+    ContestCriteria criteria = new ContestCriteria();
     criteria.contestId = contestId;
-    return contestDao.getDtoByUniqueField(criteria.getCriteria());
+    return updateContestDto(contestDao.getDtoByUniqueField(criteria, fields), fields);
   }
 
   @Override
   public Boolean checkContestExists(Integer contestId) throws AppException {
     AppExceptionUtil.assertNotNull(contestId);
-    ContestCriteria criteria = new ContestCriteria(ImmutableSet.of(ContestFields.CONTEST_ID));
+    ContestCriteria criteria = new ContestCriteria();
     criteria.contestId = contestId;
-    return contestDao.count(criteria.getCriteria()) == 1;
+    return contestDao.count(criteria) == 1;
   }
 
   private void updateContestByContestDto(Contest contest, ContestDto contestDto) {
@@ -96,15 +102,61 @@ public class ContestServiceImpl extends AbstractService implements ContestServic
     contestDao.addOrUpdate(contest);
   }
 
-  @Override
-  public Long count(ContestCriteria criteria) throws AppException {
-    return contestDao.count(criteria.getCriteria());
+  private ContestDto updateContestDto(ContestDto contest, Set<ContestFields> fields) {
+    for (ContestFields field : fields) {
+      switch (field) {
+        case LENGTH:
+          contest.setLength(contest.getLength() * 1000);
+          break;
+        case FROZEN_TIME:
+          if (contest.getFrozenTime() != null) {
+            contest.setFrozenTime(contest.getFrozenTime() * 1000);
+          }
+          break;
+        case TYPE_NAME:
+          contest.setTypeName(ContestType.values()[contest.getType()].getDescription());
+          break;
+        case START_TIME:
+          contest.setStartTime(contest.getTime());
+          break;
+        case CURRENT_TIME:
+          contest.setCurrentTime(new Timestamp(System.currentTimeMillis()));
+          break;
+        default:
+          break;
+      }
+    }
+    if (!Sets.intersection(fields, CONTEST_STATUS_FIELDS).isEmpty()) {
+      Timestamp endTime = new Timestamp(contest.getStartTime().getTime() + contest.getLength());
+      Long timeLeft = Math.max(endTime.getTime() - contest.getCurrentTime().getTime(), 0L);
+      String status;
+      if (timeLeft > contest.getLength()) {
+        status = "Pending";
+      } else if (timeLeft > 0) {
+        status = "Running";
+      } else {
+        status = "Ended";
+      }
+      contest.setEndTime(endTime);
+      contest.setTimeLeft(timeLeft);
+      contest.setStatus(status);
+    }
+    return contest;
   }
 
   @Override
-  public List<ContestDto> getContestListDtoList(
-      ContestCriteria criteria, PageInfo pageInfo) throws AppException {
-    return contestDao.findAll(criteria.getCriteria(), pageInfo);
+  public Long count(ContestCriteria criteria) throws AppException {
+    return contestDao.count(criteria);
+  }
+
+  @Override
+  public List<ContestDto> getContestList(
+      ContestCriteria criteria, PageInfo pageInfo, Set<ContestFields> fields) throws AppException {
+    List<ContestDto> result = contestDao.findAll(criteria, pageInfo, fields);
+    for (ContestDto contest : result) {
+      updateContestDto(contest, fields);
+    }
+    return result;
   }
 
   @Override

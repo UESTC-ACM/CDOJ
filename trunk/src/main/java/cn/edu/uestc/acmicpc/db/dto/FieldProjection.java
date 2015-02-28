@@ -1,5 +1,9 @@
 package cn.edu.uestc.acmicpc.db.dto;
 
+import com.google.common.collect.Lists;
+
+import java.util.List;
+
 /**
  * Field projection
  */
@@ -12,56 +16,51 @@ public class FieldProjection {
   }
 
   /**
-   * Field in database
+   * Field name
    */
-  private String field;
+  private String name;
 
   /**
-   * Alias
+   * Field in databases
    */
-  private String alias;
+  private String field;
 
   /**
    * Projection type
    */
   private ProjectionType type;
 
+  private List<Fields> aliases;
+
+  public String getName() {
+    return name;
+  }
+
   public String getField() {
     return field;
-  }
-
-  public void setField(String field) {
-    this.field = field;
-  }
-
-  public String getAlias() {
-    return alias;
-  }
-
-  public void setAlias(String alias) {
-    this.alias = alias;
   }
 
   public ProjectionType getType() {
     return type;
   }
 
-  public void setType(ProjectionType type) {
-    this.type = type;
+  public List<Fields> getAliases() {
+    return aliases;
   }
 
-  public FieldProjection(String field, String alias, ProjectionType type) {
+  public FieldProjection(String name, String field, ProjectionType type, Fields... aliases) {
+    this.name = name;
     this.field = field;
-    this.alias = alias;
     this.type = type;
+    this.aliases = Lists.newArrayList(aliases);
   }
 
-  public static FieldProjection dbField(String field, String alias) {
-    return new FieldProjection(field, alias, ProjectionType.DB_FIELD);
+  public static FieldProjection dbField(String field, String alias, Fields... aliases) {
+    return new FieldProjection(field, alias, ProjectionType.DB_FIELD, aliases);
   }
 
-  public static FieldProjection dbField(String field) {
-    return dbField(field, field);
+  public static FieldProjection dbField(String field, Fields... aliases) {
+    return dbField(field, field, aliases);
   }
 
   public static FieldProjection field(String field, String alias) {

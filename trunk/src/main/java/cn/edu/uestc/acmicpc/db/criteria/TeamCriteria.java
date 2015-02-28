@@ -1,7 +1,5 @@
-package cn.edu.uestc.acmicpc.db.criteria.impl;
+package cn.edu.uestc.acmicpc.db.criteria;
 
-import cn.edu.uestc.acmicpc.db.criteria.base.BaseCriteria;
-import cn.edu.uestc.acmicpc.db.dto.Fields;
 import cn.edu.uestc.acmicpc.db.dto.impl.TeamDto;
 import cn.edu.uestc.acmicpc.db.entity.Team;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
@@ -9,19 +7,13 @@ import cn.edu.uestc.acmicpc.util.exception.AppException;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Restrictions;
 
-import java.util.Set;
-
 /**
  * Team database criteria entity.
  */
 public class TeamCriteria extends BaseCriteria<Team, TeamDto> {
 
-  public TeamCriteria(Set<Fields> resultFields) {
-    super(Team.class, TeamDto.class, resultFields);
-  }
-
   public TeamCriteria() {
-    this(null);
+    super(Team.class, TeamDto.class);
   }
 
   public Integer teamId;
@@ -33,8 +25,7 @@ public class TeamCriteria extends BaseCriteria<Team, TeamDto> {
   public Boolean allow;
 
   @Override
-  public DetachedCriteria getCriteria() throws AppException {
-    DetachedCriteria criteria = super.getCriteria();
+  DetachedCriteria updateCriteria(DetachedCriteria criteria) throws AppException {
     if (teamId != null) {
       criteria.add(Restrictions.eq("teamId", teamId));
     }
