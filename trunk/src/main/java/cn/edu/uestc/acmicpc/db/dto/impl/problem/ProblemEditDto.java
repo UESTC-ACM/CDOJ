@@ -6,7 +6,6 @@ import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.Range;
 
 import java.util.Objects;
-
 import javax.validation.constraints.NotNull;
 
 /**

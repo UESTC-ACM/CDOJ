@@ -12,10 +12,8 @@ public interface PictureService {
   /**
    * Upload picture into target directory.
    *
-   * @param fileUploadDto
-   *          {@link FileUploadDto} entity.
-   * @param directory
-   *          Directory, like "/problem/1/"
+   * @param fileUploadDto {@link FileUploadDto} entity.
+   * @param directory     Directory, like "/problem/1/"
    * @return {@link FileInformationDto} entity.
    * @throws AppException
    */
@@ -26,12 +24,9 @@ public interface PictureService {
    * When we add new problem/article, we upload images into /{category}/new/,
    * but after we save it we should move images into right place.
    *
-   * @param content
-   *          old article content
-   * @param oldDirectory
-   *          old directory, match the prefix
-   * @param newDirectory
-   *          new directory
+   * @param content      old article content
+   * @param oldDirectory old directory, match the prefix
+   * @param newDirectory new directory
    * @return modified content
    * @throws AppException
    */

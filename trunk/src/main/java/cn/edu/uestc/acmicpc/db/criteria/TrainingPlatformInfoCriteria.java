@@ -1,7 +1,6 @@
-package cn.edu.uestc.acmicpc.db.criteria.impl;
+package cn.edu.uestc.acmicpc.db.criteria;
 
-import cn.edu.uestc.acmicpc.db.criteria.base.BaseCriteria;
-import cn.edu.uestc.acmicpc.db.dto.Fields;
+import cn.edu.uestc.acmicpc.db.dto.field.TrainingPlatformInfoFields;
 import cn.edu.uestc.acmicpc.db.dto.impl.TrainingPlatformInfoDto;
 import cn.edu.uestc.acmicpc.db.entity.TrainingPlatformInfo;
 import cn.edu.uestc.acmicpc.util.enums.TrainingPlatformType;
@@ -10,20 +9,14 @@ import cn.edu.uestc.acmicpc.util.exception.AppException;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Restrictions;
 
-import java.util.Set;
-
 /**
  * TrainingPlatform database criteria entity.
  */
 public class TrainingPlatformInfoCriteria extends
     BaseCriteria<TrainingPlatformInfo, TrainingPlatformInfoDto> {
 
-  public TrainingPlatformInfoCriteria(Set<Fields> resultFields) {
-    super(TrainingPlatformInfo.class, TrainingPlatformInfoDto.class, resultFields);
-  }
-
   public TrainingPlatformInfoCriteria() {
-    this(null);
+    super(TrainingPlatformInfo.class, TrainingPlatformInfoDto.class);
   }
 
   public Integer startId;
@@ -36,9 +29,7 @@ public class TrainingPlatformInfoCriteria extends
   public Integer trainingId;
 
   @Override
-  public DetachedCriteria getCriteria() throws AppException {
-    DetachedCriteria criteria = super.getCriteria();
-
+  DetachedCriteria updateCriteria(DetachedCriteria criteria) throws AppException {
     if (startId != null) {
       criteria.add(Restrictions.ge("trainingPlatformInfoId", startId));
       criteria.add(Restrictions.le("trainingPlatformInfoId", endId));
@@ -60,11 +51,12 @@ public class TrainingPlatformInfoCriteria extends
       criteria.add(Restrictions.or(
           Restrictions.ilike("userName", keyword),
           Restrictions.ilike("userId", keyword),
-          Restrictions.ilike("trainingUser.trainingUserName", keyword)
-          ));
+          Restrictions.ilike("trainingUser.trainingUserName", keyword)));
+      addAlias(TrainingPlatformInfoFields.ALIAS_TRAINING_USER);
     }
     if (trainingId != null) {
       criteria.add(Restrictions.eq("trainingUser.trainingId", trainingId));
+      addAlias(TrainingPlatformInfoFields.ALIAS_TRAINING_USER);
     }
 
     return criteria;

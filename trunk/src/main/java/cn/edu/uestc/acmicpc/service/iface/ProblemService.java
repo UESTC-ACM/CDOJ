@@ -27,8 +27,7 @@ public interface ProblemService {
   /**
    * Gets {@link ProblemDto} entity by problem's ID.
    *
-   * @param problemId
-   *          problem's id.
+   * @param problemId problem's id.
    * @return ProblemDto {@link ProblemDto} entity.
    * @throws AppException
    */
@@ -38,8 +37,7 @@ public interface ProblemService {
   /**
    * Counts the number of problems fit in condition.
    *
-   * @param condition
-   *          {@link ProblemCondition} entity.
+   * @param condition {@link ProblemCondition} entity.
    * @return total number of problems fit in the condition.
    * @throws AppException
    */
@@ -48,10 +46,8 @@ public interface ProblemService {
   /**
    * Get the problems fit in condition and page range.
    *
-   * @param condition
-   *          {@link ProblemCondition} entity.
-   * @param pageInfo
-   *          {@link PageInfo} entity.
+   * @param condition {@link ProblemCondition} entity.
+   * @param pageInfo  {@link PageInfo} entity.
    * @return List of {@link ProblemListDto} entities.
    * @throws AppException
    */
@@ -61,12 +57,9 @@ public interface ProblemService {
   /**
    * Modify one field of multiply entities as value.
    *
-   * @param field
-   *          filed need to modified.
-   * @param ids
-   *          entities' ID split by <code>,</code>.
-   * @param value
-   *          new value.
+   * @param field filed need to modified.
+   * @param ids   entities' ID split by <code>,</code>.
+   * @param value new value.
    * @throws AppException
    */
   public void operator(String field, String ids, String value) throws AppException;
@@ -74,10 +67,8 @@ public interface ProblemService {
   /**
    * Query one field of multiply entities.
    *
-   * @param field
-   *          filed need to modified.
-   * @param ids
-   *          entities' ID split by <code>,</code>.
+   * @param field filed need to modified.
+   * @param ids   entities' ID split by <code>,</code>.
    * @return List of queried field.
    * @throws AppException
    */
@@ -94,8 +85,7 @@ public interface ProblemService {
   /**
    * Updates problem record by {@link ProblemDto} entity.
    *
-   * @param problemDto
-   *          {@link ProblemDto} entity.
+   * @param problemDto {@link ProblemDto} entity.
    * @throws AppException
    */
   public void updateProblem(ProblemDto problemDto) throws AppException;
@@ -103,10 +93,8 @@ public interface ProblemService {
   /**
    * Updates a problem record according to dirty fields and its id.
    *
-   * @param properties
-   *          problem property fields.
-   * @param problemId
-   *          problem's id.
+   * @param properties problem property fields.
+   * @param problemId  problem's id.
    * @throws AppException
    */
   public void updateProblemByProblemId(Map<String, Object> properties, Integer problemId)
@@ -115,10 +103,9 @@ public interface ProblemService {
   /**
    * Create problems by problemDtos.
    *
-   * @param problemDtos
-   *          a series of
-   *          {@link cn.edu.uestc.acmicpc.db.dto.impl.problem.ProblemDto}
-   *          entity.
+   * @param problemDtos a series of
+   *                    {@link cn.edu.uestc.acmicpc.db.dto.impl.problem.ProblemDto}
+   *                    entity.
    * @return List of problemDtos with problemId.
    * @throws AppException
    */
@@ -128,8 +115,7 @@ public interface ProblemService {
   /**
    * Check whether a problem exists.
    *
-   * @param problemId
-   *          problem's id.
+   * @param problemId problem's id.
    * @return true if this problem exists.
    * @throws AppException
    */

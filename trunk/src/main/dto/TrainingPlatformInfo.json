@@ -14,7 +14,8 @@
     {
       "name": "trainingUserName",
       "type": "String",
-      "alias": "trainingUser.trainingUserName",
+      "field": "trainingUser.trainingUserName",
+      "aliases": ["trainingUser"],
       "projections": ["ALL_FIELDS"]
     },
     {
@@ -36,8 +37,7 @@
   "aliases": [
     {
       "name": "trainingUser",
-      "value": "trainingUserByTrainingUserId",
-      "projections": ["ALL_FIELDS"]
+      "value": "trainingUserByTrainingUserId"
     }
   ]
 }

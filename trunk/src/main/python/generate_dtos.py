@@ -108,14 +108,23 @@ def getFieldName(name):
     return "_".join(l.upper() for l in re.findall('[A-Z][^A-Z]*', name))
 
 
-def writeFields(indent, out, fields, aliases):
+def writeFields(indent, out, fields, aliases, class_name):
     projections = {}
+    for field in aliases:
+        fieldName = "ALIAS_" + getFieldName(field["name"])
+        fieldValue = field["value"]
+        out.write(indent * ' ')
+        out.write("{0}(alias(\"{1}\", \"{2}\")),\n".format(fieldName, fieldValue, field["name"]))
     for field in fields:
         fieldName = getFieldName(field["name"])
         params = []
-        if "alias" in field:
-            params.append("\"{0}\"".format(field["alias"]))
+        if "field" in field:
+            params.append("\"{0}\"".format(field["field"]))
         params.append("\"{0}\"".format(field["name"]))
+        if "aliases" in field:
+            for alias in field["aliases"]:
+                aliasFieldName = "ALIAS_" + getFieldName(alias)
+                params.append("{0}".format(aliasFieldName))
         method = "dbField"
         if "dbField" in field and field["dbField"] is False:
             method = "field"
@@ -129,27 +138,15 @@ def writeFields(indent, out, fields, aliases):
                 if projection not in projections:
                     projections[projection] = []
                 projections[projection].append(fieldName)
-    for field in aliases:
-        fieldName = "ALIAS_" + getFieldName(field["name"])
-        fieldValue = field["value"]
-        out.write(indent * ' ')
-        out.write("{0}(alias(\"{1}\", \"{2}\")),\n".format(fieldName, fieldValue, field["name"]))
-
-        if "projections" in field:
-            for j in range(len(field["projections"])):
-                projection = field["projections"][j]
-                if projection not in projections:
-                    projections[projection] = []
-                projections[projection].append(fieldName)
     out.write(indent * ' ')
     out.write(";\n\n")
 
     for key in projections:
         out.write(indent * ' ')
-        out.write("public static final Set<Fields> {0} = ImmutableSet.of(\n".format(key))
+        out.write("public static final Set<{0}Fields> {1} = ImmutableSet.of(\n".format(
+            class_name, key))
         first = True
-        for i in range(len(projections[key])):
-            projection = projections[key][i]
+        for projection in projections[key]:
             if first:
                 first = False
             else:
@@ -328,7 +325,7 @@ public enum {0}Fields implements Fields {{
 
 """.format(class_name))
 
-    writeFields(2, field_file, fields, aliases)
+    writeFields(2, field_file, fields, aliases, class_name)
 
     field_file.write("""
   private final FieldProjection projection;

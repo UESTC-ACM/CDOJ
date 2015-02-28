@@ -1,9 +1,9 @@
 package cn.edu.uestc.acmicpc.web.oj.controller.training;
 
-import cn.edu.uestc.acmicpc.db.criteria.impl.TrainingContestCriteria;
-import cn.edu.uestc.acmicpc.db.criteria.impl.TrainingCriteria;
-import cn.edu.uestc.acmicpc.db.criteria.impl.TrainingPlatformInfoCriteria;
-import cn.edu.uestc.acmicpc.db.criteria.impl.TrainingUserCriteria;
+import cn.edu.uestc.acmicpc.db.criteria.TrainingContestCriteria;
+import cn.edu.uestc.acmicpc.db.criteria.TrainingCriteria;
+import cn.edu.uestc.acmicpc.db.criteria.TrainingPlatformInfoCriteria;
+import cn.edu.uestc.acmicpc.db.criteria.TrainingUserCriteria;
 import cn.edu.uestc.acmicpc.db.dto.field.TrainingContestFields;
 import cn.edu.uestc.acmicpc.db.dto.field.TrainingFields;
 import cn.edu.uestc.acmicpc.db.dto.field.TrainingPlatformInfoFields;
@@ -97,12 +97,13 @@ public class TrainingController extends BaseController {
     Map<String, Object> json = new HashMap<>();
 
     if (trainingCriteria == null) {
-      trainingCriteria = new TrainingCriteria(TrainingFields.FIELDS_FOR_LIST_PAGE);
+      trainingCriteria = new TrainingCriteria();
     }
     Long count = trainingService.count(trainingCriteria);
     PageInfo pageInfo = buildPageInfo(count, trainingCriteria.currentPage,
         settings.RECORD_PER_PAGE, null);
-    List<TrainingDto> trainingDtoList = trainingService.getTrainingList(trainingCriteria, pageInfo);
+    List<TrainingDto> trainingDtoList = trainingService.getTrainingList(trainingCriteria, pageInfo,
+        TrainingFields.FIELDS_FOR_LIST_PAGE);
 
     json.put("pageInfo", pageInfo);
     json.put("list", trainingDtoList);
@@ -233,12 +234,12 @@ public class TrainingController extends BaseController {
     Map<String, Object> json = new HashMap<>();
 
     if (trainingUserCriteria == null) {
-      trainingUserCriteria = new TrainingUserCriteria(TrainingUserFields.ALL_FIELDS);
+      trainingUserCriteria = new TrainingUserCriteria();
     }
     trainingUserCriteria.trainingId = trainingId;
 
     List<TrainingUserDto> trainingUserDtoList = trainingUserService
-        .getTrainingUserList(trainingUserCriteria);
+        .getTrainingUserList(trainingUserCriteria, TrainingUserFields.ALL_FIELDS);
     for (int id = 0; id < trainingUserDtoList.size(); ++id) {
       trainingUserDtoList.get(id).setRank(id + 1);
       String ratingHistory = trainingUserDtoList.get(id).getRatingHistory();
@@ -269,11 +270,11 @@ public class TrainingController extends BaseController {
       throw new AppException("Training user not found!");
     }
 
-    TrainingPlatformInfoCriteria trainingPlatformInfoCriteria = new TrainingPlatformInfoCriteria(
-        TrainingPlatformInfoFields.ALL_FIELDS);
+    TrainingPlatformInfoCriteria trainingPlatformInfoCriteria = new TrainingPlatformInfoCriteria();
     trainingPlatformInfoCriteria.trainingUserId = trainingUserId;
     List<TrainingPlatformInfoDto> trainingPlatformInfoDtoList = trainingPlatformInfoService
-        .getTrainingPlatformInfoList(trainingPlatformInfoCriteria);
+        .getTrainingPlatformInfoList(trainingPlatformInfoCriteria,
+            TrainingPlatformInfoFields.ALL_FIELDS);
 
     json.put("trainingUserDto", trainingUserDto);
     json.put("trainingPlatformInfoDtoList", trainingPlatformInfoDtoList);
@@ -336,13 +337,13 @@ public class TrainingController extends BaseController {
     Map<String, Object> json = new HashMap<>();
 
     if (trainingContestCriteria == null) {
-      trainingContestCriteria = new TrainingContestCriteria(
-          TrainingContestFields.FIELDS_FOR_LIST_PAGE);
+      trainingContestCriteria = new TrainingContestCriteria();
     }
     trainingContestCriteria.trainingId = trainingId;
 
     List<TrainingContestDto> trainingContestDtoList = trainingContestService
-        .getTrainingContestList(trainingContestCriteria);
+        .getTrainingContestList(trainingContestCriteria,
+            TrainingContestFields.FIELDS_FOR_LIST_PAGE);
 
     PageInfo pageInfo = buildPageInfo((long) trainingContestDtoList.size(),
         1L, (long) trainingContestDtoList.size(), null);
@@ -433,14 +434,14 @@ public class TrainingController extends BaseController {
   private void parseRankList(TrainingRankList trainingRankList, Integer trainingId,
       TrainingContestType trainingContestType, TrainingPlatformType platformType)
       throws AppException {
-    TrainingPlatformInfoCriteria trainingPlatformInfoCriteria = new TrainingPlatformInfoCriteria(
-        TrainingPlatformInfoFields.ALL_FIELDS);
+    TrainingPlatformInfoCriteria trainingPlatformInfoCriteria = new TrainingPlatformInfoCriteria();
     trainingPlatformInfoCriteria.trainingId = trainingId;
     if (trainingContestType != TrainingContestType.ADJUST) {
       trainingPlatformInfoCriteria.type = platformType;
     }
     List<TrainingPlatformInfoDto> platformList = trainingPlatformInfoService
-        .getTrainingPlatformInfoList(trainingPlatformInfoCriteria);
+        .getTrainingPlatformInfoList(trainingPlatformInfoCriteria,
+            TrainingPlatformInfoFields.ALL_FIELDS);
     TrainingContestResultParser parser = new TrainingContestResultParser(platformList);
     parser.parse(trainingRankList, trainingContestType, platformType);
   }
@@ -532,16 +533,16 @@ public class TrainingController extends BaseController {
       throw new AppException("Training not found!");
     }
 
-    TrainingContestCriteria trainingContestCriteria = new TrainingContestCriteria(
-        TrainingContestFields.ALL_FIELDS);
+    TrainingContestCriteria trainingContestCriteria = new TrainingContestCriteria();
     trainingContestCriteria.trainingId = trainingId;
     List<TrainingContestDto> contestList = trainingContestService
-        .getTrainingContestList(trainingContestCriteria);
+        .getTrainingContestList(trainingContestCriteria,
+            TrainingContestFields.ALL_FIELDS);
 
-    TrainingUserCriteria trainingUserCriteria = new TrainingUserCriteria(
-        TrainingUserFields.ALL_FIELDS);
+    TrainingUserCriteria trainingUserCriteria = new TrainingUserCriteria();
     trainingUserCriteria.trainingId = trainingId;
-    List<TrainingUserDto> userList = trainingUserService.getTrainingUserList(trainingUserCriteria);
+    List<TrainingUserDto> userList = trainingUserService.getTrainingUserList(trainingUserCriteria,
+        TrainingUserFields.ALL_FIELDS);
 
     for (TrainingUserDto user : userList) {
       user.setCurrentRating(1200.0);

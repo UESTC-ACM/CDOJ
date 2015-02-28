@@ -36,7 +36,6 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
@@ -329,12 +328,12 @@ public class ProblemController extends BaseController {
     try {
       if (currentUser != null) {
         List<Integer> triedProblems = statusService.
-            findAllUserTriedProblemIds(currentUser.getUserId(), isAdmin(session));
+            findAllProblemIdsThatUserTried(currentUser.getUserId(), isAdmin(session));
         for (Integer result : triedProblems) {
           problemStatus.put(result, ProblemSolveStatusType.FAIL);
         }
         List<Integer> acceptedProblems = statusService.
-            findAllUserAcceptedProblemIds(currentUser.getUserId(), isAdmin(session));
+            findAllProblemIdsThatUserSolved(currentUser.getUserId(), isAdmin(session));
         for (Integer result : acceptedProblems) {
           problemStatus.put(result, ProblemSolveStatusType.PASS);
         }

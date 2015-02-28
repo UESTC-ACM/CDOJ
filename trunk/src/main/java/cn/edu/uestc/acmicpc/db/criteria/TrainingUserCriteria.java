@@ -1,7 +1,5 @@
-package cn.edu.uestc.acmicpc.db.criteria.impl;
+package cn.edu.uestc.acmicpc.db.criteria;
 
-import cn.edu.uestc.acmicpc.db.criteria.base.BaseCriteria;
-import cn.edu.uestc.acmicpc.db.dto.Fields;
 import cn.edu.uestc.acmicpc.db.dto.impl.TrainingUserDto;
 import cn.edu.uestc.acmicpc.db.entity.TrainingUser;
 import cn.edu.uestc.acmicpc.util.enums.TrainingUserType;
@@ -10,20 +8,13 @@ import cn.edu.uestc.acmicpc.util.exception.AppException;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Restrictions;
 
-import java.util.Set;
-
 /**
  * TrainingUser database criteria entity.
  */
 public class TrainingUserCriteria extends BaseCriteria<TrainingUser, TrainingUserDto> {
 
-  public TrainingUserCriteria(Set<Fields> resultFields) {
-    super(TrainingUser.class, TrainingUserDto.class, resultFields);
-  }
-
-
   public TrainingUserCriteria() {
-    this(null);
+    super(TrainingUser.class, TrainingUserDto.class);
   }
 
   public Integer trainingId;
@@ -33,9 +24,7 @@ public class TrainingUserCriteria extends BaseCriteria<TrainingUser, TrainingUse
   public TrainingUserType type;
 
   @Override
-  public DetachedCriteria getCriteria() throws AppException {
-    DetachedCriteria criteria = super.getCriteria();
-
+  DetachedCriteria updateCriteria(DetachedCriteria criteria) throws AppException {
     if (trainingId != null) {
       criteria.add(Restrictions.eq("trainingId", trainingId));
     }

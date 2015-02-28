@@ -19,7 +19,7 @@ import java.util.Objects;
  * of it.
  *
  * @deprecated this class is deprecated, use
- *             {@link cn.edu.uestc.acmicpc.db.criteria.base.BaseCriteria}
+ *             {@link cn.edu.uestc.acmicpc.db.criteria.BaseCriteria}
  *             instead.
  */
 @Deprecated

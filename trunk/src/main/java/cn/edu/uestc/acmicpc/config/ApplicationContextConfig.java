@@ -169,17 +169,11 @@ public class ApplicationContextConfig {
    *
    * @return transactionManagerBean
    */
-  // TODO(fish) add txAdvise
   @Bean(name = "transactionManager")
   public HibernateTransactionManager transactionManager() {
     HibernateTransactionManager transactionManager = new HibernateTransactionManager();
-    transactionManager.setSessionFactory(this.sessionFactory());
-    /*
-     * <tx:method name="save*" propagation="REQUIRED" /> <tx:method name="add*"
-     * propagation="REQUIRED" /> <tx:method name="update*"
-     * propagation="REQUIRED" /> <tx:method name="del*" propagation="REQUIRED"
-     * /> <tx:method name="find*" propagation="REQUIRED" read-only="true" />
-     */
+    transactionManager.setSessionFactory(sessionFactory());
+    transactionManager.setDataSource(dataSource());
     return transactionManager;
   }
 

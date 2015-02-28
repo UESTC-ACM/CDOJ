@@ -6,7 +6,6 @@ import cn.edu.uestc.acmicpc.util.enums.ContestType;
 import java.io.Serializable;
 import java.sql.Timestamp;
 import java.util.Collection;
-
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;

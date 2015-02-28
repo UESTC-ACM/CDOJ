@@ -1,14 +1,16 @@
 package cn.edu.uestc.acmicpc.service.impl;
 
-import cn.edu.uestc.acmicpc.db.criteria.impl.UserSerialKeyCriteria;
+import cn.edu.uestc.acmicpc.db.criteria.UserSerialKeyCriteria;
 import cn.edu.uestc.acmicpc.db.dao.iface.UserSerialKeyDao;
 import cn.edu.uestc.acmicpc.db.dto.field.UserSerialKeyFields;
 import cn.edu.uestc.acmicpc.db.dto.impl.UserSerialKeyDto;
 import cn.edu.uestc.acmicpc.db.entity.UserSerialKey;
 import cn.edu.uestc.acmicpc.service.iface.UserSerialKeyService;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.Timestamp;
 import java.util.Date;
@@ -18,6 +20,7 @@ import java.util.Random;
  * Implementation for {@link UserSerialKeyService}.
  */
 @Service
+@Transactional(rollbackFor = Exception.class)
 public class UserSerialKeyServiceImpl extends AbstractService implements UserSerialKeyService {
 
   private final UserSerialKeyDao userSerialKeyDao;
@@ -30,9 +33,9 @@ public class UserSerialKeyServiceImpl extends AbstractService implements UserSer
 
   @Override
   public UserSerialKeyDto findUserSerialKeyDtoByUserId(Integer userId) throws AppException {
-    UserSerialKeyCriteria criteria = new UserSerialKeyCriteria(UserSerialKeyFields.ALL_FIELDS);
+    UserSerialKeyCriteria criteria = new UserSerialKeyCriteria();
     criteria.userId = userId;
-    return userSerialKeyDao.getDtoByUniqueField(criteria.getCriteria());
+    return userSerialKeyDao.getDtoByUniqueField(criteria, UserSerialKeyFields.ALL_FIELDS);
   }
 
   @Override

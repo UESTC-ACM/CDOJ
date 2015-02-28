@@ -1,9 +1,9 @@
 package cn.edu.uestc.acmicpc.util.checker;
 
+import cn.edu.uestc.acmicpc.util.exception.AppException;
+
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
-
-import cn.edu.uestc.acmicpc.util.exception.AppException;
 
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;

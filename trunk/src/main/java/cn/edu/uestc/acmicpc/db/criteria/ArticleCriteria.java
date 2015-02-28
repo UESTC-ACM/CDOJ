@@ -1,7 +1,6 @@
-package cn.edu.uestc.acmicpc.db.criteria.impl;
+package cn.edu.uestc.acmicpc.db.criteria;
 
-import cn.edu.uestc.acmicpc.db.criteria.base.BaseCriteria;
-import cn.edu.uestc.acmicpc.db.dto.Fields;
+import cn.edu.uestc.acmicpc.db.dto.field.ArticleFields;
 import cn.edu.uestc.acmicpc.db.dto.impl.ArticleDto;
 import cn.edu.uestc.acmicpc.db.entity.Article;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
@@ -9,19 +8,13 @@ import cn.edu.uestc.acmicpc.util.exception.AppException;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Restrictions;
 
-import java.util.Set;
-
 /**
  * Article database criteria entity.
  */
 public class ArticleCriteria extends BaseCriteria<Article, ArticleDto> {
 
-  public ArticleCriteria(Set<Fields> resultFields) {
-    super(Article.class, ArticleDto.class, resultFields);
-  }
-
   public ArticleCriteria() {
-    this(null);
+    super(Article.class, ArticleDto.class);
   }
 
   public Integer startId;
@@ -47,9 +40,7 @@ public class ArticleCriteria extends BaseCriteria<Article, ArticleDto> {
   public String userName;
 
   @Override
-  public DetachedCriteria getCriteria() throws AppException {
-    DetachedCriteria criteria = super.getCriteria();
-
+  DetachedCriteria updateCriteria(DetachedCriteria criteria) throws AppException {
     if (startId != null) {
       criteria.add(Restrictions.ge("articleId", startId));
     }
@@ -70,6 +61,7 @@ public class ArticleCriteria extends BaseCriteria<Article, ArticleDto> {
     }
     if (userName != null) {
       criteria.add(Restrictions.eq("owner.userName", userName));
+      addAlias(ArticleFields.ALIAS_OWNER);
     }
 
     if (contestId != null) {
@@ -102,6 +94,7 @@ public class ArticleCriteria extends BaseCriteria<Article, ArticleDto> {
           Restrictions.ilike("owner.userName", keyword),
           Restrictions.ilike("owner.nickName", keyword)
           ));
+      addAlias(ArticleFields.ALIAS_OWNER);
     }
 
     return criteria;

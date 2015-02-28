@@ -1,18 +1,16 @@
 package cn.edu.uestc.acmicpc.db.criteria;
 
-import cn.edu.uestc.acmicpc.db.criteria.impl.ArticleCriteria;
 import cn.edu.uestc.acmicpc.db.dao.iface.ArticleDao;
-import cn.edu.uestc.acmicpc.db.dto.FieldProjection;
-import cn.edu.uestc.acmicpc.db.dto.Fields;
 import cn.edu.uestc.acmicpc.db.dto.field.ArticleFields;
 import cn.edu.uestc.acmicpc.db.dto.impl.ArticleDto;
 import cn.edu.uestc.acmicpc.testing.PersistenceITTest;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
 
-import com.google.common.collect.ImmutableSet;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.testng.Assert;
 import org.testng.annotations.Test;
+
+import com.google.common.collect.ImmutableSet;
 
 import java.util.List;
 
@@ -25,13 +23,13 @@ public class CriteriaITTest extends PersistenceITTest {
   ArticleDao articleDao;
 
   public void testFetchArticle_withSpecifiedFields() throws AppException {
-    ArticleCriteria articleCriteria = new ArticleCriteria(
-        ImmutableSet.of(ArticleFields.ARTICLE_ID));
+    ArticleCriteria articleCriteria = new ArticleCriteria();
 
     articleCriteria.startId = 1;
     articleCriteria.endId = 1;
 
-    List<ArticleDto> result = articleDao.findAll(articleCriteria.getCriteria(), null);
+    List<ArticleDto> result = articleDao.findAll(articleCriteria, null,
+        ImmutableSet.of(ArticleFields.ARTICLE_ID));
     Assert.assertEquals(result.size(), 1);
     ArticleDto articleDto = result.get(0);
 
@@ -53,12 +51,13 @@ public class CriteriaITTest extends PersistenceITTest {
 
   @Test
   public void test_fetch_article_list_by_id_range_successful() throws AppException {
-    ArticleCriteria articleCriteria = new ArticleCriteria(ArticleFields.ALL_FIELDS);
+    ArticleCriteria articleCriteria = new ArticleCriteria();
 
     articleCriteria.startId = 2;
     articleCriteria.endId = 3;
 
-    List<ArticleDto> result = articleDao.findAll(articleCriteria.getCriteria(), null);
+    List<ArticleDto> result = articleDao.findAll(articleCriteria, null,
+        ArticleFields.ALL_FIELDS);
 
     Assert.assertEquals(result.size(), 2);
     Assert.assertEquals(result.get(0).getArticleId(), Integer.valueOf(2));

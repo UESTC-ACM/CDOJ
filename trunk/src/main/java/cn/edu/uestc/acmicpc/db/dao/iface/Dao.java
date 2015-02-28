@@ -1,8 +1,10 @@
 package cn.edu.uestc.acmicpc.db.dao.iface;
 
 import cn.edu.uestc.acmicpc.db.condition.base.Condition;
+import cn.edu.uestc.acmicpc.db.criteria.BaseCriteria;
 import cn.edu.uestc.acmicpc.db.dto.BaseDto;
 import cn.edu.uestc.acmicpc.db.dto.BaseDtoBuilder;
+import cn.edu.uestc.acmicpc.db.dto.Fields;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
 import cn.edu.uestc.acmicpc.web.dto.PageInfo;
 
@@ -11,6 +13,7 @@ import org.hibernate.criterion.DetachedCriteria;
 import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * Global DAO interface.
@@ -335,9 +338,11 @@ public interface Dao<E extends Serializable> {
    * @return List of results
    * @throws AppException
    */
-  <T extends BaseDto<E>> List<T> findAll(DetachedCriteria criteria,
-      PageInfo pageInfo) throws AppException;
+  <T extends BaseDto<E>, F extends Fields> List<T> findAll(BaseCriteria<E, T> criteria,
+      PageInfo pageInfo, Set<F> fields) throws AppException;
 
+  <F extends Fields> List customFindAll(DetachedCriteria criteria,
+      PageInfo pageInfo, Set<F> fields) throws AppException;
   /**
    * Get unique Dto entity by unique field.
    *
@@ -348,7 +353,8 @@ public interface Dao<E extends Serializable> {
    * @return unique entity for query.
    * @throws AppException
    */
-  <T extends BaseDto<E>> T getDtoByUniqueField(DetachedCriteria criteria) throws AppException;
+  <T extends BaseDto<E>, F extends Fields> T getDtoByUniqueField(
+      BaseCriteria<E, T> criteria, Set<F> fields) throws AppException;
 
   /**
    * Count the number of records in the table by criteria.
@@ -358,5 +364,15 @@ public interface Dao<E extends Serializable> {
    * @return number of records we query
    * @throws AppException
    */
-  Long count(DetachedCriteria criteria) throws AppException;
+  Long count(BaseCriteria criteria) throws AppException;
+
+  /**
+   * Count the number of records in the table by criteria.
+   *
+   * @param criteria
+   *          criteria object
+   * @return number of records we query
+   * @throws AppException
+   */
+  Long customCount(DetachedCriteria criteria) throws AppException;
 }

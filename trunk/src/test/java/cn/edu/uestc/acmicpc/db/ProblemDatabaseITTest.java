@@ -62,16 +62,6 @@ public class ProblemDatabaseITTest extends PersistenceITTest {
   }
 
   @Test
-  public void testProblemCondition_emptyTitle() throws AppException {
-    Condition condition = new Condition();
-    condition.addEntry(Entry.of("title", ConditionType.STRING_EQUALS, ""));
-    List<ProblemDto> problems =
-        problemDao.findAll(ProblemDto.class, ProblemDto.builder(), condition);
-    Assert.assertEquals(problems.size(), 1);
-    Assert.assertEquals(problems.get(0).getProblemId(), Integer.valueOf(5));
-  }
-
-  @Test
   public void testAddProblem() throws AppException {
     Problem problem = new Problem();
     Integer randomId = new Random().nextInt();

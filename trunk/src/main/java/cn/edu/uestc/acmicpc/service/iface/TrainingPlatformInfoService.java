@@ -1,7 +1,7 @@
 package cn.edu.uestc.acmicpc.service.iface;
 
-import cn.edu.uestc.acmicpc.db.criteria.impl.TrainingPlatformInfoCriteria;
-import cn.edu.uestc.acmicpc.db.dto.Fields;
+import cn.edu.uestc.acmicpc.db.criteria.TrainingPlatformInfoCriteria;
+import cn.edu.uestc.acmicpc.db.dto.field.TrainingPlatformInfoFields;
 import cn.edu.uestc.acmicpc.db.dto.impl.TrainingPlatformInfoDto;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
 
@@ -16,33 +16,30 @@ public interface TrainingPlatformInfoService {
   /**
    * Get {@link TrainingPlatformInfoDto} by Training platform info id.
    *
-   * @param trainingPlatformInfoId
-   *          record's id
-   * @param trainingPlatformInfoFields
-   *          request fields
+   * @param trainingPlatformInfoId record's id
+   * @param fields                 request fields
    * @return result
    * @throws AppException
    */
   TrainingPlatformInfoDto getTrainingPlatformInfoDto(Integer trainingPlatformInfoId,
-      Set<Fields> trainingPlatformInfoFields) throws AppException;
+      Set<TrainingPlatformInfoFields> fields) throws AppException;
 
   /**
    * Get all {@link TrainingPlatformInfoDto} fit in criteria.
    *
-   * @param trainingPlatformInfoCriteria
-   *          search criteria
+   * @param trainingPlatformInfoCriteria search criteria
    * @return all records in database fit in the criteria.
    * @throws AppException
    */
   public List<TrainingPlatformInfoDto> getTrainingPlatformInfoList(
-      TrainingPlatformInfoCriteria trainingPlatformInfoCriteria) throws AppException;
+      TrainingPlatformInfoCriteria trainingPlatformInfoCriteria,
+      Set<TrainingPlatformInfoFields> fields) throws AppException;
 
   /**
    * Update training platform info record by none-null fields in
    * {@link TrainingPlatformInfoDto} entity.
    *
-   * @param trainingPlatformInfoDto
-   *          {@link TrainingPlatformInfoDto} entity with none-null id.
+   * @param trainingPlatformInfoDto {@link TrainingPlatformInfoDto} entity with none-null id.
    * @throws AppException
    */
   public void updateTrainingPlatformInfo(TrainingPlatformInfoDto trainingPlatformInfoDto)
@@ -51,8 +48,7 @@ public interface TrainingPlatformInfoService {
   /**
    * Create a new training platform info record with specified training user id.
    *
-   * @param trainingUserId
-   *          training user id.
+   * @param trainingUserId training user id.
    * @return Id of new record.
    * @throws AppException
    */
@@ -61,8 +57,7 @@ public interface TrainingPlatformInfoService {
   /**
    * Remove training platform info record by id.
    *
-   * @param trainingPlatformInfoId
-   *          id.
+   * @param trainingPlatformInfoId id.
    * @throws AppException
    */
   public void removeTrainingPlatformInfo(Integer trainingPlatformInfoId) throws AppException;

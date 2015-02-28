@@ -19,10 +19,8 @@ public interface ContestTeamService {
    * contains this user is accepted in the contest, this user can not register
    * in this contest again.
    *
-   * @param userId
-   *          user's id.
-   * @param contestId
-   *          contest's id.
+   * @param userId    user's id.
+   * @param contestId contest's id.
    * @return true if user can register in specified contest.
    * @throws AppException
    */
@@ -33,10 +31,8 @@ public interface ContestTeamService {
   /**
    * Create a new contest team record.
    *
-   * @param contestId
-   *          contest's id.
-   * @param teamId
-   *          team's id.
+   * @param contestId contest's id.
+   * @param teamId    team's id.
    * @return record id in database.
    * @throws AppException
    */
@@ -46,8 +42,7 @@ public interface ContestTeamService {
   /**
    * Count record number fit in {@link ContestTeamCondition}.
    *
-   * @param contestTeamCondition
-   *          search condition.
+   * @param contestTeamCondition search condition.
    * @return total record fit in the condition.
    * @throws AppException
    */
@@ -57,22 +52,19 @@ public interface ContestTeamService {
   /**
    * Fetch all record fit in {@link ContestTeamCondition}
    *
-   * @param contestTeamCondition
-   *          search condition.
-   * @param pageInfo
-   *          page range.
+   * @param contestTeamCondition search condition.
+   * @param pageInfo             page range.
    * @return list of {@link ContestTeamListDto} entities.
    * @throws AppException
    */
   public List<ContestTeamListDto>
-      getContestTeamList(ContestTeamCondition contestTeamCondition,
-          PageInfo pageInfo) throws AppException;
+  getContestTeamList(ContestTeamCondition contestTeamCondition,
+      PageInfo pageInfo) throws AppException;
 
   /**
    * Get {@link ContestTeamDto} entity by record id.
    *
-   * @param contestTeamId
-   *          record id.
+   * @param contestTeamId record id.
    * @return {@link ContestTeamDto} entity.
    * @throws AppException
    */
@@ -82,8 +74,7 @@ public interface ContestTeamService {
   /**
    * Update record bt {@link ContestTeamDto} entity.
    *
-   * @param contestTeamDto
-   *          {@link ContestTeamDto} entity.
+   * @param contestTeamDto {@link ContestTeamDto} entity.
    * @throws AppException
    */
   public void updateContestTeam(ContestTeamDto contestTeamDto)
@@ -92,8 +83,7 @@ public interface ContestTeamService {
   /**
    * Export all contest teams registered in specified contest.
    *
-   * @param contestId
-   *          specified contest's id.
+   * @param contestId specified contest's id.
    * @return List of {@link ContestTeamReportDto} entities.
    * @throws AppException
    */
@@ -103,10 +93,8 @@ public interface ContestTeamService {
   /**
    * Return the team's id that user attend in the specified contest.
    *
-   * @param userId
-   *          user's id.
-   * @param contestId
-   *          contest's id.
+   * @param userId    user's id.
+   * @param contestId contest's id.
    * @return team's id.
    * @throws AppException
    */
