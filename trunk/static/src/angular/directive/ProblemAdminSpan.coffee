@@ -32,7 +32,7 @@ cdoj.directive("uiProblemAdminSpan",
             $window.alert data.error_msg
         ).error(->
           $window.alert "Network error."
-        );
+        )
   ]
   template: """
 <div class="btn-toolbar" role="toolbar">
