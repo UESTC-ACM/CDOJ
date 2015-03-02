@@ -246,6 +246,10 @@ task release {
       from war
       into "build/release/war"
     }
+    copy {
+      from "release_template/gradle.properties"
+      into "build/release"
+    }
     // js
     copy {
       into "build/release/resources/dist/js"
@@ -269,6 +273,16 @@ task release {
     copy {
       into "build/release/resources/bower_components/font-awesome"
       from "static/bower_components/font-awesome"
+    }
+    // Images
+    copy {
+      into "build/release/resources/images"
+      from "static/images"
+    }
+    // Data
+    copy {
+      into "build/release/data"
+      from "data"
     }
   }
 }
