@@ -31,6 +31,10 @@ public enum OnlineJudgeReturnType implements EnumType {
     return description;
   }
 
+  public static OnlineJudgeReturnType getReturnType(int id) {
+    return values()[id];
+  }
+
   private OnlineJudgeReturnType(String description) {
     this.description = description;
 
