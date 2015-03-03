@@ -1,0 +1,11 @@
+<ng-switch on="needLogin">
+  <div ng-switch-when="true">
+    <md-button class="md-toolbar-item" aria-label="Sign in button" ng-bind="signInText">
+    </md-button>
+  </div>
+  <div ng-switch-when="false">
+    <md-button class="md-toolbar-item">
+      User
+    </md-button>
+  </div>
+</ng-switch>

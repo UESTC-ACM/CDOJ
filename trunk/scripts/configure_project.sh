@@ -3,7 +3,7 @@
 # configure project
 #
 # parameters:
-# total: 8
+# total: 9
 # $1 original file
 # $2 destination file
 # $3 user for db
@@ -13,8 +13,9 @@
 # $7 data path
 # $8 upload path
 # $9 judge work path
+# $10 staticV2 path
 
-if [ $# -ne 9 ]; then
+if [ $# -ne 10 ]; then
   exit 1
 fi
 
@@ -26,3 +27,4 @@ echo "images.path=$6" | sed 's/\\/\\\\/g' >> $2
 echo "data.path=$7" | sed 's/\\/\\\\/g' >> $2
 echo "upload.path=$8" | sed 's/\\/\\\\/g' >> $2
 echo "judge.workPath=$9" | sed 's/\\/\\\\/g' >> $2
+echo "staticV2.path=${10}" | sed 's/\\/\\\\/g' >> $2

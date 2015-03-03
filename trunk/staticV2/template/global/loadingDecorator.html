@@ -1,0 +1,6 @@
+<div ng-switch on="onLoading">
+  <div ng-switch-when="false" ng-transclude></div>
+  <div ng-switch-when="true" layout="column" layout-align="center center" class="loading-decorator">
+    <md-progress-circular md-mode="indeterminate"></md-progress-circular>
+  </div>
+</div>

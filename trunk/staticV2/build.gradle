@@ -1,0 +1,28 @@
+// NodeJS plugin
+buildscript {
+  repositories {
+    jcenter()
+  }
+  dependencies {
+    classpath 'com.moowork.gradle:gradle-node-plugin:0.8'
+  }
+}
+apply plugin: 'com.moowork.node'
+
+// Grunt plugin
+buildscript {
+  repositories {
+    jcenter()
+  }
+  dependencies {
+    classpath 'com.moowork.gradle:gradle-grunt-plugin:0.6'
+  }
+}
+apply plugin: 'grunt'
+
+task build << {
+  nodeSetup.execute()
+  installGrunt.execute()
+  npmInstall.execute()
+  grunt_build.execute()
+}
