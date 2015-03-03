@@ -22,6 +22,7 @@ import java.util.List;
 /**
  * Simple database test class.
  */
+@SuppressWarnings("deprecation")
 public class DatabaseITTest extends PersistenceITTest {
 
   @Autowired

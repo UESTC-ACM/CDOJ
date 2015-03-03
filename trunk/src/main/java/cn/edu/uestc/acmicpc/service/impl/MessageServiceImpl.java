@@ -21,6 +21,7 @@ import java.util.List;
 /**
  * Description
  */
+@SuppressWarnings("deprecation")
 @Service
 @Transactional(rollbackFor = Exception.class)
 public class MessageServiceImpl extends AbstractService implements MessageService {

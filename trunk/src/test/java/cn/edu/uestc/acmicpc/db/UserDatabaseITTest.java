@@ -16,6 +16,7 @@ import java.util.List;
 /**
  * Test cases for {@link User}.
  */
+@SuppressWarnings("deprecation")
 public class UserDatabaseITTest extends PersistenceITTest {
 
   @Autowired

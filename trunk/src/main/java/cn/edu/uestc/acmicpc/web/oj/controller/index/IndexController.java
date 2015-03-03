@@ -30,11 +30,13 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.HashMap;
 import java.util.Map;
+
 import javax.servlet.http.HttpSession;
 
 /**
  * Controller for home page.
  */
+@SuppressWarnings("deprecation")
 @Controller
 @RequestMapping("/")
 public class IndexController extends BaseController {

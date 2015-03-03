@@ -18,6 +18,7 @@ import java.util.List;
 /**
  * Test cases for conditions entities.
  */
+@Deprecated
 public class ConditionITTest extends PersistenceITTest {
 
   @Autowired

@@ -18,6 +18,7 @@ import java.util.List;
 /**
  * Implementation for {@link cn.edu.uestc.acmicpc.service.iface.TeamUserService}
  */
+@SuppressWarnings("deprecation")
 @Service
 @Transactional(rollbackFor = Exception.class)
 public class TeamUserServiceImpl extends AbstractService implements TeamUserService {
