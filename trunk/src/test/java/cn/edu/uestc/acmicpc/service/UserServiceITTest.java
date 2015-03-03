@@ -18,6 +18,7 @@ import java.util.Date;
 /**
  * Integration test cases for {@link UserService}.
  */
+@SuppressWarnings("deprecation")
 public class UserServiceITTest extends PersistenceITTest {
 
   @Autowired

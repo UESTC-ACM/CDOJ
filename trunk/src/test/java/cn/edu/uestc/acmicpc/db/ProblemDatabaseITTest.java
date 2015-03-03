@@ -18,6 +18,7 @@ import java.util.Random;
 /**
  * Test cases for {@link Problem}.
  */
+@SuppressWarnings("deprecation")
 public class ProblemDatabaseITTest extends PersistenceITTest {
 
   // TODO(fish): use problem service to query.

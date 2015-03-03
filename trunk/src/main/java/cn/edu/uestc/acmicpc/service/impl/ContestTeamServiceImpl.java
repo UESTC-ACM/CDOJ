@@ -23,6 +23,7 @@ import java.util.List;
 /**
  * Description
  */
+@SuppressWarnings("deprecation")
 @Service
 @Primary
 @Transactional(rollbackFor = Exception.class)

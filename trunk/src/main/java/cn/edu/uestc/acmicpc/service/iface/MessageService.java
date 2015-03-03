@@ -12,6 +12,7 @@ import java.util.List;
 /**
  * Message service interface
  */
+@SuppressWarnings("deprecation")
 public interface MessageService {
 
   /**
@@ -42,6 +43,7 @@ public interface MessageService {
    * @return total number of users fit in the condition.
    * @throws AppException
    */
+  @Deprecated
   public Long count(MessageCondition condition) throws AppException;
 
   /**
@@ -54,6 +56,7 @@ public interface MessageService {
    * list
    * @throws AppException
    */
+  @Deprecated
   public List<MessageForReceiverDto> getMessageForReceiverDtoList(MessageCondition messageCondition
       , PageInfo pageInfo) throws AppException;
 

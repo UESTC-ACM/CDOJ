@@ -62,6 +62,7 @@ import java.lang.reflect.Field;
 public abstract class BaseCondition {
 
   private static final Logger LOGGER = LogManager.getLogger(BaseCondition.class);
+  @SuppressWarnings("unused")
   private final String keyField;
 
   /**

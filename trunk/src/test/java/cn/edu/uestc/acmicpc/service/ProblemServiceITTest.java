@@ -13,6 +13,7 @@ import org.testng.annotations.Test;
 /**
  * Integration test cases for {@link ProblemService}.
  */
+@SuppressWarnings("deprecation")
 public class ProblemServiceITTest extends PersistenceITTest {
 
   @Autowired

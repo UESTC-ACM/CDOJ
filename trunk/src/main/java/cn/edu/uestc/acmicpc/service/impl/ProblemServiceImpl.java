@@ -23,6 +23,7 @@ import java.util.Map;
 /**
  * Implementation for {@link ProblemService}.
  */
+@SuppressWarnings("deprecation")
 @Service
 @Transactional(rollbackFor = Exception.class)
 public class ProblemServiceImpl extends AbstractService implements ProblemService {

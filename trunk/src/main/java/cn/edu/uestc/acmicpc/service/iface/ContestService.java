@@ -26,8 +26,10 @@ public interface ContestService {
    * Get {@link cn.edu.uestc.acmicpc.db.dto.impl.ContestDto} entity by contest
    * id.
    *
-   * @param contestId contest id.
-   * @param fields    {@link ContestFields} entity indicating fields to be fetched.
+   * @param contestId
+   *          contest id.
+   * @param fields
+   *          {@link ContestFields} entity indicating fields to be fetched.
    * @return {@link cn.edu.uestc.acmicpc.db.dto.impl.ContestDto} entity.
    * @throws AppException
    */
@@ -37,7 +39,8 @@ public interface ContestService {
   /**
    * Check if specified contest exists.
    *
-   * @param contestId contest's id.
+   * @param contestId
+   *          contest's id.
    * @return true if this contest exists.
    * @throws AppException
    */
@@ -47,7 +50,8 @@ public interface ContestService {
    * Updates contest record by
    * {@link cn.edu.uestc.acmicpc.db.dto.impl.ContestDto} entity.
    *
-   * @param contestDto {@link cn.edu.uestc.acmicpc.db.dto.impl.ContestDto} entity.
+   * @param contestDto
+   *          {@link cn.edu.uestc.acmicpc.db.dto.impl.ContestDto} entity.
    * @throws AppException
    */
   public void updateContest(ContestDto contestDto) throws AppException;
@@ -55,7 +59,8 @@ public interface ContestService {
   /**
    * Counts the number of contests fit in condition.
    *
-   * @param criteria {@link ContestCriteria} entity.
+   * @param criteria
+   *          {@link ContestCriteria} entity.
    * @return total number of contests fit in the condition.
    * @throws AppException
    */
@@ -64,8 +69,12 @@ public interface ContestService {
   /**
    * Get the contests fit in condition and page range.
    *
-   * @param criteria {@link ContestCriteria} entity.
-   * @param pageInfo {@link PageInfo} entity.
+   * @param criteria
+   *          {@link ContestCriteria} entity.
+   * @param pageInfo
+   *          {@link PageInfo} entity.
+   * @param fields
+   *          result fields to be fetched
    * @return List of {@link ContestDto} entities.
    * @throws AppException
    */
@@ -75,9 +84,12 @@ public interface ContestService {
   /**
    * Modify one filed of multiply entities as value.
    *
-   * @param field filed need to modified.
-   * @param ids   entities' ID split by <code>,</code>.
-   * @param value new value.
+   * @param field
+   *          filed need to modified.
+   * @param ids
+   *          entities' ID split by <code>,</code>.
+   * @param value
+   *          new value.
    * @throws AppException
    */
   public void operator(String field, String ids, String value)

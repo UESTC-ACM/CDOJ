@@ -19,6 +19,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
+@SuppressWarnings("deprecation")
 @Service
 @Primary
 @Transactional(rollbackFor = Exception.class)

@@ -7,6 +7,7 @@ import cn.edu.uestc.acmicpc.util.exception.AppException;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
+@Deprecated
 public class ConditionTest {
 
   @Test

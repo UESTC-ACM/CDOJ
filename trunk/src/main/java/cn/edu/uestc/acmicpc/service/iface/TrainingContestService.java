@@ -17,10 +17,12 @@ public interface TrainingContestService {
    * Get {@link cn.edu.uestc.acmicpc.db.dto.impl.TrainingContestDto} by training
    * contest id.
    *
-   * @param trainingContestId     record's id.
-   * @param trainingContestFields request fields.
+   * @param trainingContestId
+   *          record's id.
+   * @param trainingContestFields
+   *          request fields.
    * @return result {@link cn.edu.uestc.acmicpc.db.dto.impl.TrainingContestDto}
-   * entity.
+   *         entity.
    * @throws AppException
    */
   TrainingContestDto getTrainingContestDto(Integer trainingContestId,
@@ -30,7 +32,10 @@ public interface TrainingContestService {
    * Get all {@link cn.edu.uestc.acmicpc.db.dto.impl.TrainingContestDto} fit in
    * criteria.
    *
-   * @param trainingContestCriteria search criteria
+   * @param trainingContestCriteria
+   *          search criteria
+   * @param trainingContestFields
+   *          result fields to be fetched
    * @return all records in database fit in the criteria.
    * @throws AppException
    */
@@ -42,8 +47,9 @@ public interface TrainingContestService {
    * Update training contest record by none-null fields in
    * {@link cn.edu.uestc.acmicpc.db.dto.impl.TrainingContestDto} entity.
    *
-   * @param trainingContestDto {@link cn.edu.uestc.acmicpc.db.dto.impl.TrainingContestDto} entity
-   *                           with none-null id.
+   * @param trainingContestDto
+   *          {@link cn.edu.uestc.acmicpc.db.dto.impl.TrainingContestDto} entity
+   *          with none-null id.
    * @throws AppException
    */
   public void updateTrainingContest(TrainingContestDto trainingContestDto) throws AppException;
@@ -51,7 +57,8 @@ public interface TrainingContestService {
   /**
    * Create a new training contest record with specified training id.
    *
-   * @param trainingId training id.
+   * @param trainingId
+   *          training id.
    * @return Id of new record.
    * @throws AppException
    */

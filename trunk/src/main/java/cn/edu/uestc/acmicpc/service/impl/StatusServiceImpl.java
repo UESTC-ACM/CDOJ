@@ -50,6 +50,7 @@ public class StatusServiceImpl extends AbstractService implements StatusService 
     return findAllProblemIdsThatUser(false, userId, isAdmin);
   }
 
+  @SuppressWarnings("unchecked")
   private List<Integer> findAllProblemIdsThatUser(Boolean solved, Integer userId, Boolean isAdmin)
       throws AppException {
     StatusCriteria statusCriteria = new StatusCriteria();
@@ -66,16 +67,16 @@ public class StatusServiceImpl extends AbstractService implements StatusService 
   }
 
   @Override
-  public Long countProblemsThatUserSolved(Integer userId, Boolean isAdmin) throws AppException {
+  public Long countProblemsThatUserSolved(Integer userId, boolean isAdmin) throws AppException {
     return countProblemsThatUser(true, userId, isAdmin);
   }
 
   @Override
-  public Long countProblemsThatUserTried(Integer userId, Boolean isAdmin) throws AppException {
+  public Long countProblemsThatUserTried(Integer userId, boolean isAdmin) throws AppException {
     return countProblemsThatUser(false, userId, isAdmin);
   }
 
-  private Long countProblemsThatUser(Boolean solved, Integer userId, Boolean isAdmin)
+  private Long countProblemsThatUser(Boolean solved, Integer userId, boolean isAdmin)
       throws AppException {
     StatusCriteria statusCriteria = new StatusCriteria();
     statusCriteria.userId = userId;
@@ -134,16 +135,16 @@ public class StatusServiceImpl extends AbstractService implements StatusService 
   private void updateStatusDto(StatusDto statusDto, Set<StatusFields> fields) {
     for (StatusFields field : fields) {
       switch (field) {
-        case RESULT:
-          statusDto.setResult(EnumTypeUtil.getReturnDescription(
-              statusDto.getResultId(), statusDto.getCaseNumber()));
-          if (statusDto.getResultId() != OnlineJudgeReturnType.OJ_AC.ordinal()) {
-            statusDto.setTimeCost(null);
-            statusDto.setMemoryCost(null);
-          }
-          break;
-        default:
-          break;
+      case RESULT:
+        statusDto.setResult(EnumTypeUtil.getReturnDescription(
+            statusDto.getResultId(), statusDto.getCaseNumber()));
+        if (statusDto.getResultId() != OnlineJudgeReturnType.OJ_AC.ordinal()) {
+          statusDto.setTimeCost(null);
+          statusDto.setMemoryCost(null);
+        }
+        break;
+      default:
+        break;
       }
     }
   }
@@ -216,8 +217,8 @@ public class StatusServiceImpl extends AbstractService implements StatusService 
     statusCriteria.userName = null;
     statusCriteria.isForAdmin = true;
     // TODO(Yun Li): Implement it.
-    //statusDao.updateEntitiesByCondition(properties,
-    //    statusCondition.getCondition());
+    // statusDao.updateEntitiesByCondition(properties,
+    // statusCondition.getCondition());
   }
 
   @Override
