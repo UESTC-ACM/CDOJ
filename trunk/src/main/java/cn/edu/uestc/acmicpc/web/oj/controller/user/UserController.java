@@ -47,9 +47,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.TreeMap;
+
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
+@SuppressWarnings("deprecation")
 @Controller
 @RequestMapping("/user")
 public class UserController extends BaseController {

@@ -17,9 +17,11 @@ import jxl.write.WriteException;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+@SuppressWarnings("deprecation")
 public class ContestRegistryReportView extends AbstractJExcelView {
 
   /**

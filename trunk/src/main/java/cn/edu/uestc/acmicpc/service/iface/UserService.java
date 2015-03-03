@@ -15,6 +15,7 @@ import java.util.Map;
 /**
  * User service interface.
  */
+@SuppressWarnings("deprecation")
 public interface UserService {
 
   /**
@@ -87,6 +88,7 @@ public interface UserService {
    * @return total number of users fit in the condition.
    * @throws AppException
    */
+  @Deprecated
   public Long count(UserCondition condition) throws AppException;
 
   /**
@@ -97,6 +99,7 @@ public interface UserService {
    * @return List of {@link UserListDto} entities.
    * @throws AppException
    */
+  @Deprecated
   public List<UserListDto> getUserListDtoList(UserCondition condition, PageInfo pageInfo)
       throws AppException;
 
@@ -110,6 +113,7 @@ public interface UserService {
    * entities
    * @throws AppException
    */
+  @Deprecated
   public List<UserTypeAheadDto> getUserTypeAheadDtoList(UserCondition condition, PageInfo pageInfo)
       throws AppException;
 

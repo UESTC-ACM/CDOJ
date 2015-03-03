@@ -39,6 +39,7 @@ import java.util.Set;
  * @param <E>
  *          entity type
  */
+@SuppressWarnings("deprecation")
 @Repository
 public abstract class DaoImpl<E extends Serializable> extends BaseDao implements Dao<E> {
 
@@ -452,16 +453,17 @@ public abstract class DaoImpl<E extends Serializable> extends BaseDao implements
     getQuery(hql, null).executeUpdate();
   }
 
+  @SuppressWarnings("unchecked")
   @Override
   public <T extends BaseDto<E>, F extends cn.edu.uestc.acmicpc.db.dto.Fields> List<T> findAll(
       BaseCriteria<E, T> criteria, PageInfo pageInfo,
       Set<F> fields) throws AppException {
     DetachedCriteria detachedCriteria = criteria.getCriteria(fields);
-    return customFindAll(detachedCriteria, pageInfo, fields);
+    return (List<T>) customFindAll(detachedCriteria, pageInfo, fields);
   }
 
   @Override
-  public <F extends cn.edu.uestc.acmicpc.db.dto.Fields> List customFindAll(
+  public <F extends cn.edu.uestc.acmicpc.db.dto.Fields> List<?> customFindAll(
       DetachedCriteria criteria, PageInfo pageInfo, Set<F> fields) throws AppException {
     Criteria executableCriteria = criteria.getExecutableCriteria(getSession());
     if (pageInfo != null) {
@@ -486,7 +488,7 @@ public abstract class DaoImpl<E extends Serializable> extends BaseDao implements
   }
 
   @Override
-  public Long count(BaseCriteria criteria) throws AppException {
+  public Long count(BaseCriteria<?, ?> criteria) throws AppException {
     DetachedCriteria detachedCriteria = criteria.getCriteria();
     detachedCriteria.setProjection(Projections.rowCount());
     return customCount(detachedCriteria);

@@ -31,6 +31,7 @@ import java.util.Map;
 /**
  * Implementation for {@link UserService}.
  */
+@SuppressWarnings("deprecation")
 @Service
 @Transactional(rollbackFor = Exception.class)
 public class UserServiceImpl extends AbstractService implements UserService {

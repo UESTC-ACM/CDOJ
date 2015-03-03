@@ -6,6 +6,7 @@ import cn.edu.uestc.acmicpc.db.condition.base.Condition;
 /**
  * Description
  */
+@Deprecated
 public class ContestTeamCondition extends BaseCondition {
 
   public ContestTeamCondition() {

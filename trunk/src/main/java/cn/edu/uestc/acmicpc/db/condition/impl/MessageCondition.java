@@ -7,6 +7,7 @@ import cn.edu.uestc.acmicpc.util.exception.AppException;
 /**
  * Description
  */
+@Deprecated
 public class MessageCondition extends BaseCondition {
 
   public MessageCondition() {

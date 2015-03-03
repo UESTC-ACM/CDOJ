@@ -1,17 +1,5 @@
 package cn.edu.uestc.acmicpc.web.oj.controller;
 
-import cn.edu.uestc.acmicpc.db.criteria.ArticleCriteria;
-import cn.edu.uestc.acmicpc.db.dto.field.ArticleFields;
-import cn.edu.uestc.acmicpc.db.dto.impl.ArticleDto;
-import cn.edu.uestc.acmicpc.db.dto.impl.user.UserDto;
-import cn.edu.uestc.acmicpc.testing.ControllerTest;
-import cn.edu.uestc.acmicpc.util.enums.ArticleType;
-import cn.edu.uestc.acmicpc.util.enums.AuthenticationType;
-import cn.edu.uestc.acmicpc.util.exception.AppException;
-import cn.edu.uestc.acmicpc.util.helper.StringUtil;
-import cn.edu.uestc.acmicpc.web.dto.PageInfo;
-import cn.edu.uestc.acmicpc.web.oj.controller.article.ArticleController;
-
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.notNullValue;
@@ -27,6 +15,18 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.request;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
+import cn.edu.uestc.acmicpc.db.criteria.ArticleCriteria;
+import cn.edu.uestc.acmicpc.db.dto.field.ArticleFields;
+import cn.edu.uestc.acmicpc.db.dto.impl.ArticleDto;
+import cn.edu.uestc.acmicpc.db.dto.impl.user.UserDto;
+import cn.edu.uestc.acmicpc.testing.ControllerTest;
+import cn.edu.uestc.acmicpc.util.enums.ArticleType;
+import cn.edu.uestc.acmicpc.util.enums.AuthenticationType;
+import cn.edu.uestc.acmicpc.util.exception.AppException;
+import cn.edu.uestc.acmicpc.util.helper.StringUtil;
+import cn.edu.uestc.acmicpc.web.dto.PageInfo;
+import cn.edu.uestc.acmicpc.web.oj.controller.article.ArticleController;
 
 import org.mockito.ArgumentCaptor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -156,6 +156,7 @@ public class ArticleControllerTest extends ControllerTest {
         .andExpect(jsonPath("$.article.ownerEmail", is(articleDto.getOwnerEmail())));
   }
 
+  @SuppressWarnings("unchecked")
   @Test
   public void testCommentSearchSuccessful() throws Exception {
     ArticleCriteria articleCriteria = new ArticleCriteria();
@@ -191,6 +192,7 @@ public class ArticleControllerTest extends ControllerTest {
         articleCriteriaCaptor.getValue().type);
   }
 
+  @SuppressWarnings("unchecked")
   @Test
   public void testCommentSearchByAdmin() throws Exception {
     ArticleCriteria articleCriteria = new ArticleCriteria();
@@ -245,6 +247,7 @@ public class ArticleControllerTest extends ControllerTest {
         .andExpect(jsonPath("$.error_msg", is("error message")));
   }
 
+  @SuppressWarnings("unchecked")
   @Test
   public void testSearchSuccessful() throws Exception {
     ArticleCriteria articleCriteria = new ArticleCriteria();
@@ -282,6 +285,7 @@ public class ArticleControllerTest extends ControllerTest {
     Assert.assertEquals(Integer.valueOf(-1), articleCriteriaCaptor.getValue().parentId);
   }
 
+  @SuppressWarnings("unchecked")
   @Test
   public void testSearchByAdminSuccessful() throws Exception {
     ArticleCriteria articleCriteria = new ArticleCriteria();

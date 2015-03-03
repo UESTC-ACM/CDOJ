@@ -24,8 +24,10 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+
 import javax.servlet.http.HttpSession;
 
+@SuppressWarnings("deprecation")
 @Controller
 @RequestMapping("/message")
 public class MessageController extends BaseController {

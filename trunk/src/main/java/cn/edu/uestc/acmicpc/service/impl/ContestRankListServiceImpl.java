@@ -35,6 +35,7 @@ import java.util.Map;
 /**
  * Description
  */
+@SuppressWarnings("deprecation")
 @Service
 public class ContestRankListServiceImpl implements ContestRankListService {
 

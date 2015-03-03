@@ -36,9 +36,11 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
+@SuppressWarnings("deprecation")
 @Controller
 @RequestMapping("/problem")
 public class ProblemController extends BaseController {
