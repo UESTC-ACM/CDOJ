@@ -11,6 +11,7 @@ import java.util.List;
 /**
  * Team user service interface.
  */
+@SuppressWarnings("deprecation")
 public interface TeamUserService {
 
   /**
@@ -42,6 +43,7 @@ public interface TeamUserService {
    * @return list of {@link TeamUserListDto} entities.
    * @throws AppException
    */
+  @Deprecated
   public List<TeamUserListDto> getTeamUserList(TeamUserCondition teamUserCondition)
       throws AppException;
 
@@ -79,6 +81,7 @@ public interface TeamUserService {
    * @return list of {@link TeamUserReportDto} entities.
    * @throws AppException
    */
+  @Deprecated
   public List<TeamUserReportDto> exportTeamUserReport(TeamUserCondition teamUserCondition)
       throws AppException;
 }

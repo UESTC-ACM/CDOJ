@@ -17,8 +17,10 @@ public interface StatusService {
   /**
    * list user's tried problem id.
    *
-   * @param userId  user's id.
-   * @param isAdmin current user is administrator
+   * @param userId
+   *          user's id.
+   * @param isAdmin
+   *          current user is administrator
    * @return problem id list.
    * @throws AppException
    */
@@ -28,8 +30,10 @@ public interface StatusService {
   /**
    * list user's accepted problem id.
    *
-   * @param userId  user's id.
-   * @param isAdmin current user is administrator
+   * @param userId
+   *          user's id.
+   * @param isAdmin
+   *          current user is administrator
    * @return problem id list.
    * @throws AppException
    */
@@ -39,25 +43,32 @@ public interface StatusService {
   /**
    * Counts user's tried visible normal problems.
    *
-   * @param userId user's id.
+   * @param userId
+   *          user's id.
+   * @param isAdmin
+   *          whether this query is for administrator or not.
    * @return number of problems this user has tried.
    * @throws AppException
    */
-  public Long countProblemsThatUserTried(Integer userId, Boolean isAdmin) throws AppException;
+  public Long countProblemsThatUserTried(Integer userId, boolean isAdmin) throws AppException;
 
   /**
    * Counts user's accepted visible normal problems.
    *
-   * @param userId user's id.
+   * @param userId
+   *          user's id.
+   * @param isAdmin
+   *          whether this query is for administrator or not.
    * @return number of problems this user get accepted.
    * @throws AppException
    */
-  public Long countProblemsThatUserSolved(Integer userId, Boolean isAdmin) throws AppException;
+  public Long countProblemsThatUserSolved(Integer userId, boolean isAdmin) throws AppException;
 
   /**
    * Counts users that tried specified problem.
    *
-   * @param problemId problem's id.
+   * @param problemId
+   *          problem's id.
    * @return number of users who tried this problem.
    * @throws AppException
    */
@@ -66,7 +77,8 @@ public interface StatusService {
   /**
    * Counts users that accepted specified problem.
    *
-   * @param problemId problem's id.
+   * @param problemId
+   *          problem's id.
    * @return number of users who get accepted for this problem.
    * @throws AppException
    */
@@ -75,7 +87,8 @@ public interface StatusService {
   /**
    * Counts the number of status fit in condition.
    *
-   * @param criteria {@link StatusCriteria} entity.
+   * @param criteria
+   *          {@link StatusCriteria} entity.
    * @return Total number of status fit in the condition.
    * @throws AppException
    */
@@ -84,8 +97,12 @@ public interface StatusService {
   /**
    * Get the status fit in condition and page range with required fields
    *
-   * @param criteria {@link StatusCriteria} entity.
-   * @param pageInfo {@link PageInfo} entity.
+   * @param criteria
+   *          {@link StatusCriteria} entity.
+   * @param pageInfo
+   *          {@link PageInfo} entity.
+   * @param fields
+   *          result fields to be fetched
    * @return List of {@link StatusDto} entities.
    * @throws AppException
    */
@@ -95,7 +112,8 @@ public interface StatusService {
   /**
    * Get the status that pending to judge.
    *
-   * @param isFirstTime whether is the first time the scheduler called.
+   * @param isFirstTime
+   *          whether is the first time the scheduler called.
    * @return List of {@link StatusDto} entities.
    * @throws AppException
    */
@@ -104,7 +122,8 @@ public interface StatusService {
   /**
    * Updates status by {@link StatusDto} entity.
    *
-   * @param statusDto {@link StatusDto} entity.
+   * @param statusDto
+   *          {@link StatusDto} entity.
    * @throws AppException
    */
   public void updateStatus(StatusDto statusDto)
@@ -113,7 +132,8 @@ public interface StatusService {
   /**
    * Create a new status with a specific {@link StatusDto}.
    *
-   * @param statusDto {@link StatusDto} entity.
+   * @param statusDto
+   *          {@link StatusDto} entity.
    * @throws AppException
    */
   public void createNewStatus(StatusDto statusDto) throws AppException;
@@ -121,8 +141,10 @@ public interface StatusService {
   /**
    * Gets {@link StatusDto} by status id with required fields
    *
-   * @param statusId status' id for query.
-   * @param fields   required fields.
+   * @param statusId
+   *          status' id for query.
+   * @param fields
+   *          required fields.
    * @return status' information.
    * @throws AppException
    */
@@ -131,7 +153,8 @@ public interface StatusService {
   /**
    * Runs re-judge process with specific status condition.
    *
-   * @param criteria {@link StatusCriteria} entity.
+   * @param criteria
+   *          {@link StatusCriteria} entity.
    * @throws AppException
    */
   public void rejudge(StatusCriteria criteria) throws AppException;

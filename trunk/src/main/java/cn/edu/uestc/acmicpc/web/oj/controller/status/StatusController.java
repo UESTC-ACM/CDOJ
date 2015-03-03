@@ -43,6 +43,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
@@ -162,7 +163,8 @@ public class StatusController extends BaseController {
           recordPerPage, null);
       List<StatusDto> statusListDtoList = statusService.getStatusList(statusCriteria,
           pageInfo, StatusFields.FIELDS_FOR_LIST_PAGE);
-      for (StatusDto statusListDto : statusListDtoList) {
+      for (@SuppressWarnings("unused") StatusDto statusListDto : statusListDtoList) {
+        // TODO
       }
 
       json.put("pageInfo", pageInfo);

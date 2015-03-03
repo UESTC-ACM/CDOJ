@@ -17,8 +17,10 @@ public interface TrainingService {
   /**
    * Get {@link TrainingDto} by Training id.
    *
-   * @param trainingId     training record's id.
-   * @param trainingFields request fields.
+   * @param trainingId
+   *          training record's id.
+   * @param fields
+   *          result fields to be fetched
    * @return result {@link TrainingDto} entity.
    * @throws AppException
    */
@@ -28,7 +30,8 @@ public interface TrainingService {
   /**
    * Count number of trainings fit in criteria.
    *
-   * @param trainingCriteria search criteria
+   * @param trainingCriteria
+   *          search criteria
    * @return total records in database hit the criteria
    * @throws AppException
    */
@@ -37,8 +40,12 @@ public interface TrainingService {
   /**
    * Get all {@link TrainingDto} fit in criteria.
    *
-   * @param trainingCriteria search criteria
-   * @param pageInfo         page range restriction
+   * @param trainingCriteria
+   *          search criteria
+   * @param pageInfo
+   *          page range restriction
+   * @param fields
+   *          result fields to be fetched
    * @return all records in database fit in the criteria
    * @throws AppException
    */
@@ -48,7 +55,8 @@ public interface TrainingService {
   /**
    * Update training record by none-null fields in {@link TrainingDto} entity
    *
-   * @param trainingDto {@link TrainingDto} entity with none-null id
+   * @param trainingDto
+   *          {@link TrainingDto} entity with none-null id
    * @throws AppException
    */
   public void updateTraining(TrainingDto trainingDto) throws AppException;
@@ -56,7 +64,8 @@ public interface TrainingService {
   /**
    * Create a new training record with specified title
    *
-   * @param title training title
+   * @param title
+   *          training title
    * @return Id of new record
    * @throws AppException
    */

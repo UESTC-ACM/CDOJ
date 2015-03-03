@@ -21,6 +21,7 @@ import java.util.Set;
  * @param <E>
  *          entity type
  */
+@SuppressWarnings("deprecation")
 public interface Dao<E extends Serializable> {
 
   /**
@@ -66,6 +67,7 @@ public interface Dao<E extends Serializable> {
    * @return result list.
    * @throws AppException
    */
+  @Deprecated
   List<?> findAll(String fields, Condition condition) throws AppException;
 
   /**
@@ -111,6 +113,7 @@ public interface Dao<E extends Serializable> {
    * @return number of records we query
    * @throws AppException
    */
+  @Deprecated
   Long count(Condition condition) throws AppException;
 
   /**
@@ -155,6 +158,7 @@ public interface Dao<E extends Serializable> {
    * @return number of records for database query result
    * @throws AppException
    */
+  @Deprecated
   Long customCount(String fieldName, Condition condition) throws AppException;
 
   /**
@@ -178,6 +182,7 @@ public interface Dao<E extends Serializable> {
    *          specific condition entity
    * @throws AppException
    */
+  @Deprecated
   void updateEntitiesByCondition(Map<String, Object> properties, Condition condition)
       throws AppException;
 
@@ -333,6 +338,8 @@ public interface Dao<E extends Serializable> {
    *          Hibernate criteria entity.
    * @param pageInfo
    *          page constraint.
+   * @param fields
+   *          result fields to be fetched
    * @param <T>
    *          result type
    * @return List of results
@@ -341,13 +348,28 @@ public interface Dao<E extends Serializable> {
   <T extends BaseDto<E>, F extends Fields> List<T> findAll(BaseCriteria<E, T> criteria,
       PageInfo pageInfo, Set<F> fields) throws AppException;
 
-  <F extends Fields> List customFindAll(DetachedCriteria criteria,
+  /**
+   * List all customized entity by criteria.
+   *
+   * @param criteria
+   *          Hibernate criteria entity.
+   * @param pageInfo
+   *          page constraint.
+   * @param fields
+   *          result fields to be fetched
+   * @return List of results
+   * @throws AppException
+   */
+  <F extends Fields> List<?> customFindAll(DetachedCriteria criteria,
       PageInfo pageInfo, Set<F> fields) throws AppException;
+
   /**
    * Get unique Dto entity by unique field.
    *
    * @param criteria
    *          Hibernate criteria entity.
+   * @param fields
+   *          result fields to be fetched.
    * @param <T>
    *          result type
    * @return unique entity for query.
@@ -364,7 +386,7 @@ public interface Dao<E extends Serializable> {
    * @return number of records we query
    * @throws AppException
    */
-  Long count(BaseCriteria criteria) throws AppException;
+  Long count(BaseCriteria<?, ?> criteria) throws AppException;
 
   /**
    * Count the number of records in the table by criteria.

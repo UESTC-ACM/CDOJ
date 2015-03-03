@@ -90,6 +90,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
+
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
@@ -103,6 +104,7 @@ import javax.xml.transform.stream.StreamResult;
 /**
  * Contest controller.
  */
+@SuppressWarnings("deprecation")
 @Controller
 @RequestMapping("/contest")
 public class ContestController extends BaseController {

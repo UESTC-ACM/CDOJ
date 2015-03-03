@@ -9,6 +9,7 @@ import cn.edu.uestc.acmicpc.util.helper.EnumTypeUtil;
 /**
  * Problem database condition entity.
  */
+@Deprecated
 public class ProblemCondition extends BaseCondition {
 
   public ProblemCondition() {

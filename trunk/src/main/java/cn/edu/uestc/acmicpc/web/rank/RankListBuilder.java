@@ -17,6 +17,7 @@ import java.util.Map;
 public class RankListBuilder {
   private final List<RankListProblem> problemList;
   private final List<RankListUser> userList;
+  @SuppressWarnings("unused")
   private final List<ContestTeamListDto> teamList;
   private final Map<String, RankListProblem> problemMap;
   private final Map<String, RankListUser> userMap;

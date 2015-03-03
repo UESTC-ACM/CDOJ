@@ -22,12 +22,14 @@ import jxl.write.WriteException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /**
  * Contest rank list excel view
  */
+@SuppressWarnings("deprecation")
 public class ContestRankListView extends AbstractJExcelView {
 
   /**
