@@ -1,6 +1,5 @@
 package cn.edu.uestc.acmicpc.judge.core;
 
-import cn.edu.uestc.acmicpc.judge.entity.Judge;
 import cn.edu.uestc.acmicpc.judge.entity.JudgeItem;
 import cn.edu.uestc.acmicpc.util.enums.OnlineJudgeReturnType;
 
