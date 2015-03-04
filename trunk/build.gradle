@@ -17,6 +17,8 @@ targetCompatibility = 1.8
 // Run under http://host/
 jettyRun.contextPath = ""
 jettyRunWar.contextPath = ""
+jettyRun.httpPort = Integer.valueOf(httpPort)
+jettyRunWar.httpPort = Integer.valueOf(httpPort)
 
 task checkControllerDoNotContainDaos(type: Exec) {
   commandLine "python2",
