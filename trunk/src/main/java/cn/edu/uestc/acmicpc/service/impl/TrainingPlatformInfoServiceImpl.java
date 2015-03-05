@@ -35,7 +35,7 @@ public class TrainingPlatformInfoServiceImpl extends AbstractService
     TrainingPlatformInfoCriteria trainingPlatformInfoCriteria = new TrainingPlatformInfoCriteria();
     trainingPlatformInfoCriteria.startId = trainingPlatformInfoCriteria.endId =
         trainingPlatformInfoId;
-    return trainingPlatformInfoDao.getDtoByUniqueField(trainingPlatformInfoCriteria, fields);
+    return trainingPlatformInfoDao.getUniqueDto(trainingPlatformInfoCriteria, fields);
   }
 
   @Override

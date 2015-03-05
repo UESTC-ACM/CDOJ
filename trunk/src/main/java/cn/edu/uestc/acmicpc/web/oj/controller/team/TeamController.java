@@ -28,6 +28,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.google.common.collect.Lists;
+
 import java.sql.Timestamp;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -64,7 +66,8 @@ public class TeamController extends BaseController {
       HttpSession session) {
     Map<String, Object> json = new HashMap<>();
     try {
-      Integer teamId = teamService.getTeamIdByTeamName(teamName);
+      Integer teamId = teamService.getTeamDtoByTeamName(teamName, TeamFields.SUMMARY_FIELDS)
+          .getTeamId();
       TeamCriteria criteria = new TeamCriteria();
       criteria.teamId = teamId;
       PageInfo pageInfo = buildPageInfo(1L, 1L, 1L, null);
@@ -92,7 +95,7 @@ public class TeamController extends BaseController {
       // Search teams
       Long count = teamService.count(criteria);
       PageInfo pageInfo = buildPageInfo(count, 1L, 6L, null);
-      json.put("list", teamService.getTeams(criteria, pageInfo, TeamFields.FIELDS_FOR_ADHEAD_TYPE));
+      json.put("list", teamService.getTeams(criteria, pageInfo, TeamFields.SUMMARY_FIELDS));
       json.put("result", "success");
     } catch (AppException e) {
       json.put("result", "error");
@@ -110,36 +113,16 @@ public class TeamController extends BaseController {
       return teamList;
     }
 
-    // At most 20 records
-    List<Integer> teamIdList = new LinkedList<>();
-    for (TeamDto teamListDto : teamList) {
-      teamIdList.add(teamListDto.getTeamId());
-    }
-    TeamUserCondition teamUserCondition = new TeamUserCondition();
-    teamUserCondition.orderFields = "id";
-    teamUserCondition.orderAsc = "true";
-    teamUserCondition.teamIdList = ArrayUtil.join(teamIdList.toArray(), ",");
-    // Search team users
-    List<TeamUserListDto> teamUserList = teamUserService.getTeamUserList(teamUserCondition);
-
-    // Put users into teams
-    for (TeamDto teamListDto : teamList) {
-      teamListDto.setTeamUsers(new LinkedList<TeamUserListDto>());
-      teamListDto.setInvitedUsers(new LinkedList<TeamUserListDto>());
-      for (TeamUserListDto teamUserListDto : teamUserList) {
-        if (teamListDto.getTeamId().compareTo(teamUserListDto.getTeamId()) == 0) {
-          // Put users into current users / inactive users
-          if (teamUserListDto.getAllow()) {
-            teamListDto.getTeamUsers().add(teamUserListDto);
-          } else if (checkPermission(session, criteria.leaderId)) {
-            teamListDto.getInvitedUsers().add(teamUserListDto);
-          }
-
-          if (checkPermission(session, criteria.leaderId)
-              && teamUserListDto.getUserId().equals(criteria.leaderId)) {
-            teamListDto.setAllow(teamUserListDto.getAllow());
+    for (TeamDto team : teamList) {
+      if (checkPermission(session, criteria.userId)) {
+        for (TeamUserListDto teamUser : team.getTeamUsers()) {
+          if (teamUser.getUserId().equals(criteria.userId)) {
+            team.setAllow(teamUser.getAllow());
           }
         }
+      } else {
+        // Hide invited users when no permission.
+        team.setInvitedUsers(Lists.newLinkedList());
       }
     }
     return teamList;
@@ -151,8 +134,8 @@ public class TeamController extends BaseController {
       HttpSession session) {
     Map<String, Object> json = new HashMap<>();
     try {
-      if (criteria.leaderId != null) {
-        if (!checkPermission(session, criteria.leaderId)) {
+      if (criteria.userId != null) {
+        if (!checkPermission(session, criteria.userId)) {
           criteria.allow = true;
         }
         // Search teams
