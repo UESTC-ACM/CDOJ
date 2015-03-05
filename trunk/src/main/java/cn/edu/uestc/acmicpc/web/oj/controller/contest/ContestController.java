@@ -774,7 +774,7 @@ public class ContestController extends BaseController {
       HttpSession session) {
     Map<String, Object> json = new HashMap<>();
     try {
-      TeamDto teamDto = teamService.getTeamDtoByTeamId(teamId, TeamFields.FIELDS_FOR_EDIT_PAGE);
+      TeamDto teamDto = teamService.getTeamDtoByTeamId(teamId, TeamFields.BASIC_FIELDS);
       if (teamDto == null || !teamDto.getTeamId().equals(teamId)) {
         throw new AppException("Team not found!");
       }
