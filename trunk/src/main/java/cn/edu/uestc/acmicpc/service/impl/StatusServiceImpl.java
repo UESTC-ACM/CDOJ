@@ -202,7 +202,7 @@ public class StatusServiceImpl extends AbstractService implements StatusService 
     statusCriteria.startId = statusId;
     statusCriteria.endId = statusId;
     statusCriteria.isForAdmin = true;
-    StatusDto statusDto = statusDao.getDtoByUniqueField(statusCriteria, fields);
+    StatusDto statusDto = statusDao.getUniqueDto(statusCriteria, fields);
     if (statusDto != null) {
       updateStatusDto(statusDto, fields);
     }

@@ -35,7 +35,7 @@ public class UserSerialKeyServiceImpl extends AbstractService implements UserSer
   public UserSerialKeyDto findUserSerialKeyDtoByUserId(Integer userId) throws AppException {
     UserSerialKeyCriteria criteria = new UserSerialKeyCriteria();
     criteria.userId = userId;
-    return userSerialKeyDao.getDtoByUniqueField(criteria, UserSerialKeyFields.ALL_FIELDS);
+    return userSerialKeyDao.getUniqueDto(criteria, UserSerialKeyFields.ALL_FIELDS);
   }
 
   @Override

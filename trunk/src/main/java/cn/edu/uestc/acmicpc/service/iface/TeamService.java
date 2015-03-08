@@ -49,6 +49,18 @@ public interface TeamService {
   public TeamDto getTeamDtoByTeamId(Integer teamId, Set<TeamFields> fields) throws AppException;
 
   /**
+   * Get {@link TeamDto} entity by team's name
+   *
+   * @param teamName
+   *          team's name
+   * @param fields
+   *          result fields to be fetched
+   * @return {@link cn.edu.uestc.acmicpc.db.dto.impl.TeamDto} entity
+   * @throws AppException
+   */
+  public TeamDto getTeamDtoByTeamName(String teamName, Set<TeamFields> fields) throws AppException;
+
+  /**
    * Counts the number of team fit in condition.
    *
    * @param criteria
@@ -72,16 +84,6 @@ public interface TeamService {
    */
   public List<TeamDto> getTeams(TeamCriteria criteria, PageInfo pageInfo, Set<TeamFields> fields)
       throws AppException;
-
-  /**
-   * Get team id by team name
-   *
-   * @param teamName
-   *          team's name
-   * @return team's id
-   * @throws AppException
-   */
-  public Integer getTeamIdByTeamName(String teamName) throws AppException;
 
   /**
    * Delete team in database.
