@@ -14,7 +14,6 @@ import org.hibernate.transform.AliasToBeanResultTransformer;
 import com.google.common.collect.Sets;
 
 import java.util.Set;
-import javax.persistence.criteria.JoinType;
 
 /**
  * We can use this class to get {@link DetachedCriteria} entity.

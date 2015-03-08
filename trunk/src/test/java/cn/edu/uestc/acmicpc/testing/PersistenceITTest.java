@@ -3,6 +3,7 @@ package cn.edu.uestc.acmicpc.testing;
 import cn.edu.uestc.acmicpc.config.IntegrationTestContext;
 import cn.edu.uestc.acmicpc.db.dto.impl.user.UserDto;
 import cn.edu.uestc.acmicpc.service.iface.UserService;
+import cn.edu.uestc.acmicpc.service.testing.UserProvider;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +22,7 @@ import org.testng.annotations.BeforeMethod;
 public class PersistenceITTest extends AbstractTransactionalTestNGSpringContextTests {
 
   @Autowired
-  protected UserService userService;
+  protected UserProvider userProvider;
 
   protected Integer testUserId = null;
 
@@ -33,13 +34,7 @@ public class PersistenceITTest extends AbstractTransactionalTestNGSpringContextT
     if (testUserId != null) {
       return testUserId;
     }
-    UserDto user = UserDto.builder()
-        .setUserName("testUser")
-        .setDepartmentId(1)
-        .setEmail("test@uestc.acm.com")
-        .setNickName("testName")
-        .setPassword("password")
-        .build();
-    return testUserId = userService.createNewUser(user);
+    UserDto user = userProvider.createUser("testUser");
+    return testUserId = user.getUserId();
   }
 }

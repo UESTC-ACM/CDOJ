@@ -135,6 +135,7 @@ public abstract class DaoImpl<E extends Serializable> extends BaseDao implements
       return (E) getSession().save(entity);
     } catch (HibernateException e) {
       LOGGER.error(e);
+      e.printStackTrace();
       throw new AppException("Invoke add method error.");
     }
   }

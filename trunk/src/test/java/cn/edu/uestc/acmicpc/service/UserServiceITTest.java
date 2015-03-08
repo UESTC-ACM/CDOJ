@@ -8,7 +8,6 @@ import cn.edu.uestc.acmicpc.testing.PersistenceITTest;
 import cn.edu.uestc.acmicpc.util.enums.AuthenticationType;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
 import cn.edu.uestc.acmicpc.util.exception.FieldNotUniqueException;
-import cn.edu.uestc.acmicpc.web.oj.controller.user.UserController;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.testng.Assert;
