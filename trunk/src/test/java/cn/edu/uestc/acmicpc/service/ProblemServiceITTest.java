@@ -16,18 +16,25 @@ import org.testng.annotations.Test;
 @SuppressWarnings("deprecation")
 public class ProblemServiceITTest extends PersistenceITTest {
 
-  @Autowired
-  private ProblemService problemService;
+  @Autowired private ProblemService problemService;
+
+  @Test
+  public void testCreateNewProblem() throws AppException {
+    Assert.assertNotNull(problemService.createNewProblem());
+  }
 
   @Test
   public void testGetProblemDtoByProblemId() throws AppException {
-    ProblemDto problemDto = problemService.getProblemDtoByProblemId(1);
-    Assert.assertEquals(Integer.valueOf(1), problemDto.getProblemId());
-    Assert.assertEquals("a+b problem", problemDto.getTitle());
+    Integer problemId = problemService.createNewProblem();
+    ProblemDto problemDto = problemService.getProblemDtoByProblemId(problemId);
+    Assert.assertEquals(problemId, problemDto.getProblemId());
   }
 
   @Test
   public void testCount() throws AppException {
+    problemService.createNewProblem();
+    problemService.createNewProblem();
+    problemService.createNewProblem();
     ProblemCondition problemCondition = new ProblemCondition();
     problemCondition.startId = 1;
     problemCondition.endId = 3;
@@ -37,7 +44,7 @@ public class ProblemServiceITTest extends PersistenceITTest {
   @Test(expectedExceptions = AppException.class)
   public void testUpdateProblem_problemNotFound() throws AppException {
     ProblemDto problemDto = ProblemDto.builder()
-        .setProblemId(6)
+        .setProblemId(1234)
         .build();
     problemService.updateProblem(problemDto);
     Assert.fail();
