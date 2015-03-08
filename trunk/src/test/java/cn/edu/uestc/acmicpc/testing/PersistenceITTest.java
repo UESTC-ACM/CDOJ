@@ -2,7 +2,6 @@ package cn.edu.uestc.acmicpc.testing;
 
 import cn.edu.uestc.acmicpc.config.IntegrationTestContext;
 import cn.edu.uestc.acmicpc.db.dto.impl.user.UserDto;
-import cn.edu.uestc.acmicpc.service.iface.UserService;
 import cn.edu.uestc.acmicpc.service.testing.TestUtil;
 import cn.edu.uestc.acmicpc.service.testing.UserProvider;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
@@ -26,7 +25,11 @@ public class PersistenceITTest extends AbstractTransactionalTestNGSpringContextT
   protected UserProvider userProvider;
 
   @BeforeMethod
-  protected void setUp() throws Exception {
+  protected void beforeMethod() throws Exception {
+    setUp();
+  }
+
+  public void setUp() throws Exception {
   }
 
   protected Integer getTestUserId() throws AppException {
