@@ -16,10 +16,14 @@ public class TeamUserProvider {
   @Autowired private TeamUserService teamUserService;
 
   public void createTeamUser(Integer teamId, Integer userId) throws AppException {
+    createTeamUser(teamId, userId, true);
+  }
+
+  public void createTeamUser(Integer teamId, Integer userId, boolean allow) throws AppException {
     teamUserService.createNewTeamUser(TeamUserDto.builder()
         .setTeamId(teamId)
         .setUserId(userId)
-        .setAllow(true)
+        .setAllow(allow)
         .build());
   }
 }
