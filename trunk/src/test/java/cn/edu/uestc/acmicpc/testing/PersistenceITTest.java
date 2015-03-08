@@ -27,14 +27,20 @@ public class PersistenceITTest extends AbstractTransactionalTestNGSpringContextT
   protected Integer testUserId = null;
 
   @BeforeMethod
-  protected void setUp() throws Exception {
+  protected void beforeMethod() throws Exception {
+    setUpTestUser();
+    setUp();
+  }
+
+  public void setUp() throws Exception {
+  }
+
+  private void setUpTestUser() throws Exception {
+    UserDto user = userProvider.createUser("testUser");
+    testUserId = user.getUserId();
   }
 
   protected Integer getTestUserId() throws AppException {
-    if (testUserId != null) {
-      return testUserId;
-    }
-    UserDto user = userProvider.createUser("testUser");
-    return testUserId = user.getUserId();
+    return testUserId;
   }
 }
