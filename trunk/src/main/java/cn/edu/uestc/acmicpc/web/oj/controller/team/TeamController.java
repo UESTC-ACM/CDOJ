@@ -1,6 +1,5 @@
 package cn.edu.uestc.acmicpc.web.oj.controller.team;
 
-import cn.edu.uestc.acmicpc.db.condition.impl.TeamUserCondition;
 import cn.edu.uestc.acmicpc.db.criteria.TeamCriteria;
 import cn.edu.uestc.acmicpc.db.dto.field.TeamFields;
 import cn.edu.uestc.acmicpc.db.dto.impl.TeamDto;
@@ -15,7 +14,6 @@ import cn.edu.uestc.acmicpc.service.iface.UserService;
 import cn.edu.uestc.acmicpc.util.annotation.LoginPermit;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
 import cn.edu.uestc.acmicpc.util.exception.AppExceptionUtil;
-import cn.edu.uestc.acmicpc.util.helper.ArrayUtil;
 import cn.edu.uestc.acmicpc.util.helper.StringUtil;
 import cn.edu.uestc.acmicpc.util.settings.Settings;
 import cn.edu.uestc.acmicpc.web.dto.PageInfo;
@@ -246,14 +244,6 @@ public class TeamController extends BaseController {
       if (teamDto == null) {
         throw new AppException("Error while creating team.");
       }
-
-      Integer teamUserId = teamUserService.createNewTeamUser(TeamUserDto.builder()
-          .setTeamId(teamId)
-          .setUserId(currentUser.getUserId())
-          .setAllow(true)
-          .build());
-      TeamUserDto teamUserDto = teamUserService.getTeamUserDto(teamUserId);
-      AppExceptionUtil.assertNotNull(teamUserDto, "Error while creating team user.");
 
       json.put("result", "success");
     } catch (AppException e) {

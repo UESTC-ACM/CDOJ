@@ -5,6 +5,7 @@ import cn.edu.uestc.acmicpc.db.criteria.TeamCriteria;
 import cn.edu.uestc.acmicpc.db.dao.iface.TeamDao;
 import cn.edu.uestc.acmicpc.db.dto.field.TeamFields;
 import cn.edu.uestc.acmicpc.db.dto.impl.TeamDto;
+import cn.edu.uestc.acmicpc.db.dto.impl.teamUser.TeamUserDto;
 import cn.edu.uestc.acmicpc.db.dto.impl.teamUser.TeamUserListDto;
 import cn.edu.uestc.acmicpc.db.entity.Team;
 import cn.edu.uestc.acmicpc.service.iface.TeamService;
@@ -24,10 +25,8 @@ import com.google.common.collect.LinkedListMultimap;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 
-import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -69,7 +68,15 @@ public class TeamServiceImpl extends AbstractService implements TeamService {
     team.setTeamName(teamName);
     team.setLeaderId(leaderId);
     teamDao.addOrUpdate(team);
-    return team.getTeamId();
+
+    // Create team user for team leader
+    Integer teamId = team.getTeamId();
+    teamUserService.createNewTeamUser(TeamUserDto.builder()
+        .setTeamId(teamId)
+        .setUserId(leaderId)
+        .setAllow(true)
+        .build());
+    return teamId;
   }
 
   @Override
