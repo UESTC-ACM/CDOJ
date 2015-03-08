@@ -27,6 +27,7 @@ import java.util.Objects;
 
 import javax.servlet.http.HttpSession;
 
+@SuppressWarnings("deprecation")
 @Controller
 @RequestMapping("/message")
 public class MessageController extends BaseController {

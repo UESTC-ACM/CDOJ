@@ -1,7 +1,7 @@
 package cn.edu.uestc.acmicpc.web.oj.controller.team;
 
 import cn.edu.uestc.acmicpc.db.condition.impl.TeamUserCondition;
-import cn.edu.uestc.acmicpc.db.criteria.impl.TeamCriteria;
+import cn.edu.uestc.acmicpc.db.criteria.TeamCriteria;
 import cn.edu.uestc.acmicpc.db.dto.field.TeamFields;
 import cn.edu.uestc.acmicpc.db.dto.impl.TeamDto;
 import cn.edu.uestc.acmicpc.db.dto.impl.message.MessageDto;
@@ -36,6 +36,7 @@ import java.util.Map;
 
 import javax.servlet.http.HttpSession;
 
+@SuppressWarnings("deprecation")
 @Controller
 @RequestMapping("/team")
 public class TeamController extends BaseController {
@@ -64,7 +65,7 @@ public class TeamController extends BaseController {
     Map<String, Object> json = new HashMap<>();
     try {
       Integer teamId = teamService.getTeamIdByTeamName(teamName);
-      TeamCriteria criteria = new TeamCriteria(TeamFields.FIELDS_FOR_LIST_PAGE);
+      TeamCriteria criteria = new TeamCriteria();
       criteria.teamId = teamId;
       PageInfo pageInfo = buildPageInfo(1L, 1L, 1L, null);
       List<TeamDto> teamList = getTeamListDto(criteria, pageInfo, session);
@@ -88,11 +89,10 @@ public class TeamController extends BaseController {
       if (criteria.teamName == null) {
         criteria.teamName = "";
       }
-      criteria.setResultFields(TeamFields.FIELDS_FOR_ADHEAD_TYPE);
       // Search teams
       Long count = teamService.count(criteria);
       PageInfo pageInfo = buildPageInfo(count, 1L, 6L, null);
-      json.put("list", teamService.getTeams(criteria, pageInfo));
+      json.put("list", teamService.getTeams(criteria, pageInfo, TeamFields.FIELDS_FOR_ADHEAD_TYPE));
       json.put("result", "success");
     } catch (AppException e) {
       json.put("result", "error");
@@ -103,7 +103,8 @@ public class TeamController extends BaseController {
 
   private List<TeamDto> getTeamListDto(TeamCriteria criteria, PageInfo pageInfo,
       HttpSession session) throws AppException {
-    List<TeamDto> teamList = teamService.getTeams(criteria, pageInfo);
+    List<TeamDto> teamList = teamService.getTeams(criteria, pageInfo,
+        TeamFields.FIELDS_FOR_LIST_PAGE);
 
     if (teamList.size() == 0) {
       return teamList;
@@ -184,7 +185,7 @@ public class TeamController extends BaseController {
     Map<String, Object> json = new HashMap<>();
     try {
       AppExceptionUtil.assertTrue(checkPermission(session, userId));
-      TeamDto teamDto = teamService.getTeamDtoByTeamId(teamId);
+      TeamDto teamDto = teamService.getTeamDtoByTeamId(teamId, TeamFields.BASIC_FIELDS);
       if (teamDto.getLeaderId().equals(userId)) {
         throw new AppException("Can not change team leader's state.");
       }
@@ -203,7 +204,8 @@ public class TeamController extends BaseController {
       HttpSession session) {
     Map<String, Object> json = new HashMap<>();
     try {
-      TeamDto teamDto = teamService.getTeamDtoByTeamId(teamEditDto.getTeamId());
+      TeamDto teamDto = teamService.getTeamDtoByTeamId(teamEditDto.getTeamId(),
+          TeamFields.BASIC_FIELDS);
       if (teamDto == null) {
         throw new AppException("Team not found.");
       }
@@ -257,7 +259,7 @@ public class TeamController extends BaseController {
       UserDto currentUser = getCurrentUser(session);
       Integer teamId = teamService
           .createNewTeam(teamEditDto.getTeamName(), currentUser.getUserId());
-      TeamDto teamDto = teamService.getTeamDtoByTeamId(teamId);
+      TeamDto teamDto = teamService.getTeamDtoByTeamId(teamId, TeamFields.BASIC_FIELDS);
       if (teamDto == null) {
         throw new AppException("Error while creating team.");
       }
@@ -284,7 +286,8 @@ public class TeamController extends BaseController {
       HttpSession session) {
     Map<String, Object> json = new HashMap<>();
     try {
-      TeamDto teamDto = teamService.getTeamDtoByTeamId(teamEditDto.getTeamId());
+      TeamDto teamDto = teamService.getTeamDtoByTeamId(teamEditDto.getTeamId(),
+          TeamFields.BASIC_FIELDS);
       if (teamDto == null) {
         throw new AppException("Team not found.");
       }
@@ -349,7 +352,8 @@ public class TeamController extends BaseController {
       HttpSession session) {
     Map<String, Object> json = new HashMap<>();
     try {
-      TeamDto teamDto = teamService.getTeamDtoByTeamId(teamEditDto.getTeamId());
+      TeamDto teamDto = teamService.getTeamDtoByTeamId(teamEditDto.getTeamId(),
+          TeamFields.BASIC_FIELDS);
       if (teamDto == null) {
         throw new AppException("Team not found.");
       }

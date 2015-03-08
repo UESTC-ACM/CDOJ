@@ -17,7 +17,7 @@ public enum OnlineJudgeReturnType implements EnumType {
   OJ_RE_BUS("Runtime Error on test $case"),       // 10
   OJ_RE_ABRT("Runtime Error on test $case"),      // 11
   OJ_RE_UNKNOWN("Runtime Error on test $case"),   // 12
-  OJ_RF("Restricted Function on test $case"),    // 13
+  OJ_RF("Restricted Function on test $case"),     // 13
   OJ_SE("System Error on test $case"),            // 14
   OJ_RE_JAVA("Runtime Error on test $case"),      // 15
   OJ_JUDGING("Queuing"),                          // 16
@@ -29,6 +29,10 @@ public enum OnlineJudgeReturnType implements EnumType {
   @Override
   public String getDescription() {
     return description;
+  }
+
+  public static OnlineJudgeReturnType getReturnType(int id) {
+    return values()[id];
   }
 
   private OnlineJudgeReturnType(String description) {

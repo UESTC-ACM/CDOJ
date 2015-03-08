@@ -1,11 +1,13 @@
 package cn.edu.uestc.acmicpc.service.iface;
 
-import cn.edu.uestc.acmicpc.db.criteria.impl.TeamCriteria;
+import cn.edu.uestc.acmicpc.db.criteria.TeamCriteria;
+import cn.edu.uestc.acmicpc.db.dto.field.TeamFields;
 import cn.edu.uestc.acmicpc.db.dto.impl.TeamDto;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
 import cn.edu.uestc.acmicpc.web.dto.PageInfo;
 
 import java.util.List;
+import java.util.Set;
 
 /**
  * Team service interface.
@@ -39,16 +41,18 @@ public interface TeamService {
    *
    * @param teamId
    *          team's id
+   * @param fields
+   *          result fields to be fetched
    * @return {@link cn.edu.uestc.acmicpc.db.dto.impl.TeamDto} entity
    * @throws AppException
    */
-  public TeamDto getTeamDtoByTeamId(Integer teamId) throws AppException;
+  public TeamDto getTeamDtoByTeamId(Integer teamId, Set<TeamFields> fields) throws AppException;
 
   /**
    * Counts the number of team fit in condition.
    *
    * @param criteria
-   *          {@link cn.edu.uestc.acmicpc.db.criteria.impl.TeamCriteria} entity.
+   *          {@link cn.edu.uestc.acmicpc.db.criteria.TeamCriteria} entity.
    * @return total number of team fit in the condition.
    * @throws AppException
    */
@@ -61,10 +65,13 @@ public interface TeamService {
    *          {@link TeamCriteria} entity.
    * @param pageInfo
    *          {@link PageInfo} entity.
+   * @param fields
+   *          result fields to be fetched
    * @return List of {@link cn.edu.uestc.acmicpc.db.dto.impl.TeamDto} entities.
    * @throws AppException
    */
-  public List<TeamDto> getTeams(TeamCriteria criteria, PageInfo pageInfo) throws AppException;
+  public List<TeamDto> getTeams(TeamCriteria criteria, PageInfo pageInfo, Set<TeamFields> fields)
+      throws AppException;
 
   /**
    * Get team id by team name

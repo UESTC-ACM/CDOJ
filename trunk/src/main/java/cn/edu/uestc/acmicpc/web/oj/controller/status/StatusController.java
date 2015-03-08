@@ -1,15 +1,13 @@
 package cn.edu.uestc.acmicpc.web.oj.controller.status;
 
-import cn.edu.uestc.acmicpc.db.condition.impl.StatusCondition;
+import cn.edu.uestc.acmicpc.db.criteria.StatusCriteria;
 import cn.edu.uestc.acmicpc.db.dto.field.ContestFields;
+import cn.edu.uestc.acmicpc.db.dto.field.StatusFields;
 import cn.edu.uestc.acmicpc.db.dto.impl.CodeDto;
 import cn.edu.uestc.acmicpc.db.dto.impl.ContestDto;
+import cn.edu.uestc.acmicpc.db.dto.impl.StatusDto;
 import cn.edu.uestc.acmicpc.db.dto.impl.message.MessageDto;
 import cn.edu.uestc.acmicpc.db.dto.impl.problem.ProblemDto;
-import cn.edu.uestc.acmicpc.db.dto.impl.status.StatusDto;
-import cn.edu.uestc.acmicpc.db.dto.impl.status.StatusInformationDto;
-import cn.edu.uestc.acmicpc.db.dto.impl.status.StatusListDto;
-import cn.edu.uestc.acmicpc.db.dto.impl.status.SubmitDto;
 import cn.edu.uestc.acmicpc.db.dto.impl.user.UserDto;
 import cn.edu.uestc.acmicpc.service.iface.CodeService;
 import cn.edu.uestc.acmicpc.service.iface.CompileInfoService;
@@ -27,8 +25,6 @@ import cn.edu.uestc.acmicpc.util.enums.OnlineJudgeResultType;
 import cn.edu.uestc.acmicpc.util.enums.OnlineJudgeReturnType;
 import cn.edu.uestc.acmicpc.util.enums.ProblemType;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
-import cn.edu.uestc.acmicpc.util.helper.ArrayUtil;
-import cn.edu.uestc.acmicpc.util.helper.EnumTypeUtil;
 import cn.edu.uestc.acmicpc.util.helper.StringUtil;
 import cn.edu.uestc.acmicpc.util.settings.Settings;
 import cn.edu.uestc.acmicpc.web.dto.PageInfo;
@@ -92,88 +88,83 @@ public class StatusController extends BaseController {
   @RequestMapping("search")
   @LoginPermit(NeedLogin = false)
   public @ResponseBody Map<String, Object> search(HttpSession session,
-      @RequestBody StatusCondition statusCondition) {
+      @RequestBody StatusCriteria statusCriteria) {
     Map<String, Object> json = new HashMap<>();
     try {
-      if (statusCondition.contestId == null) {
-        statusCondition.contestId = -1;
+      if (statusCriteria.contestId == null) {
+        statusCriteria.contestId = -1;
       }
-      if (statusCondition.result == null) {
-        statusCondition.result = OnlineJudgeResultType.OJ_ALL;
+      if (statusCriteria.result == null) {
+        statusCriteria.result = OnlineJudgeResultType.OJ_ALL;
       }
       if (!isAdmin(session)) {
-        statusCondition.isForAdmin = false;
-        if (statusCondition.contestId != -1) {
+        statusCriteria.isForAdmin = false;
+        if (statusCriteria.contestId != -1) {
           ContestDto contestShowDto = contestService.getContestDtoByContestId(
-              statusCondition.contestId, ContestFields.FIELDS_FOR_SHOWING);
+              statusCriteria.contestId, ContestFields.FIELDS_FOR_SHOWING);
           if (contestShowDto == null) {
             throw new AppException("No such contest.");
           }
           // Check permission
-          checkContestPermission(session, statusCondition.contestId);
+          checkContestPermission(session, statusCriteria.contestId);
           // Get type
-          Byte type = getContestType(session, statusCondition.contestId);
+          Byte type = getContestType(session, statusCriteria.contestId);
           if (type == ContestType.INVITED.ordinal()) {
             // Only show current user and his member's status
-            List<Integer> memberList = getContestTeamMembers(session, statusCondition.contestId);
-            statusCondition.userIdList = ArrayUtil.join(memberList.toArray(), ",");
+            List<Integer> memberList = getContestTeamMembers(session, statusCriteria.contestId);
+            statusCriteria.userIdList = memberList;
           } else {
             // Only show current user's status
             UserDto currentUser = getCurrentUser(session);
             if (currentUser == null) {
               // Avoid null point exception.
-              statusCondition.userId = 0;
+              statusCriteria.userId = 0;
             } else {
-              statusCondition.userId = currentUser.getUserId();
+              statusCriteria.userId = currentUser.getUserId();
             }
           }
           // Only show status submitted in contest
-          statusCondition.startTime = contestShowDto.getStartTime();
-          statusCondition.endTime = contestShowDto.getEndTime();
+          statusCriteria.startTime = contestShowDto.getStartTime();
+          statusCriteria.endTime = contestShowDto.getEndTime();
           // Some problems is stashed when contest is running
-          statusCondition.isProblemVisible = null;
+          statusCriteria.isProblemVisible = null;
         } else {
           // Only show status submitted for visible problem
-          statusCondition.isProblemVisible = true;
-          statusCondition.problemType = ProblemType.NORMAL;
-          if(statusCondition.problemId != null) {
-            ProblemDto problemDto = problemService.getProblemDtoByProblemId(statusCondition.problemId);
+          statusCriteria.isProblemVisible = true;
+          statusCriteria.problemType = ProblemType.NORMAL;
+          if(statusCriteria.problemId != null) {
+            ProblemDto problemDto = problemService.getProblemDtoByProblemId(statusCriteria.problemId);
             UserDto currentUser = getCurrentUser(session);
             //internal problem' status only show for internal user who are searching.
             if(currentUser != null && problemDto != null && problemDto.getType() == ProblemType.INTERNAL
              && currentUser.getType() == AuthenticationType.INTERNAL.ordinal()) {
-              statusCondition.problemType = ProblemType.INTERNAL;
+              statusCriteria.problemType = ProblemType.INTERNAL;
             }
           }
         }
       } else {
-        if (statusCondition.contestId != -1) {
+        if (statusCriteria.contestId != -1) {
           ContestDto contestShowDto = contestService.getContestDtoByContestId(
-              statusCondition.contestId, ContestFields.FIELDS_FOR_SHOWING);
+              statusCriteria.contestId, ContestFields.FIELDS_FOR_SHOWING);
           if (contestShowDto == null) {
             throw new AppException("No such contest.");
           }
         }
         // Current user is administrator, just show all the status.
-        statusCondition.isForAdmin = true;
+        statusCriteria.isForAdmin = true;
       }
 
-      Long count = statusService.count(statusCondition);
+      Long count = statusService.count(statusCriteria);
       Long recordPerPage = settings.RECORD_PER_PAGE;
-      if (statusCondition.countPerPage != null) {
-        recordPerPage = statusCondition.countPerPage;
+      if (statusCriteria.countPerPage != null) {
+        recordPerPage = statusCriteria.countPerPage;
       }
-      PageInfo pageInfo = buildPageInfo(count, statusCondition.currentPage,
+      PageInfo pageInfo = buildPageInfo(count, statusCriteria.currentPage,
           recordPerPage, null);
-      List<StatusListDto> statusListDtoList = statusService.getStatusList(statusCondition,
-          pageInfo);
-      for (StatusListDto statusListDto : statusListDtoList) {
-        statusListDto.setReturnType(EnumTypeUtil.getReturnDescription(
-            statusListDto.getReturnTypeId(), statusListDto.getCaseNumber()));
-        if (statusListDto.getReturnTypeId() != OnlineJudgeReturnType.OJ_AC.ordinal()) {
-          statusListDto.setTimeCost(null);
-          statusListDto.setMemoryCost(null);
-        }
+      List<StatusDto> statusListDtoList = statusService.getStatusList(statusCriteria,
+          pageInfo, StatusFields.FIELDS_FOR_LIST_PAGE);
+      for (@SuppressWarnings("unused") StatusDto statusListDto : statusListDtoList) {
+        // TODO
       }
 
       json.put("pageInfo", pageInfo);
@@ -193,23 +184,23 @@ public class StatusController extends BaseController {
   @RequestMapping("rejudgeStatusCount")
   @LoginPermit(AuthenticationType.ADMIN)
   public @ResponseBody Map<String, Object> rejudgeStatusCount(
-      @RequestBody StatusCondition statusCondition) {
+      @RequestBody StatusCriteria statusCriteria) {
     Map<String, Object> json = new HashMap<>();
     try {
       // Current user is administrator
-      statusCondition.isForAdmin = true;
-      if (statusCondition.result == null ||
-          statusCondition.result == OnlineJudgeResultType.OJ_ALL ||
-          statusCondition.result == OnlineJudgeResultType.OJ_AC ||
-          statusCondition.result == OnlineJudgeResultType.OJ_JUDGING ||
-          statusCondition.result == OnlineJudgeResultType.OJ_WAIT) {
+      statusCriteria.isForAdmin = true;
+      if (statusCriteria.result == null ||
+          statusCriteria.result == OnlineJudgeResultType.OJ_ALL ||
+          statusCriteria.result == OnlineJudgeResultType.OJ_AC ||
+          statusCriteria.result == OnlineJudgeResultType.OJ_JUDGING ||
+          statusCriteria.result == OnlineJudgeResultType.OJ_WAIT) {
         // Avoid rejudge accepted status.
-        statusCondition.result = OnlineJudgeResultType.OJ_NOT_AC;
+        statusCriteria.result = OnlineJudgeResultType.OJ_NOT_AC;
       }
-      if (statusCondition.contestId == null) {
-        statusCondition.contestId = -1;
+      if (statusCriteria.contestId == null) {
+        statusCriteria.contestId = -1;
       }
-      Long count = statusService.count(statusCondition);
+      Long count = statusService.count(statusCriteria);
 
       json.put("result", "success");
       json.put("count", count);
@@ -226,28 +217,28 @@ public class StatusController extends BaseController {
 
   @RequestMapping("rejudge")
   @LoginPermit(AuthenticationType.ADMIN)
-  public @ResponseBody Map<String, Object> rejudge(@RequestBody StatusCondition statusCondition) {
+  public @ResponseBody Map<String, Object> rejudge(@RequestBody StatusCriteria statusCriteria) {
     Map<String, Object> json = new HashMap<>();
     try {
-      if (statusCondition.userName != null) {
-        UserDto userDto = userService.getUserDtoByUserName(statusCondition.userName);
+      if (statusCriteria.userName != null) {
+        UserDto userDto = userService.getUserDtoByUserName(statusCriteria.userName);
         if (userDto == null) {
           throw new AppException("User not found for given user name.");
         }
-        statusCondition.userId = userDto.getUserId();
+        statusCriteria.userId = userDto.getUserId();
       }
-      if (statusCondition.result == null ||
-          statusCondition.result == OnlineJudgeResultType.OJ_ALL ||
-          statusCondition.result == OnlineJudgeResultType.OJ_AC ||
-          statusCondition.result == OnlineJudgeResultType.OJ_JUDGING ||
-          statusCondition.result == OnlineJudgeResultType.OJ_WAIT) {
+      if (statusCriteria.result == null ||
+          statusCriteria.result == OnlineJudgeResultType.OJ_ALL ||
+          statusCriteria.result == OnlineJudgeResultType.OJ_AC ||
+          statusCriteria.result == OnlineJudgeResultType.OJ_JUDGING ||
+          statusCriteria.result == OnlineJudgeResultType.OJ_WAIT) {
         // Avoid rejudge accepted status.
-        statusCondition.result = OnlineJudgeResultType.OJ_NOT_AC;
+        statusCriteria.result = OnlineJudgeResultType.OJ_NOT_AC;
       }
-      if (statusCondition.contestId == null) {
-        statusCondition.contestId = -1;
+      if (statusCriteria.contestId == null) {
+        statusCriteria.contestId = -1;
       }
-      statusService.rejudge(statusCondition);
+      statusService.rejudge(statusCriteria);
 
       json.put("result", "success");
     } catch (AppException e) {
@@ -264,7 +255,7 @@ public class StatusController extends BaseController {
   @RequestMapping("submit")
   @LoginPermit(NeedLogin = true)
   public @ResponseBody Map<String, Object> submit(HttpSession session,
-      @RequestBody @Valid SubmitDto submitDto,
+      @RequestBody @Valid StatusDto submitDto,
       BindingResult validateResult) {
     Map<String, Object> json = new HashMap<>();
     if (validateResult.hasErrors()) {
@@ -313,7 +304,9 @@ public class StatusController extends BaseController {
             if (!problemDto.getIsVisible()) {
               throw new AppException("No such problem.");
             }
-            if (problemDto.getType() == ProblemType.INTERNAL && (currentUser == null || currentUser.getType() != AuthenticationType.INTERNAL.ordinal())) {
+            if (problemDto.getType() == ProblemType.INTERNAL
+                && (currentUser == null
+                || currentUser.getType() != AuthenticationType.INTERNAL.ordinal())) {
               throw new AppException("No such problem.");
             }
           }
@@ -328,6 +321,7 @@ public class StatusController extends BaseController {
         }
 
         statusService.createNewStatus(StatusDto.builder()
+            .setResultId(OnlineJudgeReturnType.OJ_WAIT.ordinal())
             .setCodeId(codeId)
             .setContestId(submitDto.getContestId())
             .setLanguageId(submitDto.getLanguageId())
@@ -351,7 +345,8 @@ public class StatusController extends BaseController {
       @PathVariable Integer statusId) {
     Map<String, Object> json = new HashMap<>();
     try {
-      StatusInformationDto statusInformationDto = statusService.getStatusInformation(statusId);
+      StatusDto statusInformationDto =
+          statusService.getStatusDto(statusId, StatusFields.FIELDS_FOR_STATUS_INFO);
       if (statusInformationDto == null) {
         throw new AppException("No such status.");
       }
@@ -409,7 +404,7 @@ public class StatusController extends BaseController {
   @RequestMapping("print")
   @LoginPermit(NeedLogin = true)
   public @ResponseBody Map<String, Object> print(HttpSession session,
-      @RequestBody SubmitDto submitDto) {
+      @RequestBody StatusDto submitDto) {
     Map<String, Object> json = new HashMap<>();
     try {
       String codeContent = submitDto.getCodeContent();

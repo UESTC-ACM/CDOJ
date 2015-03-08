@@ -1,0 +1,19 @@
+md-card {
+  background: white;
+
+  /* It doesn't work now... */
+  .animate-card {
+    &.ng-move, &.ng-enter, &.ng-leave {
+      -webkit-transition:all linear 10s;
+      transition:all linear 10s;
+    }
+    &.ng-leave.ng-leave-active, &.ng-move, &ng-enter {
+      opacity: 0;
+      max-height: 0;
+    }
+    &.ng-leave, &.ng-move.ng-move-active, &.ng-enter.ng-enter-active {
+      opacity: 1;
+      max-height: 40px;
+    }
+  }
+}

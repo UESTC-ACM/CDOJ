@@ -2,6 +2,7 @@ package cn.edu.uestc.acmicpc.db.dao.base;
 
 import cn.edu.uestc.acmicpc.db.condition.base.Condition;
 import cn.edu.uestc.acmicpc.db.condition.base.Condition.ConditionType;
+import cn.edu.uestc.acmicpc.db.criteria.BaseCriteria;
 import cn.edu.uestc.acmicpc.db.dao.iface.Dao;
 import cn.edu.uestc.acmicpc.db.dto.BaseDto;
 import cn.edu.uestc.acmicpc.db.dto.BaseDtoBuilder;
@@ -27,6 +28,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * Global DAO implementation.
@@ -37,6 +39,7 @@ import java.util.Map;
  * @param <E>
  *          entity type
  */
+@SuppressWarnings("deprecation")
 @Repository
 public abstract class DaoImpl<E extends Serializable> extends BaseDao implements Dao<E> {
 
@@ -62,6 +65,7 @@ public abstract class DaoImpl<E extends Serializable> extends BaseDao implements
    *          DB condition entity.
    * @return HQL with class name.
    */
+  @Deprecated
   private String buildHQLString(Condition condition) {
     return "from " + getReferenceClass().getSimpleName() + " "
         + condition.toHQLString();
@@ -74,6 +78,7 @@ public abstract class DaoImpl<E extends Serializable> extends BaseDao implements
    *          DB condition entity.
    * @return HQL with class name.
    */
+  @Deprecated
   private String buildHQLStringWithOrders(Condition condition) {
     return "from " + getReferenceClass().getSimpleName() + " "
         + condition.toHQLStringWithOrders();
@@ -90,6 +95,7 @@ public abstract class DaoImpl<E extends Serializable> extends BaseDao implements
   }
 
   @Override
+  @Deprecated
   public Long customCount(String fieldName, Condition condition)
       throws AppException {
     if (condition == null) {
@@ -99,6 +105,7 @@ public abstract class DaoImpl<E extends Serializable> extends BaseDao implements
   }
 
   @Override
+  @Deprecated
   public Long customCount(String fieldName, String hqlCondition) throws AppException {
     try {
       String hql = "select count(" + fieldName + ") "
@@ -111,11 +118,13 @@ public abstract class DaoImpl<E extends Serializable> extends BaseDao implements
   }
 
   @Override
+  @Deprecated
   public Long count(String hqlCondition) throws AppException {
     return customCount("*", hqlCondition);
   }
 
   @Override
+  @Deprecated
   public Long count(Condition condition) throws AppException {
     return customCount("*", condition);
   }
@@ -155,6 +164,7 @@ public abstract class DaoImpl<E extends Serializable> extends BaseDao implements
   }
 
   @Override
+  @Deprecated
   public List<?> findAll(String hql) throws AppException {
     try {
       return getQuery(hql, null).list();
@@ -165,6 +175,7 @@ public abstract class DaoImpl<E extends Serializable> extends BaseDao implements
   }
 
   @Override
+  @Deprecated
   public List<?> findAll(String fields, String hqlCondition, PageInfo pageInfo) throws AppException {
     try {
       String hql;
@@ -182,6 +193,7 @@ public abstract class DaoImpl<E extends Serializable> extends BaseDao implements
   }
 
   @Override
+  @Deprecated
   public List<?> findAll(String fields, Condition condition)
       throws AppException {
     String hql = "";
@@ -200,17 +212,20 @@ public abstract class DaoImpl<E extends Serializable> extends BaseDao implements
   }
 
   @Override
+  @Deprecated
   public Long count() throws AppException {
     return count((Condition) null);
   }
 
   @Override
+  @Deprecated
   public Object getEntityByUniqueField(String fieldName, Object value)
       throws AppException {
     return getEntityByUniqueField(fieldName, value, null, false);
   }
 
   @Override
+  @Deprecated
   public Object getEntityByUniqueField(String fieldName, Object value,
       String propertyName,
       boolean forceUnique) throws AppException {
@@ -239,6 +254,7 @@ public abstract class DaoImpl<E extends Serializable> extends BaseDao implements
   protected abstract Class<E> getReferenceClass();
 
   @Override
+  @Deprecated
   public void updateEntitiesByCondition(Map<String, Object> properties,
       Condition condition)
       throws AppException {
@@ -270,6 +286,7 @@ public abstract class DaoImpl<E extends Serializable> extends BaseDao implements
    * TODO(fish): need it test.
    */
   @Override
+  @Deprecated
   public void deleteEntitiesByField(String field, String values) throws AppException {
     StringBuilder stringBuilder = new StringBuilder();
     stringBuilder.append("delete ").append(getReferenceClass().getSimpleName());
@@ -288,6 +305,7 @@ public abstract class DaoImpl<E extends Serializable> extends BaseDao implements
    * TODO(fish): need it test.
    */
   @Override
+  @Deprecated
   public void updateEntitiesByField(Map<String, Object> properties,
       String field, String values) throws AppException {
     if (properties.isEmpty()) {
@@ -325,6 +343,7 @@ public abstract class DaoImpl<E extends Serializable> extends BaseDao implements
   }
 
   @Override
+  @Deprecated
   public void updateEntitiesByField(String propertyField, Object propertyValue,
       String field, String values) throws AppException {
     Map<String, Object> properties = new HashMap<>();
@@ -333,6 +352,7 @@ public abstract class DaoImpl<E extends Serializable> extends BaseDao implements
   }
 
   @Override
+  @Deprecated
   public void updateEntitiesByCondition(String propertyField, Object propertyValue,
       Condition condition) throws AppException {
     Map<String, Object> properties = new HashMap<>();
@@ -356,6 +376,7 @@ public abstract class DaoImpl<E extends Serializable> extends BaseDao implements
   }
 
   @Override
+  @Deprecated
   public <T extends BaseDto<E>> List<T> findAll(Class<T> clazz,
       BaseDtoBuilder<T> builder,
       String hql, PageInfo pageInfo) throws AppException {
@@ -377,6 +398,7 @@ public abstract class DaoImpl<E extends Serializable> extends BaseDao implements
   }
 
   @Override
+  @Deprecated
   public <T extends BaseDto<E>> List<T> findAll(Class<T> clazz,
       BaseDtoBuilder<T> builder,
       Condition condition) throws AppException {
@@ -398,6 +420,7 @@ public abstract class DaoImpl<E extends Serializable> extends BaseDao implements
   }
 
   @Override
+  @Deprecated
   public <T extends BaseDto<E>> T getDtoByUniqueField(Class<T> clazz,
       BaseDtoBuilder<T> builder,
       String field, Object value) throws AppException {
@@ -432,8 +455,16 @@ public abstract class DaoImpl<E extends Serializable> extends BaseDao implements
 
   @SuppressWarnings("unchecked")
   @Override
-  public <T extends BaseDto<E>> List<T> findAll(DetachedCriteria criteria,
-      PageInfo pageInfo) throws AppException {
+  public <T extends BaseDto<E>, F extends cn.edu.uestc.acmicpc.db.dto.Fields> List<T> findAll(
+      BaseCriteria<E, T> criteria, PageInfo pageInfo,
+      Set<F> fields) throws AppException {
+    DetachedCriteria detachedCriteria = criteria.getCriteria(fields);
+    return (List<T>) customFindAll(detachedCriteria, pageInfo, fields);
+  }
+
+  @Override
+  public <F extends cn.edu.uestc.acmicpc.db.dto.Fields> List<?> customFindAll(
+      DetachedCriteria criteria, PageInfo pageInfo, Set<F> fields) throws AppException {
     Criteria executableCriteria = criteria.getExecutableCriteria(getSession());
     if (pageInfo != null) {
       executableCriteria = executableCriteria
@@ -444,9 +475,9 @@ public abstract class DaoImpl<E extends Serializable> extends BaseDao implements
   }
 
   @Override
-  public <T extends BaseDto<E>> T getDtoByUniqueField(DetachedCriteria criteria)
-      throws AppException {
-    List<T> result = findAll(criteria, null);
+  public <T extends BaseDto<E>, F extends cn.edu.uestc.acmicpc.db.dto.Fields> T getDtoByUniqueField(
+      BaseCriteria<E, T> criteria, Set<F> fields) throws AppException {
+    List<T> result = findAll(criteria, null, fields);
     if (result.size() == 0) {
       return null;
     } else if (result.size() == 1) {
@@ -457,8 +488,14 @@ public abstract class DaoImpl<E extends Serializable> extends BaseDao implements
   }
 
   @Override
-  public Long count(DetachedCriteria criteria) throws AppException {
-    criteria = criteria.setProjection(Projections.rowCount());
+  public Long count(BaseCriteria<?, ?> criteria) throws AppException {
+    DetachedCriteria detachedCriteria = criteria.getCriteria();
+    detachedCriteria.setProjection(Projections.rowCount());
+    return customCount(detachedCriteria);
+  }
+
+  @Override
+  public Long customCount(DetachedCriteria criteria) throws AppException {
     Criteria executableCriteria = criteria.getExecutableCriteria(getSession());
     return (Long) executableCriteria.uniqueResult();
   }

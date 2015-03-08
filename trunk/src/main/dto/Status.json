@@ -1,0 +1,196 @@
+{
+  "entity": "Status",
+  "fields": [
+    {
+      "name": "statusId",
+      "type": "Integer",
+      "projections": ["ALL_FIELDS", "FIELDS_FOR_LIST_PAGE", "FIELDS_FOR_STATUS_INFO", "FIELDS_FOR_JUDGE"]
+    },
+    {
+      "name": "resultId",
+      "type": "Integer",
+      "field": "result",
+      "projections": ["ALL_FIELDS", "FIELDS_FOR_LIST_PAGE", "FIELDS_FOR_JUDGE"]
+    },
+    {
+      "name": "result",
+      "type": "String",
+      "dbField": false,
+      "projections": ["FIELDS_FOR_LIST_PAGE"]
+    },
+    {
+      "name": "memoryCost",
+      "type": "Integer",
+      "default": 0,
+      "projections": ["ALL_FIELDS", "FIELDS_FOR_LIST_PAGE", "FIELDS_FOR_JUDGE"]
+    },
+    {
+      "name": "timeCost",
+      "type": "Integer",
+      "default": 0,
+      "projections": ["ALL_FIELDS", "FIELDS_FOR_LIST_PAGE", "FIELDS_FOR_JUDGE"]
+    },
+    {
+      "name": "length",
+      "type": "Integer",
+      "projections": ["ALL_FIELDS", "FIELDS_FOR_LIST_PAGE"]
+    },
+    {
+      "name": "time",
+      "type": "Timestamp",
+      "projections": ["ALL_FIELDS", "FIELDS_FOR_LIST_PAGE", "FIELDS_FOR_STATUS_INFO"]
+    },
+    {
+      "name": "caseNumber",
+      "type": "Integer",
+      "default": 0,
+      "projections": ["ALL_FIELDS", "FIELDS_FOR_LIST_PAGE", "FIELDS_FOR_JUDGE"]
+    },
+    {
+      "name": "codeId",
+      "type": "Integer",
+      "projections": ["ALL_FIELDS"]
+    },
+    {
+      "name": "compileInfoId",
+      "type": "Integer",
+      "projections": ["ALL_FIELDS", "FIELDS_FOR_STATUS_INFO", "FIELDS_FOR_JUDGE"]
+    },
+    {
+      "name": "contestId",
+      "type": "Integer",
+      "projections": ["ALL_FIELDS", "FIELDS_FOR_LIST_PAGE", "FIELDS_FOR_STATUS_INFO"]
+    },
+    {
+      "name": "languageId",
+      "type": "Integer",
+      "projections": ["ALL_FIELDS", "FIELDS_FOR_JUDGE"]
+    },
+    {
+      "name": "problemId",
+      "type": "Integer",
+      "projections": ["ALL_FIELDS", "FIELDS_FOR_LIST_PAGE", "FIELDS_FOR_STATUS_INFO", "FIELDS_FOR_JUDGE"]
+    },
+    {
+      "name": "userId",
+      "type": "Integer",
+      "projections": ["ALL_FIELDS", "FIELDS_FOR_STATUS_INFO", "FIELDS_FOR_JUDGE"]
+    },
+    {
+      "name": "userName",
+      "type": "String",
+      "field": "user.userName",
+      "aliases": ["user"],
+      "projections": ["FIELDS_FOR_LIST_PAGE", "FIELDS_FOR_STATUS_INFO"]
+    },
+    {
+      "name": "nickName",
+      "type": "String",
+      "field": "user.nickName",
+      "aliases": ["user"],
+      "projections": ["FIELDS_FOR_LIST_PAGE"]
+    },
+    {
+      "name": "email",
+      "type": "String",
+      "field": "user.email",
+      "aliases": ["user"],
+      "projections": ["FIELDS_FOR_LIST_PAGE"]
+    },
+    {
+      "name": "name",
+      "type": "String",
+      "field": "user.name",
+      "aliases": ["user"],
+      "projections": ["FIELDS_FOR_LIST_PAGE"]
+    },
+    {
+      "name": "language",
+      "type": "String",
+      "field": "languageRef.name",
+      "aliases": ["languageRef"],
+      "projections": ["FIELDS_FOR_LIST_PAGE", "FIELDS_FOR_JUDGE"]
+    },
+    {
+      "name": "extension",
+      "type": "String",
+      "field": "languageRef.extension",
+      "aliases": ["languageRef"],
+      "projections": ["FIELDS_FOR_STATUS_INFO", "FIELDS_FOR_JUDGE"]
+    },
+    {
+      "name": "codeContent",
+      "type": "String",
+      "field": "code.content",
+      "aliases": ["code"],
+      "projections": ["FIELDS_FOR_STATUS_INFO", "FIELDS_FOR_JUDGE"]
+    },
+    {
+      "name": "dataCount",
+      "type": "Integer",
+      "field": "problem.dataCount",
+      "aliases": ["problem"],
+      "projections": ["FIELDS_FOR_JUDGE"]
+    },
+    {
+      "name": "javaMemoryLimit",
+      "type": "Integer",
+      "field": "problem.javaMemoryLimit",
+      "aliases": ["problem"],
+      "projections": ["FIELDS_FOR_JUDGE"]
+    },
+    {
+      "name": "javaTimeLimit",
+      "type": "Integer",
+      "field": "problem.javaTimeLimit",
+      "aliases": ["problem"],
+      "projections": ["FIELDS_FOR_JUDGE"]
+    },
+    {
+      "name": "memoryLimit",
+      "type": "Integer",
+      "field": "problem.memoryLimit",
+      "aliases": ["problem"],
+      "projections": ["FIELDS_FOR_JUDGE"]
+    },
+    {
+      "name": "timeLimit",
+      "type": "Integer",
+      "field": "problem.timeLimit",
+      "aliases": ["problem"],
+      "projections": ["FIELDS_FOR_JUDGE"]
+    },
+    {
+      "name": "outputLimit",
+      "type": "Integer",
+      "field": "problem.outputLimit",
+      "aliases": ["problem"],
+      "projections": ["FIELDS_FOR_JUDGE"]
+    },
+    {
+      "name": "isSpj",
+      "type": "Boolean",
+      "field": "problem.isSpj",
+      "aliases": ["problem"],
+      "projections": ["FIELDS_FOR_JUDGE"]
+    }
+  ],
+  "aliases": [
+    {
+      "name": "user",
+      "value": "userByUserId"
+    },
+    {
+      "name": "languageRef",
+      "value": "languageByLanguageId"
+    },
+    {
+      "name": "code",
+      "value": "codeByCodeId"
+    },
+    {
+      "name": "problem",
+      "value": "problemByProblemId"
+    }
+  ]
+}

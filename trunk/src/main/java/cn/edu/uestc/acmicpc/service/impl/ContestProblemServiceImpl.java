@@ -9,16 +9,20 @@ import cn.edu.uestc.acmicpc.db.entity.ContestProblem;
 import cn.edu.uestc.acmicpc.service.iface.ContestProblemService;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
 import cn.edu.uestc.acmicpc.util.exception.AppExceptionUtil;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
+@SuppressWarnings("deprecation")
 @Service
 @Primary
+@Transactional(rollbackFor = Exception.class)
 public class ContestProblemServiceImpl extends AbstractService implements ContestProblemService {
 
   private final ContestProblemDao contestProblemDao;

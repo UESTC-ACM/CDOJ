@@ -1,15 +1,21 @@
 package cn.edu.uestc.acmicpc.service.impl;
 
 import cn.edu.uestc.acmicpc.db.condition.impl.ContestTeamCondition;
-import cn.edu.uestc.acmicpc.db.condition.impl.StatusCondition;
 import cn.edu.uestc.acmicpc.db.condition.impl.TeamUserCondition;
+import cn.edu.uestc.acmicpc.db.criteria.StatusCriteria;
 import cn.edu.uestc.acmicpc.db.dto.field.ContestFields;
+import cn.edu.uestc.acmicpc.db.dto.field.StatusFields;
 import cn.edu.uestc.acmicpc.db.dto.impl.ContestDto;
+import cn.edu.uestc.acmicpc.db.dto.impl.StatusDto;
 import cn.edu.uestc.acmicpc.db.dto.impl.contestproblem.ContestProblemSummaryDto;
 import cn.edu.uestc.acmicpc.db.dto.impl.contestteam.ContestTeamListDto;
-import cn.edu.uestc.acmicpc.db.dto.impl.status.StatusListDto;
 import cn.edu.uestc.acmicpc.db.dto.impl.teamUser.TeamUserListDto;
-import cn.edu.uestc.acmicpc.service.iface.*;
+import cn.edu.uestc.acmicpc.service.iface.ContestProblemService;
+import cn.edu.uestc.acmicpc.service.iface.ContestRankListService;
+import cn.edu.uestc.acmicpc.service.iface.ContestService;
+import cn.edu.uestc.acmicpc.service.iface.ContestTeamService;
+import cn.edu.uestc.acmicpc.service.iface.StatusService;
+import cn.edu.uestc.acmicpc.service.iface.TeamUserService;
 import cn.edu.uestc.acmicpc.util.enums.ContestRegistryStatusType;
 import cn.edu.uestc.acmicpc.util.enums.ContestType;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
@@ -17,6 +23,7 @@ import cn.edu.uestc.acmicpc.util.helper.ArrayUtil;
 import cn.edu.uestc.acmicpc.web.rank.RankList;
 import cn.edu.uestc.acmicpc.web.rank.RankListBuilder;
 import cn.edu.uestc.acmicpc.web.rank.RankListStatus;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -28,6 +35,7 @@ import java.util.Map;
 /**
  * Description
  */
+@SuppressWarnings("deprecation")
 @Service
 public class ContestRankListServiceImpl implements ContestRankListService {
 
@@ -53,14 +61,14 @@ public class ContestRankListServiceImpl implements ContestRankListService {
     this.teamUserService = teamUserService;
   }
 
-  private List<StatusListDto> fetchStatusList(Integer contestId) throws AppException {
-    StatusCondition statusCondition = new StatusCondition();
-    statusCondition.contestId = contestId;
-    statusCondition.isForAdmin = false;
+  private List<StatusDto> fetchStatusList(Integer contestId) throws AppException {
+    StatusCriteria statusCriteria = new StatusCriteria();
+    statusCriteria.contestId = contestId;
+    statusCriteria.isForAdmin = false;
     // Sort by time
-    statusCondition.orderFields = "time";
-    statusCondition.orderAsc = "true";
-    return statusService.getStatusList(statusCondition);
+    statusCriteria.orderFields = "time";
+    statusCriteria.orderAsc = "true";
+    return statusService.getStatusList(statusCriteria, null, StatusFields.FIELDS_FOR_LIST_PAGE);
   }
 
   private List<ContestTeamListDto> fetchTeamList(Integer contestId) throws AppException {
@@ -130,7 +138,7 @@ public class ContestRankListServiceImpl implements ContestRankListService {
           getContestProblemSummaryDtoListByContestId(contestId);
 
       // Fetch status list
-      List<StatusListDto> statusList = fetchStatusList(contestId);
+      List<StatusDto> statusList = fetchStatusList(contestId);
 
       RankListBuilder rankListBuilder = new RankListBuilder();
       // Set problem
@@ -148,7 +156,7 @@ public class ContestRankListServiceImpl implements ContestRankListService {
       }
 
       // Set status
-      for (StatusListDto status : statusList) {
+      for (StatusDto status : statusList) {
         if (contestShowDto.getStartTime().after(status.getTime()) ||
             contestShowDto.getEndTime().before(status.getTime())) {
           // Out of time.
@@ -160,14 +168,14 @@ public class ContestRankListServiceImpl implements ContestRankListService {
           isFrozen = true;
         }
         rankListBuilder.addStatus(new RankListStatus(
-            1, // Total tried
-            status.getReturnTypeId(), // Return type id
-            status.getProblemId().toString(), // Problem id
-            status.getUserName(), // User name
-            status.getNickName(), // Nick name
-            status.getEmail(), // Email
-            status.getName(),
-            status.getTime().getTime() - contestShowDto.getStartTime().getTime()),
+                1, // Total tried
+                status.getResultId(), // Return type id
+                status.getProblemId().toString(), // Problem id
+                status.getUserName(), // User name
+                status.getNickName(), // Nick name
+                status.getEmail(), // Email
+                status.getName(),
+                status.getTime().getTime() - contestShowDto.getStartTime().getTime()),
             isFrozen); // Time
       }
 

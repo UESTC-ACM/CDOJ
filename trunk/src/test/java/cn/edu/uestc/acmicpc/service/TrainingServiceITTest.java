@@ -1,6 +1,6 @@
 package cn.edu.uestc.acmicpc.service;
 
-import cn.edu.uestc.acmicpc.db.criteria.impl.TrainingCriteria;
+import cn.edu.uestc.acmicpc.db.criteria.TrainingCriteria;
 import cn.edu.uestc.acmicpc.db.dto.field.TrainingFields;
 import cn.edu.uestc.acmicpc.db.dto.impl.TrainingDto;
 import cn.edu.uestc.acmicpc.service.iface.TrainingService;
@@ -47,52 +47,41 @@ public class TrainingServiceITTest extends PersistenceITTest {
 
   @Test
   public void testCount() throws AppException {
-    TrainingCriteria trainingCriteria = new TrainingCriteria(TrainingFields.ALL_FIELDS);
+    TrainingCriteria trainingCriteria = new TrainingCriteria();
     Long totalRecords = 7L;
-    Assert.assertEquals(
-        trainingService.count(trainingCriteria),
-        totalRecords
-        );
+    Assert.assertEquals(trainingService.count(trainingCriteria), totalRecords);
   }
 
   @Test
   public void testCount_range() throws AppException {
-    TrainingCriteria trainingCriteria = new TrainingCriteria(TrainingFields.ALL_FIELDS);
+    TrainingCriteria trainingCriteria = new TrainingCriteria();
     trainingCriteria.startId = 3;
     trainingCriteria.endId = 6;
     Long totalRecords = 4L;
-    Assert.assertEquals(
-        trainingService.count(trainingCriteria),
-        totalRecords
-        );
+    Assert.assertEquals(trainingService.count(trainingCriteria), totalRecords);
   }
 
   @Test
   public void testCount_keyword1() throws AppException {
-    TrainingCriteria trainingCriteria = new TrainingCriteria(TrainingFields.ALL_FIELDS);
+    TrainingCriteria trainingCriteria = new TrainingCriteria();
     trainingCriteria.keyword = "training";
     Long totalRecords = 4L;
-    Assert.assertEquals(
-        trainingService.count(trainingCriteria),
-        totalRecords
-        );
+    Assert.assertEquals(trainingService.count(trainingCriteria), totalRecords);
   }
 
   @Test
   public void testCount_keyword2() throws AppException {
-    TrainingCriteria trainingCriteria = new TrainingCriteria(TrainingFields.ALL_FIELDS);
+    TrainingCriteria trainingCriteria = new TrainingCriteria();
     trainingCriteria.keyword = "keyword";
     Long totalRecords = 3L;
-    Assert.assertEquals(
-        trainingService.count(trainingCriteria),
-        totalRecords
-        );
+    Assert.assertEquals(trainingService.count(trainingCriteria), totalRecords);
   }
 
   @Test
   public void testGetTrainingList() throws AppException {
-    TrainingCriteria trainingCriteria = new TrainingCriteria(TrainingFields.ALL_FIELDS);
-    List<TrainingDto> trainingDtoList = trainingService.getTrainingList(trainingCriteria, null);
+    TrainingCriteria trainingCriteria = new TrainingCriteria();
+    List<TrainingDto> trainingDtoList = trainingService.getTrainingList(trainingCriteria, null,
+        TrainingFields.ALL_FIELDS);
     Assert.assertEquals(trainingDtoList.size(), 7);
     Integer id = 0;
     for (TrainingDto trainingDto : trainingDtoList) {
@@ -104,10 +93,11 @@ public class TrainingServiceITTest extends PersistenceITTest {
 
   @Test
   public void testGetTrainingList_reverse() throws AppException {
-    TrainingCriteria trainingCriteria = new TrainingCriteria(TrainingFields.ALL_FIELDS);
+    TrainingCriteria trainingCriteria = new TrainingCriteria();
     trainingCriteria.orderFields = "trainingId";
     trainingCriteria.orderAsc = "false";
-    List<TrainingDto> trainingDtoList = trainingService.getTrainingList(trainingCriteria, null);
+    List<TrainingDto> trainingDtoList = trainingService.getTrainingList(trainingCriteria, null,
+        TrainingFields.ALL_FIELDS);
     Assert.assertEquals(trainingDtoList.size(), 7);
     Integer id = 7;
     for (TrainingDto trainingDto : trainingDtoList) {
@@ -173,7 +163,7 @@ public class TrainingServiceITTest extends PersistenceITTest {
 
   @Test
   public void testCreateTraining() throws AppException {
-    Long exceptedId = trainingService.count(new TrainingCriteria(TrainingFields.ALL_FIELDS)) + 1;
+    Long exceptedId = trainingService.count(new TrainingCriteria()) + 1;
     Integer newId = trainingService.createNewTraining("new training!");
     Assert.assertEquals(newId.intValue(), exceptedId.intValue());
   }

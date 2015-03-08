@@ -36,6 +36,7 @@ import javax.servlet.http.HttpSession;
 /**
  * Controller for home page.
  */
+@SuppressWarnings("deprecation")
 @Controller
 @RequestMapping("/")
 public class IndexController extends BaseController {
@@ -58,6 +59,11 @@ public class IndexController extends BaseController {
   @RequestMapping("/")
   public String index() {
     return "index";
+  }
+
+  @RequestMapping("/v2")
+  public String index2() {
+    return "index2";
   }
 
   /**

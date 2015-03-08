@@ -10,7 +10,7 @@ cdoj
     ($scope, $rootScope, $http, $modal) ->
       $scope.showHref = false
       checkShowHref = ->
-        if $scope.status.returnTypeId == 7
+        if $scope.status.resultId == 7
           if $scope.alwaysShowHref
             $scope.showHref = true
           else if (
@@ -56,12 +56,12 @@ cdoj
           if data.result == "success" and data.list.length == 1
             $scope.status = data.list[0]
             checkShowHref()
-            if [0, 16, 17, 18].none($scope.status.returnTypeId)
+            if [0, 16, 17, 18].none($scope.status.resultId)
               removeStatusTimer()
         ).error(->
           $window.alert "Network error."
         )
-      if [0, 16, 17, 18].some($scope.status.returnTypeId)
+      if [0, 16, 17, 18].some($scope.status.resultId)
         refreshStatusTimer = setInterval(refreshStatus, 1000)
       $scope.$on("$locationChangeStart", ->
         removeStatusTimer()
@@ -70,8 +70,8 @@ cdoj
   template: """
 <a href="javascript:void(0);"
    ng-show="showHref"
-   ng-click="showCompileInfo()">{{status.returnType}}</a>
-<span ng-hide="showHref">{{status.returnType}}</span>
+   ng-click="showCompileInfo()">{{status.result}}</a>
+<span ng-hide="showHref">{{status.result}}</span>
     """
 )
 

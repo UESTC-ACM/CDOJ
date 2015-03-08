@@ -5,7 +5,6 @@ import cn.edu.uestc.acmicpc.db.condition.base.Condition.ConditionType;
 import cn.edu.uestc.acmicpc.db.condition.base.Condition.Entry;
 import cn.edu.uestc.acmicpc.db.condition.impl.ProblemCondition;
 import cn.edu.uestc.acmicpc.db.dao.iface.ProblemDao;
-import cn.edu.uestc.acmicpc.db.dto.impl.problem.ProblemDto;
 import cn.edu.uestc.acmicpc.db.entity.Problem;
 import cn.edu.uestc.acmicpc.testing.PersistenceITTest;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
@@ -14,12 +13,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
-import java.util.List;
 import java.util.Random;
 
 /**
  * Test cases for {@link Problem}.
  */
+@SuppressWarnings("deprecation")
 public class ProblemDatabaseITTest extends PersistenceITTest {
 
   // TODO(fish): use problem service to query.
@@ -59,16 +58,6 @@ public class ProblemDatabaseITTest extends PersistenceITTest {
     condition.endId = 5;
     condition.isSpj = true;
     Assert.assertEquals(problemDao.count(condition.getCondition()), Long.valueOf(2));
-  }
-
-  @Test
-  public void testProblemCondition_emptyTitle() throws AppException {
-    Condition condition = new Condition();
-    condition.addEntry(Entry.of("title", ConditionType.STRING_EQUALS, ""));
-    List<ProblemDto> problems =
-        problemDao.findAll(ProblemDto.class, ProblemDto.builder(), condition);
-    Assert.assertEquals(problems.size(), 1);
-    Assert.assertEquals(problems.get(0).getProblemId(), Integer.valueOf(5));
   }
 
   @Test

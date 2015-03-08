@@ -1,13 +1,16 @@
 package cn.edu.uestc.acmicpc.web.oj.controller.contest;
 
 import cn.edu.uestc.acmicpc.db.condition.impl.ContestTeamCondition;
-import cn.edu.uestc.acmicpc.db.condition.impl.StatusCondition;
 import cn.edu.uestc.acmicpc.db.condition.impl.TeamUserCondition;
-import cn.edu.uestc.acmicpc.db.criteria.impl.ContestCriteria;
+import cn.edu.uestc.acmicpc.db.criteria.ContestCriteria;
+import cn.edu.uestc.acmicpc.db.criteria.StatusCriteria;
 import cn.edu.uestc.acmicpc.db.dto.field.ContestFields;
+import cn.edu.uestc.acmicpc.db.dto.field.StatusFields;
+import cn.edu.uestc.acmicpc.db.dto.field.TeamFields;
 import cn.edu.uestc.acmicpc.db.dto.impl.ContestDto;
 import cn.edu.uestc.acmicpc.db.dto.impl.ContestUserDto;
 import cn.edu.uestc.acmicpc.db.dto.impl.LanguageDto;
+import cn.edu.uestc.acmicpc.db.dto.impl.StatusDto;
 import cn.edu.uestc.acmicpc.db.dto.impl.TeamDto;
 import cn.edu.uestc.acmicpc.db.dto.impl.contestproblem.ContestProblemDetailDto;
 import cn.edu.uestc.acmicpc.db.dto.impl.contestproblem.ContestProblemDto;
@@ -17,8 +20,6 @@ import cn.edu.uestc.acmicpc.db.dto.impl.contestteam.ContestTeamListDto;
 import cn.edu.uestc.acmicpc.db.dto.impl.contestteam.ContestTeamReportDto;
 import cn.edu.uestc.acmicpc.db.dto.impl.contestteam.ContestTeamReviewDto;
 import cn.edu.uestc.acmicpc.db.dto.impl.message.MessageDto;
-import cn.edu.uestc.acmicpc.db.dto.impl.status.StatusInformationDto;
-import cn.edu.uestc.acmicpc.db.dto.impl.status.StatusListDto;
 import cn.edu.uestc.acmicpc.db.dto.impl.teamUser.TeamUserListDto;
 import cn.edu.uestc.acmicpc.db.dto.impl.teamUser.TeamUserReportDto;
 import cn.edu.uestc.acmicpc.db.dto.impl.user.OnsiteUserDto;
@@ -49,7 +50,6 @@ import cn.edu.uestc.acmicpc.util.exception.AppExceptionUtil;
 import cn.edu.uestc.acmicpc.util.exception.FieldException;
 import cn.edu.uestc.acmicpc.util.helper.ArrayUtil;
 import cn.edu.uestc.acmicpc.util.helper.CSVUtil;
-import cn.edu.uestc.acmicpc.util.helper.EnumTypeUtil;
 import cn.edu.uestc.acmicpc.util.helper.StringUtil;
 import cn.edu.uestc.acmicpc.util.settings.Settings;
 import cn.edu.uestc.acmicpc.web.dto.FileInformationDto;
@@ -104,6 +104,7 @@ import javax.xml.transform.stream.StreamResult;
 /**
  * Contest controller.
  */
+@SuppressWarnings("deprecation")
 @Controller
 @RequestMapping("/contest")
 public class ContestController extends BaseController {
@@ -254,7 +255,7 @@ public class ContestController extends BaseController {
   private void generateEvent(ContestDto contestShowDto,
       List<LanguageDto> languageDtoList,
       List<ContestProblemSummaryDto> contestProblemList,
-      List<StatusListDto> statusList,
+      List<StatusDto> statusList,
       ZipOutputStream zipOutputStream) throws Exception {
     Map<Integer, String> problemIdMap = new HashMap<>();
     Map<Integer, String> problemTitleMap = new HashMap<>();
@@ -279,7 +280,7 @@ public class ContestController extends BaseController {
     // root -> events
     Element events = document.createElement("events");
     int eventId = 0;
-    for (StatusListDto status : statusList) {
+    for (StatusDto status : statusList) {
       if (contestShowDto.getStartTime().after(status.getTime()) ||
           contestShowDto.getEndTime().before(status.getTime())) {
         // Out of time.
@@ -324,7 +325,7 @@ public class ContestController extends BaseController {
       Element judging = document.createElement("judging");
       judging.setAttribute("id", "");
       judging.setAttribute("submitid", status.getStatusId().toString());
-      if (status.getReturnTypeId() == OnlineJudgeReturnType.OJ_AC.ordinal()) {
+      if (status.getResultId() == OnlineJudgeReturnType.OJ_AC.ordinal()) {
         judging.appendChild(document.createTextNode("correct"));
       } else {
         judging.appendChild(document.createTextNode("wrong-answer"));
@@ -360,13 +361,14 @@ public class ContestController extends BaseController {
     // Fetch language list
     List<LanguageDto> languageDtoList = languageService.getLanguageList();
     // Fetch status list
-    StatusCondition statusCondition = new StatusCondition();
+    StatusCriteria statusCondition = new StatusCriteria();
     statusCondition.contestId = contestId;
     statusCondition.isForAdmin = false;
     // Sort by time
     statusCondition.orderFields = "time";
     statusCondition.orderAsc = "true";
-    List<StatusListDto> statusList = statusService.getStatusList(statusCondition);
+    List<StatusDto> statusList = statusService.getStatusList(statusCondition, null,
+        StatusFields.FIELDS_FOR_LIST_PAGE);
 
     // Create zip output stream
     ByteArrayOutputStream outputBuffer = new ByteArrayOutputStream();
@@ -411,11 +413,11 @@ public class ContestController extends BaseController {
       }
 
       // Fetch status list
-      StatusCondition statusCondition = new StatusCondition();
+      StatusCriteria statusCondition = new StatusCriteria();
       statusCondition.contestId = contestId;
       statusCondition.result = OnlineJudgeResultType.OJ_AC;
-      List<StatusInformationDto> statusList = statusService
-          .getStatusInformationDtoList(statusCondition);
+      List<StatusDto> statusList = statusService.getStatusList(statusCondition, null,
+          StatusFields.FIELDS_FOR_STATUS_INFO);
 
       // Create zip output stream
       ByteArrayOutputStream outputBuffer = new ByteArrayOutputStream();
@@ -424,7 +426,7 @@ public class ContestController extends BaseController {
 
       try {
         // Put status as file
-        for (StatusInformationDto status : statusList) {
+        for (StatusDto status : statusList) {
           if (status.getTime().before(contestShowDto.getStartTime()) ||
               status.getTime().after(contestShowDto.getEndTime())) {
             // Skip submission out of contest time.
@@ -772,7 +774,7 @@ public class ContestController extends BaseController {
       HttpSession session) {
     Map<String, Object> json = new HashMap<>();
     try {
-      TeamDto teamDto = teamService.getTeamDtoByTeamId(teamId);
+      TeamDto teamDto = teamService.getTeamDtoByTeamId(teamId, TeamFields.FIELDS_FOR_EDIT_PAGE);
       if (teamDto == null || !teamDto.getTeamId().equals(teamId)) {
         throw new AppException("Team not found!");
       }
@@ -833,16 +835,17 @@ public class ContestController extends BaseController {
       // Check permission
       checkPermission(session, contestId);
 
-      StatusCondition statusCondition = new StatusCondition();
+      StatusCriteria statusCondition = new StatusCriteria();
       statusCondition.contestId = contestShowDto.getContestId();
       statusCondition.isForAdmin = isAdmin(session);
       // Sort by time
       statusCondition.orderFields = "time";
       statusCondition.orderAsc = "true";
       statusCondition.startId = lastFetched + 1;
-      List<StatusListDto> statusList = statusService.getStatusList(statusCondition);
+      List<StatusDto> statusList = statusService.getStatusList(statusCondition, null,
+          StatusFields.FIELDS_FOR_LIST_PAGE);
       if (!isAdmin(session)) {
-        for (StatusListDto status : statusList) {
+        for (StatusDto status : statusList) {
           if (!status.getUserName().equals(currentUser.getUserName())) {
             // Stash sensitive information
             status.setLength(null);
@@ -850,13 +853,6 @@ public class ContestController extends BaseController {
             status.setMemoryCost(null);
             status.setCaseNumber(null);
             status.setLanguage(null);
-          } else {
-            status.setReturnType(EnumTypeUtil.getReturnDescription(status.getReturnTypeId(),
-                status.getCaseNumber()));
-            if (status.getReturnTypeId() != OnlineJudgeReturnType.OJ_AC.ordinal()) {
-              status.setTimeCost(null);
-              status.setMemoryCost(null);
-            }
           }
         }
       }
@@ -1006,7 +1002,7 @@ public class ContestController extends BaseController {
       PageInfo pageInfo = buildPageInfo(count, criteria.currentPage,
           settings.RECORD_PER_PAGE, null);
       List<ContestDto> contestListDtoList = contestService.
-          getContestListDtoList(criteria, pageInfo);
+          getContestList(criteria, pageInfo, ContestFields.FIELDS_FOR_LIST_PAGE);
       for (ContestDto contestListDto : contestListDtoList) {
         if (contestListDto.getType() == ContestType.INHERIT.ordinal()) {
           ContestDto contestDto = contestService.getContestDtoByContestId(

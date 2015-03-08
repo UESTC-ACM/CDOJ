@@ -8,6 +8,7 @@ import cn.edu.uestc.acmicpc.util.exception.AppException;
 /**
  * User database condition entity.
  */
+@Deprecated
 public class UserCondition extends BaseCondition {
 
   public UserCondition() {

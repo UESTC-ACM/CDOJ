@@ -1,6 +1,6 @@
 package cn.edu.uestc.acmicpc.judge.entity;
 
-import cn.edu.uestc.acmicpc.db.dto.impl.status.StatusForJudgeDto;
+import cn.edu.uestc.acmicpc.db.dto.impl.StatusDto;
 import cn.edu.uestc.acmicpc.service.iface.StatusService;
 import cn.edu.uestc.acmicpc.util.enums.OnlineJudgeReturnType;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
@@ -74,13 +74,13 @@ public class Scheduler implements Runnable, ApplicationContextAware {
    */
   private void searchForJudge(boolean isFirstTime) {
     try {
-      List<StatusForJudgeDto> statusList = statusService.getQueuingStatus(isFirstTime);
-      for (StatusForJudgeDto status : statusList) {
-        status.setResult(OnlineJudgeReturnType.OJ_JUDGING.ordinal());
+      List<StatusDto> statusList = statusService.getQueuingStatus(isFirstTime);
+      for (StatusDto status : statusList) {
+        status.setResultId(OnlineJudgeReturnType.OJ_JUDGING.ordinal());
         status.setCaseNumber(0);
         JudgeItem judgeItem = applicationContext.getBean(JudgeItem.class);
-        judgeItem.setStatusForJudgeDto(status);
-        statusService.updateStatusByStatusForJudgeDto(status);
+        judgeItem.setStatus(status);
+        statusService.updateStatus(status);
         judgeQueue.put(judgeItem);
         LOGGER.info("[Scheduler] Put status#" + status.getStatusId() + " into judge queue.");
       }

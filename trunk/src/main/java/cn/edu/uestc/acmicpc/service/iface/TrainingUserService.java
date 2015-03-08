@@ -1,7 +1,7 @@
 package cn.edu.uestc.acmicpc.service.iface;
 
-import cn.edu.uestc.acmicpc.db.criteria.impl.TrainingUserCriteria;
-import cn.edu.uestc.acmicpc.db.dto.Fields;
+import cn.edu.uestc.acmicpc.db.criteria.TrainingUserCriteria;
+import cn.edu.uestc.acmicpc.db.dto.field.TrainingUserFields;
 import cn.edu.uestc.acmicpc.db.dto.impl.TrainingUserDto;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
 
@@ -18,23 +18,26 @@ public interface TrainingUserService {
    *
    * @param trainingUserId
    *          training user record's id.
-   * @param trainingUserFields
+   * @param fields
    *          request fields.
    * @return result {@link TrainingUserDto} entity.
    * @throws AppException
    */
-  public TrainingUserDto getTrainingUserDto(Integer trainingUserId,
-      Set<Fields> trainingUserFields) throws AppException;
+  public TrainingUserDto getTrainingUserDto(Integer trainingUserId, Set<TrainingUserFields> fields)
+      throws AppException;
 
   /**
    * Get all {@link TrainingUserDto} fit in criteria.
    *
    * @param trainingUserCriteria
    *          search criteria
+   * @param fields
+   *          result fields to be fetched
    * @return all records in database fit in the criteria.
    * @throws AppException
    */
-  public List<TrainingUserDto> getTrainingUserList(TrainingUserCriteria trainingUserCriteria)
+  public List<TrainingUserDto> getTrainingUserList(TrainingUserCriteria trainingUserCriteria,
+      Set<TrainingUserFields> fields)
       throws AppException;
 
   /**

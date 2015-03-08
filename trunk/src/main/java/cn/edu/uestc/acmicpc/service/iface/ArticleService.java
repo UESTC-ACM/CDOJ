@@ -1,7 +1,7 @@
 package cn.edu.uestc.acmicpc.service.iface;
 
-import cn.edu.uestc.acmicpc.db.criteria.impl.ArticleCriteria;
-import cn.edu.uestc.acmicpc.db.dto.Fields;
+import cn.edu.uestc.acmicpc.db.criteria.ArticleCriteria;
+import cn.edu.uestc.acmicpc.db.dto.field.ArticleFields;
 import cn.edu.uestc.acmicpc.db.dto.impl.ArticleDto;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
 import cn.edu.uestc.acmicpc.web.dto.PageInfo;
@@ -33,7 +33,7 @@ public interface ArticleService {
    * @return {@link ArticleDto} entity.
    * @throws AppException
    */
-  public ArticleDto getArticleDto(Integer articleId, Set<Fields> articleFields)
+  public ArticleDto getArticleDto(Integer articleId, Set<ArticleFields> articleFields)
       throws AppException;
 
   /**
@@ -53,11 +53,13 @@ public interface ArticleService {
    *          {@link ArticleCriteria} entity.
    * @param pageInfo
    *          {@link PageInfo} entity.
+   * @param articleFields
+   *          result fields to be fetched
    * @return List of {@link ArticleDto} entities.
    * @throws AppException
    */
-  public List<ArticleDto> getArticleList(ArticleCriteria articleCriteria, PageInfo pageInfo)
-      throws AppException;
+  public List<ArticleDto> getArticleList(ArticleCriteria articleCriteria, PageInfo pageInfo,
+      Set<ArticleFields> articleFields) throws AppException;
 
   /**
    * Modify one filed of multiply entities as value.

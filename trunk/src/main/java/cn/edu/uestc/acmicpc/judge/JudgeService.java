@@ -1,5 +1,7 @@
 package cn.edu.uestc.acmicpc.judge;
 
+import cn.edu.uestc.acmicpc.judge.core.FakeCore;
+import cn.edu.uestc.acmicpc.judge.core.PylonCore;
 import cn.edu.uestc.acmicpc.judge.entity.Judge;
 import cn.edu.uestc.acmicpc.judge.entity.JudgeItem;
 import cn.edu.uestc.acmicpc.judge.entity.Scheduler;
@@ -13,7 +15,6 @@ import org.springframework.context.ApplicationContext;
 
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
-
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 
@@ -52,10 +53,13 @@ public class JudgeService {
     for (int i = 0; i < judgeThreads.length; ++i) {
       judges[i] = applicationContext.getBean("judge", Judge.class);
       judges[i].setJudgeQueue(judgeQueue);
-      judges[i].setWorkPath(settings.WORK_PATH + "/" + settings.JUDGES.get(i).getName()
-          + "/");
-      judges[i].setTempPath(settings.WORK_PATH + "/" + settings.JUDGES.get(i).getName()
-          + "/temp/");
+      String workPath = settings.WORK_PATH + "/" + settings.JUDGES.get(i).getName() + "/";
+      String tempPath = settings.WORK_PATH + "/" + settings.JUDGES.get(i).getName() + "/temp/";
+      if (settings.JUDGE_CORE.equals("pyloncore")) {
+        judges[i].setJudgeCore(new PylonCore(workPath, tempPath, settings));
+      } else {
+        judges[i].setJudgeCore(new FakeCore());
+      }
       judges[i].setJudgeName(settings.JUDGES.get(i).getName());
       judgeThreads[i] = new Thread(judges[i]);
       judgeThreads[i].start();

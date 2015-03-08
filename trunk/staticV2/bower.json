@@ -1,0 +1,35 @@
+{
+  "name": "cdoj-UI",
+  "version": "2.0.0",
+  "homepage": "https://github.com/UESTC-ACM/CDOJ",
+  "authors": [
+    "mzry1992 <muziriyun@gmail.com>"
+  ],
+  "description": "CDOJ UI layer",
+  "main": "Gruntfile.coffee",
+  "keywords": [
+    "CDOJ"
+  ],
+  "license": "GPL",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "angular": "~1.3.13",
+    "angular-mocks": "~1.3.13",
+    "angular-material": "~0.8.0-rc1",
+    "angular-route": "~1.3.13",
+    "angular-cookies": "~1.3.13",
+    "underscore.string": "~2.3.3",
+    "underscore": "~1.7.0",
+    "google-code-prettify": "~1.0.1",
+    "marked": "~0.3.2",
+    "MathJax": "~2.5.0",
+    "mdi": "~0.8.82-alpha"
+  }
+}
