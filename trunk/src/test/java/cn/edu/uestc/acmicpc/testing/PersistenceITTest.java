@@ -2,6 +2,10 @@ package cn.edu.uestc.acmicpc.testing;
 
 import cn.edu.uestc.acmicpc.config.IntegrationTestContext;
 import cn.edu.uestc.acmicpc.db.dto.impl.user.UserDto;
+import cn.edu.uestc.acmicpc.service.testing.ArticleProvider;
+import cn.edu.uestc.acmicpc.service.testing.ContestProvider;
+import cn.edu.uestc.acmicpc.service.testing.TeamProvider;
+import cn.edu.uestc.acmicpc.service.testing.TeamUserProvider;
 import cn.edu.uestc.acmicpc.service.testing.TestUtil;
 import cn.edu.uestc.acmicpc.service.testing.UserProvider;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
@@ -20,6 +24,12 @@ import org.testng.annotations.BeforeMethod;
 @Transactional
 @ContextConfiguration(classes = {IntegrationTestContext.class})
 public class PersistenceITTest extends AbstractTransactionalTestNGSpringContextTests {
+
+  @Autowired protected UserProvider userProvider;
+  @Autowired protected ArticleProvider articleProvider;
+  @Autowired protected ContestProvider contestProvider;
+  @Autowired protected TeamUserProvider teamUserProvider;
+  @Autowired protected TeamProvider teamProvider;
 
   @BeforeMethod
   protected void beforeMethod() throws Exception {
