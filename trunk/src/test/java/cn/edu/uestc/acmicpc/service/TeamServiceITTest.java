@@ -5,8 +5,6 @@ import cn.edu.uestc.acmicpc.db.dto.field.TeamFields;
 import cn.edu.uestc.acmicpc.db.dto.impl.TeamDto;
 import cn.edu.uestc.acmicpc.db.dto.impl.user.UserDto;
 import cn.edu.uestc.acmicpc.service.iface.TeamService;
-import cn.edu.uestc.acmicpc.service.testing.TeamProvider;
-import cn.edu.uestc.acmicpc.service.testing.TeamUserProvider;
 import cn.edu.uestc.acmicpc.testing.PersistenceITTest;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
 
@@ -23,8 +21,13 @@ import java.util.List;
 public class TeamServiceITTest extends PersistenceITTest {
 
   @Autowired private TeamService teamService;
-  @Autowired private TeamUserProvider teamUserProvider;
-  @Autowired private TeamProvider teamProvider;
+
+  private Integer testUserId;
+
+  @Override
+  public void setUp() throws AppException {
+    testUserId = userProvider.createUser().getUserId();
+  }
 
   @Test
   public void testCountTeams_byLeaderId() throws AppException {

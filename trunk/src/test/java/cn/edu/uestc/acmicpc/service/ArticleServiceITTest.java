@@ -6,10 +6,7 @@ import cn.edu.uestc.acmicpc.db.criteria.ArticleCriteria;
 import cn.edu.uestc.acmicpc.db.dto.field.ArticleFields;
 import cn.edu.uestc.acmicpc.db.dto.impl.ArticleDto;
 import cn.edu.uestc.acmicpc.db.dto.impl.ContestDto;
-import cn.edu.uestc.acmicpc.db.entity.Article;
 import cn.edu.uestc.acmicpc.service.iface.ArticleService;
-import cn.edu.uestc.acmicpc.service.testing.ArticleProvider;
-import cn.edu.uestc.acmicpc.service.testing.ContestProvider;
 import cn.edu.uestc.acmicpc.testing.PersistenceITTest;
 import cn.edu.uestc.acmicpc.util.enums.ArticleType;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
@@ -28,18 +25,11 @@ import java.util.List;
  */
 public class ArticleServiceITTest extends PersistenceITTest {
 
-  @Autowired
-  private ArticleService articleService;
-
-  @Autowired
-  private ArticleProvider articleProvider;
-
-  @Autowired
-  private ContestProvider contestProvider;
+  @Autowired private ArticleService articleService;
 
   @Test
   public void testGetArticleDto() throws AppException {
-    Integer articleId = articleService.createNewArticle(getTestUserId());
+    Integer articleId = articleService.createNewArticle(userProvider.createUser().getUserId());
     Assert.assertEquals(
         articleService.getArticleDto(articleId, ArticleFields.ALL_FIELDS).getArticleId(),
         articleId);
@@ -439,7 +429,7 @@ public class ArticleServiceITTest extends PersistenceITTest {
 
   @Test
   public void testGetArticleList_withPageInfo() throws AppException {
-    Integer userId = getTestUserId();
+    Integer userId = userProvider.createUser().getUserId();
     for (int i = 0; i < 4; i++) {
       articleService.createNewArticle(userId);
     }
@@ -453,7 +443,7 @@ public class ArticleServiceITTest extends PersistenceITTest {
 
   @Test
   public void testGetArticleList_withPageInfo_emptyResult() throws AppException {
-    Integer userId = getTestUserId();
+    Integer userId = userProvider.createUser().getUserId();
     for (int i = 0; i < 4; i++) {
       System.err.println("added: " + articleService.createNewArticle(userId));
     }
