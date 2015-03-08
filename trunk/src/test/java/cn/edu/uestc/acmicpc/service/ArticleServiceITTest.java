@@ -42,7 +42,7 @@ public class ArticleServiceITTest extends PersistenceITTest {
 
   @Test
   public void testCheckArticleExists_true() throws AppException {
-    ArticleDto article = articleProvider.createArticle();
+    ArticleDto article = articleProvider.createArticle(testUserId);
     Assert.assertTrue(articleService.checkArticleExists(article.getArticleId()));
   }
 
@@ -53,7 +53,7 @@ public class ArticleServiceITTest extends PersistenceITTest {
 
   @Test
   public void testCount_byStartId() throws AppException {
-    Integer[] articleIds = articleProvider.createArticles(5);
+    Integer[] articleIds = articleProvider.createArticles(testUserId, 5);
     ArticleCriteria articleCriteria = new ArticleCriteria();
     articleCriteria.startId = articleIds[1];
     Assert.assertEquals(articleService.count(articleCriteria), Long.valueOf(4L));
@@ -61,7 +61,7 @@ public class ArticleServiceITTest extends PersistenceITTest {
 
   @Test
   public void testCount_byEndId() throws AppException {
-    Integer[] articleIds = articleProvider.createArticles(5);
+    Integer[] articleIds = articleProvider.createArticles(testUserId, 5);
     ArticleCriteria articleCriteria = new ArticleCriteria();
     articleCriteria.endId = articleIds[1];
     Assert.assertEquals(articleService.count(articleCriteria), Long.valueOf(2L));
@@ -69,7 +69,7 @@ public class ArticleServiceITTest extends PersistenceITTest {
 
   @Test
   public void testCount_byStartIdAndEndId() throws AppException {
-    Integer[] articleIds = articleProvider.createArticles(5);
+    Integer[] articleIds = articleProvider.createArticles(testUserId, 5);
     ArticleCriteria articleCriteria = new ArticleCriteria();
     articleCriteria.startId = articleIds[1];
     articleCriteria.endId = articleIds[2];
@@ -78,7 +78,7 @@ public class ArticleServiceITTest extends PersistenceITTest {
 
   @Test
   public void testCount_byStartIdAndEndId_emptyResult() throws AppException {
-    Integer[] articleIds = articleProvider.createArticles(10);
+    Integer[] articleIds = articleProvider.createArticles(testUserId, 10);
     ArticleCriteria articleCriteria = new ArticleCriteria();
     articleCriteria.startId = articleIds[4];
     articleCriteria.endId = articleIds[3];
@@ -87,10 +87,10 @@ public class ArticleServiceITTest extends PersistenceITTest {
 
   @Test
   public void testCount_byTitle() throws AppException {
-    ArticleDto article = articleProvider.createArticle();
+    ArticleDto article = articleProvider.createArticle(testUserId);
     article.setTitle("About");
     articleService.updateArticle(article);
-    articleProvider.createArticles(5);
+    articleProvider.createArticles(testUserId, 5);
 
     ArticleCriteria articleCriteria = new ArticleCriteria();
     articleCriteria.title = "About";
@@ -99,10 +99,10 @@ public class ArticleServiceITTest extends PersistenceITTest {
 
   @Test
   public void testCount_byTitle_emptyResult() throws AppException {
-    ArticleDto article = articleProvider.createArticle();
+    ArticleDto article = articleProvider.createArticle(testUserId);
     article.setTitle("About");
     articleService.updateArticle(article);
-    articleProvider.createArticles(5);
+    articleProvider.createArticles(testUserId, 5);
 
     ArticleCriteria articleCriteria = new ArticleCriteria();
     articleCriteria.title = "About 1";
@@ -111,13 +111,13 @@ public class ArticleServiceITTest extends PersistenceITTest {
 
   @Test
   public void testCount_byType() throws AppException {
-    ArticleDto article1 = articleProvider.createArticle();
+    ArticleDto article1 = articleProvider.createArticle(testUserId);
     article1.setType(ArticleType.ARTICLE.ordinal());
     articleService.updateArticle(article1);
-    ArticleDto article2 = articleProvider.createArticle();
+    ArticleDto article2 = articleProvider.createArticle(testUserId);
     article2.setType(ArticleType.NOTICE.ordinal());
     articleService.updateArticle(article2);
-    ArticleDto article3 = articleProvider.createArticle();
+    ArticleDto article3 = articleProvider.createArticle(testUserId);
     article3.setType(ArticleType.NOTICE.ordinal());
     articleService.updateArticle(article3);
 
@@ -128,13 +128,13 @@ public class ArticleServiceITTest extends PersistenceITTest {
 
   @Test
   public void testCount_byType_emptyResult() throws AppException {
-    ArticleDto article1 = articleProvider.createArticle();
+    ArticleDto article1 = articleProvider.createArticle(testUserId);
     article1.setType(ArticleType.ARTICLE.ordinal());
     articleService.updateArticle(article1);
-    ArticleDto article2 = articleProvider.createArticle();
+    ArticleDto article2 = articleProvider.createArticle(testUserId);
     article2.setType(ArticleType.NOTICE.ordinal());
     articleService.updateArticle(article2);
-    ArticleDto article3 = articleProvider.createArticle();
+    ArticleDto article3 = articleProvider.createArticle(testUserId);
     article3.setType(ArticleType.NOTICE.ordinal());
     articleService.updateArticle(article3);
 
@@ -156,8 +156,8 @@ public class ArticleServiceITTest extends PersistenceITTest {
 
   @Test
   public void testOperator_contestId() throws AppException {
-    ArticleDto article1 = articleProvider.createArticle();
-    ArticleDto article2 = articleProvider.createArticle();
+    ArticleDto article1 = articleProvider.createArticle(testUserId);
+    ArticleDto article2 = articleProvider.createArticle(testUserId);
     ContestDto contest = contestProvider.createContest();
     ArticleCriteria articleCriteria = new ArticleCriteria();
     articleCriteria.contestId = contest.getContestId();
@@ -241,7 +241,7 @@ public class ArticleServiceITTest extends PersistenceITTest {
 
   @Test
   public void testIncrementClicked() throws AppException {
-    ArticleDto article = articleProvider.createArticle();
+    ArticleDto article = articleProvider.createArticle(testUserId);
     Integer beforeIncrement = article.getClicked();
     articleService.incrementClicked(article.getArticleId());
     Integer afterIncrement = articleService.getArticleDto(
@@ -251,7 +251,7 @@ public class ArticleServiceITTest extends PersistenceITTest {
 
   @Test
   public void testUpdateArticle_title() throws AppException {
-    ArticleDto article = articleProvider.createArticle();
+    ArticleDto article = articleProvider.createArticle(testUserId);
     String titleToUpdate = "Hello world!";
     String titleOrigin = article.getTitle();
     Assert.assertNotEquals(titleOrigin, titleToUpdate);
@@ -266,11 +266,11 @@ public class ArticleServiceITTest extends PersistenceITTest {
 
   @Test
   public void testUpdateArticle_parentId() throws AppException {
-    ArticleDto parent = articleProvider.createArticle();
-    ArticleDto child = articleProvider.createArticle();
+    ArticleDto parent = articleProvider.createArticle(testUserId);
+    ArticleDto child = articleProvider.createArticle(testUserId);
     child.setParentId(parent.getArticleId());
     articleService.updateArticle(child);
-    ArticleDto newParent = articleProvider.createArticle();
+    ArticleDto newParent = articleProvider.createArticle(testUserId);
     Integer parentIdToUpdate = newParent.getArticleId();
     Integer parentIdOrigin = child.getParentId();
     Assert.assertNotEquals(parentIdOrigin, parentIdToUpdate);
@@ -285,7 +285,7 @@ public class ArticleServiceITTest extends PersistenceITTest {
 
   @Test
   public void testUpdateArticle_type() throws AppException {
-    ArticleDto article = articleProvider.createArticle();
+    ArticleDto article = articleProvider.createArticle(testUserId);
     article.setType(2);
     articleService.updateArticle(article);
     Integer typeToUpdate = 1;
@@ -302,7 +302,7 @@ public class ArticleServiceITTest extends PersistenceITTest {
 
   @Test
   public void testUpdateArticle_content() throws AppException {
-    ArticleDto article = articleProvider.createArticle();
+    ArticleDto article = articleProvider.createArticle(testUserId);
     String contentToUpdate = "content";
     String contentOrigin = article.getContent();
     Assert.assertNotEquals(contentOrigin, contentToUpdate);
@@ -317,7 +317,7 @@ public class ArticleServiceITTest extends PersistenceITTest {
 
   @Test
   public void testUpdateArticle_clicked() throws AppException {
-    ArticleDto article = articleProvider.createArticle();
+    ArticleDto article = articleProvider.createArticle(testUserId);
     Integer clickedToUpdate = 15;
     Integer clickedOrigin = article.getClicked();
     Assert.assertNotEquals(clickedOrigin, clickedToUpdate);

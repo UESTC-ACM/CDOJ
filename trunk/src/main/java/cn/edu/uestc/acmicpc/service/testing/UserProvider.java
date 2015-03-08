@@ -7,6 +7,10 @@ import cn.edu.uestc.acmicpc.util.exception.AppException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import com.google.common.collect.Lists;
+
+import java.util.List;
+
 /**
  * User provider.
  */
@@ -27,6 +31,7 @@ public class UserProvider {
         .setEmail(userName + "@uestc.acm.com")
         .setNickName(userName)
         .setPassword("password")
+        .setSchool("UESTC")
         .build();
   }
 
@@ -40,10 +45,10 @@ public class UserProvider {
     return userService.getUserDtoByUserId(userId);
   }
 
-  public Integer[] createUsers(int count) throws AppException {
-    Integer[] userIds = new Integer[count];
+  public List<Integer> createUsers(int count) throws AppException {
+    List<Integer> userIds = Lists.newLinkedList();
     for (int i = 0; i < count; i++) {
-      userIds[i] = userService.createNewUser(createUnpersistedUser());
+      userIds.add(userService.createNewUser(createUnpersistedUser()));
     }
     return userIds;
   }

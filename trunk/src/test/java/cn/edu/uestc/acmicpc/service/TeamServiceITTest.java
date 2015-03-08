@@ -22,13 +22,6 @@ public class TeamServiceITTest extends PersistenceITTest {
 
   @Autowired private TeamService teamService;
 
-  private Integer testUserId;
-
-  @Override
-  public void setUp() throws AppException {
-    testUserId = userProvider.createUser().getUserId();
-  }
-
   @Test
   public void testCountTeams_byLeaderId() throws AppException {
     setUpCountData();
