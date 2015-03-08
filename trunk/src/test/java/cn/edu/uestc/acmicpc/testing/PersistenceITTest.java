@@ -21,19 +21,11 @@ import org.testng.annotations.BeforeMethod;
 @ContextConfiguration(classes = {IntegrationTestContext.class})
 public class PersistenceITTest extends AbstractTransactionalTestNGSpringContextTests {
 
-  @Autowired
-  protected UserProvider userProvider;
-
   @BeforeMethod
   protected void beforeMethod() throws Exception {
     setUp();
   }
 
   public void setUp() throws Exception {
-  }
-
-  protected Integer getTestUserId() throws AppException {
-    UserDto user = userProvider.createUser("testUser" + TestUtil.getUniqueId());
-    return user.getUserId();
   }
 }
