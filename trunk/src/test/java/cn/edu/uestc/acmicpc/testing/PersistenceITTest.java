@@ -40,7 +40,7 @@ public class PersistenceITTest extends AbstractTransactionalTestNGSpringContextT
     testUserId = user.getUserId();
   }
 
-  protected Integer getTestUserId() throws AppException {
+  protected Integer getTestUserId() {
     return testUserId;
   }
 }

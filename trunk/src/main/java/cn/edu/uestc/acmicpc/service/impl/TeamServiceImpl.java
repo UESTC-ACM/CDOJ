@@ -134,7 +134,7 @@ public class TeamServiceImpl extends AbstractService implements TeamService {
         List<TeamUserListDto> teamUser = teamIdToTeamUsers.get(team.getTeamId());
         team.setTeamUsers(
             teamUser.stream().filter((user) -> user.getAllow()).collect(Collectors.toList()));
-        team.setTeamUsers(
+        team.setInvitedUsers(
             teamUser.stream().filter((user) -> !user.getAllow()).collect(Collectors.toList()));
       }
     }
