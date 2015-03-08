@@ -85,7 +85,7 @@ public class ArticleServiceITTest extends PersistenceITTest {
 
   @Test
   public void testCount_byTitle() throws AppException {
-    Integer articleId = articleService.createNewArticle(testUserId);
+    Integer articleId = articleService.createNewArticle(getTestUserId());
     ArticleDto article = articleService.getArticleDto(articleId, ArticleFields.ALL_FIELDS);
     article.setTitle("About");
     articleService.updateArticle(article);
