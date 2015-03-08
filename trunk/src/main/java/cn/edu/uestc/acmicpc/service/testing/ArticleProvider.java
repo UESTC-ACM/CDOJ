@@ -16,28 +16,17 @@ import javax.annotation.PostConstruct;
 @Component
 public class ArticleProvider {
 
-  @Autowired
-  private UserProvider userProvider;
+  @Autowired private ArticleService articleService;
 
-  @Autowired
-  private ArticleService articleService;
-
-  private Integer testUserId;
-
-  @PostConstruct
-  protected void setUp() throws AppException {
-    testUserId = userProvider.createUser().getUserId();
-  }
-
-  public ArticleDto createArticle() throws AppException {
-    Integer articleId = articleService.createNewArticle(testUserId);
+  public ArticleDto createArticle(Integer userId) throws AppException {
+    Integer articleId = articleService.createNewArticle(userId);
     return articleService.getArticleDto(articleId, ArticleFields.ALL_FIELDS);
   }
 
-  public Integer[] createArticles(int count) throws AppException {
+  public Integer[] createArticles(Integer userId, int count) throws AppException {
     Integer[] articleIds = new Integer[count];
     for (int i = 0; i < count; i++) {
-      articleIds[i] = articleService.createNewArticle(testUserId);
+      articleIds[i] = articleService.createNewArticle(userId);
     }
     return articleIds;
   }
