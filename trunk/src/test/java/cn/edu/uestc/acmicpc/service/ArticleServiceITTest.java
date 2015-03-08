@@ -1,9 +1,15 @@
 package cn.edu.uestc.acmicpc.service;
 
+import static com.google.common.truth.Truth.assertThat;
+
 import cn.edu.uestc.acmicpc.db.criteria.ArticleCriteria;
 import cn.edu.uestc.acmicpc.db.dto.field.ArticleFields;
 import cn.edu.uestc.acmicpc.db.dto.impl.ArticleDto;
+import cn.edu.uestc.acmicpc.db.dto.impl.ContestDto;
+import cn.edu.uestc.acmicpc.db.entity.Article;
 import cn.edu.uestc.acmicpc.service.iface.ArticleService;
+import cn.edu.uestc.acmicpc.service.testing.ArticleProvider;
+import cn.edu.uestc.acmicpc.service.testing.ContestProvider;
 import cn.edu.uestc.acmicpc.testing.PersistenceITTest;
 import cn.edu.uestc.acmicpc.util.enums.ArticleType;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
@@ -25,6 +31,12 @@ public class ArticleServiceITTest extends PersistenceITTest {
   @Autowired
   private ArticleService articleService;
 
+  @Autowired
+  private ArticleProvider articleProvider;
+
+  @Autowired
+  private ContestProvider contestProvider;
+
   @Test
   public void testGetArticleDto() throws AppException {
     Integer articleId = articleService.createNewArticle(getTestUserId());
@@ -40,8 +52,8 @@ public class ArticleServiceITTest extends PersistenceITTest {
 
   @Test
   public void testCheckArticleExists_true() throws AppException {
-    Integer articleId = articleService.createNewArticle(getTestUserId());
-    Assert.assertTrue(articleService.checkArticleExists(articleId));
+    ArticleDto article = articleProvider.createArticle();
+    Assert.assertTrue(articleService.checkArticleExists(article.getArticleId()));
   }
 
   @Test
@@ -51,45 +63,44 @@ public class ArticleServiceITTest extends PersistenceITTest {
 
   @Test
   public void testCount_byStartId() throws AppException {
-    createNewArticles(5);
+    Integer[] articleIds = articleProvider.createArticles(5);
     ArticleCriteria articleCriteria = new ArticleCriteria();
-    articleCriteria.startId = 2;
+    articleCriteria.startId = articleIds[1];
     Assert.assertEquals(articleService.count(articleCriteria), Long.valueOf(4L));
   }
 
   @Test
   public void testCount_byEndId() throws AppException {
-    createNewArticles(5);
+    Integer[] articleIds = articleProvider.createArticles(5);
     ArticleCriteria articleCriteria = new ArticleCriteria();
-    articleCriteria.endId = 2;
+    articleCriteria.endId = articleIds[1];
     Assert.assertEquals(articleService.count(articleCriteria), Long.valueOf(2L));
   }
 
   @Test
   public void testCount_byStartIdAndEndId() throws AppException {
-    createNewArticles(5);
+    Integer[] articleIds = articleProvider.createArticles(5);
     ArticleCriteria articleCriteria = new ArticleCriteria();
-    articleCriteria.startId = 2;
-    articleCriteria.endId = 3;
+    articleCriteria.startId = articleIds[1];
+    articleCriteria.endId = articleIds[2];
     Assert.assertEquals(articleService.count(articleCriteria), Long.valueOf(2L));
   }
 
   @Test
   public void testCount_byStartIdAndEndId_emptyResult() throws AppException {
-    createNewArticles(10);
+    Integer[] articleIds = articleProvider.createArticles(10);
     ArticleCriteria articleCriteria = new ArticleCriteria();
-    articleCriteria.startId = 5;
-    articleCriteria.endId = 4;
+    articleCriteria.startId = articleIds[4];
+    articleCriteria.endId = articleIds[3];
     Assert.assertEquals(articleService.count(articleCriteria), Long.valueOf(0L));
   }
 
   @Test
   public void testCount_byTitle() throws AppException {
-    Integer articleId = articleService.createNewArticle(getTestUserId());
-    ArticleDto article = articleService.getArticleDto(articleId, ArticleFields.ALL_FIELDS);
+    ArticleDto article = articleProvider.createArticle();
     article.setTitle("About");
     articleService.updateArticle(article);
-    createNewArticles(5);
+    articleProvider.createArticles(5);
 
     ArticleCriteria articleCriteria = new ArticleCriteria();
     articleCriteria.title = "About";
@@ -98,11 +109,10 @@ public class ArticleServiceITTest extends PersistenceITTest {
 
   @Test
   public void testCount_byTitle_emptyResult() throws AppException {
-    Integer articleId = articleService.createNewArticle(getTestUserId());
-    ArticleDto article = articleService.getArticleDto(articleId, ArticleFields.ALL_FIELDS);
+    ArticleDto article = articleProvider.createArticle();
     article.setTitle("About");
     articleService.updateArticle(article);
-    createNewArticles(5);
+    articleProvider.createArticles(5);
 
     ArticleCriteria articleCriteria = new ArticleCriteria();
     articleCriteria.title = "About 1";
@@ -111,15 +121,15 @@ public class ArticleServiceITTest extends PersistenceITTest {
 
   @Test
   public void testCount_byType() throws AppException {
-    Integer articleId1 = articleService.createNewArticle(getTestUserId());
-    ArticleDto article1 = articleService.getArticleDto(articleId1, ArticleFields.ALL_FIELDS);
+    ArticleDto article1 = articleProvider.createArticle();
     article1.setType(ArticleType.ARTICLE.ordinal());
-    Integer articleId2 = articleService.createNewArticle(getTestUserId());
-    ArticleDto article2 = articleService.getArticleDto(articleId2, ArticleFields.ALL_FIELDS);
+    articleService.updateArticle(article1);
+    ArticleDto article2 = articleProvider.createArticle();
     article2.setType(ArticleType.NOTICE.ordinal());
-    Integer articleId3 = articleService.createNewArticle(getTestUserId());
-    ArticleDto article3 = articleService.getArticleDto(articleId3, ArticleFields.ALL_FIELDS);
+    articleService.updateArticle(article2);
+    ArticleDto article3 = articleProvider.createArticle();
     article3.setType(ArticleType.NOTICE.ordinal());
+    articleService.updateArticle(article3);
 
     ArticleCriteria articleCriteria = new ArticleCriteria();
     articleCriteria.type = ArticleType.NOTICE.ordinal();
@@ -128,15 +138,15 @@ public class ArticleServiceITTest extends PersistenceITTest {
 
   @Test
   public void testCount_byType_emptyResult() throws AppException {
-    Integer articleId1 = articleService.createNewArticle(getTestUserId());
-    ArticleDto article1 = articleService.getArticleDto(articleId1, ArticleFields.ALL_FIELDS);
+    ArticleDto article1 = articleProvider.createArticle();
     article1.setType(ArticleType.ARTICLE.ordinal());
-    Integer articleId2 = articleService.createNewArticle(getTestUserId());
-    ArticleDto article2 = articleService.getArticleDto(articleId2, ArticleFields.ALL_FIELDS);
+    articleService.updateArticle(article1);
+    ArticleDto article2 = articleProvider.createArticle();
     article2.setType(ArticleType.NOTICE.ordinal());
-    Integer articleId3 = articleService.createNewArticle(getTestUserId());
-    ArticleDto article3 = articleService.getArticleDto(articleId3, ArticleFields.ALL_FIELDS);
+    articleService.updateArticle(article2);
+    ArticleDto article3 = articleProvider.createArticle();
     article3.setType(ArticleType.NOTICE.ordinal());
+    articleService.updateArticle(article3);
 
     ArticleCriteria articleCriteria = new ArticleCriteria();
     articleCriteria.type = ArticleType.COMMENT.ordinal();
@@ -156,12 +166,17 @@ public class ArticleServiceITTest extends PersistenceITTest {
 
   @Test
   public void testOperator_contestId() throws AppException {
+    ArticleDto article1 = articleProvider.createArticle();
+    ArticleDto article2 = articleProvider.createArticle();
+    ContestDto contest = contestProvider.createContest();
     ArticleCriteria articleCriteria = new ArticleCriteria();
-    articleCriteria.contestId = 1;
+    articleCriteria.contestId = contest.getContestId();
     Assert.assertEquals(articleService.count(articleCriteria), Long.valueOf(0L));
-    articleService.applyOperation("contestId", "1, 2", "1");
+    articleService.applyOperation(
+        "contestId",
+        article1.getArticleId() + ", " + article2.getArticleId(),
+        contest.getContestId().toString());
     Assert.assertEquals(articleService.count(articleCriteria), Long.valueOf(2L));
-    articleService.applyOperation("contestId", "1, 2", null);
   }
 
   @Test
@@ -236,93 +251,93 @@ public class ArticleServiceITTest extends PersistenceITTest {
 
   @Test
   public void testIncrementClicked() throws AppException {
-    Integer articleId = 1;
-    Integer beforeIncrement = articleService.getArticleDto(articleId, ArticleFields.ALL_FIELDS)
-        .getClicked();
-    articleService.incrementClicked(articleId);
-    Integer afterIncrement = articleService.getArticleDto(articleId, ArticleFields.ALL_FIELDS)
-        .getClicked();
+    ArticleDto article = articleProvider.createArticle();
+    Integer beforeIncrement = article.getClicked();
+    articleService.incrementClicked(article.getArticleId());
+    Integer afterIncrement = articleService.getArticleDto(
+        article.getArticleId(), ArticleFields.ALL_FIELDS).getClicked();
     Assert.assertEquals(Integer.valueOf(beforeIncrement + 1), afterIncrement);
   }
 
   @Test
   public void testUpdateArticle_title() throws AppException {
+    ArticleDto article = articleProvider.createArticle();
     String titleToUpdate = "Hello world!";
-    String titleOrigin = articleService.getArticleDto(1, ArticleFields.ALL_FIELDS).getTitle();
+    String titleOrigin = article.getTitle();
     Assert.assertNotEquals(titleOrigin, titleToUpdate);
     ArticleDto articleDto = ArticleDto.builder()
-        .setArticleId(1)
+        .setArticleId(article.getArticleId())
         .setTitle(titleToUpdate)
         .build();
     articleService.updateArticle(articleDto);
-    Assert.assertEquals(articleService.getArticleDto(1, ArticleFields.ALL_FIELDS).getTitle(),
-        titleToUpdate);
-    articleDto.setTitle(titleOrigin);
-    articleService.updateArticle(articleDto);
+    assertThat(articleService.getArticleDto(
+        article.getArticleId(), ArticleFields.ALL_FIELDS).getTitle()).isEqualTo(titleToUpdate);
   }
 
   @Test
   public void testUpdateArticle_parentId() throws AppException {
-    Integer parentIdToUpdate = 1;
-    Integer parentIdOrigin = articleService.getArticleDto(3, ArticleFields.ALL_FIELDS)
-        .getParentId();
+    ArticleDto parent = articleProvider.createArticle();
+    ArticleDto child = articleProvider.createArticle();
+    child.setParentId(parent.getArticleId());
+    articleService.updateArticle(child);
+    ArticleDto newParent = articleProvider.createArticle();
+    Integer parentIdToUpdate = newParent.getArticleId();
+    Integer parentIdOrigin = child.getParentId();
     Assert.assertNotEquals(parentIdOrigin, parentIdToUpdate);
     ArticleDto articleDto = ArticleDto.builder()
-        .setArticleId(3)
+        .setArticleId(child.getArticleId())
         .setParentId(parentIdToUpdate)
         .build();
     articleService.updateArticle(articleDto);
-    Assert.assertEquals(articleService.getArticleDto(3, ArticleFields.ALL_FIELDS).getParentId(),
-        parentIdToUpdate);
-    articleService.applyOperation("parentId", "3", null);
+    assertThat(articleService.getArticleDto(
+        child.getArticleId(), ArticleFields.ALL_FIELDS).getParentId()).isEqualTo(parentIdToUpdate);
   }
 
   @Test
   public void testUpdateArticle_type() throws AppException {
+    ArticleDto article = articleProvider.createArticle();
+    article.setType(2);
+    articleService.updateArticle(article);
     Integer typeToUpdate = 1;
-    Integer typeOrigin = articleService.getArticleDto(1, ArticleFields.ALL_FIELDS).getType();
+    Integer typeOrigin = article.getType();
     Assert.assertNotEquals(typeOrigin, typeToUpdate);
     ArticleDto articleDto = ArticleDto.builder()
-        .setArticleId(1)
+        .setArticleId(article.getArticleId())
         .setType(typeToUpdate)
         .build();
     articleService.updateArticle(articleDto);
-    Assert.assertEquals(articleService.getArticleDto(1, ArticleFields.ALL_FIELDS).getType(),
-        typeToUpdate);
-    articleDto.setType(typeOrigin);
-    articleService.updateArticle(articleDto);
+    assertThat(articleService.getArticleDto(1, ArticleFields.ALL_FIELDS).getType())
+        .isEqualTo(typeToUpdate);
   }
 
   @Test
   public void testUpdateArticle_content() throws AppException {
+    ArticleDto article = articleProvider.createArticle();
     String contentToUpdate = "content";
-    String contentOrigin = articleService.getArticleDto(1, ArticleFields.ALL_FIELDS).getContent();
+    String contentOrigin = article.getContent();
     Assert.assertNotEquals(contentOrigin, contentToUpdate);
     ArticleDto articleDto = ArticleDto.builder()
-        .setArticleId(1)
+        .setArticleId(article.getArticleId())
         .setContent(contentToUpdate)
         .build();
     articleService.updateArticle(articleDto);
-    Assert.assertEquals(articleService.getArticleDto(1, ArticleFields.ALL_FIELDS).getContent(),
-        contentToUpdate);
-    articleDto.setContent(contentOrigin);
-    articleService.updateArticle(articleDto);
+    assertThat(articleService.getArticleDto(
+        article.getArticleId(), ArticleFields.ALL_FIELDS).getContent()).isEqualTo(contentToUpdate);
   }
 
   @Test
   public void testUpdateArticle_clicked() throws AppException {
+    ArticleDto article = articleProvider.createArticle();
     Integer clickedToUpdate = 15;
-    Integer clickedOrigin = articleService.getArticleDto(1, ArticleFields.ALL_FIELDS).getClicked();
+    Integer clickedOrigin = article.getClicked();
     Assert.assertNotEquals(clickedOrigin, clickedToUpdate);
     ArticleDto articleDto = ArticleDto.builder()
-        .setArticleId(1)
+        .setArticleId(article.getArticleId())
         .setClicked(clickedToUpdate)
         .build();
     articleService.updateArticle(articleDto);
-    Assert.assertEquals(articleService.getArticleDto(1, ArticleFields.ALL_FIELDS).getClicked(),
-        clickedToUpdate);
-    articleDto.setClicked(clickedOrigin);
-    articleService.updateArticle(articleDto);
+    assertThat(articleService.getArticleDto(
+        article.getArticleId(), ArticleFields.ALL_FIELDS).getClicked()).isEqualTo(clickedToUpdate);
   }
 
   @Test
@@ -424,34 +439,30 @@ public class ArticleServiceITTest extends PersistenceITTest {
 
   @Test
   public void testGetArticleList_withPageInfo() throws AppException {
+    Integer userId = getTestUserId();
+    for (int i = 0; i < 4; i++) {
+      articleService.createNewArticle(userId);
+    }
     ArticleCriteria articleCriteria = new ArticleCriteria();
-    articleCriteria.userId = 1;
+    articleCriteria.userId = userId;
     PageInfo pageInfo = PageInfo.create(300L, 3L, 10, 2L);
-    List<ArticleDto> articleListDtos = articleService.getArticleList(articleCriteria, pageInfo,
+    List<ArticleDto> articles = articleService.getArticleList(articleCriteria, pageInfo,
         ArticleFields.FIELDS_FOR_LIST_PAGE);
-    Assert.assertEquals(articleListDtos.size(), 1);
+    assertThat(articles).hasSize(1);
   }
 
   @Test
   public void testGetArticleList_withPageInfo_emptyResult() throws AppException {
-    ArticleCriteria articleCriteria = new ArticleCriteria();
-    articleCriteria.userId = 1;
-    PageInfo pageInfo = PageInfo.create(300L, 3L, 10, 3L);
-    List<ArticleDto> articleListDtos = articleService.getArticleList(articleCriteria, pageInfo,
-        ArticleFields.FIELDS_FOR_LIST_PAGE);
-    Assert.assertEquals(articleListDtos.size(), 0);
-  }
-
-  @Test
-  public void testCreateArticle() throws AppException {
-    Long exceptedId = articleService.count(new ArticleCriteria()) + 1;
-    Integer newId = articleService.createNewArticle(1);
-    Assert.assertEquals(newId.intValue(), exceptedId.intValue());
-  }
-
-  private void createNewArticles(int count) throws AppException {
-    for (int i = 0; i < count; i++) {
-      articleService.createNewArticle(getTestUserId());
+    Integer userId = getTestUserId();
+    for (int i = 0; i < 4; i++) {
+      System.err.println("added: " + articleService.createNewArticle(userId));
     }
+    ArticleCriteria articleCriteria = new ArticleCriteria();
+    articleCriteria.userId = userId;
+    PageInfo pageInfo = PageInfo.create(300L, 3L, 10, 3L);
+    List<ArticleDto> articles = articleService.getArticleList(articleCriteria, pageInfo,
+        ArticleFields.FIELDS_FOR_LIST_PAGE);
+    articles.forEach(a -> System.err.println(a.getArticleId()));
+    assertThat(articles).isEmpty();
   }
 }
