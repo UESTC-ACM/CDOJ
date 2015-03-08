@@ -1,6 +1,7 @@
 package cn.edu.uestc.acmicpc.db;
 
 import cn.edu.uestc.acmicpc.db.dao.iface.UserDao;
+import cn.edu.uestc.acmicpc.db.dto.impl.user.UserDto;
 import cn.edu.uestc.acmicpc.db.entity.User;
 import cn.edu.uestc.acmicpc.testing.PersistenceITTest;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
@@ -9,6 +10,8 @@ import cn.edu.uestc.acmicpc.util.exception.FieldNotUniqueException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.testng.Assert;
 import org.testng.annotations.Test;
+
+import static com.google.common.truth.Truth.assertThat;
 
 import com.alibaba.druid.pool.DruidDataSource;
 
@@ -31,8 +34,9 @@ public class AOPITTest extends PersistenceITTest {
 
   @Test
   public void testDataBaseConnection() throws FieldNotUniqueException, AppException {
+    userProvider.createUser("admin");
     User user = (User) userDao.getEntityByUniqueField("userName", "admin");
-    Assert.assertEquals(user.getUserName(), "admin");
+    assertThat(user.getUserName()).isEqualTo("admin");
   }
 
   @Test
