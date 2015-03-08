@@ -1,7 +1,7 @@
 package cn.edu.uestc.acmicpc.service.iface;
 
-import cn.edu.uestc.acmicpc.db.criteria.impl.TrainingContestCriteria;
-import cn.edu.uestc.acmicpc.db.dto.Fields;
+import cn.edu.uestc.acmicpc.db.criteria.TrainingContestCriteria;
+import cn.edu.uestc.acmicpc.db.dto.field.TrainingContestFields;
 import cn.edu.uestc.acmicpc.db.dto.impl.TrainingContestDto;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
 
@@ -26,7 +26,7 @@ public interface TrainingContestService {
    * @throws AppException
    */
   TrainingContestDto getTrainingContestDto(Integer trainingContestId,
-      Set<Fields> trainingContestFields) throws AppException;
+      Set<TrainingContestFields> trainingContestFields) throws AppException;
 
   /**
    * Get all {@link cn.edu.uestc.acmicpc.db.dto.impl.TrainingContestDto} fit in
@@ -34,11 +34,14 @@ public interface TrainingContestService {
    *
    * @param trainingContestCriteria
    *          search criteria
+   * @param trainingContestFields
+   *          result fields to be fetched
    * @return all records in database fit in the criteria.
    * @throws AppException
    */
   public List<TrainingContestDto> getTrainingContestList(
-      TrainingContestCriteria trainingContestCriteria) throws AppException;
+      TrainingContestCriteria trainingContestCriteria,
+      Set<TrainingContestFields> trainingContestFields) throws AppException;
 
   /**
    * Update training contest record by none-null fields in

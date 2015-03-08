@@ -20,6 +20,7 @@ import java.util.List;
 /**
  * Test cases for {@link Status}.
  */
+@SuppressWarnings("deprecation")
 public class StatusDatabaseITTest extends PersistenceITTest {
 
   // TODO(fish): add status service test.

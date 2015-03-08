@@ -21,9 +21,7 @@ public interface BaseDtoBuilder<T extends BaseDto<?>> {
    * Build Dto by properties.
    *
    * @param properties
-   *          property set in
-   *          {@link cn.edu.uestc.acmicpc.db.dao.iface.Dao#findAll(Class, BaseDtoBuilder, cn.edu.uestc.acmicpc.db.condition.base.Condition)}
-   *          .
+   *          property set. .
    * @return Dto entity needed
    */
   T build(Map<String, Object> properties);

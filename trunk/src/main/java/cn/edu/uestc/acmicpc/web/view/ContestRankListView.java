@@ -29,6 +29,7 @@ import javax.servlet.http.HttpServletResponse;
 /**
  * Contest rank list excel view
  */
+@SuppressWarnings("deprecation")
 public class ContestRankListView extends AbstractJExcelView {
 
   /**

@@ -1,19 +1,22 @@
 package cn.edu.uestc.acmicpc.service.impl;
 
-import cn.edu.uestc.acmicpc.db.criteria.impl.SettingCriteria;
+import cn.edu.uestc.acmicpc.db.criteria.SettingCriteria;
 import cn.edu.uestc.acmicpc.db.dao.iface.SettingDao;
 import cn.edu.uestc.acmicpc.db.dto.field.SettingFields;
 import cn.edu.uestc.acmicpc.db.dto.impl.SettingDto;
 import cn.edu.uestc.acmicpc.db.entity.Setting;
 import cn.edu.uestc.acmicpc.service.iface.SettingService;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * Implementation for {@link cn.edu.uestc.acmicpc.service.iface.SettingService}.
  */
 @Service
+@Transactional(rollbackFor = Exception.class)
 public class SettingServiceImpl extends AbstractService implements SettingService {
 
   private final SettingDao settingDao;
@@ -25,9 +28,9 @@ public class SettingServiceImpl extends AbstractService implements SettingServic
 
   @Override
   public SettingDto getSettingDto(Integer settingId) throws AppException {
-    SettingCriteria criteria = new SettingCriteria(SettingFields.ALL_FIELDS);
+    SettingCriteria criteria = new SettingCriteria();
     criteria.settingId = settingId;
-    return settingDao.getDtoByUniqueField(criteria.getCriteria());
+    return settingDao.getDtoByUniqueField(criteria, SettingFields.ALL_FIELDS);
   }
 
   @Override

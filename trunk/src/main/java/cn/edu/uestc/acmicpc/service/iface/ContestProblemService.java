@@ -17,10 +17,9 @@ public interface ContestProblemService {
    * {@link cn.edu.uestc.acmicpc.db.dto.impl.contestproblem.ContestProblemDto}
    * by contest problem id.
    *
-   * @param contestProblemId
-   *          contest problem id.
+   * @param contestProblemId contest problem id.
    * @return {@link cn.edu.uestc.acmicpc.db.dto.impl.contestproblem.ContestProblemDto}
-   *         entity.
+   * entity.
    * @throws AppException
    */
   public ContestProblemDto getContestProblemDto(Integer contestProblemId) throws AppException;
@@ -30,11 +29,10 @@ public interface ContestProblemService {
    * {@link cn.edu.uestc.acmicpc.db.dto.impl.contestproblem.ContestProblemDetailDto}
    * of contest.
    *
-   * @param contestId
-   *          contest's id.
+   * @param contestId contest's id.
    * @return all
-   *         {@link cn.edu.uestc.acmicpc.db.dto.impl.contestproblem.ContestProblemDetailDto}
-   *         entities as a {@link List} of the contest.
+   * {@link cn.edu.uestc.acmicpc.db.dto.impl.contestproblem.ContestProblemDetailDto}
+   * entities as a {@link List} of the contest.
    * @throws AppException
    */
   public List<ContestProblemDetailDto> getContestProblemDetailDtoListByContestId(Integer contestId)
@@ -43,10 +41,9 @@ public interface ContestProblemService {
   /**
    * Gets {@link ContestProblemSummaryDto} of contest.
    *
-   * @param contestId
-   *          contest's id.
+   * @param contestId contest's id.
    * @return all {@link ContestProblemSummaryDto} entities as a {@link List} of
-   *         the contest.
+   * the contest.
    * @throws AppException
    */
   public List<ContestProblemSummaryDto> getContestProblemSummaryDtoListByContestId(Integer contestId)
@@ -55,8 +52,7 @@ public interface ContestProblemService {
   /**
    * Remove contest problems by contest id.
    *
-   * @param contestId
-   *          contest's id.
+   * @param contestId contest's id.
    * @throws AppException
    */
   public void removeContestProblemByContestId(Integer contestId) throws AppException;
@@ -64,8 +60,7 @@ public interface ContestProblemService {
   /**
    * Create a new record by {@link ContestProblemDto} entity.
    *
-   * @param contestProblemDto
-   *          {@link ContestProblemDto} entity.
+   * @param contestProblemDto {@link ContestProblemDto} entity.
    * @return new record's id.
    * @throws AppException
    */
@@ -74,10 +69,8 @@ public interface ContestProblemService {
   /**
    * Check whether one problem exist in specified contest.
    *
-   * @param problemId
-   *          problem's id.
-   * @param contestId
-   *          contest's id.
+   * @param problemId problem's id.
+   * @param contestId contest's id.
    * @return <code>True</code> if specified contest content specified problem.
    * @throws AppException
    */

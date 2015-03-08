@@ -14,6 +14,7 @@ import java.util.Map;
 /**
  * Utility in OJ enum type.
  */
+@SuppressWarnings("deprecation")
 public class EnumTypeUtil {
 
   public static List<Map<String, Object>> getEnumTypeList(String idAlias, EnumType[] enumTypes) {
@@ -48,13 +49,14 @@ public class EnumTypeUtil {
     return null;
   }
 
+  @Deprecated
   public static Condition toOrdinalCondition(Condition preCondition) throws AppException {
     Condition condition = new Condition();
     List<Condition.Entry> entries = preCondition.getEntries();
-    for(int i = 0; i < entries.size(); i++) {
-      Condition.Entry entry =entries.get(i);
-      if(entry.getValue() instanceof Enum) {
-        Enum tmpValue = (Enum)entry.getValue();
+    for (int i = 0; i < entries.size(); i++) {
+      Condition.Entry entry = entries.get(i);
+      if (entry.getValue() instanceof Enum) {
+        Enum<?> tmpValue = (Enum<?>) entry.getValue();
         condition.addEntry(entry.getFieldName(), entry.getConditionType(), tmpValue.ordinal());
       } else {
         condition.addEntry(entry);

@@ -13,7 +13,7 @@ public interface RecentContestService {
    * Get recent contest list
    *
    * @return list of {@link cn.edu.uestc.acmicpc.util.dto.RecentContestDto}
-   *         entity.
+   * entity.
    */
   public List<RecentContestDto> getRecentContestList();
 }

@@ -5,7 +5,6 @@ import cn.edu.uestc.acmicpc.util.enums.ProblemType;
 
 import java.io.Serializable;
 import java.util.Collection;
-
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;

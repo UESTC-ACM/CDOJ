@@ -40,6 +40,7 @@ import java.util.Map;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
+@SuppressWarnings("deprecation")
 @Controller
 @RequestMapping("/problem")
 public class ProblemController extends BaseController {
@@ -329,12 +330,12 @@ public class ProblemController extends BaseController {
     try {
       if (currentUser != null) {
         List<Integer> triedProblems = statusService.
-            findAllUserTriedProblemIds(currentUser.getUserId(), isAdmin(session));
+            findAllProblemIdsThatUserTried(currentUser.getUserId(), isAdmin(session));
         for (Integer result : triedProblems) {
           problemStatus.put(result, ProblemSolveStatusType.FAIL);
         }
         List<Integer> acceptedProblems = statusService.
-            findAllUserAcceptedProblemIds(currentUser.getUserId(), isAdmin(session));
+            findAllProblemIdsThatUserSolved(currentUser.getUserId(), isAdmin(session));
         for (Integer result : acceptedProblems) {
           problemStatus.put(result, ProblemSolveStatusType.PASS);
         }

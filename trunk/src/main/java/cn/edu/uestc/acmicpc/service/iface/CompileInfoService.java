@@ -10,8 +10,7 @@ public interface CompileInfoService {
   /**
    * Get compile info by compile info id.
    *
-   * @param compileInfoId
-   *          compile info's id.
+   * @param compileInfoId compile info's id.
    * @return string value of compile info.
    * @throws AppException
    */
@@ -20,10 +19,8 @@ public interface CompileInfoService {
   /**
    * Update compile info.
    *
-   * @param compileInfoId
-   *          compile info's id.
-   * @param content
-   *          new content.
+   * @param compileInfoId compile info's id.
+   * @param content       new content.
    * @throws AppException
    */
   public void updateCompileInfoContent(Integer compileInfoId, String content) throws AppException;
@@ -31,8 +28,7 @@ public interface CompileInfoService {
   /**
    * Create a new compile info record.
    *
-   * @param content
-   *          compile info content.
+   * @param content compile info content.
    * @return record's id.
    * @throws AppException
    */

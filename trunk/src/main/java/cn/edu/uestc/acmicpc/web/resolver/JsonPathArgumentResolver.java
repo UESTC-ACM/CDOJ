@@ -9,12 +9,13 @@ import org.springframework.web.context.request.NativeWebRequest;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.method.support.ModelAndViewContainer;
 
-import com.alibaba.fastjson.JSONReader;
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 
+import java.io.BufferedReader;
 import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Map;
-
 import javax.servlet.http.HttpServletRequest;
 
 /**
@@ -57,26 +58,25 @@ public class JsonPathArgumentResolver implements HandlerMethodArgumentResolver {
         if (currentParameter.hasParameterAnnotation(JsonMap.class)) {
           objectTypeMap.put(
               currentParameter.getParameterAnnotation(JsonMap.class).value(),
-              currentParameter.getParameterType()
-              );
+              currentParameter.getParameterType());
         }
       }
 
-      JSONReader reader = new JSONReader(request.getReader());
-      reader.startObject();
-      while (reader.hasNext()) {
-        String key = reader.readString();
+      BufferedReader reader = request.getReader();
+      StringBuilder stringBuilder = new StringBuilder();
+      String line = null; ;
+      while((line = reader.readLine()) != null) {
+        stringBuilder.append(line);
+      }
+      reader.close();
+      JSONObject jObject = JSON.parseObject(stringBuilder.toString());
+      for (Map.Entry<String, Object> entry: jObject.entrySet()) {
+        String key = entry.getKey();
         if (objectTypeMap.containsKey(key)) {
-          Object value = reader.readObject(objectTypeMap.get(key));
+          Object value = jObject.getObject(key, objectTypeMap.get(key));
           modelMap.addAttribute(JSON_PATH_CACHE_PREFIX + key, value);
-        } else {
-          // Discard
-          reader.readObject();
         }
       }
-      // Safe close
-      reader.endObject();
-      reader.close();
     }
 
     String desiredKey = parameter.getParameterAnnotation(JsonMap.class).value();

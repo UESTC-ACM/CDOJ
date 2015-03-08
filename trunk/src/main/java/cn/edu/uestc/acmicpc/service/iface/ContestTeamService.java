@@ -12,6 +12,7 @@ import java.util.List;
 /**
  * Contest team service interface
  */
+@SuppressWarnings("deprecation")
 public interface ContestTeamService {
 
   /**
@@ -51,8 +52,8 @@ public interface ContestTeamService {
    * @return total record fit in the condition.
    * @throws AppException
    */
-  public Long count(ContestTeamCondition contestTeamCondition)
-      throws AppException;
+  @Deprecated
+  public Long count(ContestTeamCondition contestTeamCondition) throws AppException;
 
   /**
    * Fetch all record fit in {@link ContestTeamCondition}
@@ -64,9 +65,9 @@ public interface ContestTeamService {
    * @return list of {@link ContestTeamListDto} entities.
    * @throws AppException
    */
-  public List<ContestTeamListDto>
-      getContestTeamList(ContestTeamCondition contestTeamCondition,
-          PageInfo pageInfo) throws AppException;
+  @Deprecated
+  public List<ContestTeamListDto> getContestTeamList(
+      ContestTeamCondition contestTeamCondition, PageInfo pageInfo) throws AppException;
 
   /**
    * Get {@link ContestTeamDto} entity by record id.

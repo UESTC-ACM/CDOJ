@@ -51,6 +51,7 @@ import java.util.TreeMap;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
+@SuppressWarnings("deprecation")
 @Controller
 @RequestMapping("/user")
 public class UserController extends BaseController {
@@ -291,14 +292,14 @@ public class UserController extends BaseController {
       for (Integer result : results) {
         problemStatus.put(result, ProblemSolveStatusType.NONE);
       }
-      results = statusService.findAllUserTriedProblemIds(userCenterDto.getUserId(),
+      results = statusService.findAllProblemIdsThatUserTried(userCenterDto.getUserId(),
           isAdmin(session));
       for (Integer result : results) {
         if (problemStatus.containsKey(result)) {
           problemStatus.put(result, ProblemSolveStatusType.FAIL);
         }
       }
-      results = statusService.findAllUserAcceptedProblemIds(userCenterDto.getUserId(),
+      results = statusService.findAllProblemIdsThatUserSolved(userCenterDto.getUserId(),
           isAdmin(session));
       for (Integer result : results) {
         if (problemStatus.containsKey(result)) {

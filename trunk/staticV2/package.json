@@ -1,0 +1,31 @@
+{
+  "name": "cdoj-UI",
+  "version": "2.0.0",
+  "description": "Styles and js for cdoj",
+  "main": "Gruntfile.coffee",
+  "scripts": {
+    "postinstall": "./node_modules/.bin/bower install"
+  },
+  "repository": "",
+  "author": "mzry1992",
+  "license": "BSD",
+  "devDependencies": {
+    "bower": "*",
+    "grunt": "*",
+    "grunt-cmd-concat": "*",
+    "grunt-coffeelint": "*",
+    "grunt-contrib-coffee": "*",
+    "grunt-contrib-concat": "*",
+    "grunt-contrib-less": "*",
+    "grunt-contrib-watch": "*",
+    "grunt-yui-compressor": "*",
+    "grunt-karma": "*",
+    "karma-chrome-launcher": "*",
+    "karma-coverage": "*",
+    "karma-firefox-launcher": "*",
+    "karma-jasmine": "*",
+    "karma-safari-launcher": "*",
+    "karma-coffee-preprocessor": "*",
+    "karma-html-reporter": "*"
+  }
+}

@@ -11,12 +11,9 @@ public interface EmailService {
   /**
    * Send email.
    *
-   * @param emailAddress
-   *          recipient address.
-   * @param title
-   *          email title.
-   * @param content
-   *          email content.
+   * @param emailAddress recipient address.
+   * @param title        email title.
+   * @param content      email content.
    * @return true if this operation success.
    * @throws AppException
    */
@@ -25,8 +22,7 @@ public interface EmailService {
   /**
    * Send user serial key by email.
    *
-   * @param userSerialKeyDto
-   *          Entity.
+   * @param userSerialKeyDto Entity.
    * @return true if this operation success.
    * @throws AppException
    */

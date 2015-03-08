@@ -36,19 +36,32 @@ import java.util.List;
 @EnableAspectJAutoProxy(proxyTargetClass = true)
 public class WebMVCConfig extends WebMvcConfigurerAdapter {
 
+  private static final String STATIC_RESOURCES_PATH = "staticResources.path";
+  private static final String STATIC_V2_PATH = "staticV2.path";
+
   @Autowired
   private Environment environment;
 
   @Override
   public void addResourceHandlers(ResourceHandlerRegistry registry) {
     registry.addResourceHandler("/dist/**").addResourceLocations(
-        getResourceLocations("dist", "staticResources.path"));
+        getResourceLocations("dist", STATIC_RESOURCES_PATH));
     registry.addResourceHandler("/bower_components/**").addResourceLocations(
-        getResourceLocations("bower_components", "staticResources.path"));
+        getResourceLocations("bower_components", STATIC_RESOURCES_PATH));
     registry.addResourceHandler("/font/**").addResourceLocations(
-        getResourceLocations("font", "staticResources.path"));
+        getResourceLocations("font", STATIC_RESOURCES_PATH));
     registry.addResourceHandler("/template/**").addResourceLocations(
-        getResourceLocations("template", "staticResources.path"));
+        getResourceLocations("template", STATIC_RESOURCES_PATH));
+    // V2
+    registry.addResourceHandler("/distV2/**").addResourceLocations(
+        getResourceLocations("dist", STATIC_V2_PATH));
+    registry.addResourceHandler("/bower_componentsV2/**").addResourceLocations(
+        getResourceLocations("bower_components", STATIC_V2_PATH));
+    registry.addResourceHandler("/i18n/**").addResourceLocations(
+        getResourceLocations("i18n", STATIC_V2_PATH));
+    registry.addResourceHandler("/templateV2/**").addResourceLocations(
+        getResourceLocations("template", STATIC_V2_PATH));
+    // Images
     registry.addResourceHandler("/images/**").addResourceLocations(
         getResourceLocations("", "images.path"));
   }

@@ -14,15 +14,20 @@ import java.util.Map;
 /**
  * Problem service interface.
  */
+@SuppressWarnings("deprecation")
 public interface ProblemService {
 
   /**
    * Gets all problems' id according to the parameters.
    *
+   * @param isVisible
+   * @param problemType
+   *
    * @return all problem id list.
    * @throws AppException
    */
-  public List<Integer> getAllProblemIds(boolean isVisible, ProblemType problemType) throws AppException;
+  public List<Integer> getAllProblemIds(boolean isVisible, ProblemType problemType)
+      throws AppException;
 
   /**
    * Gets {@link ProblemDto} entity by problem's ID.
@@ -43,6 +48,7 @@ public interface ProblemService {
    * @return total number of problems fit in the condition.
    * @throws AppException
    */
+  @Deprecated
   public Long count(ProblemCondition condition) throws AppException;
 
   /**
@@ -55,6 +61,7 @@ public interface ProblemService {
    * @return List of {@link ProblemListDto} entities.
    * @throws AppException
    */
+  @Deprecated
   public List<ProblemListDto> getProblemListDtoList(ProblemCondition condition,
       PageInfo pageInfo) throws AppException;
 

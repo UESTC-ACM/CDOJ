@@ -21,6 +21,7 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+@SuppressWarnings("deprecation")
 public class ContestRegistryReportView extends AbstractJExcelView {
 
   /**

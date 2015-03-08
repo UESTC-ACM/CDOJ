@@ -1,0 +1,21 @@
+<div layout="row" layout-align="center center">
+  <cdoj-dropdown>
+    <md-button cdoj-dropdown-toggle>Dropdown</md-button>
+    <cdoj-dropdown-menu>
+      <cdoj-menu>
+        <cdoj-menu-item>Add</cdoj-menu-item>
+        <cdoj-menu-item>Remove</cdoj-menu-item>
+        <cdoj-menu-item>Add</cdoj-menu-item>
+      </cdoj-menu>
+    </cdoj-dropdown-menu>
+  </cdoj-dropdown>
+</div>
+<div layout="column" cdoj-loading-decorator on-loading="onLoading">
+  <md-card class="animate-card" ng-repeat="article in articleList">
+    <h2 ng-bind="article.title" style="padding: 0 16px;"></h2>
+    <md-divider></md-divider>
+    <md-card-content>
+      <p markdown markdown-content="article.content"></p>
+    </md-card-content>
+  </md-card>
+</div>

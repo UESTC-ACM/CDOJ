@@ -12,8 +12,7 @@ public interface DepartmentService {
   /**
    * Get department name by department id.
    *
-   * @param departmentId
-   *          department's id.
+   * @param departmentId department's id.
    * @return department name.
    */
   public String getDepartmentName(Integer departmentId);

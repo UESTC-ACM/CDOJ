@@ -1,7 +1,6 @@
 package cn.edu.uestc.acmicpc.service.iface;
 
-import cn.edu.uestc.acmicpc.db.criteria.impl.ContestCriteria;
-import cn.edu.uestc.acmicpc.db.dto.Fields;
+import cn.edu.uestc.acmicpc.db.criteria.ContestCriteria;
 import cn.edu.uestc.acmicpc.db.dto.field.ContestFields;
 import cn.edu.uestc.acmicpc.db.dto.impl.ContestDto;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
@@ -35,7 +34,7 @@ public interface ContestService {
    * @throws AppException
    */
   public ContestDto getContestDtoByContestId(
-      Integer contestId, Set<Fields> fields) throws AppException;
+      Integer contestId, Set<ContestFields> fields) throws AppException;
 
   /**
    * Check if specified contest exists.
@@ -74,11 +73,13 @@ public interface ContestService {
    *          {@link ContestCriteria} entity.
    * @param pageInfo
    *          {@link PageInfo} entity.
+   * @param fields
+   *          result fields to be fetched
    * @return List of {@link ContestDto} entities.
    * @throws AppException
    */
-  public List<ContestDto> getContestListDtoList(ContestCriteria criteria, PageInfo pageInfo)
-      throws AppException;
+  public List<ContestDto> getContestList(ContestCriteria criteria, PageInfo pageInfo,
+      Set<ContestFields> fields) throws AppException;
 
   /**
    * Modify one filed of multiply entities as value.

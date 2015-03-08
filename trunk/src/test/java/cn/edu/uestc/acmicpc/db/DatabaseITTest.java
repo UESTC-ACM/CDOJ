@@ -1,8 +1,8 @@
 package cn.edu.uestc.acmicpc.db;
 
 import cn.edu.uestc.acmicpc.db.condition.base.Condition;
-import cn.edu.uestc.acmicpc.db.condition.impl.StatusCondition;
 import cn.edu.uestc.acmicpc.db.condition.impl.UserCondition;
+import cn.edu.uestc.acmicpc.db.criteria.StatusCriteria;
 import cn.edu.uestc.acmicpc.db.dao.iface.ContestDao;
 import cn.edu.uestc.acmicpc.db.dao.iface.DepartmentDao;
 import cn.edu.uestc.acmicpc.db.dao.iface.StatusDao;
@@ -10,7 +10,6 @@ import cn.edu.uestc.acmicpc.db.dao.iface.UserDao;
 import cn.edu.uestc.acmicpc.db.dto.impl.user.UserListDto;
 import cn.edu.uestc.acmicpc.db.entity.User;
 import cn.edu.uestc.acmicpc.testing.PersistenceITTest;
-import cn.edu.uestc.acmicpc.util.enums.OnlineJudgeReturnType;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
 import cn.edu.uestc.acmicpc.web.dto.PageInfo;
 
@@ -18,13 +17,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Simple database test class.
  */
+@SuppressWarnings("deprecation")
 public class DatabaseITTest extends PersistenceITTest {
 
   @Autowired
@@ -36,7 +34,7 @@ public class DatabaseITTest extends PersistenceITTest {
   @Autowired
   private DepartmentDao departmentDao;
 
-  private StatusCondition statusCondition;
+  private StatusCriteria statusCriteria;
 
   @Test
   public void testDAO_getEntityByUnique() throws AppException {
@@ -137,9 +135,10 @@ public class DatabaseITTest extends PersistenceITTest {
 
   @Test(enabled = false)
   public void testSQLUpdate() throws AppException {
-    statusCondition.contestId = 1;
-    Map<String, Object> properties = new HashMap<>();
-    properties.put("result", OnlineJudgeReturnType.OJ_AC.ordinal());
-    statusDao.updateEntitiesByCondition(properties, statusCondition.getCondition());
+    statusCriteria.contestId = 1;
+    // TODO(Yun Li): Not support yet.
+    //Map<String, Object> properties = new HashMap<>();
+    //properties.put("result", OnlineJudgeReturnType.OJ_AC.ordinal());
+    //statusDao.updateEntitiesByCondition(properties, statusCriteria.getCriteria());
   }
 }
