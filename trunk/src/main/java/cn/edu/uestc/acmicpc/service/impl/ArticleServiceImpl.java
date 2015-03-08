@@ -38,7 +38,7 @@ public class ArticleServiceImpl extends AbstractService implements ArticleServic
     ArticleCriteria articleCriteria = new ArticleCriteria();
     articleCriteria.startId = articleId;
     articleCriteria.endId = articleId;
-    return articleDao.getDtoByUniqueField(articleCriteria, articleFields);
+    return articleDao.getUniqueDto(articleCriteria, articleFields);
   }
 
   @Override

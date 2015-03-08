@@ -56,7 +56,7 @@ public class ContestServiceImpl extends AbstractService implements ContestServic
     AppExceptionUtil.assertNotNull(contestId);
     ContestCriteria criteria = new ContestCriteria();
     criteria.contestId = contestId;
-    return updateContestDto(contestDao.getDtoByUniqueField(criteria, fields), fields);
+    return updateContestDto(contestDao.getUniqueDto(criteria, fields), fields);
   }
 
   @Override

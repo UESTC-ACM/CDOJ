@@ -1,5 +1,6 @@
 package cn.edu.uestc.acmicpc.db.criteria;
 
+import cn.edu.uestc.acmicpc.db.dto.field.TeamFields;
 import cn.edu.uestc.acmicpc.db.dto.impl.TeamDto;
 import cn.edu.uestc.acmicpc.db.entity.Team;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
@@ -17,11 +18,9 @@ public class TeamCriteria extends BaseCriteria<Team, TeamDto> {
   }
 
   public Integer teamId;
-
   public String teamName;
-
   public Integer leaderId;
-
+  public Integer userId;
   public Boolean allow;
 
   @Override
@@ -30,7 +29,18 @@ public class TeamCriteria extends BaseCriteria<Team, TeamDto> {
       criteria.add(Restrictions.eq("teamId", teamId));
     }
     if (teamName != null) {
-      criteria.add(Restrictions.eq("teamName", teamName));
+      criteria.add(Restrictions.ilike("teamName", teamName));
+    }
+    if (leaderId != null) {
+      criteria.add(Restrictions.eq("leaderId", leaderId));
+    }
+    if (userId != null) {
+      criteria.add(Restrictions.eq("teamUsers.userId", userId));
+      addAlias(TeamFields.ALIAS_TEAM_USERS);
+    }
+    if (allow != null) {
+      criteria.add(Restrictions.eq("teamUsers.allow", allow));
+      addAlias(TeamFields.ALIAS_TEAM_USERS);
     }
     return criteria;
   }

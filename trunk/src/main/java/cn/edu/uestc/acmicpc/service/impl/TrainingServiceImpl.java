@@ -34,7 +34,7 @@ public class TrainingServiceImpl extends AbstractService implements TrainingServ
     AppExceptionUtil.assertNotNull(trainingId);
     TrainingCriteria trainingCriteria = new TrainingCriteria();
     trainingCriteria.startId = trainingCriteria.endId = trainingId;
-    return trainingDao.getDtoByUniqueField(trainingCriteria, fields);
+    return trainingDao.getUniqueDto(trainingCriteria, fields);
   }
 
   @Override

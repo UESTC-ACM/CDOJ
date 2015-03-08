@@ -135,6 +135,7 @@ public abstract class DaoImpl<E extends Serializable> extends BaseDao implements
       return (E) getSession().save(entity);
     } catch (HibernateException e) {
       LOGGER.error(e);
+      e.printStackTrace();
       throw new AppException("Invoke add method error.");
     }
   }
@@ -475,7 +476,7 @@ public abstract class DaoImpl<E extends Serializable> extends BaseDao implements
   }
 
   @Override
-  public <T extends BaseDto<E>, F extends cn.edu.uestc.acmicpc.db.dto.Fields> T getDtoByUniqueField(
+  public <T extends BaseDto<E>, F extends cn.edu.uestc.acmicpc.db.dto.Fields> T getUniqueDto(
       BaseCriteria<E, T> criteria, Set<F> fields) throws AppException {
     List<T> result = findAll(criteria, null, fields);
     if (result.size() == 0) {

@@ -30,7 +30,7 @@ public class SettingServiceImpl extends AbstractService implements SettingServic
   public SettingDto getSettingDto(Integer settingId) throws AppException {
     SettingCriteria criteria = new SettingCriteria();
     criteria.settingId = settingId;
-    return settingDao.getDtoByUniqueField(criteria, SettingFields.ALL_FIELDS);
+    return settingDao.getUniqueDto(criteria, SettingFields.ALL_FIELDS);
   }
 
   @Override

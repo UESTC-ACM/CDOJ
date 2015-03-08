@@ -208,6 +208,7 @@ dependencies {
   }
   testCompile "org.testng:testng:6.1.1"
   testCompile "org.mockito:mockito-all:1.9.5"
+  testCompile "com.google.truth:truth:0.25"
 
   provided "javax.servlet:jsp-api:2.0"
   provided "org.glassfish:javax.servlet:3.0"

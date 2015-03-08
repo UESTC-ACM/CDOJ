@@ -6,9 +6,8 @@
       "type": "Integer",
       "projections": [
         "BASIC_FIELDS",
-        "FIELDS_FOR_EDIT_PAGE",
         "FIELDS_FOR_LIST_PAGE",
-        "FIELDS_FOR_ADHEAD_TYPE"
+        "SUMMARY_FIELDS"
       ]
     },
     {
@@ -16,9 +15,8 @@
       "type": "String",
       "projections": [
         "BASIC_FIELDS",
-        "FIELDS_FOR_EDIT_PAGE",
         "FIELDS_FOR_LIST_PAGE",
-        "FIELDS_FOR_ADHEAD_TYPE"
+        "SUMMARY_FIELDS"
       ]
     },
     {
@@ -29,8 +27,7 @@
     {
       "name": "memberList",
       "type": "String",
-      "dbField": false,
-      "projections": ["FIELDS_FOR_EDIT_PAGE"]
+      "dbField": false
     },
     {
       "name": "teamUsers",
@@ -49,7 +46,14 @@
     {
       "name": "allow",
       "type": "Boolean",
+      "dbField": false,
       "projections": ["FIELDS_FOR_LIST_PAGE"]
+    }
+  ],
+  "aliases": [
+    {
+      "name": "teamUsers",
+      "value": "teamUsersByTeamId"
     }
   ]
 }

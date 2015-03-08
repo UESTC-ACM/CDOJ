@@ -375,7 +375,7 @@ public interface Dao<E extends Serializable> {
    * @return unique entity for query.
    * @throws AppException
    */
-  <T extends BaseDto<E>, F extends Fields> T getDtoByUniqueField(
+  <T extends BaseDto<E>, F extends Fields> T getUniqueDto(
       BaseCriteria<E, T> criteria, Set<F> fields) throws AppException;
 
   /**

@@ -36,7 +36,7 @@ public class TrainingContestServiceImpl extends AbstractService
     AppExceptionUtil.assertNotNull(trainingContestId);
     TrainingContestCriteria trainingContestCriteria = new TrainingContestCriteria();
     trainingContestCriteria.startId = trainingContestCriteria.endId = trainingContestId;
-    return trainingContestDao.getDtoByUniqueField(trainingContestCriteria,
+    return trainingContestDao.getUniqueDto(trainingContestCriteria,
         trainingContestFields);
   }
 

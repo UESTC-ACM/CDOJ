@@ -33,7 +33,7 @@ public class CodeServiceImpl extends AbstractService implements CodeService {
       Set<CodeFields> codeFields) throws AppException {
     CodeCriteria codeCriteria = new CodeCriteria();
     codeCriteria.codeId = codeId;
-    return codeDao.getDtoByUniqueField(codeCriteria, codeFields);
+    return codeDao.getUniqueDto(codeCriteria, codeFields);
   }
 
   private void updateCodeByCodeDto(Code code, CodeDto codeDto) {
