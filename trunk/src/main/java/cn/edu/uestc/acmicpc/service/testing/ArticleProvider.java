@@ -8,8 +8,6 @@ import cn.edu.uestc.acmicpc.util.exception.AppException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import javax.annotation.PostConstruct;
-
 /**
  * Article provider for intergration testing.
  */
