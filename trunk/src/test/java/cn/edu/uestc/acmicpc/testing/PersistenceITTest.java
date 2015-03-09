@@ -1,10 +1,11 @@
 package cn.edu.uestc.acmicpc.testing;
 
 import cn.edu.uestc.acmicpc.config.IntegrationTestContext;
-import cn.edu.uestc.acmicpc.db.dto.impl.user.UserDto;
-import cn.edu.uestc.acmicpc.service.iface.UserService;
+import cn.edu.uestc.acmicpc.service.testing.ArticleProvider;
+import cn.edu.uestc.acmicpc.service.testing.ContestProvider;
+import cn.edu.uestc.acmicpc.service.testing.TeamProvider;
+import cn.edu.uestc.acmicpc.service.testing.TeamUserProvider;
 import cn.edu.uestc.acmicpc.service.testing.UserProvider;
-import cn.edu.uestc.acmicpc.util.exception.AppException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
@@ -21,26 +22,24 @@ import org.testng.annotations.BeforeMethod;
 @ContextConfiguration(classes = {IntegrationTestContext.class})
 public class PersistenceITTest extends AbstractTransactionalTestNGSpringContextTests {
 
-  @Autowired
-  protected UserProvider userProvider;
+  @Autowired protected UserProvider userProvider;
+  @Autowired protected ArticleProvider articleProvider;
+  @Autowired protected ContestProvider contestProvider;
+  @Autowired protected TeamUserProvider teamUserProvider;
+  @Autowired protected TeamProvider teamProvider;
 
-  protected Integer testUserId = null;
+  protected Integer testUserId;
 
   @BeforeMethod
   protected void beforeMethod() throws Exception {
-    setUpTestUser();
+    setUpDefaultUser();
     setUp();
   }
 
   public void setUp() throws Exception {
   }
 
-  private void setUpTestUser() throws Exception {
-    UserDto user = userProvider.createUser("testUser");
-    testUserId = user.getUserId();
-  }
-
-  protected Integer getTestUserId() {
-    return testUserId;
+  public void setUpDefaultUser() throws Exception {
+    testUserId = userProvider.createUser().getUserId();
   }
 }
