@@ -10,6 +10,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
+import static com.google.common.truth.Truth.assertThat;
+
 import com.alibaba.druid.pool.DruidDataSource;
 
 /**
@@ -31,8 +33,9 @@ public class AOPITTest extends PersistenceITTest {
 
   @Test
   public void testDataBaseConnection() throws FieldNotUniqueException, AppException {
+    userProvider.createUser("admin");
     User user = (User) userDao.getEntityByUniqueField("userName", "admin");
-    Assert.assertEquals(user.getUserName(), "admin");
+    assertThat(user.getUserName()).isEqualTo("admin");
   }
 
   @Test

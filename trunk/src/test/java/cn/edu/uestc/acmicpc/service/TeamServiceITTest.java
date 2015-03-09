@@ -3,22 +3,15 @@ package cn.edu.uestc.acmicpc.service;
 import cn.edu.uestc.acmicpc.db.criteria.TeamCriteria;
 import cn.edu.uestc.acmicpc.db.dto.field.TeamFields;
 import cn.edu.uestc.acmicpc.db.dto.impl.TeamDto;
-import cn.edu.uestc.acmicpc.db.dto.impl.teamUser.TeamUserDto;
-import cn.edu.uestc.acmicpc.db.dto.impl.teamUser.TeamUserListDto;
 import cn.edu.uestc.acmicpc.db.dto.impl.user.UserDto;
 import cn.edu.uestc.acmicpc.service.iface.TeamService;
-import cn.edu.uestc.acmicpc.service.testing.TeamProvider;
-import cn.edu.uestc.acmicpc.service.testing.TeamUserProvider;
 import cn.edu.uestc.acmicpc.testing.PersistenceITTest;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 import static com.google.common.truth.Truth.assertThat;
-
-import com.google.common.collect.Lists;
 
 import java.util.List;
 
@@ -28,14 +21,12 @@ import java.util.List;
 public class TeamServiceITTest extends PersistenceITTest {
 
   @Autowired private TeamService teamService;
-  @Autowired private TeamUserProvider teamUserProvider;
-  @Autowired private TeamProvider teamProvider;
 
   @Test
   public void testCountTeams_byLeaderId() throws AppException {
     setUpCountData();
     TeamCriteria teamCriteria = new TeamCriteria();
-    teamCriteria.leaderId = getTestUserId();
+    teamCriteria.leaderId = testUserId;
     assertThat(teamService.count(teamCriteria)).isEqualTo(6L);
   }
 
@@ -43,13 +34,13 @@ public class TeamServiceITTest extends PersistenceITTest {
   public void testCountTeam_byUserId() throws AppException {
     setUpCountData();
     TeamCriteria teamCriteria = new TeamCriteria();
-    teamCriteria.userId = getTestUserId();
+    teamCriteria.userId = testUserId;
     assertThat(teamService.count(teamCriteria)).isEqualTo(12L);
   }
 
   @Test
   public void testGetTeam() throws AppException {
-    TeamDto team = teamProvider.createTeam(getTestUserId());
+    TeamDto team = teamProvider.createTeam(testUserId);
     // Invite one user
     UserDto user2 = userProvider.createUser();
     teamUserProvider.createTeamUser(team.getTeamId(), user2.getUserId(), false);
@@ -59,9 +50,9 @@ public class TeamServiceITTest extends PersistenceITTest {
 
     assertThat(result.getTeamId()).isEqualTo(team.getTeamId());
     assertThat(result.getTeamName()).isEqualTo(team.getTeamName());
-    assertThat(result.getLeaderId()).isEqualTo(getTestUserId());
+    assertThat(result.getLeaderId()).isEqualTo(testUserId);
     assertThat(result.getTeamUsers()).hasSize(1);
-    assertThat(result.getTeamUsers().get(0).getUserId()).isEqualTo(getTestUserId());
+    assertThat(result.getTeamUsers().get(0).getUserId()).isEqualTo(testUserId);
     assertThat(result.getInvitedUsers()).hasSize(1);
     assertThat(result.getInvitedUsers().get(0).getUserId()).isEqualTo(user2.getUserId());
   }
@@ -70,7 +61,7 @@ public class TeamServiceITTest extends PersistenceITTest {
   public void testGetTeams_byLeaderId() throws AppException {
     setUpCountData();
     TeamCriteria teamCriteria = new TeamCriteria();
-    teamCriteria.leaderId = getTestUserId();
+    teamCriteria.leaderId = testUserId;
     List<TeamDto> result =
         teamService.getTeams(teamCriteria, null, TeamFields.FIELDS_FOR_LIST_PAGE);
     assertThat(result).hasSize(6);
@@ -80,7 +71,7 @@ public class TeamServiceITTest extends PersistenceITTest {
   public void testGetTeams_byUserId() throws AppException {
     setUpCountData();
     TeamCriteria teamCriteria = new TeamCriteria();
-    teamCriteria.userId = getTestUserId();
+    teamCriteria.userId = testUserId;
     List<TeamDto> result =
         teamService.getTeams(teamCriteria, null, TeamFields.FIELDS_FOR_LIST_PAGE);
     assertThat(result).hasSize(12);
@@ -91,12 +82,12 @@ public class TeamServiceITTest extends PersistenceITTest {
 
     // Current test user owes 6 teams
     for (int teamCount = 0; teamCount < 6; teamCount++) {
-      teamProvider.createTeam(getTestUserId());
+      teamProvider.createTeam(testUserId);
     }
     // Current test user attend in 6 teams
     for (int teamCount = 0; teamCount < 6; teamCount++) {
       TeamDto team = teamProvider.createTeam(user2.getUserId());
-      teamUserProvider.createTeamUser(team.getTeamId(), getTestUserId());
+      teamUserProvider.createTeamUser(team.getTeamId(), testUserId);
     }
   }
 }

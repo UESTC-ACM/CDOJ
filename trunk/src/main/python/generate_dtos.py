@@ -187,7 +187,8 @@ def generateDto(input_file, output_dir):
         "javax.validation.constraints.*",
         "org.hibernate.validator.constraints.*",
         "java.sql.Timestamp",
-        "java.util.*"
+        "java.util.*",
+        "com.alibaba.fastjson.JSON"
     ]
     for field in fields:
         if "classpath" in field:
@@ -264,6 +265,13 @@ public class {0}Dto implements BaseDto<{1}> {{
     impl_file.write("return new Builder();\n")
     impl_file.write(2 * ' ')
     impl_file.write("}\n\n")
+
+    # toString
+    impl_file.write("""
+  @Override
+  public String toString() {
+    return JSON.toJSONString(this);
+  }\n\n""")
 
     # builder
     impl_file.write(2 * ' ')
