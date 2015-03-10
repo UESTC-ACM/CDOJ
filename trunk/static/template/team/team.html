@@ -7,19 +7,10 @@
     </span>
     <span class="pull-right"
           ng-show="editPermission && team.leaderId != user.userId">
-      <input bs-switch
-             ng-model="team.allow"
-             type="checkbox"
-             switch-toggle="joinIn(team)"
-             switch-active="true"
-             switch-size="small"
-             switch-animate="false"
-             switch-label=""
-             switch-icon=""
-             switch-on-label="Allow"
-             switch-off-label="Quit"
-             switch-on="success"
-             switch-off="danger"/>
+        <toggle-switch
+            ng-model="allow"
+            on-label="Allow"
+            off-label="Quit"></toggle-switch>
     </span>
   </div>
   <div class="panel-body">

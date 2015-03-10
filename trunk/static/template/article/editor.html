@@ -9,19 +9,10 @@
     <div class="col-md-12" ng-show="$root.isAdmin">
       <div style="margin-bottom: 15px;">
         <label>Set as notice</label>
-        <input bs-switch
+        <toggle-switch
                ng-model="isNotice"
-               type="checkbox"
-               switch-toggle="changeType()"
-               switch-active="true"
-               switch-size="small"
-               switch-animate="false"
-               switch-label=""
-               switch-icon=""
-               switch-on-label="Yes"
-               switch-off-label="No"
-               switch-on="danger"
-               switch-off="success"/>
+               on-label="Yes"
+               off-label="No"></toggle-switch>
       </div>
     </div>
     <div class="col-sm-12">

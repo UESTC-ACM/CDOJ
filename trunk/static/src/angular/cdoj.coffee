@@ -5,7 +5,7 @@ cdoj = angular.module('cdoj', [
   "ngRoute"
   "ngCookies"
   "monospaced.elastic"
-  "frapontillo.bootstrap-switch"
+  "toggle-switch"
   "ui.sortable"
   "pasvaz.bindonce"
 ])
