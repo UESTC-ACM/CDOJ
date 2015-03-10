@@ -1,7 +1,6 @@
 package cn.edu.uestc.acmicpc.db;
 
 import cn.edu.uestc.acmicpc.db.dao.iface.UserDao;
-import cn.edu.uestc.acmicpc.db.dto.impl.user.UserDto;
 import cn.edu.uestc.acmicpc.db.entity.User;
 import cn.edu.uestc.acmicpc.testing.PersistenceITTest;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
