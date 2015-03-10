@@ -18,7 +18,10 @@ cdoj
               $rootScope.isAdmin
           )
             $scope.editPermission = true
-        $scope.joinIn = (team) ->
+        $scope.allow = $scope.team.allow
+        $scope.$watch("allow", (val) ->
+          $scope.team.allow = val
+          team = $scope.team
           $http.get(
             "/team/changeAllowState/" +
               $scope.user.userId + "/" + team.teamId + "/" + team.allow
@@ -36,6 +39,7 @@ cdoj
           ).error(->
             $window.alert "Network error."
           )
+        )
         $scope.showTeamEditor = (team) ->
           $modal.open(
             templateUrl: "template/modal/team-editor-modal.html"
