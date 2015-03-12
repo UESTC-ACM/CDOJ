@@ -2,8 +2,10 @@ package cn.edu.uestc.acmicpc.testing;
 
 import cn.edu.uestc.acmicpc.config.IntegrationTestContext;
 import cn.edu.uestc.acmicpc.service.testing.ArticleProvider;
+import cn.edu.uestc.acmicpc.service.testing.CodeProvider;
 import cn.edu.uestc.acmicpc.service.testing.ContestProvider;
 import cn.edu.uestc.acmicpc.service.testing.ProblemProvider;
+import cn.edu.uestc.acmicpc.service.testing.StatusProvider;
 import cn.edu.uestc.acmicpc.service.testing.TeamProvider;
 import cn.edu.uestc.acmicpc.service.testing.TeamUserProvider;
 import cn.edu.uestc.acmicpc.service.testing.UserProvider;
@@ -35,6 +37,10 @@ public class PersistenceITTest extends AbstractTransactionalTestNGSpringContextT
   protected TeamProvider teamProvider;
   @Autowired
   protected ProblemProvider problemProvider;
+  @Autowired
+  protected StatusProvider statusProvider;
+  @Autowired
+  protected CodeProvider codeProvider;
 
   protected Integer testUserId;
 
