@@ -22,12 +22,13 @@ public class PageInfo {
    */
   private Long totalItems;
   /**
-   * The minimal/maximal page will show before/after current page is current-displayDist/current+displayDist
+   * The minimal/maximal page will show before/after current page is
+   * current-displayDist/current+displayDist
    */
   private int displayDistance;
 
   private PageInfo(Long currentPage, Long countPerPage, Long totalPages, int displayDistance,
-                   Long totalItems) {
+      Long totalItems) {
     this.currentPage = currentPage;
     this.countPerPage = countPerPage;
     this.totalPages = totalPages;
@@ -78,14 +79,17 @@ public class PageInfo {
   /**
    * Create a PageInfo object
    *
-   * @param count           total number of records
-   * @param countPerPage    number of records per page
+   * @param count
+   *          total number of records
+   * @param countPerPage
+   *          number of records per page
    * @param displayDistance
-   * @param currentPage     current page number to show
+   * @param currentPage
+   *          current page number to show
    * @return a specific PageInfo object
    */
-  public static PageInfo create(Long count, Long countPerPage, int displayDistance,
-                                Long currentPage) {
+  public static PageInfo create(
+      Long count, Long countPerPage, int displayDistance, Long currentPage) {
     countPerPage = countPerPage <= 0 ? 20 : countPerPage;
     currentPage = currentPage == null ? 1 : currentPage;
 

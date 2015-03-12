@@ -20,7 +20,7 @@ public class CodeCriteria extends BaseCriteria<Code, CodeDto> {
 
   @Override
   DetachedCriteria updateCriteria(DetachedCriteria criteria) throws AppException {
-    if (codeId == null) {
+    if (codeId != null) {
       criteria.add(Restrictions.eq("codeId", codeId));
     }
     return criteria;

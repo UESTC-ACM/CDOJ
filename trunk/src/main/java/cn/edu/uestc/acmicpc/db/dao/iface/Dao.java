@@ -29,10 +29,9 @@ public interface Dao<E extends Serializable> {
    *
    * @param entity
    *          entity to be added or updated
-   * @return the saved entity
    * @throws AppException
    */
-  E addOrUpdate(E entity) throws AppException;
+  void addOrUpdate(E entity) throws AppException;
 
   /**
    * Get entity by key value.
