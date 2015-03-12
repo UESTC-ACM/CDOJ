@@ -28,24 +28,19 @@ public class TrainingPlatformInfoServiceITTest extends PersistenceITTest {
     Integer trainingPlatformInfoId = 1;
     TrainingPlatformInfoDto result = trainingPlatformInfoService.getTrainingPlatformInfoDto(
         trainingPlatformInfoId,
-        TrainingPlatformInfoFields.ALL_FIELDS
-        );
+        TrainingPlatformInfoFields.ALL_FIELDS);
     Assert.assertEquals(
         result.getTrainingPlatformInfoId(),
-        trainingPlatformInfoId
-        );
+        trainingPlatformInfoId);
     Assert.assertEquals(
         result.getTrainingUserId(),
-        Integer.valueOf(1)
-        );
+        Integer.valueOf(1));
     Assert.assertEquals(
         result.getUserName(),
-        "RectaFlex"
-        );
+        "RectaFlex");
     Assert.assertEquals(
         result.getUserId(),
-        "123"
-        );
+        "123");
     Assert.assertEquals(
         result.getType(),
         Integer.valueOf(TrainingPlatformType.TC.ordinal())

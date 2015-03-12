@@ -8,6 +8,9 @@ import cn.edu.uestc.acmicpc.service.testing.ProblemProvider;
 import cn.edu.uestc.acmicpc.service.testing.StatusProvider;
 import cn.edu.uestc.acmicpc.service.testing.TeamProvider;
 import cn.edu.uestc.acmicpc.service.testing.TeamUserProvider;
+import cn.edu.uestc.acmicpc.service.testing.TrainingPlatformInfoProvider;
+import cn.edu.uestc.acmicpc.service.testing.TrainingProvider;
+import cn.edu.uestc.acmicpc.service.testing.TrainingUserProvider;
 import cn.edu.uestc.acmicpc.service.testing.UserProvider;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,6 +44,12 @@ public class PersistenceITTest extends AbstractTransactionalTestNGSpringContextT
   protected StatusProvider statusProvider;
   @Autowired
   protected CodeProvider codeProvider;
+  @Autowired
+  protected TrainingProvider trainingProvider;
+  @Autowired
+  protected TrainingUserProvider trainingUserProvider;
+  @Autowired
+  protected TrainingPlatformInfoProvider trainingPlatformInfoProvider;
 
   protected Integer testUserId;
 
