@@ -9,7 +9,8 @@ import org.testng.Assert;
 import org.testng.annotations.Test;
 
 /**
- * Integration test cases for {@link cn.edu.uestc.acmicpc.service.iface.CompileInfoService}.
+ * Integration test cases for
+ * {@link cn.edu.uestc.acmicpc.service.iface.CompileInfoService}.
  */
 public class CompileInfoServiceITTest extends PersistenceITTest {
 
@@ -18,7 +19,7 @@ public class CompileInfoServiceITTest extends PersistenceITTest {
 
   @Test
   public void testGetCompileInfo() throws AppException {
-    Integer compileInfoId = 1;
+    Integer compileInfoId = compileInfoService.createCompileInfo("compile info");
     Assert.assertEquals(compileInfoService.getCompileInfo(compileInfoId), "compile info");
   }
 
@@ -30,12 +31,11 @@ public class CompileInfoServiceITTest extends PersistenceITTest {
 
   @Test
   public void testUpdateCompileInfoContent() throws AppException {
-    Integer compileInfoId = 1;
+    Integer compileInfoId = compileInfoService.createCompileInfo("compile info");
     String contentToUpdate = "new compile content";
     String contentOriginal = compileInfoService.getCompileInfo(compileInfoId);
     Assert.assertNotEquals(contentOriginal, contentToUpdate);
     compileInfoService.updateCompileInfoContent(compileInfoId, contentToUpdate);
     Assert.assertEquals(compileInfoService.getCompileInfo(compileInfoId), contentToUpdate);
-    compileInfoService.updateCompileInfoContent(compileInfoId, contentOriginal);
   }
 }
