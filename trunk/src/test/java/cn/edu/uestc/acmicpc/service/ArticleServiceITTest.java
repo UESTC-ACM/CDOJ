@@ -6,10 +6,13 @@ import cn.edu.uestc.acmicpc.db.criteria.ArticleCriteria;
 import cn.edu.uestc.acmicpc.db.dto.field.ArticleFields;
 import cn.edu.uestc.acmicpc.db.dto.impl.ArticleDto;
 import cn.edu.uestc.acmicpc.db.dto.impl.ContestDto;
+import cn.edu.uestc.acmicpc.db.dto.impl.problem.ProblemDto;
+import cn.edu.uestc.acmicpc.db.dto.impl.user.UserDto;
 import cn.edu.uestc.acmicpc.service.iface.ArticleService;
 import cn.edu.uestc.acmicpc.testing.PersistenceITTest;
 import cn.edu.uestc.acmicpc.util.enums.ArticleType;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
+import cn.edu.uestc.acmicpc.util.helper.ArrayUtil;
 import cn.edu.uestc.acmicpc.web.dto.PageInfo;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,7 +28,8 @@ import java.util.List;
  */
 public class ArticleServiceITTest extends PersistenceITTest {
 
-  @Autowired private ArticleService articleService;
+  @Autowired
+  private ArticleService articleService;
 
   @Test
   public void testGetArticleDto() throws AppException {
@@ -145,13 +149,13 @@ public class ArticleServiceITTest extends PersistenceITTest {
 
   @Test
   public void testOperator_title() throws AppException {
+    Integer[] articleIds = articleProvider.createArticles(testUserId, 2);
+
     ArticleCriteria articleCriteria = new ArticleCriteria();
     articleCriteria.title = "new title";
     Assert.assertEquals(articleService.count(articleCriteria), Long.valueOf(0L));
-    articleService.applyOperation("title", "1, 2", "new title");
+    articleService.applyOperation("title", ArrayUtil.join(articleIds, ", "), "new title");
     Assert.assertEquals(articleService.count(articleCriteria), Long.valueOf(2L));
-    articleService.applyOperation("title", "1", "Frequently Asked Questions");
-    articleService.applyOperation("title", "2", "Markdown syntax cheatsheet");
   }
 
   @Test
@@ -171,8 +175,9 @@ public class ArticleServiceITTest extends PersistenceITTest {
 
   @Test
   public void testOperator_contestId_noSuchContest() throws AppException {
+    ArticleDto article = articleProvider.createArticle(testUserId);
     try {
-      articleService.applyOperation("contestId", "3", "5");
+      articleService.applyOperation("contestId", article.getArticleId().toString(), "5");
       Assert.fail();
     } catch (AppException e) {
       Assert.assertEquals("Error while execute database query.", e.getMessage());
@@ -181,18 +186,21 @@ public class ArticleServiceITTest extends PersistenceITTest {
 
   @Test
   public void testOperator_problemId() throws AppException {
+    Integer[] articleIds = articleProvider.createArticles(testUserId, 2);
+    ProblemDto problem = problemProvider.createProblem();
     ArticleCriteria articleCriteria = new ArticleCriteria();
     articleCriteria.problemId = 1;
     Assert.assertEquals(articleService.count(articleCriteria), Long.valueOf(0L));
-    articleService.applyOperation("problemId", "1, 2", "1");
+    articleService.applyOperation(
+        "problemId", ArrayUtil.join(articleIds, ", "), problem.getProblemId().toString());
     Assert.assertEquals(articleService.count(articleCriteria), Long.valueOf(2L));
-    articleService.applyOperation("problemId", "1, 2", null);
   }
 
   @Test
   public void testOperator_contestId_noSuchProblem() throws AppException {
+    ArticleDto article = articleProvider.createArticle(testUserId);
     try {
-      articleService.applyOperation("problemId", "3", "10");
+      articleService.applyOperation("problemId", article.getArticleId().toString(), "12345");
       Assert.fail();
     } catch (AppException e) {
       Assert.assertEquals("Error while execute database query.", e.getMessage());
@@ -201,18 +209,21 @@ public class ArticleServiceITTest extends PersistenceITTest {
 
   @Test
   public void testOperator_parentId() throws AppException {
+    ArticleDto parent = articleProvider.createArticle(testUserId);
+    Integer[] articleIds = articleProvider.createArticles(testUserId, 2);
     ArticleCriteria articleCriteria = new ArticleCriteria();
-    articleCriteria.parentId = 1;
+    articleCriteria.parentId = parent.getArticleId();
     Assert.assertEquals(articleService.count(articleCriteria), Long.valueOf(0L));
-    articleService.applyOperation("parentId", "3, 4", "1");
+    articleService.applyOperation(
+        "parentId", ArrayUtil.join(articleIds, ", "), parent.getArticleId().toString());
     Assert.assertEquals(articleService.count(articleCriteria), Long.valueOf(2L));
-    articleService.applyOperation("parentId", "3, 4", null);
   }
 
   @Test
   public void testOperator_parentId_noSuchParent() throws AppException {
+    Integer[] articleIds = articleProvider.createArticles(testUserId, 2);
     try {
-      articleService.applyOperation("parentId", "3", "5");
+      articleService.applyOperation("parentId", ArrayUtil.join(articleIds, ", "), "12345");
       Assert.fail();
     } catch (AppException e) {
       Assert.assertEquals("Error while execute database query.", e.getMessage());
@@ -221,18 +232,22 @@ public class ArticleServiceITTest extends PersistenceITTest {
 
   @Test
   public void testOperator_userId() throws AppException {
+    Integer[] articleIds = articleProvider.createArticles(testUserId, 2);
+    UserDto user = userProvider.createUser();
+
     ArticleCriteria articleCriteria = new ArticleCriteria();
-    articleCriteria.userId = 2;
+    articleCriteria.userId = user.getUserId();
     Assert.assertEquals(articleService.count(articleCriteria), Long.valueOf(0L));
-    articleService.applyOperation("userId", "3, 4", "2");
+    articleService.applyOperation(
+        "userId", ArrayUtil.join(articleIds, ", "), user.getUserId().toString());
     Assert.assertEquals(articleService.count(articleCriteria), Long.valueOf(2L));
-    articleService.applyOperation("userId", "3, 4", "1");
   }
 
   @Test
   public void testOperator_userId_noSuchUser() throws AppException {
+    ArticleDto article = articleProvider.createArticle(testUserId);
     try {
-      articleService.applyOperation("userId", "3", "10");
+      articleService.applyOperation("userId", article.getArticleId().toString(), "12345");
       Assert.fail();
     } catch (AppException e) {
       Assert.assertEquals("Error while execute database query.", e.getMessage());
@@ -296,8 +311,8 @@ public class ArticleServiceITTest extends PersistenceITTest {
         .setType(typeToUpdate)
         .build();
     articleService.updateArticle(articleDto);
-    assertThat(articleService.getArticleDto(1, ArticleFields.ALL_FIELDS).getType())
-        .isEqualTo(typeToUpdate);
+    assertThat(articleService.getArticleDto(article.getArticleId(),
+        ArticleFields.ALL_FIELDS).getType()).isEqualTo(typeToUpdate);
   }
 
   @Test
@@ -332,99 +347,103 @@ public class ArticleServiceITTest extends PersistenceITTest {
 
   @Test
   public void testUpdateArticle_isVisible() throws AppException {
+    ArticleDto article = articleProvider.createArticle(testUserId);
     Boolean isVisibleToUpdate = false;
-    Boolean isVisibleOrigin = articleService.getArticleDto(1, ArticleFields.ALL_FIELDS)
-        .getIsVisible();
+    Boolean isVisibleOrigin = article.getIsVisible();
     Assert.assertNotEquals(isVisibleOrigin, isVisibleToUpdate);
     ArticleDto articleDto = ArticleDto.builder()
-        .setArticleId(1)
+        .setArticleId(article.getArticleId())
         .setIsVisible(isVisibleToUpdate)
         .build();
     articleService.updateArticle(articleDto);
-    Assert.assertEquals(articleService.getArticleDto(1, ArticleFields.ALL_FIELDS).getIsVisible(),
-        isVisibleToUpdate);
-    articleDto.setIsVisible(isVisibleOrigin);
-    articleService.updateArticle(articleDto);
+    Assert.assertEquals(articleService.getArticleDto(article.getArticleId(),
+        ArticleFields.ALL_FIELDS).getIsVisible(), isVisibleToUpdate);
   }
 
   @Test
   public void testUpdateArticle_problemId() throws AppException {
-    Integer problemIdToUpdate = 1;
-    Integer problemIdOrigin = articleService.getArticleDto(3, ArticleFields.ALL_FIELDS)
-        .getProblemId();
-    Assert.assertNotEquals(problemIdOrigin, problemIdToUpdate);
+    ArticleDto article = articleProvider.createArticle(testUserId);
+    ProblemDto problem = problemProvider.createProblem();
+    ProblemDto newProblem = problemProvider.createProblem();
+    article.setProblemId(problem.getProblemId());
+    articleService.updateArticle(article);
+
+    Integer problemIdToUpdate = newProblem.getProblemId();
+    Integer problemIdOrigin = problem.getProblemId();
+    assertThat(problemIdOrigin).isNotEqualTo(problemIdToUpdate);
     ArticleDto articleDto = ArticleDto.builder()
-        .setArticleId(3)
+        .setArticleId(article.getArticleId())
         .setProblemId(problemIdToUpdate)
         .build();
     articleService.updateArticle(articleDto);
-    Assert.assertEquals(articleService.getArticleDto(3, ArticleFields.ALL_FIELDS).getProblemId(),
-        problemIdToUpdate);
-    articleService.applyOperation("problemId", "3", null);
+    assertThat(articleService.getArticleDto(
+        article.getArticleId(), ArticleFields.ALL_FIELDS).getProblemId())
+        .isEqualTo(problemIdToUpdate);
   }
 
   @Test
   public void testUpdateArticle_userId() throws AppException {
-    Integer userIdToUpdate = 2;
-    Integer userIdOrigin = articleService.getArticleDto(3, ArticleFields.ALL_FIELDS).getUserId();
+    ArticleDto article = articleProvider.createArticle(testUserId);
+    UserDto newUser = userProvider.createUser();
+    Integer userIdToUpdate = newUser.getUserId();
+    Integer userIdOrigin = article.getUserId();
     Assert.assertNotEquals(userIdOrigin, userIdToUpdate);
     ArticleDto articleDto = ArticleDto.builder()
-        .setArticleId(3)
+        .setArticleId(article.getArticleId())
         .setUserId(userIdToUpdate)
         .build();
     articleService.updateArticle(articleDto);
-    Assert.assertEquals(articleService.getArticleDto(3, ArticleFields.ALL_FIELDS).getUserId(),
-        userIdToUpdate);
-    articleDto.setUserId(userIdOrigin);
-    articleService.updateArticle(articleDto);
+    Assert.assertEquals(articleService.getArticleDto(article.getArticleId(),
+        ArticleFields.ALL_FIELDS).getUserId(), userIdToUpdate);
   }
 
   @Test
   public void testUpdateArticle_contestId() throws AppException {
-    Integer contestIdToUpdate = 1;
-    Integer contestIdOrigin = articleService.getArticleDto(3, ArticleFields.ALL_FIELDS)
-        .getContestId();
-    Assert.assertNotEquals(contestIdOrigin, contestIdToUpdate);
+    ArticleDto article = articleProvider.createArticle(testUserId);
+    ContestDto origin = contestProvider.createContest();
+    ContestDto updated = contestProvider.createContest();
+    article.setContestId(origin.getContestId());
+    articleService.updateArticle(article);
+    Integer contestIdToUpdate = updated.getContestId();
+    Integer contestIdOrigin = origin.getContestId();
+    assertThat(contestIdOrigin).isNotEqualTo(contestIdToUpdate);
     ArticleDto articleDto = ArticleDto.builder()
-        .setArticleId(3)
+        .setArticleId(article.getArticleId())
         .setContestId(contestIdToUpdate)
         .build();
     articleService.updateArticle(articleDto);
-    Assert.assertEquals(articleService.getArticleDto(3, ArticleFields.ALL_FIELDS).getContestId(),
-        contestIdToUpdate);
-    articleService.applyOperation("contestId", "3", null);
+    assertThat(articleService.getArticleDto(article.getArticleId(),
+        ArticleFields.ALL_FIELDS).getContestId()).isEqualTo(contestIdToUpdate);
   }
 
   @Test
   public void testUpdateArticle_order() throws AppException {
-    Integer orderToUpdate = 1;
-    Integer orderOrigin = articleService.getArticleDto(3, ArticleFields.ALL_FIELDS).getOrder();
+    ArticleDto article = articleProvider.createArticle(testUserId);
+    Integer orderToUpdate = 12;
+    Integer orderOrigin = article.getOrder();
     Assert.assertNotEquals(orderOrigin, orderToUpdate);
     ArticleDto articleDto = ArticleDto.builder()
-        .setArticleId(3)
+        .setArticleId(article.getArticleId())
         .setOrder(orderToUpdate)
         .build();
     articleService.updateArticle(articleDto);
-    Assert.assertEquals(articleService.getArticleDto(3, ArticleFields.ALL_FIELDS).getOrder(),
-        orderToUpdate);
-    articleDto.setOrder(orderOrigin);
-    articleService.updateArticle(articleDto);
+    Assert.assertEquals(articleService.getArticleDto(article.getArticleId(),
+        ArticleFields.ALL_FIELDS).getOrder(), orderToUpdate);
   }
 
   @Test
   public void testUpdateArticle_time() throws AppException {
+    ArticleDto article = articleProvider.createArticle(testUserId);
     Timestamp timeToUpdate = Timestamp.valueOf("2014-03-27 00:00:00");
-    Timestamp timeOrigin = articleService.getArticleDto(3, ArticleFields.ALL_FIELDS).getTime();
+    Timestamp timeOrigin = article.getTime();
     Assert.assertNotEquals(timeOrigin, timeToUpdate);
     ArticleDto articleDto = ArticleDto.builder()
-        .setArticleId(3)
+        .setArticleId(article.getArticleId())
         .setTime(timeToUpdate)
         .build();
     articleService.updateArticle(articleDto);
-    Assert.assertEquals(articleService.getArticleDto(3, ArticleFields.ALL_FIELDS).getTime(),
-        timeToUpdate);
-    articleDto.setTime(timeOrigin);
-    articleService.updateArticle(articleDto);
+    Assert.assertEquals(articleService.getArticleDto(article.getArticleId(),
+        ArticleFields.ALL_FIELDS).getTime(), timeToUpdate);
   }
 
   @Test
@@ -445,7 +464,7 @@ public class ArticleServiceITTest extends PersistenceITTest {
   public void testGetArticleList_withPageInfo_emptyResult() throws AppException {
     Integer userId = userProvider.createUser().getUserId();
     for (int i = 0; i < 4; i++) {
-      System.err.println("added: " + articleService.createNewArticle(userId));
+      articleService.createNewArticle(userId);
     }
     ArticleCriteria articleCriteria = new ArticleCriteria();
     articleCriteria.userId = userId;
