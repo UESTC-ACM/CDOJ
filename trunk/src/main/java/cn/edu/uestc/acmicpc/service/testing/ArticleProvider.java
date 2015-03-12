@@ -9,12 +9,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 /**
- * Article provider for intergration testing.
+ * Article provider for integration testing.
  */
 @Component
 public class ArticleProvider {
 
-  @Autowired private ArticleService articleService;
+  @Autowired
+  private ArticleService articleService;
 
   public ArticleDto createArticle(Integer userId) throws AppException {
     Integer articleId = articleService.createNewArticle(userId);
