@@ -47,6 +47,7 @@ module.exports = (grunt) ->
           "bower_components/bootstrap/dist/css/bootstrap.css"
           "bower_components/bootstrap-switch/build/css/bootstrap3/bootstrap-switch.css"
           "bower_components/smalot-bootstrap-datetimepicker/css/bootstrap-datetimepicker.css"
+          "bower_components/angular-toggle-switch/angular-toggle-switch.css"
           "temp/css/cdoj.css"
         ]
         dest: "dist/css/cdoj.css"
@@ -59,6 +60,7 @@ module.exports = (grunt) ->
           "bower_components/angular-sanitize/angular-sanitize.js"
           "bower_components/angular-bindonce/bindonce.js"
           "bower_components/angular-elastic/elastic.js"
+          "bower_components/angular-toggle-switch/angular-toggle-switch.js"
           "bower_components/jquery/dist/jquery.js"
           "bower_components/bootstrap/dist/js/bootstrap.js"
           "bower_components/bootstrap-switch/build/js/bootstrap-switch.js"
@@ -84,6 +86,7 @@ module.exports = (grunt) ->
           "bower_components/angular-route/angular-route.min.js"
           "bower_components/angular-cookies/angular-cookies.min.js"
           "bower_components/angular-sanitize/angular-sanitize.min.js"
+          "bower_components/angular-toggle-switch/angular-toggle-switch.min.js"
           "bower_components/angular-bindonce/bindonce.min.js"
           "bower_components/jquery/dist/jquery.min.js"
           "bower_components/bootstrap/dist/js/bootstrap.min.js"

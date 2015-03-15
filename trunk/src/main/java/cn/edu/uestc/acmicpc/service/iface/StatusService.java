@@ -134,9 +134,10 @@ public interface StatusService {
    *
    * @param statusDto
    *          {@link StatusDto} entity.
+   * @return the status id of persisted status
    * @throws AppException
    */
-  public void createNewStatus(StatusDto statusDto) throws AppException;
+  public Integer createNewStatus(StatusDto statusDto) throws AppException;
 
   /**
    * Gets {@link StatusDto} by status id with required fields

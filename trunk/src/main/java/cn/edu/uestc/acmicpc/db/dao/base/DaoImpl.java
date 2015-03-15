@@ -46,12 +46,12 @@ public abstract class DaoImpl<E extends Serializable> extends BaseDao implements
   private static final Logger LOGGER = LogManager.getLogger(DaoImpl.class);
 
   @Override
-  public E addOrUpdate(E entity) throws AppException {
+  public void addOrUpdate(E entity) throws AppException {
     try {
       if (DatabaseUtil.getKeyValue(entity) == null) {
-        return add(entity);
+        add(entity);
       } else {
-        return update(entity);
+        update(entity);
       }
     } catch (HibernateException e) {
       throw new AppException("Invoke addOrUpdate method error.");
@@ -129,12 +129,11 @@ public abstract class DaoImpl<E extends Serializable> extends BaseDao implements
     return customCount("*", condition);
   }
 
-  @SuppressWarnings("unchecked")
-  private E add(E entity) throws AppException {
+  private void add(E entity) throws AppException {
     try {
-      return (E) getSession().save(entity);
+      getSession().save(entity);
     } catch (HibernateException e) {
-      e.printStackTrace();
+      LOGGER.error(e);
       throw new AppException("Invoke add method error.");
     }
   }
@@ -153,10 +152,9 @@ public abstract class DaoImpl<E extends Serializable> extends BaseDao implements
     }
   }
 
-  private E update(E entity) throws AppException {
+  private void update(E entity) throws AppException {
     try {
       getSession().update(entity);
-      return entity;
     } catch (HibernateException e) {
       LOGGER.error(e);
       throw new AppException("Invoke update method error.");

@@ -33,6 +33,7 @@ import java.util.stream.Collectors;
 /**
  * Implementation for {@link cn.edu.uestc.acmicpc.service.iface.TeamService}
  */
+@SuppressWarnings("deprecation")
 @Service
 @Transactional(rollbackFor = Exception.class)
 public class TeamServiceImpl extends AbstractService implements TeamService {

@@ -116,7 +116,7 @@ GlobalConditions =
     userId: undefined
     leaderId: undefined
     teamName: undefined
-    orderFields: "team.teamId"
+    orderFields: "teamId"
     orderAsc: "false"
   messageCondition:
     currentPage: null
