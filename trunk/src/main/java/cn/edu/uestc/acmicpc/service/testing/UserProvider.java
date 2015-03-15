@@ -41,6 +41,11 @@ public class UserProvider {
 
   public UserDto createUser(String userName) throws AppException {
     UserDto user = createUnpersistedUser(userName);
+    return createUser(user);
+
+  }
+
+  public UserDto createUser(UserDto user) throws AppException {
     Integer userId = userService.createNewUser(user);
     return userService.getUserDtoByUserId(userId);
   }

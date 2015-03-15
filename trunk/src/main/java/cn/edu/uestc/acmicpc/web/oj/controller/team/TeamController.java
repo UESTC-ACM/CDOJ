@@ -36,7 +36,6 @@ import java.util.Map;
 
 import javax.servlet.http.HttpSession;
 
-@SuppressWarnings("deprecation")
 @Controller
 @RequestMapping("/team")
 public class TeamController extends BaseController {

@@ -189,10 +189,11 @@ public class StatusServiceImpl extends AbstractService implements StatusService 
   }
 
   @Override
-  public void createNewStatus(StatusDto statusDto) throws AppException {
+  public Integer createNewStatus(StatusDto statusDto) throws AppException {
     Status status = new Status();
     updateStatusByStatusDto(status, statusDto);
     statusDao.addOrUpdate(status);
+    return status.getStatusId();
   }
 
   @Override

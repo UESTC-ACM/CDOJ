@@ -29,8 +29,7 @@ public class CodeServiceImpl extends AbstractService implements CodeService {
   }
 
   @Override
-  public CodeDto getCodeDto(Integer codeId,
-      Set<CodeFields> codeFields) throws AppException {
+  public CodeDto getCodeDto(Integer codeId, Set<CodeFields> codeFields) throws AppException {
     CodeCriteria codeCriteria = new CodeCriteria();
     codeCriteria.codeId = codeId;
     return codeDao.getUniqueDto(codeCriteria, codeFields);

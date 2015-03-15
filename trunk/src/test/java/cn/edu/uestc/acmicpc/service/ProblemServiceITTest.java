@@ -16,7 +16,8 @@ import org.testng.annotations.Test;
 @SuppressWarnings("deprecation")
 public class ProblemServiceITTest extends PersistenceITTest {
 
-  @Autowired private ProblemService problemService;
+  @Autowired
+  private ProblemService problemService;
 
   @Test
   public void testCreateNewProblem() throws AppException {
@@ -32,12 +33,10 @@ public class ProblemServiceITTest extends PersistenceITTest {
 
   @Test
   public void testCount() throws AppException {
-    problemService.createNewProblem();
-    problemService.createNewProblem();
-    problemService.createNewProblem();
+    Integer[] problemIds = problemProvider.createProblems(3);
     ProblemCondition problemCondition = new ProblemCondition();
-    problemCondition.startId = 1;
-    problemCondition.endId = 3;
+    problemCondition.startId = problemIds[0];
+    problemCondition.endId = problemIds[2];
     Assert.assertEquals(Long.valueOf(3), problemService.count(problemCondition));
   }
 
