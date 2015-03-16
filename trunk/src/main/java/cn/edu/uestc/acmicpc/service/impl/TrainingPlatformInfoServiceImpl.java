@@ -53,6 +53,7 @@ public class TrainingPlatformInfoServiceImpl extends AbstractService
     TrainingPlatformInfo trainingPlatformInfo = trainingPlatformInfoDao.get(trainingPlatformInfoDto
         .getTrainingPlatformInfoId());
     AppExceptionUtil.assertNotNull(trainingPlatformInfo);
+    
     if (trainingPlatformInfoDto.getTrainingUserId() != null) {
       trainingPlatformInfo.setTrainingUserId(trainingPlatformInfoDto.getTrainingUserId());
     }
