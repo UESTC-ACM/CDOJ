@@ -1,4 +1,5 @@
 <div class="panel panel-default">
+  <style>.toggle-switch span{line-height:12px;}</style>
   <div class="panel-heading">
     <b ng-bind="team.teamName"></b>
     <span class="pull-right"
@@ -9,8 +10,8 @@
           ng-show="editPermission && team.leaderId != user.userId">
         <toggle-switch
             ng-model="allow"
-            on-label="Allow"
-            off-label="Quit"></toggle-switch>
+            on-label="In"
+            off-label="Not in"></toggle-switch>
     </span>
   </div>
   <div class="panel-body">
