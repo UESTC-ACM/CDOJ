@@ -1,17 +1,24 @@
 package cn.edu.uestc.acmicpc.web.oj.controller.team;
 
+import cn.edu.uestc.acmicpc.db.condition.impl.ContestTeamCondition;
 import cn.edu.uestc.acmicpc.db.criteria.TeamCriteria;
+import cn.edu.uestc.acmicpc.db.dto.field.ContestFields;
 import cn.edu.uestc.acmicpc.db.dto.field.TeamFields;
+import cn.edu.uestc.acmicpc.db.dto.impl.ContestDto;
 import cn.edu.uestc.acmicpc.db.dto.impl.TeamDto;
+import cn.edu.uestc.acmicpc.db.dto.impl.contestteam.ContestTeamListDto;
 import cn.edu.uestc.acmicpc.db.dto.impl.message.MessageDto;
 import cn.edu.uestc.acmicpc.db.dto.impl.teamUser.TeamUserDto;
 import cn.edu.uestc.acmicpc.db.dto.impl.teamUser.TeamUserListDto;
 import cn.edu.uestc.acmicpc.db.dto.impl.user.UserDto;
+import cn.edu.uestc.acmicpc.service.iface.ContestService;
+import cn.edu.uestc.acmicpc.service.iface.ContestTeamService;
 import cn.edu.uestc.acmicpc.service.iface.MessageService;
 import cn.edu.uestc.acmicpc.service.iface.TeamService;
 import cn.edu.uestc.acmicpc.service.iface.TeamUserService;
 import cn.edu.uestc.acmicpc.service.iface.UserService;
 import cn.edu.uestc.acmicpc.util.annotation.LoginPermit;
+import cn.edu.uestc.acmicpc.util.enums.ContestRegistryStatusType;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
 import cn.edu.uestc.acmicpc.util.exception.AppExceptionUtil;
 import cn.edu.uestc.acmicpc.util.helper.StringUtil;
@@ -44,16 +51,20 @@ public class TeamController extends BaseController {
   private final UserService userService;
   private final TeamUserService teamUserService;
   private final MessageService messageService;
+  private final ContestTeamService contestTeamService;
+  private final ContestService contestService;
   private final Settings settings;
 
   @Autowired
   public TeamController(TeamService teamService, UserService userService,
       TeamUserService teamUserService, MessageService messageService,
-      Settings settings) {
+      ContestTeamService contestTeamService, ContestService contestService, Settings settings) {
     this.teamService = teamService;
     this.userService = userService;
     this.teamUserService = teamUserService;
     this.messageService = messageService;
+    this.contestTeamService = contestTeamService;
+    this.contestService = contestService;
     this.settings = settings;
   }
 
@@ -168,6 +179,22 @@ public class TeamController extends BaseController {
       TeamDto teamDto = teamService.getTeamDtoByTeamId(teamId, TeamFields.BASIC_FIELDS);
       if (teamDto.getLeaderId().equals(userId)) {
         throw new AppException("Can not change team leader's state.");
+      }
+      // A workaround to avoid team member changes before contest start.
+      ContestTeamCondition contestTeamCondition = new ContestTeamCondition();
+      contestTeamCondition.teamId = teamDto.getTeamId();
+      List<ContestTeamListDto> contestTeams =
+          contestTeamService.getContestTeamList(contestTeamCondition, null);
+      for (ContestTeamListDto contestTeam : contestTeams) {
+        if (contestTeam.getStatus() == ContestRegistryStatusType.ACCEPTED.ordinal()) {
+          ContestDto contest = contestService.getContestDtoByContestId(
+              contestTeam.getContestTeamId(), ContestFields.FIELDS_FOR_LIST_PAGE);
+          if (!contest.getStatus().equals("Ended")) {
+            String action = value ? "join" : "quit";
+            throw new AppException("Can not " + action + " this team until " + contest.getTitle()
+                + " ended (contestId: " + contest.getContestId() + ").");
+          }
+        }
       }
       teamUserService.changeAllowState(userId, teamId, value);
       json.put("result", "success");
