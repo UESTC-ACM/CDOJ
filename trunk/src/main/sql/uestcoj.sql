@@ -660,6 +660,7 @@ INSERT INTO `uestcoj`.`department` (`departmentId`, `name`, `OPTLOCK`) VALUES (1
 INSERT INTO `uestcoj`.`department` (`departmentId`, `name`, `OPTLOCK`) VALUES (16, 'School of Physical Electronics', 0);
 INSERT INTO `uestcoj`.`department` (`departmentId`, `name`, `OPTLOCK`) VALUES (17, 'School of Communication & Information Engineering', 0);
 INSERT INTO `uestcoj`.`department` (`departmentId`, `name`, `OPTLOCK`) VALUES (18, 'Yingcai Experimental School', 0);
+INSERT INTO `uestcoj`.`department` (`departmentId`, `name`, `OPTLOCK`) VALUES (19, 'UoG-UESTC Joint School', 0);
 
 COMMIT;
 
