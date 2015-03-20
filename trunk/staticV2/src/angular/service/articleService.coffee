@@ -1,6 +1,6 @@
 angular.module("cdojV2").factory("ArticleService", [
-  "BaseRpcService", "ToastService"
-  (baseRpcService, toast) ->
+  "BaseRpcService", "$q"
+  (baseRpcService, $q) ->
     ArticleCondition =
       currentPage: null
       startId: undefined
@@ -20,18 +20,22 @@ angular.module("cdojV2").factory("ArticleService", [
       SEARCH: "/article/search"
       DATA: (articleId) -> "/article/data/#{articleId}"
 
-    _getAllNotice = (onSuccess, onError) ->
+    _getAllNotice = ->
       condition = angular.copy(ArticleCondition)
       condition.type = ArticleType.NOTICE
       condition.orderFields = "order"
       condition.orderAsc = "true"
 
-      baseRpcService.post(Url.SEARCH, condition, onSuccess, onError)
-
-    showError = (data) ->
-      toast.error(data.error_msg)
+      deferred = $q.defer()
+      console.log(deferred)
+      baseRpcService.post(Url.SEARCH, condition)
+        .then(
+          (data) -> deferred.resolve(data)
+          (error_msg) -> deferred.reject(error_msg)
+        )
+      return deferred.promise
 
     return {
-      getAllNotice: (onSuccess) -> _getAllNotice(onSuccess, showError)
+      getAllNotice: -> _getAllNotice()
     }
 ])

@@ -7,14 +7,11 @@ angular.module("cdojV2").controller("IndexPageController", [
     $scope.articleList = []
     $scope.onLoading = true
 
-    articleService.getAllNotice((data) ->
-      # Do something
+    articleService.getAllNotice().then((data) ->
       $scope.articleList = data.list
+    , (reason) ->
+      console.log(reason)
+    ).finally(->
       $scope.onLoading = false
-    , (data) ->
-      $scope.onLoading = false
-
-      # Do something
-      #setIsLoading(false)
     )
 ])

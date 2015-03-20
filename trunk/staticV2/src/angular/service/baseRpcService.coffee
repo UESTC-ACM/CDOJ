@@ -1,35 +1,43 @@
 angular.module("cdojV2").factory("BaseRpcService", [
-  "$http", "ToastService"
-  ($http, toast) ->
-    showError = ->
-      # Show error
+  "$http", "ToastService", "$q", "Msg"
+  ($http, toast, $q, msg) ->
+    showError = (error_msg) ->
+      toast.error(error_msg)
 
-    callback = (onSuccess, onError) ->
+    callback = (deferred) ->
       return (data) ->
         if data.result == "success"
-          onSuccess(data)
+          deferred.resolve(data)
         else
-          onError(data)
-    serverError = ->
-      return -> toast.error(msg("NetworkError"))
+          showError(data.error_msg)
+          deferred.reject(data)
+    serverError = (deferred) ->
+      return ->
+        error_msg = msg("NetworkError")
+        showError(error_msg)
+        deferred.reject(error_msg)
 
     getFinalAddress = (address) ->
       # We can support remote api server in the feature.
       return address
 
-    _get = (address, onSuccess, onError) ->
+    _get = (address) ->
+      deferred = $q.defer()
       $http.get(getFinalAddress(address))
-        .success(callback(onSuccess, onError))
-        .error(serverError())
+        .success(callback(deferred))
+        .error(serverError(deferred))
+      return deferred.promise
     _post = (address, content, onSuccess, onError) ->
+      deferred = $q.defer()
       $http.post(getFinalAddress(address), content)
-        .success(callback(onSuccess, onError))
-        .error(serverError())
+        .success(callback(deferred))
+        .error(serverError(deferred))
+      return deferred.promise
 
     return {
-      get: (address, onSuccess, onError) ->
-        _get(address, onSuccess, onError)
-      post: (address, content, onSuccess, onError) ->
-        _post(address, content, onSuccess, onError)
+      get: (address) ->
+        _get(address)
+      post: (address, content) ->
+        _post(address, content)
     }
 ])
