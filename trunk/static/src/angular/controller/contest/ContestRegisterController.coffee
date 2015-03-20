@@ -35,23 +35,26 @@ cdoj
         )
       $scope.showRegisterButton = false
       $scope.selectTeam = ->
-        $http.get(
-          "/team/typeAHeadItem/" + $scope.team.teamName
-        ).success((data) ->
-          if data.result == "success"
-            $scope.team = data.team
-            $scope.showRegisterButton = true
-          else
-            $window.alert data.error_msg
-        ).error(->
-          $window.alert "Network error."
-        )
+        if($scope.team.teamName == "")
+          $window.alert "please input a valid team name!"
+        else
+          $http.get(
+            "/team/typeAHeadItem/" + $scope.team.teamName
+          ).success((data) ->
+            if data.result == "success"
+              $scope.team = data.team
+              $scope.showRegisterButton = true
+            else
+              $window.alert data.error_msg
+          ).error(->
+            $window.alert "Network error."
+          )
       $scope.register = ->
         $http.get(
             "/contest/register/" + $scope.team.teamId + "/" + contestId
         ).success((data) ->
           if data.result == "success"
-            $window.alert "Register success! please wait for verify"
+            $window.alert "Register success! please wait for verification."
             $scope.team =
               teamName: ""
               invitedUsers: []
