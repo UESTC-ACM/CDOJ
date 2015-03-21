@@ -2,9 +2,7 @@
   <md-sidenav id="cdoj-sidenav" class="md-sidenav-left md-whiteframe-z2 md-closed md-locked-open"
               md-component-id="left-sidenav" tabindex="-1" layout="column" flex ng-click="hideSidenav()">
     <md-toolbar>
-      <h1 class="md-toolbar-tools">
-        <div style="line-height:40px; text-indent: 15px;">CDOJ</div>
-      </h1>
+      <h1 class="md-toolbar-tools">CDOJ</h1>
     </md-toolbar>
     <md-content class="md-default-theme">
       <cdoj-sidenav-menu></cdoj-sidenav-menu>
@@ -14,12 +12,16 @@
   </md-sidenav>
   <md-toolbar>
     <h1 class="md-toolbar-tools" layout="row" style="padding: 0 24px;">
-      <md-button class="md-toolbar-item" hide-gt-sm aria-label="Show menu button" ng-click="openMenu()">
+      <md-button class="md-toolbar-item" hide-gt-sm aria-label="Show menu button" ng-click="openMenu()"
+                 style="margin-right:16px;">
         <i class="mdi mdi-menu" style="font-size: 26px;"></i>
       </md-button>
-      <div style="line-height:40px;">CDOJ</div>
+      <div>CDOJ</div>
       <span flex></span>
-      <cdoj-user />
+      <md-button class="md-toolbar-item" aria-label="Open settings dialog" ng-click="openSettingsDialog($event)">
+        <i class="mdi mdi-settings" style="font-size: 26px;"></i>
+      </md-button>
+      <cdoj-user style="margin-left: 16px;"/>
     </h1>
     <cdoj-header-menu hide-sm class="cdoj-header-menu"></cdoj-header-menu>
   </md-toolbar>

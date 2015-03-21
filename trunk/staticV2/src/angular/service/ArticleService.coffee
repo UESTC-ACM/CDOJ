@@ -27,7 +27,6 @@ angular.module("cdojV2").factory("ArticleService", [
       condition.orderAsc = "true"
 
       deferred = $q.defer()
-      console.log(deferred)
       baseRpcService.post(Url.SEARCH, condition)
         .then(
           (data) -> deferred.resolve(data)
