@@ -7,3 +7,8 @@ window.messages_en =
   "SignIn": "Sign in"
   "NetworkError": "Unable load data from server, please retry"
   "OK": "OK"
+  "Settings": "Settings"
+  "Reset": "Reset"
+  "Cancel": "Cancel"
+  "Save": "Save"
+  "Language": "Language"
