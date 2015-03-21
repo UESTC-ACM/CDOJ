@@ -16,7 +16,7 @@ angular.module("cdojV2").controller("SettingsDialogController", [
       $scope.settings = settingsService.getDefaultSettings()
     $scope.cancel = ->
       $scope.settings = settingsService.getAll()
-      $mdDialog.cancel();
+      $mdDialog.cancel()
     $scope.save = ->
       oldSettings = settingsService.getAll()
       if angular.equals($scope.settings, oldSettings)
