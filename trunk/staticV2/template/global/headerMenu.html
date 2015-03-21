@@ -1,0 +1,8 @@
+<div>
+  <md-tabs class="md-primary" md-align-tabs="bottom">
+    <md-tab ng-repeat="page in pages">
+      <i class="cdoj-sidenav-menu-icon mdi mdi-{{page.icon}}"></i>
+      <span ng-bind="page.displayedText" ng-class="{active: page.current}"></span>
+    </md-tab>
+  </md-tabs>
+</div>

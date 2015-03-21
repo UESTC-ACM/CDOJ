@@ -1,0 +1,29 @@
+<div layout="column" tabindex="-1" role="main" layout-fill>
+  <md-sidenav id="cdoj-sidenav" class="md-sidenav-left md-whiteframe-z2 md-closed md-locked-open"
+              md-component-id="left-sidenav" tabindex="-1" layout="column" flex ng-click="hideSidenav()">
+    <md-toolbar>
+      <h1 class="md-toolbar-tools">
+        <div style="line-height:40px; text-indent: 15px;">CDOJ</div>
+      </h1>
+    </md-toolbar>
+    <md-content class="md-default-theme">
+      <cdoj-sidenav-menu></cdoj-sidenav-menu>
+    </md-content>
+    <span flex></span>
+    <!-- TODO(Yun Li): Add settings and about link here-->
+  </md-sidenav>
+  <md-toolbar class="no-box-shadow" md-scroll-shrink>
+    <h1 class="md-toolbar-tools" layout="row">
+      <md-button class="md-toolbar-item" hide-gt-sm aria-label="Show menu button" ng-click="openMenu()">
+        <i class="mdi mdi-menu" style="font-size: 26px;"></i>
+      </md-button>
+      <div style="line-height:40px; text-indent: 6px;">CDOJ</div>
+      <span flex></span>
+      <cdoj-user />
+    </h1>
+    <cdoj-header-menu hide-sm class="cdoj-header-menu"></cdoj-header-menu>
+  </md-toolbar>
+  <md-content md-scroll-y flex id="cdoj-content" class="md-padding" layout-fill>
+    <ng-view></ng-view>
+  </md-content>
+</div>
