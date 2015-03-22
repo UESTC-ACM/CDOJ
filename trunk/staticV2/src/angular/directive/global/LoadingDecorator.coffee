@@ -1,7 +1,8 @@
 angular.module("cdojV2").directive("cdojLoadingDecorator", [
   ->
-    restrict: "A"
+    restrict: "E"
     transclude: true
+    replace: true
     scope:
       onLoading: "="
     templateUrl: getTemplateUrl("global", "loadingDecorator")

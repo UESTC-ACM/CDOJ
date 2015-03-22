@@ -12,3 +12,7 @@ window.messages_zh =
   "Cancel": "取消"
   "Save": "保存"
   "Language": "语言"
+  "404Error": "404错误: 找不到该页面"
+  "YouWin": "恭喜你赢了:-)"
+  "YouAreSoBoring": "你太无聊了。"
+  "BackToHomePage": "回到主页"
