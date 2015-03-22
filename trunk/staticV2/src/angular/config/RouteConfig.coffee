@@ -8,6 +8,7 @@ angular.module("cdojV2").config([
       controller: "IndexPageController"
     ).when("/404/",
       templateUrl: getTemplateUrl("index", "404")
+      controller: "NotFoundPageController"
     ).otherwise(
       redirectTo: "/404/"
     )

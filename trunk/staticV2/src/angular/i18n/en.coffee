@@ -12,3 +12,7 @@ window.messages_en =
   "Cancel": "Cancel"
   "Save": "Save"
   "Language": "Language"
+  "404Error": "Error 404: Page not found"
+  "YouWin": "You Win!!!"
+  "YouAreSoBoring": "You are so BORING!!!"
+  "BackToHomePage": "Back to home page"

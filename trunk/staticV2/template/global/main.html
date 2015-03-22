@@ -1,5 +1,5 @@
 <div layout="column" tabindex="-1" role="main" layout-fill>
-  <md-sidenav id="cdoj-sidenav" class="md-sidenav-left md-whiteframe-z2 md-closed md-locked-open"
+  <md-sidenav id="cdoj-sidenav" class="md-sidenav-left md-whiteframe-z2 md-closed"
               md-component-id="left-sidenav" tabindex="-1" layout="column" flex ng-click="hideSidenav()">
     <md-toolbar>
       <h1 class="md-toolbar-tools">CDOJ</h1>
@@ -25,7 +25,6 @@
     </h1>
     <cdoj-header-menu hide-sm class="cdoj-header-menu"></cdoj-header-menu>
   </md-toolbar>
-  <md-content md-scroll-y flex id="cdoj-content" class="md-padding" layout-fill>
-    <ng-view></ng-view>
+  <md-content md-scroll-y flex id="cdoj-content" class="md-padding" layout="column" ng-view>
   </md-content>
 </div>
