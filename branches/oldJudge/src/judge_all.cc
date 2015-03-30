@@ -29,6 +29,7 @@ int main(int argc, char *argv[], char *envp[])
     nice(10);
     parse_arguments(argc, argv);
 
+    log_open(judge_conf::log_file.c_str());
     FM_LOG_DEBUG("\n\x1b[31m-----a new start-----\x1b[0m");
     if (geteuid() != 0)
     {
