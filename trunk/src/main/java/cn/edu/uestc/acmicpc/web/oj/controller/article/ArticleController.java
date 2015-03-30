@@ -180,8 +180,11 @@ public class ArticleController extends BaseController {
       if (StringUtil.trimAllSpace(articleEditDto.getTitle()).equals("")) {
         throw new FieldException("title", "Please enter a validate title.");
       }
+      // Check userId
+      if (currentUser.getUserId().equals(articleEditDto.getUserId())) {
+        throw new AppException("Permission denied");
+      }
     }
-
     ArticleDto articleDto;
     if (action.equals("new")) {
       Integer articleId = articleService.createNewArticle(currentUser.getUserId());

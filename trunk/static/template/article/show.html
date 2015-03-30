@@ -6,7 +6,7 @@
     <div class="col-md-12 text-center">
       <h1 ng-bind="article.title"></h1>
       <a href="/#/article/editor/{{article.ownerName}}/{{article.articleId}}"
-         ng-show="$root.isAdmin">
+         ng-show="$root.hasLogin && $root.current.userId == article.userId">
         <i class="fa fa-pencil no-margin-right"></i> Edit
       </a>
     </div>
