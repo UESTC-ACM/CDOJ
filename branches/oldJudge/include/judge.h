@@ -208,10 +208,11 @@ void parse_arguments(int argc, char *argv[]) {
       judge_conf::log_file = optarg;
       break;
     default:
-      FM_LOG_WARNING("unknown option provided: -%c %s", opt, optarg);
+      fprintf(stderr, "unknown option provided: -%c %s\n", opt, optarg);
       exit(judge_conf::EXIT_BAD_PARAM);
     }
   }
+  log_open(judge_conf::log_file.c_str());
   problem::source_file = problem::temp_dir + "/" + problem::source_file;
   switch (problem::lang) {
   case judge_conf::LANG_C:
