@@ -59,7 +59,7 @@ gradle -PdbUser=user -PdbPassword=password build
 Run jetty server
 
 {% highlight bash %}
-gradle jettyEclipseRun
+gradle jettyRun
 {% endhighlight %}
 
 After that, you can visit [localhost:8080](http://localhost:8080/) to get running demo.
