@@ -37,7 +37,6 @@ import java.util.List;
 public class WebMVCConfig extends WebMvcConfigurerAdapter {
 
   private static final String STATIC_RESOURCES_PATH = "staticResources.path";
-  private static final String STATIC_V2_PATH = "staticV2.path";
 
   @Autowired
   private Environment environment;
@@ -52,15 +51,6 @@ public class WebMVCConfig extends WebMvcConfigurerAdapter {
         getResourceLocations("font", STATIC_RESOURCES_PATH));
     registry.addResourceHandler("/template/**").addResourceLocations(
         getResourceLocations("template", STATIC_RESOURCES_PATH));
-    // V2
-    registry.addResourceHandler("/distV2/**").addResourceLocations(
-        getResourceLocations("dist", STATIC_V2_PATH));
-    registry.addResourceHandler("/bower_componentsV2/**").addResourceLocations(
-        getResourceLocations("bower_components", STATIC_V2_PATH));
-    registry.addResourceHandler("/i18n/**").addResourceLocations(
-        getResourceLocations("i18n", STATIC_V2_PATH));
-    registry.addResourceHandler("/templateV2/**").addResourceLocations(
-        getResourceLocations("template", STATIC_V2_PATH));
     // Images
     registry.addResourceHandler("/images/**").addResourceLocations(
         getResourceLocations("", "images.path"));

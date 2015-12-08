@@ -76,8 +76,7 @@ task generateMainPropertyFile(type: Exec) {
       file(imagesPath).absolutePath,
       file(dataPath).absolutePath,
       file(uploadPath).absolutePath,
-      file(judgeWorkPath).absolutePath,
-      file(staticV2Path).absolutePath
+      file(judgeWorkPath).absolutePath
 }
 
 task generateTestPropertyFile(type: Exec) {
@@ -89,8 +88,7 @@ task generateTestPropertyFile(type: Exec) {
       file(imagesPath).absolutePath,
       file(dataPath).absolutePath,
       file(uploadPath).absolutePath,
-      file(judgeWorkPath).absolutePath,
-      file(staticV2Path).absolutePath
+      file(judgeWorkPath).absolutePath
 }
 
 task cleanResources << {
