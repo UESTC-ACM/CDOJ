@@ -20,7 +20,7 @@ cdoj
         multiple: false
         callbacks:
           onComplete: (id, fileName, data) ->
-            if data.success == true
+            if data.success == "true"
               $scope.$apply(->
                 $scope.hint = "Total data: #{data.total}"
                 $scope.hasError = false
@@ -36,7 +36,7 @@ cdoj
               $scope.hint = "#{percentage} %"
             )
           onError: (id, fileName, errorReason) ->
-            $scope.hasError = false
+            $scope.hasError = true
             $scope.hint = errorReason
       )
   ]
