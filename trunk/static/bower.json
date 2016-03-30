@@ -50,7 +50,7 @@
     "underscore.string": "~2.3.3",
     "underscore": "~1.7.0",
     "d3": "~3.4.11",
-    "MathJax": "~2.3.0",
+    "MathJax": "~2.6.0",
     "font-awesome": "~4.2.0",
     "angular-toggle-switch": "~1.2.1"
   }
