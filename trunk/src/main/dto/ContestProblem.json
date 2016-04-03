@@ -1,0 +1,188 @@
+{
+  "entity": "ContestProblem",
+  "fields": [
+    {
+      "name": "contestProblemId",
+      "type": "Integer",
+      "projections": [
+        "BASIC_FIELDS"
+      ]
+    },
+    {
+      "name": "contestId",
+      "type": "Integer",
+      "projections": [
+        "BASIC_FIELDS"
+      ]
+    },
+    {
+      "name": "problemId",
+      "type": "Integer",
+      "projections": [
+        "BASIC_FIELDS",
+        "DETAIL_FIELDS",
+        "SUMMARY_FIELDS"
+      ]
+    },
+    {
+      "name": "order",
+      "type": "Integer",
+      "projections": [
+        "BASIC_FIELDS",
+        "DETAIL_FIELDS",
+        "SUMMARY_FIELDS"
+      ]
+    },
+    {
+      "name": "title",
+      "type": "String",
+      "field": "problem.title",
+      "aliases": [
+        "problem"
+      ],
+      "projections": [
+        "DETAIL_FIELDS",
+        "SUMMARY_FIELDS"
+      ]
+    },
+    {
+      "name": "isSpj",
+      "type": "Boolean",
+      "field": "problem.isSpj",
+      "aliases": [
+        "problem"
+      ],
+      "projections": [
+        "DETAIL_FIELDS"
+      ]
+    },
+    {
+      "name": "javaTimeLimit",
+      "type": "Integer",
+      "field": "problem.javaTimeLimit",
+      "aliases": [
+        "problem"
+      ],
+      "projections": [
+        "DETAIL_FIELDS"
+      ]
+    },
+    {
+      "name": "javaMemoryLimit",
+      "type": "Integer",
+      "field": "problem.javaMemoryLimit",
+      "aliases": [
+        "problem"
+      ],
+      "projections": [
+        "DETAIL_FIELDS"
+      ]
+    },
+    {
+      "name": "timeLimit",
+      "type": "Integer",
+      "field": "problem.timeLimit",
+      "aliases": [
+        "problem"
+      ],
+      "projections": [
+        "DETAIL_FIELDS"
+      ]
+    },
+    {
+      "name": "memoryLimit",
+      "type": "Integer",
+      "field": "problem.memoryLimit",
+      "aliases": [
+        "problem"
+      ],
+      "projections": [
+        "DETAIL_FIELDS"
+      ]
+    },
+    {
+      "name": "description",
+      "type": "String",
+      "field": "problem.description",
+      "aliases": [
+        "problem"
+      ],
+      "projections": [
+        "DETAIL_FIELDS"
+      ]
+    },
+    {
+      "name": "input",
+      "type": "String",
+      "field": "problem.input",
+      "aliases": [
+        "problem"
+      ],
+      "projections": [
+        "DETAIL_FIELDS"
+      ]
+    },
+    {
+      "name": "output",
+      "type": "String",
+      "field": "problem.output",
+      "aliases": [
+        "problem"
+      ],
+      "projections": [
+        "DETAIL_FIELDS"
+      ]
+    },
+    {
+      "name": "sampleInput",
+      "type": "String",
+      "field": "problem.sampleInput",
+      "aliases": [
+        "problem"
+      ],
+      "projections": [
+        "DETAIL_FIELDS"
+      ]
+    },
+    {
+      "name": "sampleOutput",
+      "type": "String",
+      "field": "problem.sampleOutput",
+      "aliases": [
+        "problem"
+      ],
+      "projections": [
+        "DETAIL_FIELDS"
+      ]
+    },
+    {
+      "name": "hint",
+      "type": "String",
+      "field": "problem.hint",
+      "aliases": [
+        "problem"
+      ],
+      "projections": [
+        "DETAIL_FIELDS"
+      ]
+    },
+    {
+      "name": "source",
+      "type": "String",
+      "field": "problem.source",
+      "aliases": [
+        "problem"
+      ],
+      "projections": [
+        "DETAIL_FIELDS",
+        "SUMMARY_FIELDS"
+      ]
+    }
+  ],
+  "aliases": [
+    {
+      "name": "problem",
+      "value": "problemByProblemId"
+    }
+  ]
+}

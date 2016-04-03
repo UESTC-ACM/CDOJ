@@ -1,7 +1,7 @@
 package cn.edu.uestc.acmicpc.service.impl;
 
 import cn.edu.uestc.acmicpc.db.dto.impl.ContestDto;
-import cn.edu.uestc.acmicpc.db.dto.impl.contestproblem.ContestProblemDto;
+import cn.edu.uestc.acmicpc.db.dto.impl.ContestProblemDto;
 import cn.edu.uestc.acmicpc.db.dto.impl.problem.ProblemDto;
 import cn.edu.uestc.acmicpc.service.iface.ContestImporterService;
 import cn.edu.uestc.acmicpc.service.iface.ContestProblemService;
@@ -83,8 +83,8 @@ public class ContestImporterServiceImpl implements ContestImporterService {
 
   @Autowired
   public ContestImporterServiceImpl(Settings settings, FileService fileService,
-      ProblemService problemService, ContestService contestService,
-      ContestProblemService contestProblemService) {
+                                    ProblemService problemService, ContestService contestService,
+                                    ContestProblemService contestProblemService) {
     this.settings = settings;
     this.fileService = fileService;
     this.problemService = problemService;

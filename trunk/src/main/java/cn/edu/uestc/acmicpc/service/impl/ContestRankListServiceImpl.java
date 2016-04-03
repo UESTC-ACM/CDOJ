@@ -6,8 +6,8 @@ import cn.edu.uestc.acmicpc.db.criteria.StatusCriteria;
 import cn.edu.uestc.acmicpc.db.dto.field.ContestFields;
 import cn.edu.uestc.acmicpc.db.dto.field.StatusFields;
 import cn.edu.uestc.acmicpc.db.dto.impl.ContestDto;
+import cn.edu.uestc.acmicpc.db.dto.impl.ContestProblemDto;
 import cn.edu.uestc.acmicpc.db.dto.impl.StatusDto;
-import cn.edu.uestc.acmicpc.db.dto.impl.contestproblem.ContestProblemSummaryDto;
 import cn.edu.uestc.acmicpc.db.dto.impl.contestteam.ContestTeamListDto;
 import cn.edu.uestc.acmicpc.db.dto.impl.teamUser.TeamUserListDto;
 import cn.edu.uestc.acmicpc.service.iface.ContestProblemService;
@@ -50,10 +50,10 @@ public class ContestRankListServiceImpl implements ContestRankListService {
 
   @Autowired
   public ContestRankListServiceImpl(ContestProblemService contestProblemService,
-      StatusService statusService,
-      ContestService contestService,
-      ContestTeamService contestTeamService,
-      TeamUserService teamUserService) {
+                                    StatusService statusService,
+                                    ContestService contestService,
+                                    ContestTeamService contestTeamService,
+                                    TeamUserService teamUserService) {
     this.contestProblemService = contestProblemService;
     this.statusService = statusService;
     this.contestService = contestService;
@@ -103,8 +103,8 @@ public class ContestRankListServiceImpl implements ContestRankListService {
 
       // Put users into teams
       for (ContestTeamListDto team : contestTeamList) {
-        team.setTeamUsers(new LinkedList<TeamUserListDto>());
-        team.setInvitedUsers(new LinkedList<TeamUserListDto>());
+        team.setTeamUsers(new LinkedList<>());
+        team.setInvitedUsers(new LinkedList<>());
         for (TeamUserListDto teamUserListDto : teamUserList) {
           if (team.getTeamId().compareTo(teamUserListDto.getTeamId()) == 0) {
             // Put users
@@ -121,8 +121,8 @@ public class ContestRankListServiceImpl implements ContestRankListService {
 
   @Override
   public synchronized RankList getRankList(Integer contestId,
-      Integer contestType,
-      Boolean frozen, Integer frozenTime) throws AppException {
+                                           Integer contestType,
+                                           Boolean frozen, Integer frozenTime) throws AppException {
     String rankListName = contestId.toString() + ":" + frozen;
     RankList lastModified = rankListPool.get(rankListName);
     if (lastModified == null ||
@@ -134,7 +134,7 @@ public class ContestRankListServiceImpl implements ContestRankListService {
       }
 
       // Fetch problem list
-      List<ContestProblemSummaryDto> contestProblemList = contestProblemService.
+      List<ContestProblemDto> contestProblemList = contestProblemService.
           getContestProblemSummaryDtoListByContestId(contestId);
 
       // Fetch status list
@@ -142,7 +142,7 @@ public class ContestRankListServiceImpl implements ContestRankListService {
 
       RankListBuilder rankListBuilder = new RankListBuilder();
       // Set problem
-      for (ContestProblemSummaryDto problem : contestProblemList) {
+      for (ContestProblemDto problem : contestProblemList) {
         rankListBuilder.addRankListProblem(problem.getProblemId().toString());
       }
 
