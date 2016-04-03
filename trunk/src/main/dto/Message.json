@@ -1,0 +1,123 @@
+{
+  "entity": "Message",
+  "fields": [
+    {
+      "name": "messageId",
+      "type": "Integer",
+      "projections": [
+        "BASIC_FIELDS",
+        "FOR_RECEIVER_FIELDS",
+        "FOR_USER_FIELDS"
+      ]
+    },
+    {
+      "name": "senderId",
+      "type": "Integer",
+      "projections": [
+        "BASIC_FIELDS",
+        "FOR_RECEIVER_FIELDS",
+        "FOR_USER_FIELDS"
+      ]
+    },
+    {
+      "name": "receiverId",
+      "type": "Integer",
+      "projections": [
+        "BASIC_FIELDS",
+        "FOR_USER_FIELDS"
+      ]
+    },
+    {
+      "name": "title",
+      "type": "String",
+      "projections": [
+        "BASIC_FIELDS",
+        "FOR_RECEIVER_FIELDS",
+        "FOR_USER_FIELDS"
+      ]
+    },
+    {
+      "name": "content",
+      "type": "String",
+      "projections": [
+        "BASIC_FIELDS"
+      ]
+    },
+    {
+      "name": "time",
+      "type": "Timestamp",
+      "projections": [
+        "BASIC_FIELDS",
+        "FOR_RECEIVER_FIELDS",
+        "FOR_USER_FIELDS"
+      ]
+    },
+    {
+      "name": "isOpened",
+      "type": "Boolean",
+      "projections": [
+        "BASIC_FIELDS",
+        "FOR_RECEIVER_FIELDS",
+        "FOR_USER_FIELDS"
+      ]
+    },
+    {
+      "name": "senderEmail",
+      "type": "String",
+      "field": "sender.email",
+      "aliases": [
+        "sender"
+      ],
+      "projections": [
+        "FOR_RECEIVER_FIELDS",
+        "FOR_USER_FIELDS"
+      ]
+    },
+    {
+      "name": "senderName",
+      "type": "String",
+      "field": "sender.userName",
+      "aliases": [
+        "sender"
+      ],
+      "projections": [
+        "FOR_RECEIVER_FIELDS",
+        "FOR_USER_FIELDS"
+      ]
+    },
+    {
+      "name": "receiverEmail",
+      "type": "String",
+      "field": "receiver.email",
+      "aliases": [
+        "receiver"
+      ],
+      "projections": [
+        "FOR_RECEIVER_FIELDS",
+        "FOR_USER_FIELDS"
+      ]
+    },
+    {
+      "name": "receiverName",
+      "type": "String",
+      "field": "receiver.userName",
+      "aliases": [
+        "receiver"
+      ],
+      "projections": [
+        "FOR_RECEIVER_FIELDS",
+        "FOR_USER_FIELDS"
+      ]
+    }
+  ],
+  "aliases": [
+    {
+      "name": "sender",
+      "value": "userBySenderId"
+    },
+    {
+      "name": "receiver",
+      "value": "userByReceiverId"
+    }
+  ]
+}

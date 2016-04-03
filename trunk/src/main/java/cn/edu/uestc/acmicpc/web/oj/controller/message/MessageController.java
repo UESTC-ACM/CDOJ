@@ -1,8 +1,7 @@
 package cn.edu.uestc.acmicpc.web.oj.controller.message;
 
-import cn.edu.uestc.acmicpc.db.condition.impl.MessageCondition;
-import cn.edu.uestc.acmicpc.db.dto.impl.message.MessageDto;
-import cn.edu.uestc.acmicpc.db.dto.impl.message.MessageForUserDto;
+import cn.edu.uestc.acmicpc.db.criteria.MessageCriteria;
+import cn.edu.uestc.acmicpc.db.dto.impl.MessageDto;
 import cn.edu.uestc.acmicpc.db.dto.impl.user.UserDto;
 import cn.edu.uestc.acmicpc.service.iface.MessageService;
 import cn.edu.uestc.acmicpc.util.annotation.LoginPermit;
@@ -41,8 +40,11 @@ public class MessageController extends BaseController {
   }
 
   @RequestMapping("fetch/{messageId}")
-  @LoginPermit(NeedLogin = true)
-  public @ResponseBody Map<String, Object> fetch(HttpSession session,
+  @LoginPermit()
+  public
+  @ResponseBody
+  Map<String, Object> fetch(
+      HttpSession session,
       @PathVariable("messageId") Integer messageId) {
     Map<String, Object> json = new HashMap<>();
     try {
@@ -72,8 +74,11 @@ public class MessageController extends BaseController {
 
   @RequestMapping("search")
   @LoginPermit(NeedLogin = false)
-  public @ResponseBody Map<String, Object> search(HttpSession session,
-      @RequestBody MessageCondition messageCondition) {
+  public
+  @ResponseBody
+  Map<String, Object> search(
+      HttpSession session,
+      @RequestBody MessageCriteria messageCondition) {
     Map<String, Object> json = new HashMap<>();
     try {
       UserDto currentUser = getCurrentUser(session);
@@ -93,7 +98,7 @@ public class MessageController extends BaseController {
         Long count = messageService.count(messageCondition);
         PageInfo pageInfo = buildPageInfo(count, messageCondition.currentPage,
             settings.RECORD_PER_PAGE, null);
-        List<MessageForUserDto> messageList = messageService.getMessageForUserDtoList(
+        List<MessageDto> messageList = messageService.getMessageForUserDtoList(
             messageCondition, pageInfo);
         json.put("list", messageList);
         json.put("pageInfo", pageInfo);

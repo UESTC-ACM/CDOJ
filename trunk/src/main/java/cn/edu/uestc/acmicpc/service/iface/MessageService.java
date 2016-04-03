@@ -1,9 +1,7 @@
 package cn.edu.uestc.acmicpc.service.iface;
 
-import cn.edu.uestc.acmicpc.db.condition.impl.MessageCondition;
-import cn.edu.uestc.acmicpc.db.dto.impl.message.MessageDto;
-import cn.edu.uestc.acmicpc.db.dto.impl.message.MessageForReceiverDto;
-import cn.edu.uestc.acmicpc.db.dto.impl.message.MessageForUserDto;
+import cn.edu.uestc.acmicpc.db.criteria.MessageCriteria;
+import cn.edu.uestc.acmicpc.db.dto.impl.MessageDto;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
 import cn.edu.uestc.acmicpc.web.dto.PageInfo;
 
@@ -17,60 +15,60 @@ public interface MessageService {
 
   /**
    * Create a message by
-   * {@link cn.edu.uestc.acmicpc.db.dto.impl.message.MessageDto} entity.
+   * {@link cn.edu.uestc.acmicpc.db.dto.impl.MessageDto} entity.
    *
-   * @param messageDto {@link cn.edu.uestc.acmicpc.db.dto.impl.message.MessageDto}
+   * @param messageDto {@link cn.edu.uestc.acmicpc.db.dto.impl.MessageDto}
    *                   entity.
    * @return new messages record's id.
    * @throws AppException
    */
-  public Integer createNewMessage(MessageDto messageDto) throws AppException;
+  Integer createNewMessage(MessageDto messageDto) throws AppException;
 
   /**
-   * Get {@link cn.edu.uestc.acmicpc.db.dto.impl.message.MessageDto} entity by
+   * Get {@link cn.edu.uestc.acmicpc.db.dto.impl.MessageDto} entity by
    * message's id
    *
    * @param messageId message's id
    * @return {@link MessageDto} entity
    * @throws AppException
    */
-  public MessageDto getMessageDto(Integer messageId) throws AppException;
+  MessageDto getMessageDto(Integer messageId) throws AppException;
 
   /**
    * Counts the number of messages fit in condition.
    *
-   * @param condition {@link MessageCondition} entity.
+   * @param condition {@link MessageCriteria} entity.
    * @return total number of users fit in the condition.
    * @throws AppException
    */
   @Deprecated
-  public Long count(MessageCondition condition) throws AppException;
+  Long count(MessageCriteria condition) throws AppException;
 
   /**
-   * Get {@link cn.edu.uestc.acmicpc.db.dto.impl.message.MessageForReceiverDto}
+   * Get {@link cn.edu.uestc.acmicpc.db.dto.impl.MessageDto}
    * list
    *
-   * @param messageCondition condition
-   * @param pageInfo         page info
-   * @return {@link cn.edu.uestc.acmicpc.db.dto.impl.message.MessageForReceiverDto}
+   * @param criteria condition
+   * @param pageInfo page info
+   * @return {@link cn.edu.uestc.acmicpc.db.dto.impl.MessageDto}
    * list
    * @throws AppException
    */
   @Deprecated
-  public List<MessageForReceiverDto> getMessageForReceiverDtoList(MessageCondition messageCondition
-      , PageInfo pageInfo) throws AppException;
+  List<MessageDto> getMessageForReceiverDtoList(
+      MessageCriteria criteria, PageInfo pageInfo) throws AppException;
 
   /**
-   * Get {@link cn.edu.uestc.acmicpc.db.dto.impl.message.MessageForUserDto} list
+   * Get {@link cn.edu.uestc.acmicpc.db.dto.impl.MessageDto} list
    *
-   * @param messageCondition condition
-   * @param pageInfo         page info
-   * @return {@link cn.edu.uestc.acmicpc.db.dto.impl.message.MessageForUserDto}
+   * @param criteria condition
+   * @param pageInfo page info
+   * @return {@link cn.edu.uestc.acmicpc.db.dto.impl.MessageDto}
    * list
    * @throws AppException
    */
-  public List<MessageForUserDto> getMessageForUserDtoList(MessageCondition messageCondition,
-      PageInfo pageInfo) throws AppException;
+  List<MessageDto> getMessageForUserDtoList(
+      MessageCriteria criteria, PageInfo pageInfo) throws AppException;
 
   /**
    * Mark one message as opened.
@@ -78,5 +76,5 @@ public interface MessageService {
    * @param messageId message's id
    * @throws AppException
    */
-  public void read(Integer messageId) throws AppException;
+  void read(Integer messageId) throws AppException;
 }
