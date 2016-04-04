@@ -165,7 +165,7 @@ dependencies {
   compile "com.alibaba:fastjson:1.1.39"
 
   final jettyGroup = 'org.eclipse.jetty'
-  final jettyVersion = '9.1.0.M0'
+  final jettyVersion = '9.3.0.M1'
   compile "$jettyGroup:jetty-server:$jettyVersion"
   compile "$jettyGroup:jetty-servlet:$jettyVersion"
   compile "$jettyGroup:jetty-webapp:$jettyVersion"
