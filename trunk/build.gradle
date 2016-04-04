@@ -129,7 +129,8 @@ sourceSets {
 }
 
 repositories {
-  maven{url "http://maven.oschina.net/content/groups/public/"}
+  // uncomment this line if needed.
+  // maven{url "http://maven.oschina.net/content/groups/public/"}
   mavenCentral()
   mavenLocal()
 }
