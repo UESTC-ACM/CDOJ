@@ -1,10 +1,10 @@
 package cn.edu.uestc.acmicpc.web.oj.controller.problem;
 
 import cn.edu.uestc.acmicpc.db.condition.impl.ProblemCondition;
+import cn.edu.uestc.acmicpc.db.dto.impl.UserDto;
 import cn.edu.uestc.acmicpc.db.dto.impl.problem.ProblemDto;
 import cn.edu.uestc.acmicpc.db.dto.impl.problem.ProblemEditDto;
 import cn.edu.uestc.acmicpc.db.dto.impl.problem.ProblemListDto;
-import cn.edu.uestc.acmicpc.db.dto.impl.user.UserDto;
 import cn.edu.uestc.acmicpc.service.iface.FileService;
 import cn.edu.uestc.acmicpc.service.iface.PictureService;
 import cn.edu.uestc.acmicpc.service.iface.ProblemService;
@@ -291,7 +291,7 @@ public class ProblemController extends BaseController {
   @LoginPermit(AuthenticationType.ADMIN)
   public @ResponseBody Map<String, Object> uploadProblemDataFile(
       @PathVariable("problemId") String sProblemId,
-      @RequestParam(value = "uploadFile", required = true) MultipartFile[] files) {
+      @RequestParam(value = "uploadFile") MultipartFile[] files) {
     Map<String, Object> json = new HashMap<>();
     try {
       if (!sProblemId.equals("new")) {

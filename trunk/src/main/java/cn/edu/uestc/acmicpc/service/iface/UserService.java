@@ -1,11 +1,7 @@
 package cn.edu.uestc.acmicpc.service.iface;
 
-import cn.edu.uestc.acmicpc.db.condition.impl.UserCondition;
-import cn.edu.uestc.acmicpc.db.dto.impl.user.UserCenterDto;
-import cn.edu.uestc.acmicpc.db.dto.impl.user.UserDto;
-import cn.edu.uestc.acmicpc.db.dto.impl.user.UserEditorDto;
-import cn.edu.uestc.acmicpc.db.dto.impl.user.UserListDto;
-import cn.edu.uestc.acmicpc.db.dto.impl.user.UserTypeAheadDto;
+import cn.edu.uestc.acmicpc.db.criteria.UserCriteria;
+import cn.edu.uestc.acmicpc.db.dto.impl.UserDto;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
 import cn.edu.uestc.acmicpc.web.dto.PageInfo;
 
@@ -25,7 +21,7 @@ public interface UserService {
    * @return {@link UserDto} entity.
    * @throws AppException
    */
-  public UserDto getUserDtoByUserId(Integer userId) throws AppException;
+  UserDto getUserDtoByUserId(Integer userId) throws AppException;
 
   /**
    * Get {@link UserDto} by user name.
@@ -34,26 +30,26 @@ public interface UserService {
    * @return {@link UserDto} entity.
    * @throws AppException
    */
-  public UserDto getUserDtoByUserName(String userName) throws AppException;
+  UserDto getUserDtoByUserName(String userName) throws AppException;
 
   /**
-   * Get {@link cn.edu.uestc.acmicpc.db.dto.impl.user.UserEditorDto} by user
+   * Get {@link cn.edu.uestc.acmicpc.db.dto.impl.UserDto} by user
    * name.
    *
    * @param userName user's name.
-   * @return {@link cn.edu.uestc.acmicpc.db.dto.impl.user.UserEditorDto} entity.
+   * @return {@link cn.edu.uestc.acmicpc.db.dto.impl.UserDto} entity.
    * @throws AppException
    */
-  public UserEditorDto getUserEditorDtoByUserName(String userName) throws AppException;
+  UserDto getUserEditorDtoByUserName(String userName) throws AppException;
 
   /**
-   * Get {@link UserCenterDto} by user name.
+   * Get {@link UserDto} by user name.
    *
    * @param userName user's name.
    * @return {@link UserDto} entity.
    * @throws AppException
    */
-  public UserCenterDto getUserCenterDtoByUserName(String userName) throws AppException;
+  UserDto getUserCenterDtoByUserName(String userName) throws AppException;
 
   /**
    * Get {@link UserDto} by user email.
@@ -62,7 +58,7 @@ public interface UserService {
    * @return {@link UserDto} entity.
    * @throws AppException
    */
-  public UserDto getUserDtoByEmail(String email) throws AppException;
+  UserDto getUserDtoByEmail(String email) throws AppException;
 
   /**
    * Update user by {@link UserDto} entity.
@@ -70,7 +66,7 @@ public interface UserService {
    * @param userDto {@link UserDto} entity.
    * @throws AppException
    */
-  public void updateUser(UserDto userDto) throws AppException;
+  void updateUser(UserDto userDto) throws AppException;
 
   /**
    * Create a new user record {@link UserDto} entity.
@@ -79,42 +75,37 @@ public interface UserService {
    * @return New user's user ID.
    * @throws AppException
    */
-  public Integer createNewUser(UserDto userDto) throws AppException;
+  Integer createNewUser(UserDto userDto) throws AppException;
 
   /**
    * Counts the number of users fit in condition.
    *
-   * @param condition {@link UserCondition} entity.
+   * @param criteria {@link UserCriteria} entity.
    * @return total number of users fit in the condition.
    * @throws AppException
    */
-  @Deprecated
-  public Long count(UserCondition condition) throws AppException;
+  Long count(UserCriteria criteria) throws AppException;
 
   /**
    * Get the users fit in condition and page range.
    *
-   * @param condition {@link UserCondition} entity.
-   * @param pageInfo  {@link PageInfo} entity.
-   * @return List of {@link UserListDto} entities.
+   * @param criteria {@link UserCriteria} entity.
+   * @param pageInfo {@link PageInfo} entity.
+   * @return List of {@link UserDto} entities.
    * @throws AppException
    */
-  @Deprecated
-  public List<UserListDto> getUserListDtoList(UserCondition condition, PageInfo pageInfo)
+  List<UserDto> getUserListDtoList(UserCriteria criteria, PageInfo pageInfo)
       throws AppException;
 
   /**
    * Get the users fit in condition and page range.
    *
-   * @param condition {@link UserCondition} entity.
-   * @param pageInfo  {@link PageInfo} entity.
-   * @return List of
-   * {@link cn.edu.uestc.acmicpc.db.dto.impl.user.UserTypeAheadDto}
-   * entities
+   * @param criteria {@link UserCriteria} entity.
+   * @param pageInfo {@link PageInfo} entity.
+   * @return List of {@link UserDto} entities
    * @throws AppException
    */
-  @Deprecated
-  public List<UserTypeAheadDto> getUserTypeAheadDtoList(UserCondition condition, PageInfo pageInfo)
+  List<UserDto> getUserTypeAheadDtoList(UserCriteria criteria, PageInfo pageInfo)
       throws AppException;
 
   /**
@@ -124,7 +115,7 @@ public interface UserService {
    * @param userId     user's id.
    * @throws AppException
    */
-  public void updateUserByUserId(Map<String, Object> properties, Integer userId)
+  void updateUserByUserId(Map<String, Object> properties, Integer userId)
       throws AppException;
 
   /**
@@ -134,7 +125,7 @@ public interface UserService {
    * @return true if exists
    * @throws AppException
    */
-  public Boolean checkUserExists(String userName) throws AppException;
+  Boolean checkUserExists(String userName) throws AppException;
 
   /**
    * Check whether a user exists.
@@ -143,16 +134,15 @@ public interface UserService {
    * @return true if exists
    * @throws AppException
    */
-  public Boolean checkUserExists(Integer userId) throws AppException;
+  Boolean checkUserExists(Integer userId) throws AppException;
 
   /**
    * Create onsite users by {@link UserDto} list.
    *
-   * @param userList {@link cn.edu.uestc.acmicpc.db.dto.impl.user.UserDto} list
-   * @return
+   * @param userList {@link UserDto} list
    * @throws AppException
    */
-  public List<Integer> createOnsiteUsersByUserList(List<UserDto> userList) throws AppException;
+  List<Integer> createOnsiteUsersByUserList(List<UserDto> userList) throws AppException;
 
   /**
    * Fetch all onsite users by contest's id. return as a list of {@link UserDto}
@@ -162,5 +152,5 @@ public interface UserService {
    * @return list of {@link UserDto} entities.
    * @throws AppException
    */
-  public List<UserDto> fetchAllOnsiteUsersByContestId(Integer contestId) throws AppException;
+  List<UserDto> fetchAllOnsiteUsersByContestId(Integer contestId) throws AppException;
 }

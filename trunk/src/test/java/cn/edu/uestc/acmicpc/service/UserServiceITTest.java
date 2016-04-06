@@ -1,9 +1,12 @@
 package cn.edu.uestc.acmicpc.service;
 
-import cn.edu.uestc.acmicpc.db.condition.impl.UserCondition;
-import cn.edu.uestc.acmicpc.db.dto.impl.user.UserDto;
+import static com.google.common.truth.Truth.assertThat;
+
+import cn.edu.uestc.acmicpc.db.criteria.UserCriteria;
+import cn.edu.uestc.acmicpc.db.dto.impl.UserDto;
 import cn.edu.uestc.acmicpc.service.iface.UserService;
 import cn.edu.uestc.acmicpc.service.testing.TestUtil;
+import cn.edu.uestc.acmicpc.service.testing.UserProvider;
 import cn.edu.uestc.acmicpc.testing.PersistenceITTest;
 import cn.edu.uestc.acmicpc.util.enums.AuthenticationType;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
@@ -13,19 +16,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
-import static com.google.common.truth.Truth.assertThat;
-
 import java.sql.Timestamp;
 import java.util.Date;
-import java.util.List;
 
 /**
  * Integration test cases for {@link UserService}.
  */
-@SuppressWarnings("deprecation")
 public class UserServiceITTest extends PersistenceITTest {
 
-  @Autowired private UserService userService;
+  @Autowired
+  private UserService userService;
 
   @Override
   public void setUpDefaultUser() throws Exception {
@@ -46,8 +46,9 @@ public class UserServiceITTest extends PersistenceITTest {
     UserDto user = userProvider.createUser();
     Integer userId = user.getUserId();
     UserDto result = userService.getUserDtoByUserName(user.getUserName());
-    Assert.assertEquals(result.getUserId(), userId);
-    Assert.assertEquals(result.getUserName(), user.getUserName());
+    assertThat(result).isNotNull();
+    assertThat(result.getUserId()).isEqualTo(userId);
+    assertThat(result.getUserName()).isEqualTo(user.getUserName());
   }
 
   @Test
@@ -61,78 +62,44 @@ public class UserServiceITTest extends PersistenceITTest {
 
   @Test
   public void testUpdateUser() throws AppException, FieldNotUniqueException {
-    Integer userId = userService.createNewUser(userProvider.createUnpersistedUser());
+    Integer userId = userService.createNewUser(UserProvider.createUnpersistedUser());
     UserDto user = userService.getUserDtoByUserId(userId);
     user.setLastLogin(new Timestamp(new Date().getTime()));
     userService.updateUser(user);
   }
 
   @Test
-  public void testCount_emptyCondition() throws AppException {
+  public void testCount_emptyCriteria() throws AppException {
     userProvider.createUsers(6);
-    UserCondition condition = new UserCondition();
-    assertThat(userService.count(condition)).isEqualTo(6);
-  }
-
-  @Test
-  public void testCount_byStartId() throws AppException {
-    List<Integer> userIds = userProvider.createUsers(6);
-    UserCondition condition = new UserCondition();
-    condition.startId = userIds.get(1);
-    assertThat(userService.count(condition)).isEqualTo(5);
-  }
-
-  @Test
-  public void testCount_byEndId() throws AppException {
-    List<Integer> userIds = userProvider.createUsers(6);
-    UserCondition condition = new UserCondition();
-    condition.endId = userIds.get(1);
-    assertThat(userService.count(condition)).isEqualTo(2);
-  }
-
-  @Test
-  public void testCount_byStartIdAndEndId() throws AppException {
-    List<Integer> userIds = userProvider.createUsers(6);
-    UserCondition condition = new UserCondition();
-    condition.startId = userIds.get(1);
-    condition.endId = userIds.get(4);
-    assertThat(userService.count(condition)).isEqualTo(4);
-  }
-
-  @Test
-  public void testCount_byStartIdAndEndId_emptyResult() throws AppException {
-    List<Integer> userIds = userProvider.createUsers(5);
-    UserCondition condition = new UserCondition();
-    condition.startId = userIds.get(2);
-    condition.endId = userIds.get(1);
-    assertThat(userService.count(condition)).isEqualTo(0);
+    UserCriteria criteria = new UserCriteria();
+    assertThat(userService.count(criteria)).isEqualTo(6);
   }
 
   @Test
   public void testCount_byDepartmentId() throws AppException {
     userProvider.createUsers(5);
-    UserDto user = userProvider.createUnpersistedUser();
+    UserDto user = UserProvider.createUnpersistedUser();
     user.setDepartmentId(2);
     userService.createNewUser(user);
-    UserCondition condition = new UserCondition();
-    condition.departmentId = 2;
-    assertThat(userService.count(condition)).isEqualTo(1);
+    UserCriteria criteria = new UserCriteria();
+    criteria.departmentId = 2;
+    assertThat(userService.count(criteria)).isEqualTo(1);
   }
 
   @Test
   public void testCount_bySchool() throws AppException {
     userProvider.createUsers(6);
-    UserCondition condition = new UserCondition();
-    condition.school = "UES";
-    assertThat(userService.count(condition)).isEqualTo(6);
+    UserCriteria criteria = new UserCriteria();
+    criteria.school = "UES";
+    assertThat(userService.count(criteria)).isEqualTo(6);
   }
 
   @Test
   public void testCount_bySchool_emptyResult() throws AppException {
     userProvider.createUsers(6);
-    UserCondition condition = new UserCondition();
-    condition.school = "USE";
-    assertThat(userService.count(condition)).isEqualTo(0);
+    UserCriteria criteria = new UserCriteria();
+    criteria.school = "USE";
+    assertThat(userService.count(criteria)).isEqualTo(0);
   }
 
   @Test
@@ -141,22 +108,22 @@ public class UserServiceITTest extends PersistenceITTest {
       userProvider.createUser("user" + TestUtil.getUniqueId());
     }
 
-    UserDto user = userProvider.createUnpersistedUser();
+    UserDto user = UserProvider.createUnpersistedUser();
     user.setUserName("KasuganoSora");
     userService.createNewUser(user);
-    UserCondition condition = new UserCondition();
-    condition.userName = "user";
-    assertThat(userService.count(condition)).isEqualTo(5);
+    UserCriteria criteria = new UserCriteria();
+    criteria.userName = "user";
+    assertThat(userService.count(criteria)).isEqualTo(5);
   }
 
   @Test
   public void testCount_byType() throws AppException {
     userProvider.createUsers(5);
-    UserDto user = userProvider.createUnpersistedUser();
+    UserDto user = UserProvider.createUnpersistedUser();
     user.setType(AuthenticationType.CONSTANT.ordinal());
     userService.createNewUser(user);
-    UserCondition condition = new UserCondition();
-    condition.type = AuthenticationType.CONSTANT.ordinal();
-    Assert.assertEquals(userService.count(condition), Long.valueOf(1L));
+    UserCriteria criteria = new UserCriteria();
+    criteria.type = AuthenticationType.CONSTANT.ordinal();
+    Assert.assertEquals(userService.count(criteria), Long.valueOf(1L));
   }
 }

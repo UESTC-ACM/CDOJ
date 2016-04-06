@@ -12,7 +12,7 @@ import cn.edu.uestc.acmicpc.db.dto.impl.TrainingContestDto;
 import cn.edu.uestc.acmicpc.db.dto.impl.TrainingDto;
 import cn.edu.uestc.acmicpc.db.dto.impl.TrainingPlatformInfoDto;
 import cn.edu.uestc.acmicpc.db.dto.impl.TrainingUserDto;
-import cn.edu.uestc.acmicpc.db.dto.impl.user.UserDto;
+import cn.edu.uestc.acmicpc.db.dto.impl.UserDto;
 import cn.edu.uestc.acmicpc.service.iface.PictureService;
 import cn.edu.uestc.acmicpc.service.iface.TrainingContestService;
 import cn.edu.uestc.acmicpc.service.iface.TrainingPlatformInfoService;
@@ -55,7 +55,6 @@ import jxl.read.biff.BiffException;
 import java.io.File;
 import java.io.IOException;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -75,12 +74,12 @@ public class TrainingController extends BaseController {
 
   @Autowired
   public TrainingController(TrainingService trainingService,
-      TrainingUserService trainingUserService,
-      TrainingPlatformInfoService trainingPlatformInfoService,
-      TrainingContestService trainingContestService,
-      UserService userService,
-      PictureService pictureService,
-      Settings settings) {
+                            TrainingUserService trainingUserService,
+                            TrainingPlatformInfoService trainingPlatformInfoService,
+                            TrainingContestService trainingContestService,
+                            UserService userService,
+                            PictureService pictureService,
+                            Settings settings) {
     this.trainingService = trainingService;
     this.trainingUserService = trainingUserService;
     this.trainingPlatformInfoService = trainingPlatformInfoService;
@@ -92,7 +91,9 @@ public class TrainingController extends BaseController {
 
   @RequestMapping("search")
   @LoginPermit(NeedLogin = false)
-  public @ResponseBody Map<String, Object> search(
+  public
+  @ResponseBody
+  Map<String, Object> search(
       @RequestBody(required = false) TrainingCriteria trainingCriteria) throws AppException {
     Map<String, Object> json = new HashMap<>();
 
@@ -114,7 +115,9 @@ public class TrainingController extends BaseController {
 
   @RequestMapping("data/{trainingId}")
   @LoginPermit(NeedLogin = false)
-  public @ResponseBody Map<String, Object> data(@PathVariable("trainingId") Integer trainingId)
+  public
+  @ResponseBody
+  Map<String, Object> data(@PathVariable("trainingId") Integer trainingId)
       throws AppException {
     Map<String, Object> json = new HashMap<>();
 
@@ -131,7 +134,9 @@ public class TrainingController extends BaseController {
 
   @RequestMapping("edit")
   @LoginPermit(value = AuthenticationType.ADMIN)
-  public @ResponseBody Map<String, Object> edit(
+  public
+  @ResponseBody
+  Map<String, Object> edit(
       @JsonMap("trainingEditDto") TrainingDto trainingEditDto,
       @JsonMap("action") String action) throws AppException {
     Map<String, Object> json = new HashMap<>();
@@ -177,7 +182,9 @@ public class TrainingController extends BaseController {
 
   @RequestMapping("editTrainingUser")
   @LoginPermit(value = AuthenticationType.ADMIN)
-  public @ResponseBody Map<String, Object> editTrainingUser(
+  public
+  @ResponseBody
+  Map<String, Object> editTrainingUser(
       @JsonMap("trainingUserEditDto") TrainingUserDto trainingUserEditDto,
       @JsonMap("action") String action) throws AppException {
     Map<String, Object> json = new HashMap<>();
@@ -228,7 +235,9 @@ public class TrainingController extends BaseController {
 
   @RequestMapping("searchTrainingUser/{trainingId}")
   @LoginPermit(NeedLogin = false)
-  public @ResponseBody Map<String, Object> searchTrainingUser(
+  public
+  @ResponseBody
+  Map<String, Object> searchTrainingUser(
       @RequestBody(required = false) TrainingUserCriteria trainingUserCriteria,
       @PathVariable("trainingId") Integer trainingId) throws AppException {
     Map<String, Object> json = new HashMap<>();
@@ -260,7 +269,9 @@ public class TrainingController extends BaseController {
 
   @RequestMapping("trainingUserData/{trainingUserId}")
   @LoginPermit(NeedLogin = false)
-  public @ResponseBody Map<String, Object> trainingUserData(
+  public
+  @ResponseBody
+  Map<String, Object> trainingUserData(
       @PathVariable("trainingUserId") Integer trainingUserId) throws AppException {
     Map<String, Object> json = new HashMap<>();
 
@@ -285,7 +296,9 @@ public class TrainingController extends BaseController {
 
   @RequestMapping("editTrainingPlatformInfo")
   @LoginPermit(value = AuthenticationType.ADMIN)
-  public @ResponseBody Map<String, Object> editTrainingPlatformInfo(
+  public
+  @ResponseBody
+  Map<String, Object> editTrainingPlatformInfo(
       @JsonMap("trainingPlatformInfoEditDto") TrainingPlatformInfoDto trainingPlatformInfoEditDto,
       @JsonMap("action") String action) throws AppException {
     Map<String, Object> json = new HashMap<>();
@@ -321,8 +334,8 @@ public class TrainingController extends BaseController {
           trainingPlatformInfoService.getTrainingPlatformInfoDto(
               trainingPlatformInfoDto.getTrainingPlatformInfoId(),
               TrainingPlatformInfoFields.ALL_FIELDS
-              )
-          );
+          )
+      );
     }
 
     json.put("result", "success");
@@ -331,7 +344,9 @@ public class TrainingController extends BaseController {
 
   @RequestMapping("searchTrainingContest/{trainingId}")
   @LoginPermit(NeedLogin = false)
-  public @ResponseBody Map<String, Object> searchTrainingContest(
+  public
+  @ResponseBody
+  Map<String, Object> searchTrainingContest(
       @RequestBody(required = false) TrainingContestCriteria trainingContestCriteria,
       @PathVariable("trainingId") Integer trainingId) throws AppException {
     Map<String, Object> json = new HashMap<>();
@@ -357,11 +372,13 @@ public class TrainingController extends BaseController {
 
   @RequestMapping(value = "uploadTrainingContestResult/{trainingId}/{type}/{platformType}", method = RequestMethod.POST)
   @LoginPermit(AuthenticationType.ADMIN)
-  public @ResponseBody Map<String, Object> uploadTrainingContestResult(
+  public
+  @ResponseBody
+  Map<String, Object> uploadTrainingContestResult(
       @PathVariable("trainingId") Integer trainingId,
       @PathVariable("type") Integer type,
       @PathVariable("platformType") Integer platformType,
-      @RequestParam(value = "uploadFile", required = true) MultipartFile[] files)
+      @RequestParam(value = "uploadFile") MultipartFile[] files)
       throws AppException {
     Map<String, Object> json = new HashMap<>();
 
@@ -397,7 +414,7 @@ public class TrainingController extends BaseController {
   }
 
   private TrainingRankList parseXlsFile(File targetFile, Integer trainingId, Integer type,
-      Integer platformType) throws AppException, IOException, BiffException {
+                                        Integer platformType) throws AppException, IOException, BiffException {
     Workbook workbook = Workbook.getWorkbook(targetFile);
     Sheet sheet = workbook.getSheet(0);
     int totalRows = sheet.getRows();
@@ -432,7 +449,7 @@ public class TrainingController extends BaseController {
   }
 
   private void parseRankList(TrainingRankList trainingRankList, Integer trainingId,
-      TrainingContestType trainingContestType, TrainingPlatformType platformType)
+                             TrainingContestType trainingContestType, TrainingPlatformType platformType)
       throws AppException {
     TrainingPlatformInfoCriteria trainingPlatformInfoCriteria = new TrainingPlatformInfoCriteria();
     trainingPlatformInfoCriteria.trainingId = trainingId;
@@ -448,9 +465,11 @@ public class TrainingController extends BaseController {
 
   @RequestMapping(value = "editTrainingContest")
   @LoginPermit(AuthenticationType.ADMIN)
-  public @ResponseBody Map<String, Object> editTrainingContest(@JsonMap("action") String action,
-      @JsonMap("trainingContestEditDto") TrainingContestDto trainingContestEditDto,
-      @JsonMap("fileName") String fileName) throws AppException, IOException, BiffException {
+  public
+  @ResponseBody
+  Map<String, Object> editTrainingContest(@JsonMap("action") String action,
+                                          @JsonMap("trainingContestEditDto") TrainingContestDto trainingContestEditDto,
+                                          @JsonMap("fileName") String fileName) throws AppException, IOException, BiffException {
     Map<String, Object> json = new HashMap<>();
 
     if (trainingContestEditDto.getTitle().length() > 255 ||
@@ -500,7 +519,9 @@ public class TrainingController extends BaseController {
 
   @RequestMapping("trainingContestData/{trainingContestId}")
   @LoginPermit(NeedLogin = false)
-  public @ResponseBody Map<String, Object> trainingContestData(
+  public
+  @ResponseBody
+  Map<String, Object> trainingContestData(
       @PathVariable("trainingContestId") Integer trainingContestId) throws AppException {
     Map<String, Object> json = new HashMap<>();
 
@@ -524,7 +545,9 @@ public class TrainingController extends BaseController {
   }
 
   @RequestMapping("calculateRating/{trainingId}")
-  public @ResponseBody Map<String, Object> calculateRating(
+  public
+  @ResponseBody
+  Map<String, Object> calculateRating(
       @PathVariable("trainingId") Integer trainingId) throws AppException {
     Map<String, Object> json = new HashMap<>();
 
@@ -553,7 +576,7 @@ public class TrainingController extends BaseController {
       user.setMinimumRating(1200.0);
       user.setMostRecentEventId(null);
       user.setMostRecentEventName("");
-      user.setRatingHistoryList(new LinkedList<TrainingRating>());
+      user.setRatingHistoryList(new LinkedList<>());
     }
 
     RatingCalculator ratingCalculator = new RatingCalculator(userList);
@@ -570,12 +593,7 @@ public class TrainingController extends BaseController {
     }
 
     // Sort by rating
-    Collections.sort(userList, new Comparator<TrainingUserDto>() {
-      @Override
-      public int compare(TrainingUserDto o1, TrainingUserDto o2) {
-        return o2.getCurrentRating().compareTo(o1.getCurrentRating());
-      }
-    });
+    Collections.sort(userList, (o1, o2) -> o2.getCurrentRating().compareTo(o1.getCurrentRating()));
 
     int rank = 1;
     for (TrainingUserDto userDto : userList) {

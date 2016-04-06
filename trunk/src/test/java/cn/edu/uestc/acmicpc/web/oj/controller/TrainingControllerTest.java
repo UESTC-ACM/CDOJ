@@ -1,23 +1,5 @@
 package cn.edu.uestc.acmicpc.web.oj.controller;
 
-import cn.edu.uestc.acmicpc.db.criteria.TrainingCriteria;
-import cn.edu.uestc.acmicpc.db.criteria.TrainingPlatformInfoCriteria;
-import cn.edu.uestc.acmicpc.db.criteria.TrainingUserCriteria;
-import cn.edu.uestc.acmicpc.db.dto.field.TrainingFields;
-import cn.edu.uestc.acmicpc.db.dto.field.TrainingPlatformInfoFields;
-import cn.edu.uestc.acmicpc.db.dto.field.TrainingUserFields;
-import cn.edu.uestc.acmicpc.db.dto.impl.TrainingDto;
-import cn.edu.uestc.acmicpc.db.dto.impl.TrainingPlatformInfoDto;
-import cn.edu.uestc.acmicpc.db.dto.impl.TrainingUserDto;
-import cn.edu.uestc.acmicpc.db.dto.impl.user.UserDto;
-import cn.edu.uestc.acmicpc.testing.ControllerTest;
-import cn.edu.uestc.acmicpc.util.enums.AuthenticationType;
-import cn.edu.uestc.acmicpc.util.enums.TrainingPlatformType;
-import cn.edu.uestc.acmicpc.util.enums.TrainingUserType;
-import cn.edu.uestc.acmicpc.util.helper.StringUtil;
-import cn.edu.uestc.acmicpc.web.dto.PageInfo;
-import cn.edu.uestc.acmicpc.web.oj.controller.training.TrainingController;
-
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.notNullValue;
@@ -30,6 +12,24 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
+import cn.edu.uestc.acmicpc.db.criteria.TrainingCriteria;
+import cn.edu.uestc.acmicpc.db.criteria.TrainingPlatformInfoCriteria;
+import cn.edu.uestc.acmicpc.db.criteria.TrainingUserCriteria;
+import cn.edu.uestc.acmicpc.db.dto.field.TrainingFields;
+import cn.edu.uestc.acmicpc.db.dto.field.TrainingPlatformInfoFields;
+import cn.edu.uestc.acmicpc.db.dto.field.TrainingUserFields;
+import cn.edu.uestc.acmicpc.db.dto.impl.TrainingDto;
+import cn.edu.uestc.acmicpc.db.dto.impl.TrainingPlatformInfoDto;
+import cn.edu.uestc.acmicpc.db.dto.impl.TrainingUserDto;
+import cn.edu.uestc.acmicpc.db.dto.impl.UserDto;
+import cn.edu.uestc.acmicpc.testing.ControllerTest;
+import cn.edu.uestc.acmicpc.util.enums.AuthenticationType;
+import cn.edu.uestc.acmicpc.util.enums.TrainingPlatformType;
+import cn.edu.uestc.acmicpc.util.enums.TrainingUserType;
+import cn.edu.uestc.acmicpc.util.helper.StringUtil;
+import cn.edu.uestc.acmicpc.web.dto.PageInfo;
+import cn.edu.uestc.acmicpc.web.oj.controller.training.TrainingController;
 
 import org.mockito.ArgumentCaptor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -174,7 +174,7 @@ public class TrainingControllerTest extends ControllerTest {
             .setTitle("")
             .setDescription("")
             .build()
-        );
+    );
     when(pictureService.modifyPictureLocation(anyString(), anyString(), anyString())).thenReturn(
         trainingEditDto.getDescription());
     mockMvc.perform(post("/training/edit")
@@ -266,7 +266,7 @@ public class TrainingControllerTest extends ControllerTest {
             .setTitle("Old title")
             .setDescription("Old content")
             .build()
-        );
+    );
     when(pictureService.modifyPictureLocation(anyString(), anyString(), anyString())).thenReturn(
         trainingEditDto.getDescription());
     mockMvc.perform(post("/training/edit")
@@ -334,7 +334,7 @@ public class TrainingControllerTest extends ControllerTest {
             .setUserId(1)
             .setUserName(trainingUserEditDto.getUserName())
             .build()
-        );
+    );
     when(trainingUserService.createNewTrainingUser(1, trainingUserEditDto.getTrainingId()))
         .thenReturn(1);
     when(trainingUserService.getTrainingUserDto(1, TrainingUserFields.ALL_FIELDS)).thenReturn(
@@ -343,7 +343,7 @@ public class TrainingControllerTest extends ControllerTest {
             .setUserId(1)
             .setTrainingId(trainingUserEditDto.getTrainingId())
             .build()
-        );
+    );
     mockMvc.perform(post("/training/editTrainingUser")
         .sessionAttr("currentUser", currentUserDto)
         .contentType(APPLICATION_JSON_UTF8)
@@ -434,7 +434,7 @@ public class TrainingControllerTest extends ControllerTest {
         .build();
     when(userService.getUserDtoByUserName(trainingUserEditDto.getUserName())).thenReturn(
         null
-        );
+    );
     mockMvc.perform(post("/training/editTrainingUser")
         .sessionAttr("currentUser", currentUserDto)
         .contentType(APPLICATION_JSON_UTF8)
@@ -468,7 +468,7 @@ public class TrainingControllerTest extends ControllerTest {
             .setUserId(1)
             .setUserName(trainingUserEditDto.getUserName())
             .build()
-        );
+    );
     mockMvc.perform(post("/training/editTrainingUser")
         .sessionAttr("currentUser", currentUserDto)
         .contentType(APPLICATION_JSON_UTF8)
@@ -502,7 +502,7 @@ public class TrainingControllerTest extends ControllerTest {
             .setUserId(1)
             .setUserName(trainingUserEditDto.getUserName())
             .build()
-        );
+    );
     mockMvc.perform(post("/training/editTrainingUser")
         .sessionAttr("currentUser", currentUserDto)
         .contentType(APPLICATION_JSON_UTF8)
@@ -536,12 +536,12 @@ public class TrainingControllerTest extends ControllerTest {
             .setUserId(1)
             .setUserName(trainingUserEditDto.getUserName())
             .build()
-        );
+    );
     when(trainingUserService.createNewTrainingUser(1, trainingUserEditDto.getTrainingId()))
         .thenReturn(1);
     when(trainingUserService.getTrainingUserDto(1, TrainingUserFields.ALL_FIELDS)).thenReturn(
         null
-        );
+    );
     mockMvc.perform(post("/training/editTrainingUser")
         .sessionAttr("currentUser", currentUserDto)
         .contentType(APPLICATION_JSON_UTF8)
@@ -573,7 +573,7 @@ public class TrainingControllerTest extends ControllerTest {
             .setUserId(1)
             .setUserName(trainingUserEditDto.getUserName())
             .build()
-        );
+    );
     when(trainingUserService.getTrainingUserDto(1, TrainingUserFields.ALL_FIELDS)).thenReturn(
         TrainingUserDto.builder()
             .setTrainingUserId(1)
@@ -581,7 +581,7 @@ public class TrainingControllerTest extends ControllerTest {
             .setTrainingId(trainingUserEditDto.getTrainingId())
             .setTrainingUserName("Ruins He")
             .build()
-        );
+    );
     mockMvc.perform(post("/training/editTrainingUser")
         .sessionAttr("currentUser", currentUserDto)
         .contentType(APPLICATION_JSON_UTF8)
@@ -620,10 +620,10 @@ public class TrainingControllerTest extends ControllerTest {
             .setUserId(1)
             .setUserName(trainingUserEditDto.getUserName())
             .build()
-        );
+    );
     when(trainingUserService.getTrainingUserDto(2, TrainingUserFields.ALL_FIELDS)).thenReturn(
         null
-        );
+    );
     mockMvc.perform(post("/training/editTrainingUser")
         .sessionAttr("currentUser", currentUserDto)
         .contentType(APPLICATION_JSON_UTF8)
@@ -709,7 +709,7 @@ public class TrainingControllerTest extends ControllerTest {
         TrainingUserDto.builder()
             .setTrainingUserId(1)
             .build()
-        );
+    );
     List<TrainingPlatformInfoDto> trainingPlatformInfoDtoList = new LinkedList<>();
     for (int i = 0; i < 3; i++) {
       trainingPlatformInfoDtoList.add(TrainingPlatformInfoDto.builder()
@@ -734,7 +734,7 @@ public class TrainingControllerTest extends ControllerTest {
   public void testFetchTrainingUserDataNotFound() throws Exception {
     when(trainingUserService.getTrainingUserDto(1, TrainingUserFields.ALL_FIELDS)).thenReturn(
         null
-        );
+    );
 
     mockMvc.perform(get("/training/trainingUserData/{trainingUserId}", 1))
         .andExpect(status().isOk())
@@ -785,15 +785,15 @@ public class TrainingControllerTest extends ControllerTest {
             .setTrainingPlatformInfoId(1)
             .setTrainingUserId(1)
             .build()
-        ).thenReturn(
-            TrainingPlatformInfoDto.builder()
-                .setTrainingPlatformInfoId(1)
-                .setTrainingUserId(1)
-                .setUserName("mzry1992")
-                .setUserId("123")
-                .setType(TrainingPlatformType.CF.ordinal())
-                .build()
-        );
+    ).thenReturn(
+        TrainingPlatformInfoDto.builder()
+            .setTrainingPlatformInfoId(1)
+            .setTrainingUserId(1)
+            .setUserName("mzry1992")
+            .setUserId("123")
+            .setType(TrainingPlatformType.CF.ordinal())
+            .build()
+    );
 
     mockMvc
         .perform(post("/training/editTrainingPlatformInfo")
@@ -840,7 +840,7 @@ public class TrainingControllerTest extends ControllerTest {
         trainingPlatformInfoService.getTrainingPlatformInfoDto(1,
             TrainingPlatformInfoFields.ALL_FIELDS)).thenReturn(
         null
-        );
+    );
 
     mockMvc.perform(post("/training/editTrainingPlatformInfo")
         .contentType(APPLICATION_JSON_UTF8)
@@ -874,15 +874,15 @@ public class TrainingControllerTest extends ControllerTest {
             .setTrainingPlatformInfoId(1)
             .setTrainingUserId(1)
             .build()
-        ).thenReturn(
-            TrainingPlatformInfoDto.builder()
-                .setTrainingPlatformInfoId(1)
-                .setTrainingUserId(1)
-                .setUserName("mzry1992")
-                .setUserId("123")
-                .setType(TrainingPlatformType.CF.ordinal())
-                .build()
-        );
+    ).thenReturn(
+        TrainingPlatformInfoDto.builder()
+            .setTrainingPlatformInfoId(1)
+            .setTrainingUserId(1)
+            .setUserName("mzry1992")
+            .setUserId("123")
+            .setType(TrainingPlatformType.CF.ordinal())
+            .build()
+    );
 
     mockMvc
         .perform(post("/training/editTrainingPlatformInfo")
@@ -929,7 +929,7 @@ public class TrainingControllerTest extends ControllerTest {
         trainingPlatformInfoService.getTrainingPlatformInfoDto(1,
             TrainingPlatformInfoFields.ALL_FIELDS)).thenReturn(
         null
-        );
+    );
 
     mockMvc.perform(post("/training/editTrainingPlatformInfo")
         .contentType(APPLICATION_JSON_UTF8)

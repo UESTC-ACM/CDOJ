@@ -1,0 +1,426 @@
+{
+  "entity": "User",
+  "fields": [
+    {
+      "name": "userId",
+      "type": "Integer",
+      "projections": [
+        "ALL_FIELDS",
+        "CENTER_FIELDS",
+        "REGISTER_FIELDS",
+        "TYPE_AHEAD_FIELDS",
+        "LIST_FIELDS",
+        "EDIT_FIELDS",
+        "ADMIN_EDIT_FIELDS"
+      ]
+    },
+    {
+      "name": "userName",
+      "type": "String",
+      "validator": [
+        {
+          "type": "NotNull",
+          "message": "Please enter your user name."
+        },
+        {
+          "type": "Pattern",
+          "regexp": "\\\\b^[a-zA-Z0-9_]{4,24}$\\\\b",
+          "message": "Please enter 4-24 characters consist of A-Z, a-z, 0-9 and '_'."
+        }
+      ],
+      "projections": [
+        "ALL_FIELDS",
+        "CENTER_FIELDS",
+        "REGISTER_FIELDS",
+        "TYPE_AHEAD_FIELDS",
+        "LOGIN_FIELDS",
+        "LIST_FIELDS",
+        "EDIT_FIELDS",
+        "EDITOR_FIELDS",
+        "ACTIVATE_FIELDS",
+        "ADMIN_EDIT_FIELDS"
+      ]
+    },
+    {
+      "name": "studentId",
+      "type": "String",
+      "validator": [
+        {
+          "type": "NotNull",
+          "message": "Please enter your student ID."
+        },
+        {
+          "type": "Length",
+          "min": 1,
+          "max": 20,
+          "message": "Please enter 1-20 characters."
+        }
+      ],
+      "projections": [
+        "ALL_FIELDS",
+        "CENTER_FIELDS",
+        "REGISTER_FIELDS",
+        "EDIT_FIELDS",
+        "EDITOR_FIELDS",
+        "ADMIN_EDIT_FIELDS"
+      ]
+    },
+    {
+      "name": "password",
+      "type": "String",
+      "validator": [
+        {
+          "type": "NotNull",
+          "message": "Please enter your password."
+        },
+        {
+          "type": "Length",
+          "min": 40,
+          "max": 40,
+          "message": "Please enter your password."
+        }
+      ],
+      "projections": [
+        "ALL_FIELDS",
+        "REGISTER_FIELDS",
+        "LOGIN_FIELDS",
+        "ACTIVATE_FIELDS"
+      ]
+    },
+    {
+      "name": "passwordRepeat",
+      "type": "String",
+      "validator": [
+        {
+          "type": "Length",
+          "min": 40,
+          "max": 40,
+          "message": "Please repeat your password."
+        }
+      ],
+      "projections": [
+        "REGISTER_FIELDS",
+        "ACTIVATE_FIELDS"
+      ]
+    },
+    {
+      "name": "school",
+      "type": "String",
+      "validator": [
+        {
+          "type": "NotNull",
+          "message": "Please enter your school name."
+        },
+        {
+          "type": "Length",
+          "min": 1,
+          "max": 100,
+          "message": "Please enter 1-100 characters."
+        }
+      ],
+      "projections": [
+        "ALL_FIELDS",
+        "CENTER_FIELDS",
+        "REGISTER_FIELDS",
+        "LIST_FIELDS",
+        "EDIT_FIELDS",
+        "EDITOR_FIELDS",
+        "ADMIN_EDIT_FIELDS"
+      ]
+    },
+    {
+      "name": "nickName",
+      "type": "String",
+      "validator": [
+        {
+          "type": "NotNull",
+          "message": "Please enter your nick name."
+        },
+        {
+          "type": "Length",
+          "min": 2,
+          "max": 20,
+          "message": "Please enter 2-20 characters."
+        }
+      ],
+      "projections": [
+        "ALL_FIELDS",
+        "CENTER_FIELDS",
+        "REGISTER_FIELDS",
+        "TYPE_AHEAD_FIELDS",
+        "LIST_FIELDS",
+        "EDIT_FIELDS",
+        "EDITOR_FIELDS",
+        "ADMIN_EDIT_FIELDS"
+      ]
+    },
+    {
+      "name": "email",
+      "type": "String",
+      "validator": [
+        {
+          "type": "NotEmpty",
+          "message": "Please enter a valid email address."
+        },
+        {
+          "type": "Email",
+          "message": "Please enter a valid email address."
+        }
+      ],
+      "projections": [
+        "ALL_FIELDS",
+        "CENTER_FIELDS",
+        "REGISTER_FIELDS",
+        "TYPE_AHEAD_FIELDS",
+        "LIST_FIELDS",
+        "EDIT_FIELDS",
+        "EDITOR_FIELDS",
+        "ADMIN_EDIT_FIELDS"
+      ]
+    },
+    {
+      "name": "solved",
+      "type": "Integer",
+      "projections": [
+        "ALL_FIELDS",
+        "CENTER_FIELDS",
+        "LIST_FIELDS"
+      ]
+    },
+    {
+      "name": "tried",
+      "type": "Integer",
+      "projections": [
+        "ALL_FIELDS",
+        "CENTER_FIELDS",
+        "LIST_FIELDS"
+      ]
+    },
+    {
+      "name": "type",
+      "type": "Integer",
+      "validator": [
+        {
+          "type": "NotNull",
+          "message": "Please select the user type."
+        }
+      ],
+      "projections": [
+        "ALL_FIELDS",
+        "CENTER_FIELDS",
+        "LIST_FIELDS",
+        "EDITOR_FIELDS",
+        "ADMIN_EDIT_FIELDS"
+      ]
+    },
+    {
+      "name": "motto",
+      "type": "String",
+      "projections": [
+        "ALL_FIELDS",
+        "CENTER_FIELDS",
+        "REGISTER_FIELDS",
+        "LIST_FIELDS",
+        "EDIT_FIELDS",
+        "EDITOR_FIELDS",
+        "ADMIN_EDIT_FIELDS"
+      ]
+    },
+    {
+      "name": "newPassword",
+      "type": "String",
+      "validator": [
+        {
+          "type": "Length",
+          "min": 40,
+          "max": 40,
+          "message": "Please enter your new password."
+        }
+      ],
+      "projections": [
+        "EDIT_FIELDS",
+        "ADMIN_EDIT_FIELDS"
+      ]
+    },
+    {
+      "name": "newPasswordRepeat",
+      "type": "String",
+      "validator": [
+        {
+          "type": "Length",
+          "min": 40,
+          "max": 40,
+          "message": "Please repeat your new password."
+        }
+      ],
+      "projections": [
+        "EDIT_FIELDS",
+        "ADMIN_EDIT_FIELDS"
+      ]
+    },
+    {
+      "name": "oldPassword",
+      "type": "String",
+      "validator": [
+        {
+          "type": "Length",
+          "min": 40,
+          "max": 40,
+          "message": "Please enter your current password."
+        }
+      ],
+      "projections": [
+        "EDIT_FIELDS"
+      ]
+    },
+    {
+      "name": "lastLogin",
+      "type": "Timestamp",
+      "projections": [
+        "ALL_FIELDS",
+        "CENTER_FIELDS"
+      ]
+    },
+    {
+      "name": "departmentId",
+      "type": "Integer",
+      "validator": [
+        {
+          "type": "NotNull",
+          "message": "Please select your department."
+        }
+      ],
+      "projections": [
+        "ALL_FIELDS",
+        "CENTER_FIELDS",
+        "REGISTER_FIELDS",
+        "LIST_FIELDS",
+        "EDIT_FIELDS",
+        "EDITOR_FIELDS",
+        "ADMIN_EDIT_FIELDS"
+      ]
+    },
+    {
+      "name": "departmentName",
+      "type": "String",
+      "field": "department.name",
+      "aliases": [
+        "department"
+      ],
+      "projections": [
+        "ALL_FIELDS",
+        "CENTER_FIELDS"
+      ]
+    },
+    {
+      "name": "name",
+      "type": "String",
+      "validator": [
+        {
+          "type": "NotNull",
+          "message": "Please enter your name."
+        },
+        {
+          "type": "Length",
+          "min": 1,
+          "max": 50,
+          "message": "Please enter 1-50 characters."
+        }
+      ],
+      "projections": [
+        "ALL_FIELDS",
+        "REGISTER_FIELDS",
+        "EDIT_FIELDS",
+        "EDITOR_FIELDS",
+        "ADMIN_EDIT_FIELDS"
+      ]
+    },
+    {
+      "name": "sex",
+      "type": "Integer",
+      "validator": [
+        {
+          "type": "NotNull",
+          "message": "Please select your gender."
+        }
+      ],
+      "projections": [
+        "ALL_FIELDS",
+        "REGISTER_FIELDS",
+        "EDIT_FIELDS",
+        "EDITOR_FIELDS",
+        "ADMIN_EDIT_FIELDS"
+      ]
+    },
+    {
+      "name": "grade",
+      "type": "Integer",
+      "validator": [
+        {
+          "type": "NotNull",
+          "message": "Please select your grade."
+        }
+      ],
+      "projections": [
+        "ALL_FIELDS",
+        "REGISTER_FIELDS",
+        "EDIT_FIELDS",
+        "EDITOR_FIELDS",
+        "ADMIN_EDIT_FIELDS"
+      ]
+    },
+    {
+      "name": "phone",
+      "type": "String",
+      "validator": [
+        {
+          "type": "NotNull",
+          "message": "Please enter your phone number."
+        },
+        {
+          "type": "Length",
+          "min": 1,
+          "max": 45,
+          "message": "Please enter 1-45 characters."
+        }
+      ],
+      "projections": [
+        "ALL_FIELDS",
+        "REGISTER_FIELDS",
+        "EDIT_FIELDS",
+        "EDITOR_FIELDS",
+        "ADMIN_EDIT_FIELDS"
+      ]
+    },
+    {
+      "name": "size",
+      "type": "Integer",
+      "validator": [
+        {
+          "type": "NotNull",
+          "message": "Please select your T-Shirts size."
+        }
+      ],
+      "projections": [
+        "ALL_FIELDS",
+        "REGISTER_FIELDS",
+        "EDIT_FIELDS",
+        "EDITOR_FIELDS",
+        "ADMIN_EDIT_FIELDS"
+      ]
+    },
+    {
+      "name": "serialKey",
+      "type": "String",
+      "projections": [
+        "ACTIVATE_FIELDS"
+      ]
+    }
+  ],
+  "aliases": [
+    {
+      "name": "department",
+      "value": "departmentByDepartmentId"
+    }
+  ]
+}

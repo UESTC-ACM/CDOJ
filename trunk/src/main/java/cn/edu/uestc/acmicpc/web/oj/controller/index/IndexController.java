@@ -1,7 +1,7 @@
 package cn.edu.uestc.acmicpc.web.oj.controller.index;
 
 import cn.edu.uestc.acmicpc.db.criteria.MessageCriteria;
-import cn.edu.uestc.acmicpc.db.dto.impl.user.UserDto;
+import cn.edu.uestc.acmicpc.db.dto.impl.UserDto;
 import cn.edu.uestc.acmicpc.service.iface.DepartmentService;
 import cn.edu.uestc.acmicpc.service.iface.LanguageService;
 import cn.edu.uestc.acmicpc.service.iface.MessageService;

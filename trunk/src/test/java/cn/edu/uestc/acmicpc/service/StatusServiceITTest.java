@@ -5,8 +5,9 @@ import static com.google.common.truth.Truth.assertThat;
 import cn.edu.uestc.acmicpc.db.criteria.StatusCriteria;
 import cn.edu.uestc.acmicpc.db.dto.field.StatusFields;
 import cn.edu.uestc.acmicpc.db.dto.impl.StatusDto;
-import cn.edu.uestc.acmicpc.db.dto.impl.user.UserDto;
+import cn.edu.uestc.acmicpc.db.dto.impl.UserDto;
 import cn.edu.uestc.acmicpc.service.iface.StatusService;
+import cn.edu.uestc.acmicpc.service.testing.UserProvider;
 import cn.edu.uestc.acmicpc.testing.PersistenceITTest;
 import cn.edu.uestc.acmicpc.util.enums.AuthenticationType;
 import cn.edu.uestc.acmicpc.util.enums.OnlineJudgeResultType;
@@ -46,7 +47,7 @@ public class StatusServiceITTest extends PersistenceITTest {
 
   @Test
   public void testCountProblemsUserTried_administrator() throws AppException {
-    UserDto admin = userProvider.createUnpersistedUser();
+    UserDto admin = UserProvider.createUnpersistedUser();
     admin.setType(AuthenticationType.ADMIN.ordinal());
     admin = userProvider.createUser(admin);
     statusProvider.createStatus(StatusDto.builder().setUserId(admin.getUserId()).build());
@@ -64,7 +65,7 @@ public class StatusServiceITTest extends PersistenceITTest {
 
   @Test
   public void testCountProblemsUserAccepted_administrator() throws AppException {
-    UserDto admin = userProvider.createUnpersistedUser();
+    UserDto admin = UserProvider.createUnpersistedUser();
     admin.setType(AuthenticationType.ADMIN.ordinal());
     admin = userProvider.createUser(admin);
     statusProvider.createStatus(StatusDto.builder()
@@ -86,8 +87,9 @@ public class StatusServiceITTest extends PersistenceITTest {
 
   @Test
   public void testFindAllUserTriedProblemIds_administrator() throws AppException {
-    UserDto admin = userProvider.createUser(UserDto.builder()
-        .setType(AuthenticationType.ADMIN.ordinal()).build());
+    UserDto admin = UserProvider.createUnpersistedUser();
+    admin.setType(AuthenticationType.ADMIN.ordinal());
+    admin = userProvider.createUser(admin);
     statusProvider.createStatus(StatusDto.builder().setUserId(admin.getUserId()).build());
     assertThat(statusService.findAllProblemIdsThatUserTried(admin.getUserId(), false)).isEmpty();
   }
@@ -104,7 +106,7 @@ public class StatusServiceITTest extends PersistenceITTest {
 
   @Test
   public void testFindAllUserAcceptedProblemIds_administrator_notForAdmin() throws AppException {
-    UserDto admin = userProvider.createUnpersistedUser();
+    UserDto admin = UserProvider.createUnpersistedUser();
     admin.setType(AuthenticationType.ADMIN.ordinal());
     admin = userProvider.createUser(admin);
     statusProvider.createStatus(StatusDto.builder()
@@ -140,7 +142,7 @@ public class StatusServiceITTest extends PersistenceITTest {
   @Test
   public void testCount_emptyCondition_isNotAdmin() throws AppException {
     statusProvider.createStatuses(2);
-    UserDto admin = userProvider.createUnpersistedUser();
+    UserDto admin = UserProvider.createUnpersistedUser();
     admin.setType(AuthenticationType.ADMIN.ordinal());
     admin = userProvider.createUser(admin);
     statusProvider.createStatus(StatusDto.builder().setUserId(admin.getUserId()).build());

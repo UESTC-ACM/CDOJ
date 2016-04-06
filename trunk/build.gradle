@@ -99,6 +99,8 @@ task cleanResources << {
 
 checkDtosDoNotContainEntities.dependsOn(generateDtos)
 checkControllerDoNotContainDaos.dependsOn(generateDaos)
+compileJava.dependsOn(generateDtos)
+compileJava.dependsOn(generateDaos)
 compileJava.dependsOn(checkControllerDoNotContainDaos)
 compileJava.dependsOn(checkDtosDoNotContainEntities)
 compileJava.dependsOn(checkTestingCodeAllDoNotUseJunit)
@@ -129,7 +131,7 @@ sourceSets {
 }
 
 repositories {
-  maven{url "http://maven.oschina.net/content/groups/public/"}
+  maven { url "http://maven.oschina.net/content/groups/public/" }
   mavenCentral()
   mavenLocal()
 }

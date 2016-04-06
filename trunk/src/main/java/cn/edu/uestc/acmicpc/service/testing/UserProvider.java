@@ -1,8 +1,9 @@
 package cn.edu.uestc.acmicpc.service.testing;
 
-import cn.edu.uestc.acmicpc.db.dto.impl.user.UserDto;
+import cn.edu.uestc.acmicpc.db.dto.impl.UserDto;
 import cn.edu.uestc.acmicpc.service.iface.UserService;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
+import cn.edu.uestc.acmicpc.util.helper.StringUtil;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -20,18 +21,28 @@ public class UserProvider {
   @Autowired
   private UserService userService;
 
-  public UserDto createUnpersistedUser() {
+  public static UserDto createUnpersistedUser() {
     return createUnpersistedUser("Test" + TestUtil.getUniqueId());
   }
 
-  public UserDto createUnpersistedUser(String userName) {
+  public static UserDto createUnpersistedUser(String userName) {
     return UserDto.builder()
         .setUserName(userName)
         .setDepartmentId(1)
         .setEmail(userName + "@uestc.acm.com")
         .setNickName(userName)
-        .setPassword("password")
+        .setPassword(StringUtil.encodeSHA1("password"))
+        .setPasswordRepeat(StringUtil.encodeSHA1("password"))
+        .setOldPassword(StringUtil.encodeSHA1("password"))
+        .setNewPassword(StringUtil.encodeSHA1("password"))
+        .setNewPasswordRepeat(StringUtil.encodeSHA1("password"))
         .setSchool("UESTC")
+        .setGrade(1)
+        .setStudentId("1234567")
+        .setName("name")
+        .setSex(0)
+        .setPhone("123456789")
+        .setSize(1)
         .build();
   }
 

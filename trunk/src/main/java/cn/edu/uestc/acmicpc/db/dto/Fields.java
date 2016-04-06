@@ -5,10 +5,11 @@ package cn.edu.uestc.acmicpc.db.dto;
  */
 @FunctionalInterface
 public interface Fields {
+
   /**
    * Get projection
    *
    * @return {@link cn.edu.uestc.acmicpc.db.dto.FieldProjection} entity
    */
-  public FieldProjection getProjection();
+  FieldProjection getProjection();
 }

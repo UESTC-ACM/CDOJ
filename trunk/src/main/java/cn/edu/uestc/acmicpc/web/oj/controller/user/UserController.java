@@ -1,18 +1,10 @@
 package cn.edu.uestc.acmicpc.web.oj.controller.user;
 
-import cn.edu.uestc.acmicpc.db.condition.impl.UserCondition;
+import cn.edu.uestc.acmicpc.db.criteria.UserCriteria;
+import cn.edu.uestc.acmicpc.db.dto.field.UserFields;
+import cn.edu.uestc.acmicpc.db.dto.impl.UserDto;
 import cn.edu.uestc.acmicpc.db.dto.impl.UserSerialKeyDto;
-import cn.edu.uestc.acmicpc.db.dto.impl.user.UserActivateDto;
-import cn.edu.uestc.acmicpc.db.dto.impl.user.UserAdminEditDto;
-import cn.edu.uestc.acmicpc.db.dto.impl.user.UserCenterDto;
-import cn.edu.uestc.acmicpc.db.dto.impl.user.UserDto;
-import cn.edu.uestc.acmicpc.db.dto.impl.user.UserEditDto;
-import cn.edu.uestc.acmicpc.db.dto.impl.user.UserEditorDto;
-import cn.edu.uestc.acmicpc.db.dto.impl.user.UserListDto;
-import cn.edu.uestc.acmicpc.db.dto.impl.user.UserLoginDto;
 import cn.edu.uestc.acmicpc.db.dto.impl.user.UserProblemStatusDto;
-import cn.edu.uestc.acmicpc.db.dto.impl.user.UserRegisterDto;
-import cn.edu.uestc.acmicpc.db.dto.impl.user.UserTypeAheadDto;
 import cn.edu.uestc.acmicpc.service.iface.DepartmentService;
 import cn.edu.uestc.acmicpc.service.iface.EmailService;
 import cn.edu.uestc.acmicpc.service.iface.ProblemService;
@@ -34,6 +26,7 @@ import cn.edu.uestc.acmicpc.web.oj.controller.base.BaseController;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -47,11 +40,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.TreeMap;
-
+import java.util.stream.Collectors;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
-@SuppressWarnings("deprecation")
 @Controller
 @RequestMapping("/user")
 public class UserController extends BaseController {
@@ -65,7 +57,8 @@ public class UserController extends BaseController {
   private final Settings settings;
 
   @Autowired
-  public UserController(UserService userService,
+  public UserController(
+      UserService userService,
       ProblemService problemService,
       StatusService statusService,
       UserSerialKeyService userSerialKeyService,
@@ -83,13 +76,17 @@ public class UserController extends BaseController {
 
   @RequestMapping("login")
   @LoginPermit(NeedLogin = false)
-  public @ResponseBody Map<String, Object> login(HttpSession session,
-      @RequestBody @Valid UserLoginDto userLoginDto,
+  @ResponseBody
+  public Map<String, Object> login(
+      HttpSession session,
+      @RequestBody @Valid UserDto userLoginDto,
       BindingResult validateResult) {
     Map<String, Object> json = new HashMap<>();
-    if (validateResult.hasErrors()) {
+    List<FieldError> filteredFieldErrors =
+        filterFieldErrorsByFields(validateResult, UserFields.LOGIN_FIELDS, "userLoginDto");
+    if (!filteredFieldErrors.isEmpty()) {
       json.put("result", "field_error");
-      json.put("field", validateResult.getFieldErrors());
+      json.put("field", filteredFieldErrors);
     } else {
       try {
         UserDto userDto = userService.getUserDtoByUserName(userLoginDto.getUserName());
@@ -105,9 +102,9 @@ public class UserController extends BaseController {
         json.put("email", userDto.getEmail());
         json.put("result", "success");
       } catch (FieldException e) {
-        putFieldErrorsIntoBindingResult(e, validateResult);
+        filteredFieldErrors.addAll(e.getErrors());
         json.put("result", "field_error");
-        json.put("field", validateResult.getFieldErrors());
+        json.put("field", filteredFieldErrors);
       } catch (AppException e) {
         json.put("result", "error");
         json.put("error_msg", e.getMessage());
@@ -117,8 +114,9 @@ public class UserController extends BaseController {
   }
 
   @RequestMapping("logout")
-  @LoginPermit(NeedLogin = true)
-  public @ResponseBody Map<String, Object> logout(HttpSession session) {
+  @LoginPermit()
+  @ResponseBody
+  public Map<String, Object> logout(HttpSession session) {
     Map<String, Object> json = new HashMap<>();
     // Clear sessions
     session.invalidate();
@@ -128,13 +126,17 @@ public class UserController extends BaseController {
 
   @RequestMapping("register")
   @LoginPermit(NeedLogin = false)
-  public @ResponseBody Map<String, Object> register(HttpSession session,
-      @RequestBody @Valid UserRegisterDto userRegisterDto,
+  @ResponseBody
+  public Map<String, Object> register(
+      HttpSession session,
+      @RequestBody @Valid UserDto userRegisterDto,
       BindingResult validateResult) {
     Map<String, Object> json = new HashMap<>();
-    if (validateResult.hasErrors()) {
+    List<FieldError> filteredFieldErrors =
+        filterFieldErrorsByFields(validateResult, UserFields.REGISTER_FIELDS, "userRegisterDto");
+    if (!filteredFieldErrors.isEmpty()) {
       json.put("result", "field_error");
-      json.put("field", validateResult.getFieldErrors());
+      json.put("field", filteredFieldErrors);
     } else {
       try {
         if (userRegisterDto.getPassword() == null) {
@@ -193,9 +195,9 @@ public class UserController extends BaseController {
         json.put("email", userDto.getEmail());
         json.put("result", "success");
       } catch (FieldException e) {
-        putFieldErrorsIntoBindingResult(e, validateResult);
+        filteredFieldErrors.addAll(e.getErrors());
         json.put("result", "field_error");
-        json.put("field", validateResult.getFieldErrors());
+        json.put("field", filteredFieldErrors);
       } catch (AppException e) {
         json.put("result", "error");
         json.put("error_msg", e.getMessage());
@@ -206,14 +208,14 @@ public class UserController extends BaseController {
 
   @RequestMapping("search")
   @LoginPermit(NeedLogin = false)
-  public @ResponseBody Map<String, Object> search(@RequestBody UserCondition userCondition) {
+  @ResponseBody
+  public Map<String, Object> search(@RequestBody UserCriteria criteria) {
     Map<String, Object> json = new HashMap<>();
     try {
-      Long count = userService.count(userCondition);
-      PageInfo pageInfo = buildPageInfo(count, userCondition.currentPage,
+      Long count = userService.count(criteria);
+      PageInfo pageInfo = buildPageInfo(count, criteria.currentPage,
           settings.RECORD_PER_PAGE, null);
-      List<UserListDto> userList = userService.getUserListDtoList(userCondition, pageInfo);
-
+      List<UserDto> userList = userService.getUserListDtoList(criteria, pageInfo);
       json.put("pageInfo", pageInfo);
       json.put("result", "success");
       json.put("list", userList);
@@ -229,13 +231,14 @@ public class UserController extends BaseController {
   }
 
   @RequestMapping("typeAheadItem/{userName}")
-  public @ResponseBody Map<String, Object> typeAheadResult(@PathVariable("userName") String userName) {
+  @ResponseBody
+  public Map<String, Object> typeAheadResult(@PathVariable("userName") String userName) {
     Map<String, Object> json = new HashMap<>();
     try {
       UserDto userDto = userService.getUserDtoByUserName(userName);
       AppExceptionUtil.assertNotNull(userDto, "No such user!");
       json.put("result", "success");
-      json.put("user", UserTypeAheadDto.builder()
+      json.put("user", UserDto.builder()
           .setUserId(userDto.getUserId())
           .setUserName(userDto.getUserName())
           .setNickName(userDto.getNickName())
@@ -254,14 +257,13 @@ public class UserController extends BaseController {
 
   @RequestMapping("typeAheadList")
   @LoginPermit(NeedLogin = false)
-  public @ResponseBody Map<String, Object> typeAheadList(@RequestBody UserCondition userCondition) {
+  @ResponseBody
+  public Map<String, Object> typeAheadList(@RequestBody UserCriteria criteria) {
     Map<String, Object> json = new HashMap<>();
     try {
-      Long count = userService.count(userCondition);
+      Long count = userService.count(criteria);
       PageInfo pageInfo = buildPageInfo(count, 1L, 6L, null);
-      List<UserTypeAheadDto> userList =
-          userService.getUserTypeAheadDtoList(userCondition, pageInfo);
-
+      List<UserDto> userList = userService.getUserTypeAheadDtoList(criteria, pageInfo);
       json.put("pageInfo", pageInfo);
       json.put("result", "success");
       json.put("list", userList);
@@ -278,12 +280,14 @@ public class UserController extends BaseController {
 
   @RequestMapping("userCenterData/{userName}")
   @LoginPermit(NeedLogin = false)
-  public @ResponseBody Map<String, Object> userCenterData(HttpSession session,
+  @ResponseBody
+  public Map<String, Object> userCenterData(
+      HttpSession session,
       @PathVariable("userName") String userName) {
     Map<String, Object> json = new HashMap<>();
     try {
-      UserCenterDto userCenterDto = userService.getUserCenterDtoByUserName(userName);
-      if (userCenterDto == null) {
+      UserDto user = userService.getUserCenterDtoByUserName(userName);
+      if (user == null) {
         throw new AppException("No such user!");
       }
       Map<Integer, ProblemSolveStatusType> problemStatus = new TreeMap<>();
@@ -292,29 +296,21 @@ public class UserController extends BaseController {
       for (Integer result : results) {
         problemStatus.put(result, ProblemSolveStatusType.NONE);
       }
-      results = statusService.findAllProblemIdsThatUserTried(userCenterDto.getUserId(),
+      results = statusService.findAllProblemIdsThatUserTried(user.getUserId(),
           isAdmin(session));
-      for (Integer result : results) {
-        if (problemStatus.containsKey(result)) {
-          problemStatus.put(result, ProblemSolveStatusType.FAIL);
-        }
-      }
-      results = statusService.findAllProblemIdsThatUserSolved(userCenterDto.getUserId(),
+      results.stream().filter(problemStatus::containsKey)
+          .forEach(result -> problemStatus.put(result, ProblemSolveStatusType.FAIL));
+      results = statusService.findAllProblemIdsThatUserSolved(user.getUserId(),
           isAdmin(session));
-      for (Integer result : results) {
-        if (problemStatus.containsKey(result)) {
-          problemStatus.put(result, ProblemSolveStatusType.PASS);
-        }
-      }
+      results.stream().filter(problemStatus::containsKey)
+          .forEach(result -> problemStatus.put(result, ProblemSolveStatusType.PASS));
 
-      List<UserProblemStatusDto> problemStatusList = new LinkedList<>();
-      for (Map.Entry<Integer, ProblemSolveStatusType> status : problemStatus.entrySet()) {
-        problemStatusList
-            .add(new UserProblemStatusDto(status.getKey(), status.getValue().ordinal()));
-      }
+      List<UserProblemStatusDto> problemStatusList = problemStatus.entrySet().stream()
+          .map(status -> new UserProblemStatusDto(status.getKey(), status.getValue().ordinal()))
+          .collect(Collectors.toCollection(LinkedList::new));
 
       json.put("problemStatus", problemStatusList);
-      json.put("targetUser", userCenterDto);
+      json.put("targetUser", user);
       json.put("result", "success");
     } catch (AppException e) {
       json.put("result", "error");
@@ -324,14 +320,18 @@ public class UserController extends BaseController {
   }
 
   @RequestMapping("edit")
-  @LoginPermit(NeedLogin = true)
-  public @ResponseBody Map<String, Object> edit(HttpSession session,
-      @RequestBody @Valid UserEditDto userEditDto,
+  @LoginPermit()
+  @ResponseBody
+  public Map<String, Object> edit(
+      HttpSession session,
+      @RequestBody @Valid UserDto userEditDto,
       BindingResult validateResult) {
     Map<String, Object> json = new HashMap<>();
-    if (validateResult.hasErrors()) {
+    List<FieldError> filteredFieldErrors =
+        filterFieldErrorsByFields(validateResult, UserFields.EDIT_FIELDS, "userEditDto");
+    if (!filteredFieldErrors.isEmpty()) {
       json.put("result", "field_error");
-      json.put("field", validateResult.getFieldErrors());
+      json.put("field", filteredFieldErrors);
     } else {
       try {
         UserDto currentUser = (UserDto) session.getAttribute("currentUser");
@@ -349,15 +349,7 @@ public class UserController extends BaseController {
         if (!Objects.equals(userEditDto.getOldPassword(), currentUser.getPassword())) {
           throw new FieldException("oldPassword", "Your password is wrong, please try again.");
         }
-        if (userEditDto.getNewPassword() != null) {
-          if (userEditDto.getNewPasswordRepeat() == null) {
-            throw new FieldException("newPasswordRepeat", "Please repeat your new password.");
-          }
-          if (!Objects.equals(userEditDto.getNewPassword(), userEditDto.getNewPasswordRepeat())) {
-            throw new FieldException("newPasswordRepeat", "Password do not match.");
-          }
-          userDto.setPassword(userEditDto.getNewPassword());
-        }
+        validatePassword(userDto, userEditDto);
 
         userDto.setNickName(userEditDto.getNickName());
         userDto.setSchool(userEditDto.getSchool());
@@ -373,9 +365,9 @@ public class UserController extends BaseController {
         userService.updateUser(userDto);
         json.put("result", "success");
       } catch (FieldException e) {
-        putFieldErrorsIntoBindingResult(e, validateResult);
+        filteredFieldErrors.addAll(e.getErrors());
         json.put("result", "field_error");
-        json.put("field", validateResult.getFieldErrors());
+        json.put("field", filteredFieldErrors);
       } catch (AppException e) {
         json.put("result", "error");
         json.put("error_msg", e.getMessage());
@@ -384,12 +376,27 @@ public class UserController extends BaseController {
     return json;
   }
 
+  private void validatePassword(UserDto user, UserDto updatedUser) throws AppException {
+    if (updatedUser.getNewPassword() != null) {
+      if (updatedUser.getNewPasswordRepeat() == null) {
+        throw new FieldException("newPasswordRepeat", "Please repeat your new password.");
+      }
+      if (!Objects.equals(updatedUser.getNewPassword(), updatedUser.getNewPasswordRepeat())) {
+        throw new FieldException("newPasswordRepeat", "Password do not match.");
+      }
+      user.setPassword(updatedUser.getNewPassword());
+    }
+  }
+
   @RequestMapping("adminEdit")
   @LoginPermit(AuthenticationType.ADMIN)
-  public @ResponseBody Map<String, Object> adminEdit(
-      @RequestBody @Valid UserAdminEditDto userAdminEditDto,
+  @ResponseBody
+  public Map<String, Object> adminEdit(
+      @RequestBody @Valid UserDto userAdminEditDto,
       BindingResult validateResult) {
     Map<String, Object> json = new HashMap<>();
+    List<FieldError> filteredFieldErrors =
+        filterFieldErrorsByFields(validateResult, UserFields.ADMIN_EDIT_FIELDS, "userAdminEditDto");
     if (validateResult.hasErrors()) {
       json.put("result", "field_error");
       json.put("field", validateResult.getFieldErrors());
@@ -399,16 +406,7 @@ public class UserController extends BaseController {
         if (userDto == null) {
           throw new AppException("No such user.");
         }
-        if (userAdminEditDto.getNewPassword() != null) {
-          if (userAdminEditDto.getNewPasswordRepeat() == null) {
-            throw new FieldException("newPasswordRepeat", "Please repeat your new password.");
-          }
-          if (!Objects.equals(userAdminEditDto.getNewPassword(),
-              userAdminEditDto.getNewPasswordRepeat())) {
-            throw new FieldException("newPasswordRepeat", "Password do not match.");
-          }
-          userDto.setPassword(userAdminEditDto.getNewPassword());
-        }
+        validatePassword(userDto, userAdminEditDto);
 
         userDto.setNickName(userAdminEditDto.getNickName());
         userDto.setSchool(userAdminEditDto.getSchool());
@@ -425,9 +423,9 @@ public class UserController extends BaseController {
         userService.updateUser(userDto);
         json.put("result", "success");
       } catch (FieldException e) {
-        putFieldErrorsIntoBindingResult(e, validateResult);
+        filteredFieldErrors.addAll(e.getErrors());
         json.put("result", "field_error");
-        json.put("field", validateResult.getFieldErrors());
+        json.put("field", filteredFieldErrors);
       } catch (AppException e) {
         json.put("result", "error");
         json.put("error_msg", e.getMessage());
@@ -438,7 +436,8 @@ public class UserController extends BaseController {
 
   @RequestMapping("sendSerialKey/{userName}")
   @LoginPermit(NeedLogin = false)
-  public @ResponseBody Map<String, Object> sendSerialKey(@PathVariable("userName") String userName) {
+  @ResponseBody
+  public Map<String, Object> sendSerialKey(@PathVariable("userName") String userName) {
     Map<String, Object> json = new HashMap<>();
     try {
       UserDto userDto = userService.getUserDtoByUserName(userName);
@@ -461,9 +460,10 @@ public class UserController extends BaseController {
   }
 
   @RequestMapping("profile/{userName}")
-  @LoginPermit(NeedLogin = true)
-  public @ResponseBody Map<String, Object> profile(@PathVariable("userName") String userName,
-      HttpSession session) {
+  @LoginPermit()
+  @ResponseBody
+  public Map<String, Object> profile(
+      @PathVariable("userName") String userName, HttpSession session) {
     Map<String, Object> json = new HashMap<>();
     try {
       UserDto currentUser = (UserDto) session.getAttribute("currentUser");
@@ -473,7 +473,7 @@ public class UserController extends BaseController {
           throw new AppException("You can only view your information.");
         }
       }
-      UserEditorDto userEditorDto = userService.getUserEditorDtoByUserName(userName);
+      UserDto userEditorDto = userService.getUserEditorDtoByUserName(userName);
       if (userEditorDto == null) {
         throw new AppException("No such user.");
       }
@@ -488,13 +488,16 @@ public class UserController extends BaseController {
 
   @RequestMapping("resetPassword")
   @LoginPermit(NeedLogin = false)
-  public @ResponseBody Map<String, Object> resetPassword(
-      @RequestBody @Valid UserActivateDto userActivateDto,
+  @ResponseBody
+  public Map<String, Object> resetPassword(
+      @RequestBody @Valid UserDto userActivateDto,
       BindingResult validateResult) {
     Map<String, Object> json = new HashMap<>();
-    if (validateResult.hasErrors()) {
+    List<FieldError> filteredFieldErrors =
+        filterFieldErrorsByFields(validateResult, UserFields.ACTIVATE_FIELDS, "userActivateDto");
+    if (!filteredFieldErrors.isEmpty()) {
       json.put("result", "field_error");
-      json.put("field", validateResult.getFieldErrors());
+      json.put("field", filteredFieldErrors);
     } else {
       try {
         if (userActivateDto.getPassword() == null) {
@@ -529,9 +532,9 @@ public class UserController extends BaseController {
         userSerialKeyService.updateUserSerialKey(userSerialKeyDto);
         json.put("result", "success");
       } catch (FieldException e) {
-        putFieldErrorsIntoBindingResult(e, validateResult);
+        filteredFieldErrors.addAll(e.getErrors());
         json.put("result", "field_error");
-        json.put("field", validateResult.getFieldErrors());
+        json.put("field", filteredFieldErrors);
       } catch (AppException e) {
         json.put("result", "error");
         json.put("error_msg", e.getMessage());

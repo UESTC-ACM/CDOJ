@@ -3,7 +3,7 @@ package cn.edu.uestc.acmicpc.web.oj.controller.article;
 import cn.edu.uestc.acmicpc.db.criteria.ArticleCriteria;
 import cn.edu.uestc.acmicpc.db.dto.field.ArticleFields;
 import cn.edu.uestc.acmicpc.db.dto.impl.ArticleDto;
-import cn.edu.uestc.acmicpc.db.dto.impl.user.UserDto;
+import cn.edu.uestc.acmicpc.db.dto.impl.UserDto;
 import cn.edu.uestc.acmicpc.service.iface.ArticleService;
 import cn.edu.uestc.acmicpc.service.iface.PictureService;
 import cn.edu.uestc.acmicpc.util.annotation.JsonMap;
@@ -159,7 +159,7 @@ public class ArticleController extends BaseController {
   }
 
   @RequestMapping("edit")
-  @LoginPermit(NeedLogin = true)
+  @LoginPermit()
   public @ResponseBody Map<String, Object> edit(
       @JsonMap("articleEditDto") ArticleDto articleEditDto,
       @JsonMap("action") String action,

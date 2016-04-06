@@ -3,7 +3,7 @@ package cn.edu.uestc.acmicpc.service;
 import cn.edu.uestc.acmicpc.db.criteria.TrainingUserCriteria;
 import cn.edu.uestc.acmicpc.db.dto.field.TrainingUserFields;
 import cn.edu.uestc.acmicpc.db.dto.impl.TrainingUserDto;
-import cn.edu.uestc.acmicpc.db.dto.impl.user.UserDto;
+import cn.edu.uestc.acmicpc.db.dto.impl.UserDto;
 import cn.edu.uestc.acmicpc.service.iface.TrainingUserService;
 import cn.edu.uestc.acmicpc.service.iface.UserService;
 import cn.edu.uestc.acmicpc.testing.PersistenceITTest;
@@ -49,8 +49,8 @@ public class TrainingUserServiceITTest extends PersistenceITTest {
 
   @Test
   public void testGetTrainingUserList() throws AppException {
-    List<TrainingUserDto>list = new ArrayList<>();
-    for(int i = 0; i < 5; i++) {
+    List<TrainingUserDto> list = new ArrayList<>();
+    for (int i = 0; i < 5; i++) {
       list.add(trainingUserProvider.createTrainingUser());
     }
     TrainingUserCriteria trainingUserCriteria = new TrainingUserCriteria();
@@ -64,17 +64,17 @@ public class TrainingUserServiceITTest extends PersistenceITTest {
       Assert.assertNotNull(trainingUserDto.getTrainingId());
       Assert.assertNotNull(trainingUserDto.getTrainingUserName());
       Assert.assertEquals(trainingUserDto.getCurrentRating(), list.get(id).getCurrentRating());
-      Assert.assertEquals(trainingUserDto.getCurrentVolatility(),  list.get(id).getCurrentVolatility());
+      Assert.assertEquals(trainingUserDto.getCurrentVolatility(), list.get(id).getCurrentVolatility());
       id++;
     }
   }
 
   @Test
   public void testGetTrainingUserList_keyword() throws AppException {
-    List<TrainingUserDto>list = new ArrayList<>();
-    for(int i = 0; i < 5; i++) {
+    List<TrainingUserDto> list = new ArrayList<>();
+    for (int i = 0; i < 5; i++) {
       TrainingUserDto trainingUserDto = trainingUserProvider.createTrainingUser();
-      if(i < 2) {
+      if (i < 2) {
         UserDto userDto = userService.getUserDtoByUserId(trainingUserDto.getUserId());
         userDto.setUserName("userA" + Integer.valueOf(i).toString());
         userService.updateUser(userDto);
@@ -94,8 +94,8 @@ public class TrainingUserServiceITTest extends PersistenceITTest {
 
   @Test
   public void testUpdateTrainingUser() throws AppException {
-    List<TrainingUserDto>list = new ArrayList<>();
-    for(int i = 0; i < 5; i++) {
+    List<TrainingUserDto> list = new ArrayList<>();
+    for (int i = 0; i < 5; i++) {
       TrainingUserDto trainingUserDto = trainingUserProvider.createTrainingUser();
       list.add(trainingUserDto);
     }

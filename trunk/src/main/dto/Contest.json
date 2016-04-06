@@ -35,12 +35,21 @@
     {
       "name": "time",
       "type": "Timestamp",
-      "projections": ["BASIC_FIELDS", "FIELDS_FOR_EDIT_PAGE", "FIELDS_FOR_LIST_PAGE", "FIELDS_FOR_SHOWING"]
+      "projections": [
+        "BASIC_FIELDS",
+        "FIELDS_FOR_EDIT_PAGE",
+        "FIELDS_FOR_LIST_PAGE",
+        "FIELDS_FOR_SHOWING"
+      ]
     },
     {
       "name": "length",
       "type": "Integer",
-      "projections": ["BASIC_FIELDS", "FIELDS_FOR_LIST_PAGE", "FIELDS_FOR_SHOWING"]
+      "projections": [
+        "BASIC_FIELDS",
+        "FIELDS_FOR_LIST_PAGE",
+        "FIELDS_FOR_SHOWING"
+      ]
     },
     {
       "name": "type",
@@ -55,7 +64,11 @@
     {
       "name": "isVisible",
       "type": "Boolean",
-      "projections": ["BASIC_FIELDS", "FIELDS_FOR_LIST_PAGE", "FIELDS_FOR_SHOWING"]
+      "projections": [
+        "BASIC_FIELDS",
+        "FIELDS_FOR_LIST_PAGE",
+        "FIELDS_FOR_SHOWING"
+      ]
     },
     {
       "name": "password",
@@ -72,7 +85,11 @@
           "message": "Please enter your password."
         }
       ],
-      "projections": ["BASIC_FIELDS", "FIELDS_FOR_EDIT_PAGE", "FIELDS_FOR_LOGIN"]
+      "projections": [
+        "BASIC_FIELDS",
+        "FIELDS_FOR_EDIT_PAGE",
+        "FIELDS_FOR_LOGIN"
+      ]
     },
     {
       "name": "parentId",
@@ -87,122 +104,169 @@
     {
       "name": "frozenTime",
       "type": "Integer",
-      "projections": ["BASIC_FIELDS", "FIELDS_FOR_SHOWING"]
+      "projections": [
+        "BASIC_FIELDS",
+        "FIELDS_FOR_SHOWING"
+      ]
     },
     {
       "name": "action",
       "type": "String",
       "dbField": false,
-      "projections": ["FIELDS_FOR_EDIT_PAGE"]
+      "projections": [
+        "FIELDS_FOR_EDIT_PAGE"
+      ]
     },
     {
       "name": "lengthDays",
       "type": "Integer",
       "dbField": false,
-      "projections": ["FIELDS_FOR_EDIT_PAGE"]
+      "projections": [
+        "FIELDS_FOR_EDIT_PAGE"
+      ]
     },
     {
       "name": "lengthHours",
       "type": "Integer",
       "dbField": false,
-      "projections": ["FIELDS_FOR_EDIT_PAGE"]
+      "projections": [
+        "FIELDS_FOR_EDIT_PAGE"
+      ]
     },
     {
       "name": "lengthMinutes",
       "type": "Integer",
       "dbField": false,
-      "projections": ["FIELDS_FOR_EDIT_PAGE"]
+      "projections": [
+        "FIELDS_FOR_EDIT_PAGE"
+      ]
     },
     {
       "name": "problemList",
       "type": "String",
       "dbField": false,
-      "projections": ["FIELDS_FOR_EDIT_PAGE"]
+      "projections": [
+        "FIELDS_FOR_EDIT_PAGE"
+      ]
     },
     {
       "name": "passwordRepeat",
       "type": "String",
       "dbField": false,
-      "projections": ["FIELDS_FOR_EDIT_PAGE"]
+      "projections": [
+        "FIELDS_FOR_EDIT_PAGE"
+      ]
     },
     {
       "name": "needFrozen",
       "type": "Boolean",
       "dbField": false,
-      "projections": ["FIELDS_FOR_EDIT_PAGE"]
+      "projections": [
+        "FIELDS_FOR_EDIT_PAGE"
+      ]
     },
     {
       "name": "frozenLengthMinutes",
       "type": "Integer",
       "dbField": false,
-      "projections": ["FIELDS_FOR_EDIT_PAGE"]
+      "projections": [
+        "FIELDS_FOR_EDIT_PAGE"
+      ]
     },
     {
       "name": "frozenLengthHours",
       "type": "Integer",
       "dbField": false,
-      "projections": ["FIELDS_FOR_EDIT_PAGE"]
+      "projections": [
+        "FIELDS_FOR_EDIT_PAGE"
+      ]
     },
     {
       "name": "frozenLengthDays",
       "type": "Integer",
       "dbField": false,
-      "projections": ["FIELDS_FOR_EDIT_PAGE"]
+      "projections": [
+        "FIELDS_FOR_EDIT_PAGE"
+      ]
     },
     {
       "name": "userList",
       "type": "List<UserDto>",
-      "classpath": "cn.edu.uestc.acmicpc.db.dto.impl.user.UserDto",
+      "classpath": "cn.edu.uestc.acmicpc.db.dto.impl.UserDto",
       "dbField": false,
-      "projections": ["FIELDS_FOR_EDIT_PAGE"]
+      "projections": [
+        "FIELDS_FOR_EDIT_PAGE"
+      ]
     },
     {
       "name": "typeName",
       "type": "String",
       "dbField": false,
-      "projections": ["FIELDS_FOR_LIST_PAGE", "FIELDS_FOR_SHOWING"]
+      "projections": [
+        "FIELDS_FOR_LIST_PAGE",
+        "FIELDS_FOR_SHOWING"
+      ]
     },
     {
       "name": "status",
       "type": "String",
       "dbField": false,
-      "projections": ["FIELDS_FOR_LIST_PAGE", "FIELDS_FOR_SHOWING"]
+      "projections": [
+        "FIELDS_FOR_LIST_PAGE",
+        "FIELDS_FOR_SHOWING"
+      ]
     },
     {
       "name": "parentType",
       "type": "Byte",
       "dbField": false,
-      "projections": ["FIELDS_FOR_LIST_PAGE"]
+      "projections": [
+        "FIELDS_FOR_LIST_PAGE"
+      ]
     },
     {
       "name": "parentTypeName",
       "type": "String",
       "dbField": false,
-      "projections": ["FIELDS_FOR_LIST_PAGE"]
+      "projections": [
+        "FIELDS_FOR_LIST_PAGE"
+      ]
     },
     {
       "name": "startTime",
       "type": "Timestamp",
       "dbField": false,
-      "projections": ["FIELDS_FOR_LIST_PAGE", "FIELDS_FOR_SHOWING"]
+      "projections": [
+        "FIELDS_FOR_LIST_PAGE",
+        "FIELDS_FOR_SHOWING"
+      ]
     },
     {
       "name": "endTime",
       "type": "Timestamp",
       "dbField": false,
-      "projections": ["FIELDS_FOR_LIST_PAGE", "FIELDS_FOR_SHOWING"]
+      "projections": [
+        "FIELDS_FOR_LIST_PAGE",
+        "FIELDS_FOR_SHOWING"
+      ]
     },
     {
       "name": "currentTime",
       "type": "Timestamp",
       "dbField": false,
-      "projections": ["FIELDS_FOR_LIST_PAGE", "FIELDS_FOR_SHOWING"]
+      "projections": [
+        "FIELDS_FOR_LIST_PAGE",
+        "FIELDS_FOR_SHOWING"
+      ]
     },
     {
       "name": "timeLeft",
       "type": "Long",
       "dbField": false,
-      "projections": ["FIELDS_FOR_LIST_PAGE", "FIELDS_FOR_SHOWING"]
+      "projections": [
+        "FIELDS_FOR_LIST_PAGE",
+        "FIELDS_FOR_SHOWING"
+      ]
     }
   ]
 }

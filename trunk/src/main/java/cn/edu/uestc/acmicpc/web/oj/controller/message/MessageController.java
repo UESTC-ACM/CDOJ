@@ -2,7 +2,7 @@ package cn.edu.uestc.acmicpc.web.oj.controller.message;
 
 import cn.edu.uestc.acmicpc.db.criteria.MessageCriteria;
 import cn.edu.uestc.acmicpc.db.dto.impl.MessageDto;
-import cn.edu.uestc.acmicpc.db.dto.impl.user.UserDto;
+import cn.edu.uestc.acmicpc.db.dto.impl.UserDto;
 import cn.edu.uestc.acmicpc.service.iface.MessageService;
 import cn.edu.uestc.acmicpc.util.annotation.LoginPermit;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
