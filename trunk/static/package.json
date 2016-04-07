@@ -10,7 +10,7 @@
   "author": "mzry1992",
   "license": "BSD",
   "devDependencies": {
-    "grunt": "*",
+    "grunt": "~0.4.5",
     "grunt-cmd-concat": "*",
     "grunt-contrib-coffee": "*",
 		"grunt-contrib-watch": "*",
