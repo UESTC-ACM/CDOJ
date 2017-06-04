@@ -4,7 +4,7 @@ apply plugin: 'checkstyle'
 apply plugin: 'jacoco'
 apply plugin: 'idea'
 apply plugin: 'eclipse'
-apply plugin: 'jetty'
+apply from: 'https://raw.github.com/akhikhl/gretty/master/pluginScripts/gretty.plugin'
 
 group = 'cn.edu.uestc.acmicpc'
 version = '2.3.0'
@@ -15,10 +15,10 @@ sourceCompatibility = 1.8
 targetCompatibility = 1.8
 
 // Run under http://host/
-jettyRun.contextPath = ""
-jettyRunWar.contextPath = ""
-jettyRun.httpPort = Integer.valueOf(httpPort)
-jettyRunWar.httpPort = Integer.valueOf(httpPort)
+gretty {
+  httpPort = httpPort
+  contextPath = ""
+}
 
 task checkControllerDoNotContainDaos(type: Exec) {
   commandLine "python2",
@@ -167,15 +167,6 @@ dependencies {
   compile "com.alibaba:druid:1.0.4"
   compile "com.alibaba:fastjson:1.1.39"
 
-  final jettyGroup = 'org.eclipse.jetty'
-  final jettyVersion = '9.3.0.M1'
-  compile "$jettyGroup:jetty-server:$jettyVersion"
-  compile "$jettyGroup:jetty-servlet:$jettyVersion"
-  compile "$jettyGroup:jetty-webapp:$jettyVersion"
-  compile "$jettyGroup:jetty-servlets:$jettyVersion"
-  compile "$jettyGroup:jetty-jsp:$jettyVersion"
-  compile "$jettyGroup:jetty-util:$jettyVersion"
-
   final hibernateGroup = 'org.hibernate'
   final hibernateVersion = '4.3.0.Final'
   compile "$hibernateGroup:hibernate-core:$hibernateVersion"
@@ -219,11 +210,10 @@ dependencies {
 
 test {
   doFirst {
-    jettyRun.daemon = true
-    task(":jettyRun").execute()
+    task(":appStart").execute()
   }
   doLast {
-    task(":jettyStop").execute()
+    task(":appStop").execute()
   }
   useTestNG()
 }
