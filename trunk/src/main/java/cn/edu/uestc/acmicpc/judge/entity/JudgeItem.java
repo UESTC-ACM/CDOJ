@@ -57,15 +57,18 @@ public class JudgeItem {
     return compileInfo;
   }
 
+  public String getSourceNameWithoutExtension() {
+    return "Main";
+  }
+
   public String getSourceName() {
-    return "Main" + status.getExtension();
+    return getSourceNameWithoutExtension() + status.getExtension();
   }
 
   /**
    * Update database for item.
    *
-   * @param updateStatus
-   *          if set {@code true}, update status' information.
+   * @param updateStatus if set {@code true}, update status' information.
    */
   public void update(boolean updateStatus) {
     try {

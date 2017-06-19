@@ -12,7 +12,6 @@ import cn.edu.uestc.acmicpc.util.exception.AppExceptionUtil;
 import cn.edu.uestc.acmicpc.util.helper.ArrayUtil;
 import cn.edu.uestc.acmicpc.util.helper.DatabaseUtil;
 import cn.edu.uestc.acmicpc.web.dto.PageInfo;
-
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 import org.hibernate.Criteria;
@@ -21,7 +20,6 @@ import org.hibernate.Query;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Projections;
 import org.springframework.stereotype.Repository;
-
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;

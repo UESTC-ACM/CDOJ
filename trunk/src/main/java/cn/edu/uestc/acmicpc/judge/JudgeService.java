@@ -1,18 +1,17 @@
 package cn.edu.uestc.acmicpc.judge;
 
 import cn.edu.uestc.acmicpc.judge.core.FakeCore;
+import cn.edu.uestc.acmicpc.judge.core.LrunCore;
 import cn.edu.uestc.acmicpc.judge.core.PylonCore;
 import cn.edu.uestc.acmicpc.judge.entity.Judge;
 import cn.edu.uestc.acmicpc.judge.entity.JudgeItem;
 import cn.edu.uestc.acmicpc.judge.entity.Scheduler;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
 import cn.edu.uestc.acmicpc.util.settings.Settings;
-
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
-
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 import javax.annotation.PostConstruct;
@@ -57,6 +56,8 @@ public class JudgeService {
       String tempPath = settings.WORK_PATH + "/" + settings.JUDGES.get(i).getName() + "/temp/";
       if (settings.JUDGE_CORE.equals("pyloncore")) {
         judges[i].setJudgeCore(new PylonCore(workPath, tempPath, settings));
+      } else if (settings.JUDGE_CORE.equals("lrun")) {
+        judges[i].setJudgeCore(new LrunCore(workPath, tempPath, settings));
       } else {
         judges[i].setJudgeCore(new FakeCore());
       }

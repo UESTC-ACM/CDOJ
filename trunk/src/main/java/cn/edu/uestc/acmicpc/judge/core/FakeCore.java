@@ -23,7 +23,7 @@ public class FakeCore implements JudgeCore {
     } else {
       judgeResult.setResult(OnlineJudgeReturnType.getReturnType(2 + random.nextInt(14)));
       if (judgeResult.getResult() == OnlineJudgeReturnType.OJ_CE) {
-        judgeResult.setCompileInfo("Undefined token 'fuck'");
+        judgeResult.setCompileInfo("the compiler exits with exit_code: 127");
       }
     }
     return judgeResult;
