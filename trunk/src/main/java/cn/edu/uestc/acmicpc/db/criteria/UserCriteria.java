@@ -56,6 +56,6 @@ public class UserCriteria extends BaseCriteria<User, UserDto> {
     if (emailForUniqueQuery != null) {
       criteria.add(Restrictions.like("email", emailForUniqueQuery));
     }
-    return null;
+    return criteria;
   }
 }
