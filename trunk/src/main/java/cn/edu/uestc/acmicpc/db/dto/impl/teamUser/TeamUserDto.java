@@ -4,7 +4,6 @@ import cn.edu.uestc.acmicpc.db.dto.BaseDto;
 import cn.edu.uestc.acmicpc.db.dto.BaseDtoBuilder;
 import cn.edu.uestc.acmicpc.db.entity.TeamUser;
 import cn.edu.uestc.acmicpc.util.annotation.Fields;
-
 import java.util.Map;
 import java.util.Objects;
 

@@ -1,14 +1,12 @@
 package cn.edu.uestc.acmicpc.config;
 
 import cn.edu.uestc.acmicpc.judge.JudgeService;
-
+import javax.servlet.http.HttpServletRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
-
-import javax.servlet.http.HttpServletRequest;
 
 /**
  * Integration test context configurations.

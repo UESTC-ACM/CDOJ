@@ -1,7 +1,6 @@
 package cn.edu.uestc.acmicpc.util;
 
 import cn.edu.uestc.acmicpc.util.helper.StringUtil;
-
 import org.testng.Assert;
 import org.testng.annotations.Test;
 

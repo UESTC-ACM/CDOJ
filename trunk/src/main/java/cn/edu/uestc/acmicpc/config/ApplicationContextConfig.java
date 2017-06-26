@@ -24,7 +24,8 @@ import cn.edu.uestc.acmicpc.db.entity.TrainingUser;
 import cn.edu.uestc.acmicpc.db.entity.User;
 import cn.edu.uestc.acmicpc.db.entity.UserSerialKey;
 import cn.edu.uestc.acmicpc.judge.JudgeService;
-
+import com.alibaba.druid.pool.DruidDataSource;
+import java.util.Properties;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
@@ -38,10 +39,6 @@ import org.springframework.core.env.Environment;
 import org.springframework.orm.hibernate4.HibernateTransactionManager;
 import org.springframework.orm.hibernate4.LocalSessionFactoryBean;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
-
-import com.alibaba.druid.pool.DruidDataSource;
-
-import java.util.Properties;
 
 /**
  * Application Context Configuration

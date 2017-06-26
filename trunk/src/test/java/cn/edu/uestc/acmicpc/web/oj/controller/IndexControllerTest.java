@@ -1,12 +1,11 @@
 package cn.edu.uestc.acmicpc.web.oj.controller;
 
-import cn.edu.uestc.acmicpc.testing.ControllerTest;
-import cn.edu.uestc.acmicpc.web.oj.controller.index.IndexController;
-
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
 
+import cn.edu.uestc.acmicpc.testing.ControllerTest;
+import cn.edu.uestc.acmicpc.web.oj.controller.index.IndexController;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;

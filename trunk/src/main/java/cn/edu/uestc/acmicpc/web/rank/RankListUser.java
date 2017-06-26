@@ -1,7 +1,6 @@
 package cn.edu.uestc.acmicpc.web.rank;
 
 import cn.edu.uestc.acmicpc.db.dto.impl.teamUser.TeamUserListDto;
-
 import java.util.List;
 
 /**

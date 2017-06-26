@@ -5,7 +5,6 @@ import cn.edu.uestc.acmicpc.db.dto.BaseDtoBuilder;
 import cn.edu.uestc.acmicpc.db.entity.Problem;
 import cn.edu.uestc.acmicpc.util.annotation.Fields;
 import cn.edu.uestc.acmicpc.util.enums.ProblemType;
-
 import java.util.Map;
 import java.util.Objects;
 

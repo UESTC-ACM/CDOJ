@@ -3,7 +3,6 @@ package cn.edu.uestc.acmicpc.db.criteria;
 import cn.edu.uestc.acmicpc.db.dto.impl.DepartmentDto;
 import cn.edu.uestc.acmicpc.db.entity.Department;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
-
 import org.hibernate.criterion.DetachedCriteria;
 
 /**

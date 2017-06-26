@@ -5,7 +5,6 @@ import cn.edu.uestc.acmicpc.db.dto.BaseDtoBuilder;
 import cn.edu.uestc.acmicpc.db.dto.impl.teamUser.TeamUserReportDto;
 import cn.edu.uestc.acmicpc.db.entity.ContestTeam;
 import cn.edu.uestc.acmicpc.util.annotation.Fields;
-
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;

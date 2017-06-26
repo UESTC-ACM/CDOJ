@@ -8,7 +8,6 @@ import cn.edu.uestc.acmicpc.web.rank.RankListProblem;
 import cn.edu.uestc.acmicpc.web.rank.TrainingRankList;
 import cn.edu.uestc.acmicpc.web.rank.TrainingRankListItem;
 import cn.edu.uestc.acmicpc.web.rank.TrainingRankListUser;
-
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.LinkedList;

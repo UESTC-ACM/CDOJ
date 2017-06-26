@@ -19,10 +19,6 @@ import cn.edu.uestc.acmicpc.util.settings.Settings;
 import cn.edu.uestc.acmicpc.web.dto.FileInformationDto;
 import cn.edu.uestc.acmicpc.web.xml.XmlNode;
 import cn.edu.uestc.acmicpc.web.xml.XmlParser;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
 import java.io.IOException;
 import java.lang.reflect.Method;
 import java.sql.Timestamp;
@@ -33,6 +29,8 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 import java.util.zip.ZipFile;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 @Service
 public class ContestImporterServiceImpl implements ContestImporterService {

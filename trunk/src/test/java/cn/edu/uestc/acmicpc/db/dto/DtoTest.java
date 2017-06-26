@@ -1,10 +1,9 @@
 package cn.edu.uestc.acmicpc.db.dto;
 
-import cn.edu.uestc.acmicpc.db.dto.impl.ArticleDto;
-
-import org.testng.annotations.Test;
-
 import static com.google.common.truth.Truth.assertThat;
+
+import cn.edu.uestc.acmicpc.db.dto.impl.ArticleDto;
+import org.testng.annotations.Test;
 
 /**
  * Test for generated dtos

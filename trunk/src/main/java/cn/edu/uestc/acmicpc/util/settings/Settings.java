@@ -6,7 +6,9 @@ import cn.edu.uestc.acmicpc.util.exception.AppException;
 import cn.edu.uestc.acmicpc.util.helper.FileUtil;
 import cn.edu.uestc.acmicpc.util.settings.entity.EmailSetting;
 import cn.edu.uestc.acmicpc.util.settings.entity.JudgeSetting;
-
+import com.alibaba.fastjson.JSON;
+import java.util.List;
+import javax.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.context.annotation.Lazy;
@@ -14,11 +16,6 @@ import org.springframework.context.annotation.PropertySource;
 import org.springframework.context.annotation.Scope;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Repository;
-
-import com.alibaba.fastjson.JSON;
-
-import java.util.List;
-import javax.annotation.PostConstruct;
 
 /**
  * Global settings, load from database and resources.properties.

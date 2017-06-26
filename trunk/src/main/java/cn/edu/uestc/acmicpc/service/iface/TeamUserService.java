@@ -5,7 +5,6 @@ import cn.edu.uestc.acmicpc.db.dto.impl.teamUser.TeamUserDto;
 import cn.edu.uestc.acmicpc.db.dto.impl.teamUser.TeamUserListDto;
 import cn.edu.uestc.acmicpc.db.dto.impl.teamUser.TeamUserReportDto;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
-
 import java.util.List;
 
 /**

@@ -8,7 +8,6 @@ import cn.edu.uestc.acmicpc.util.enums.AuthenticationType;
 import cn.edu.uestc.acmicpc.util.enums.GenderType;
 import cn.edu.uestc.acmicpc.util.enums.GradeType;
 import cn.edu.uestc.acmicpc.util.enums.TShirtsSizeType;
-
 import java.util.Map;
 import java.util.Objects;
 

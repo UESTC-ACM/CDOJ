@@ -1,5 +1,7 @@
 package cn.edu.uestc.acmicpc.service;
 
+import static com.google.common.truth.Truth.assertThat;
+
 import cn.edu.uestc.acmicpc.db.criteria.TeamCriteria;
 import cn.edu.uestc.acmicpc.db.dto.field.TeamFields;
 import cn.edu.uestc.acmicpc.db.dto.impl.TeamDto;
@@ -7,13 +9,9 @@ import cn.edu.uestc.acmicpc.db.dto.impl.UserDto;
 import cn.edu.uestc.acmicpc.service.iface.TeamService;
 import cn.edu.uestc.acmicpc.testing.PersistenceITTest;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
-
+import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.testng.annotations.Test;
-
-import static com.google.common.truth.Truth.assertThat;
-
-import java.util.List;
 
 /**
  * Integration test cases for {@link cn.edu.uestc.acmicpc.service.iface.TeamService}

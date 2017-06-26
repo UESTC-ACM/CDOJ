@@ -2,7 +2,6 @@ package cn.edu.uestc.acmicpc.util.helper;
 
 import cn.edu.uestc.acmicpc.util.checker.base.Checker;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
-
 import java.io.File;
 import java.io.FileOutputStream;
 import java.util.Enumeration;

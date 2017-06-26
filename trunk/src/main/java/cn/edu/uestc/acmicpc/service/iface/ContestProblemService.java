@@ -2,7 +2,6 @@ package cn.edu.uestc.acmicpc.service.iface;
 
 import cn.edu.uestc.acmicpc.db.dto.impl.ContestProblemDto;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
-
 import java.util.List;
 
 /**

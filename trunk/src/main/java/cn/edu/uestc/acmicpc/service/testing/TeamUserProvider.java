@@ -3,7 +3,6 @@ package cn.edu.uestc.acmicpc.service.testing;
 import cn.edu.uestc.acmicpc.db.dto.impl.teamUser.TeamUserDto;
 import cn.edu.uestc.acmicpc.service.iface.TeamUserService;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 

@@ -4,7 +4,6 @@ import cn.edu.uestc.acmicpc.db.criteria.MessageCriteria;
 import cn.edu.uestc.acmicpc.db.dto.impl.MessageDto;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
 import cn.edu.uestc.acmicpc.web.dto.PageInfo;
-
 import java.util.List;
 
 /**

@@ -4,7 +4,6 @@ import cn.edu.uestc.acmicpc.db.criteria.TrainingUserCriteria;
 import cn.edu.uestc.acmicpc.db.dto.field.TrainingUserFields;
 import cn.edu.uestc.acmicpc.db.dto.impl.TrainingUserDto;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
-
 import java.util.List;
 import java.util.Set;
 

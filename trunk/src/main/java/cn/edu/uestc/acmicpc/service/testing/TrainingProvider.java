@@ -4,7 +4,6 @@ import cn.edu.uestc.acmicpc.db.dto.field.TrainingFields;
 import cn.edu.uestc.acmicpc.db.dto.impl.TrainingDto;
 import cn.edu.uestc.acmicpc.service.iface.TrainingService;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 

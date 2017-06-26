@@ -1,7 +1,6 @@
 package cn.edu.uestc.acmicpc.util.helper;
 
 import cn.edu.uestc.acmicpc.util.enums.OnlineJudgeReturnType;
-
 import java.security.MessageDigest;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;

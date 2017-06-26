@@ -3,7 +3,6 @@ package cn.edu.uestc.acmicpc.service;
 import cn.edu.uestc.acmicpc.service.iface.CompileInfoService;
 import cn.edu.uestc.acmicpc.testing.PersistenceITTest;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.testng.Assert;
 import org.testng.annotations.Test;

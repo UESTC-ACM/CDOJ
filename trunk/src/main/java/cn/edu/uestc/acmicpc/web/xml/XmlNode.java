@@ -1,7 +1,6 @@
 package cn.edu.uestc.acmicpc.web.xml;
 
 import cn.edu.uestc.acmicpc.util.exception.AppException;
-
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;

@@ -3,7 +3,6 @@ package cn.edu.uestc.acmicpc.db.criteria;
 import cn.edu.uestc.acmicpc.db.dto.impl.MessageDto;
 import cn.edu.uestc.acmicpc.db.entity.Message;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
-
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Restrictions;
 

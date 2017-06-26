@@ -4,7 +4,6 @@ import cn.edu.uestc.acmicpc.db.dto.BaseDto;
 import cn.edu.uestc.acmicpc.db.dto.BaseDtoBuilder;
 import cn.edu.uestc.acmicpc.db.entity.ContestTeam;
 import cn.edu.uestc.acmicpc.util.annotation.Fields;
-
 import java.util.Map;
 
 @Fields({ "contestTeamId", "contestId", "teamId", "status", "comment", "teamByTeamId.leaderId" })

@@ -8,13 +8,11 @@ import cn.edu.uestc.acmicpc.db.entity.TrainingPlatformInfo;
 import cn.edu.uestc.acmicpc.service.iface.TrainingPlatformInfoService;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
 import cn.edu.uestc.acmicpc.util.exception.AppExceptionUtil;
-
+import java.util.List;
+import java.util.Set;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
-import java.util.Set;
 
 @Service
 @Transactional(rollbackFor = Exception.class)

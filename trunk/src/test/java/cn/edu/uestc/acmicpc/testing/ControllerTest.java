@@ -1,5 +1,8 @@
 package cn.edu.uestc.acmicpc.testing;
 
+import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.setup.MockMvcBuilders.standaloneSetup;
+
 import cn.edu.uestc.acmicpc.config.TestContext;
 import cn.edu.uestc.acmicpc.config.WebMVCConfig;
 import cn.edu.uestc.acmicpc.config.WebMVCResource;
@@ -20,10 +23,10 @@ import cn.edu.uestc.acmicpc.service.iface.TrainingService;
 import cn.edu.uestc.acmicpc.service.iface.TrainingUserService;
 import cn.edu.uestc.acmicpc.service.iface.UserSerialKeyService;
 import cn.edu.uestc.acmicpc.service.iface.UserService;
-
-import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.setup.MockMvcBuilders.standaloneSetup;
-
+import java.lang.reflect.Field;
+import java.nio.charset.Charset;
+import java.util.ArrayList;
+import java.util.List;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,11 +38,6 @@ import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
-
-import java.lang.reflect.Field;
-import java.nio.charset.Charset;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Abstract test to define constant variables for controller tests.

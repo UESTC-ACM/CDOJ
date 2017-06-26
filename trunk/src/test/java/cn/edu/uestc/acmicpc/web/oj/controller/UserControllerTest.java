@@ -15,16 +15,13 @@ import cn.edu.uestc.acmicpc.testing.ControllerTest;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
 import cn.edu.uestc.acmicpc.util.helper.StringUtil;
 import cn.edu.uestc.acmicpc.web.oj.controller.user.UserController;
-
+import com.alibaba.fastjson.JSON;
+import java.util.UUID;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mock.web.MockHttpSession;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
-
-import com.alibaba.fastjson.JSON;
-
-import java.util.UUID;
 
 /**
  * Mock test for {@link UserController}.

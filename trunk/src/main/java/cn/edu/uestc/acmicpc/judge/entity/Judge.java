@@ -3,14 +3,12 @@ package cn.edu.uestc.acmicpc.judge.entity;
 import cn.edu.uestc.acmicpc.judge.core.JudgeCore;
 import cn.edu.uestc.acmicpc.judge.core.JudgeResult;
 import cn.edu.uestc.acmicpc.util.enums.OnlineJudgeReturnType;
-
+import java.util.concurrent.BlockingQueue;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
-
-import java.util.concurrent.BlockingQueue;
 
 /**
  * Problem judge component.

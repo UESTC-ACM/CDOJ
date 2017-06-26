@@ -1,10 +1,9 @@
 package cn.edu.uestc.acmicpc.util;
 
-import org.testng.Assert;
-import org.testng.annotations.Test;
-
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import org.testng.Assert;
+import org.testng.annotations.Test;
 
 /**
  * Utility class test

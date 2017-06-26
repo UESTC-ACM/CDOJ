@@ -7,13 +7,11 @@ import cn.edu.uestc.acmicpc.db.dto.BaseDtoBuilder;
 import cn.edu.uestc.acmicpc.db.dto.Fields;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
 import cn.edu.uestc.acmicpc.web.dto.PageInfo;
-
-import org.hibernate.criterion.DetachedCriteria;
-
 import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import org.hibernate.criterion.DetachedCriteria;
 
 /**
  * Global DAO interface.

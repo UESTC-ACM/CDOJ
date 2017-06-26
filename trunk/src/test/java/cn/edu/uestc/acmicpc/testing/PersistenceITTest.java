@@ -12,7 +12,6 @@ import cn.edu.uestc.acmicpc.service.testing.TrainingPlatformInfoProvider;
 import cn.edu.uestc.acmicpc.service.testing.TrainingProvider;
 import cn.edu.uestc.acmicpc.service.testing.TrainingUserProvider;
 import cn.edu.uestc.acmicpc.service.testing.UserProvider;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.testng.AbstractTransactionalTestNGSpringContextTests;

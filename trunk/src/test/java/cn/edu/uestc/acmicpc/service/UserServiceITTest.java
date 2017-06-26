@@ -11,13 +11,11 @@ import cn.edu.uestc.acmicpc.testing.PersistenceITTest;
 import cn.edu.uestc.acmicpc.util.enums.AuthenticationType;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
 import cn.edu.uestc.acmicpc.util.exception.FieldNotUniqueException;
-
+import java.sql.Timestamp;
+import java.util.Date;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.testng.Assert;
 import org.testng.annotations.Test;
-
-import java.sql.Timestamp;
-import java.util.Date;
 
 /**
  * Integration test cases for {@link UserService}.

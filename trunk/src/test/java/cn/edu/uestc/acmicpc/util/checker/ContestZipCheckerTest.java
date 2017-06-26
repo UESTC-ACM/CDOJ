@@ -1,17 +1,15 @@
 package cn.edu.uestc.acmicpc.util.checker;
 
-import cn.edu.uestc.acmicpc.util.exception.AppException;
-
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import cn.edu.uestc.acmicpc.util.exception.AppException;
+import java.io.File;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
-
-import java.io.File;
 
 /**
  * Test cases for {@link cn.edu.uestc.acmicpc.util.checker.ContestZipChecker}

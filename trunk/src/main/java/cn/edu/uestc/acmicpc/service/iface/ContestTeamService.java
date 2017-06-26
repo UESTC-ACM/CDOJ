@@ -6,7 +6,6 @@ import cn.edu.uestc.acmicpc.db.dto.impl.contestteam.ContestTeamListDto;
 import cn.edu.uestc.acmicpc.db.dto.impl.contestteam.ContestTeamReportDto;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
 import cn.edu.uestc.acmicpc.web.dto.PageInfo;
-
 import java.util.List;
 
 /**

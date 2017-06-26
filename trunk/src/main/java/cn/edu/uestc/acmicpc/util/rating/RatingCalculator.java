@@ -7,7 +7,6 @@ import cn.edu.uestc.acmicpc.util.exception.AppException;
 import cn.edu.uestc.acmicpc.web.dto.TrainingRating;
 import cn.edu.uestc.acmicpc.web.rank.TrainingRankList;
 import cn.edu.uestc.acmicpc.web.rank.TrainingRankListUser;
-
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;

@@ -3,12 +3,10 @@ package cn.edu.uestc.acmicpc.util.helper;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
 import cn.edu.uestc.acmicpc.web.dto.FileInformationDto;
 import cn.edu.uestc.acmicpc.web.dto.FileUploadDto;
-
-import org.springframework.web.multipart.MultipartFile;
-
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
+import org.springframework.web.multipart.MultipartFile;
 
 /**
  * File uploading util methods.

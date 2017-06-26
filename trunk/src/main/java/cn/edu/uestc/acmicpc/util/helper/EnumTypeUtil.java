@@ -5,7 +5,6 @@ import cn.edu.uestc.acmicpc.util.enums.AuthenticationType;
 import cn.edu.uestc.acmicpc.util.enums.EnumType;
 import cn.edu.uestc.acmicpc.util.enums.OnlineJudgeReturnType;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
-
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;

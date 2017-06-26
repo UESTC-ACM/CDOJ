@@ -3,12 +3,10 @@ package cn.edu.uestc.acmicpc.db.criteria;
 import cn.edu.uestc.acmicpc.db.dto.impl.ContestDto;
 import cn.edu.uestc.acmicpc.db.entity.Contest;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
-
+import java.sql.Timestamp;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.LogicalExpression;
 import org.hibernate.criterion.Restrictions;
-
-import java.sql.Timestamp;
 
 public class ContestCriteria extends BaseCriteria<Contest, ContestDto> {
 

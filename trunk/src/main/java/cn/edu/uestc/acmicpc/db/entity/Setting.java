@@ -1,7 +1,6 @@
 package cn.edu.uestc.acmicpc.db.entity;
 
 import cn.edu.uestc.acmicpc.util.annotation.KeyField;
-
 import java.io.Serializable;
 import javax.persistence.Basic;
 import javax.persistence.Column;

@@ -1,7 +1,6 @@
 package cn.edu.uestc.acmicpc.db.dto;
 
 import com.google.common.collect.Lists;
-
 import java.util.List;
 
 /**

@@ -8,9 +8,11 @@ import cn.edu.uestc.acmicpc.web.rank.RankList;
 import cn.edu.uestc.acmicpc.web.rank.RankListItem;
 import cn.edu.uestc.acmicpc.web.rank.RankListProblem;
 import cn.edu.uestc.acmicpc.web.rank.RankListUser;
-
-import org.springframework.web.servlet.view.document.AbstractJExcelView;
-
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import jxl.format.Alignment;
 import jxl.format.Colour;
 import jxl.write.Label;
@@ -18,13 +20,7 @@ import jxl.write.WritableCellFormat;
 import jxl.write.WritableSheet;
 import jxl.write.WritableWorkbook;
 import jxl.write.WriteException;
-
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import org.springframework.web.servlet.view.document.AbstractJExcelView;
 
 /**
  * Contest rank list excel view

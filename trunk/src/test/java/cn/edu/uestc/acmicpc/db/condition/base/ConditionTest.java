@@ -3,7 +3,6 @@ package cn.edu.uestc.acmicpc.db.condition.base;
 import cn.edu.uestc.acmicpc.db.condition.base.Condition.ConditionType;
 import cn.edu.uestc.acmicpc.db.condition.base.Condition.JoinedType;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
-
 import org.testng.Assert;
 import org.testng.annotations.Test;
 

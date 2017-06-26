@@ -14,15 +14,13 @@ import cn.edu.uestc.acmicpc.util.enums.OnlineJudgeResultType;
 import cn.edu.uestc.acmicpc.util.enums.OnlineJudgeReturnType;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
 import cn.edu.uestc.acmicpc.web.dto.PageInfo;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.testng.Assert;
-import org.testng.annotations.Test;
-
 import java.sql.Timestamp;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.testng.Assert;
+import org.testng.annotations.Test;
 
 /**
  * test cases for {@link cn.edu.uestc.acmicpc.service.iface.StatusService}

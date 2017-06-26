@@ -8,7 +8,6 @@ import cn.edu.uestc.acmicpc.util.enums.TrainingResultFieldType;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
 import cn.edu.uestc.acmicpc.web.rank.TrainingRankList;
 import cn.edu.uestc.acmicpc.web.rank.TrainingRankListUser;
-
 import java.util.LinkedList;
 import java.util.List;
 

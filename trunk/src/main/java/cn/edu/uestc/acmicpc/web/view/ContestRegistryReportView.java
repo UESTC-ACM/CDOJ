@@ -3,9 +3,11 @@ package cn.edu.uestc.acmicpc.web.view;
 import cn.edu.uestc.acmicpc.db.dto.impl.contestteam.ContestTeamReportDto;
 import cn.edu.uestc.acmicpc.db.dto.impl.teamUser.TeamUserReportDto;
 import cn.edu.uestc.acmicpc.util.enums.ContestRegistryStatusType;
-
-import org.springframework.web.servlet.view.document.AbstractJExcelView;
-
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import jxl.CellView;
 import jxl.format.Colour;
 import jxl.write.Label;
@@ -13,13 +15,7 @@ import jxl.write.WritableCellFormat;
 import jxl.write.WritableSheet;
 import jxl.write.WritableWorkbook;
 import jxl.write.WriteException;
-
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import org.springframework.web.servlet.view.document.AbstractJExcelView;
 
 @SuppressWarnings("deprecation")
 public class ContestRegistryReportView extends AbstractJExcelView {

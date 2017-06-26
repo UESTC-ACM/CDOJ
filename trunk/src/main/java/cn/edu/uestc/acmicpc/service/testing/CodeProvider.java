@@ -4,7 +4,6 @@ import cn.edu.uestc.acmicpc.db.dto.field.CodeFields;
 import cn.edu.uestc.acmicpc.db.dto.impl.CodeDto;
 import cn.edu.uestc.acmicpc.service.iface.CodeService;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 

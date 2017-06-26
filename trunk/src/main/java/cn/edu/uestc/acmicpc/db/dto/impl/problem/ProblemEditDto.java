@@ -1,12 +1,10 @@
 package cn.edu.uestc.acmicpc.db.dto.impl.problem;
 
 import cn.edu.uestc.acmicpc.util.enums.ProblemType;
-
-import org.hibernate.validator.constraints.Length;
-import org.hibernate.validator.constraints.Range;
-
 import java.util.Objects;
 import javax.validation.constraints.NotNull;
+import org.hibernate.validator.constraints.Length;
+import org.hibernate.validator.constraints.Range;
 
 /**
  * Dto post from problem editor.

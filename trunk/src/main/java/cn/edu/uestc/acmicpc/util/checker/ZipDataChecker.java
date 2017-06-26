@@ -4,7 +4,6 @@ import cn.edu.uestc.acmicpc.util.checker.base.Checker;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
 import cn.edu.uestc.acmicpc.util.exception.AppExceptionUtil;
 import cn.edu.uestc.acmicpc.util.helper.FileUtil;
-
 import java.io.File;
 import java.util.HashSet;
 import java.util.LinkedList;

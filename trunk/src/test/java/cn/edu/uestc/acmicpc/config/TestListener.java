@@ -1,7 +1,6 @@
 package cn.edu.uestc.acmicpc.config;
 
 import cn.edu.uestc.acmicpc.util.log.LogConstants;
-
 import org.testng.ITestContext;
 import org.testng.ITestResult;
 import org.testng.TestListenerAdapter;

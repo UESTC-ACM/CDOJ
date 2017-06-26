@@ -8,14 +8,14 @@ import cn.edu.uestc.acmicpc.judge.entity.JudgeItem;
 import cn.edu.uestc.acmicpc.judge.entity.Scheduler;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
 import cn.edu.uestc.acmicpc.util.settings.Settings;
-import org.apache.log4j.LogManager;
-import org.apache.log4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationContext;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
 
 /**
  * Judge main service, use multi-thread architecture to process judge

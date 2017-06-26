@@ -1,5 +1,8 @@
 package cn.edu.uestc.acmicpc.config;
 
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
+
 import cn.edu.uestc.acmicpc.db.dao.iface.ProblemDao;
 import cn.edu.uestc.acmicpc.db.dao.iface.UserDao;
 import cn.edu.uestc.acmicpc.db.dto.impl.SettingDto;
@@ -22,10 +25,7 @@ import cn.edu.uestc.acmicpc.service.impl.ProblemServiceImpl;
 import cn.edu.uestc.acmicpc.service.impl.UserServiceImpl;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
 import cn.edu.uestc.acmicpc.util.settings.SettingsID;
-
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
-
+import com.alibaba.druid.pool.DruidDataSource;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -37,8 +37,6 @@ import org.springframework.context.annotation.PropertySource;
 import org.springframework.orm.hibernate4.HibernateTransactionManager;
 import org.springframework.orm.hibernate4.LocalSessionFactoryBean;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
-
-import com.alibaba.druid.pool.DruidDataSource;
 
 @Configuration
 @ComponentScan(basePackages = {

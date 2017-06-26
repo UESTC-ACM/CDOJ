@@ -1,7 +1,6 @@
 package cn.edu.uestc.acmicpc.util.helper;
 
 import cn.edu.uestc.acmicpc.util.exception.AppException;
-
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.File;

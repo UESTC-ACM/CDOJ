@@ -1,7 +1,6 @@
 package cn.edu.uestc.acmicpc.util.helper;
 
 import cn.edu.uestc.acmicpc.db.dto.BaseDto;
-
 import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;

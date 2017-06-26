@@ -5,7 +5,6 @@ import cn.edu.uestc.acmicpc.db.entity.TrainingContest;
 import cn.edu.uestc.acmicpc.util.enums.TrainingContestType;
 import cn.edu.uestc.acmicpc.util.enums.TrainingPlatformType;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
-
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Restrictions;
 

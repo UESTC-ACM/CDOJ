@@ -6,13 +6,11 @@ import cn.edu.uestc.acmicpc.util.helper.FileUploadUtil;
 import cn.edu.uestc.acmicpc.util.settings.Settings;
 import cn.edu.uestc.acmicpc.web.dto.FileInformationDto;
 import cn.edu.uestc.acmicpc.web.dto.FileUploadDto;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
 import java.io.File;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 @Service
 public class PictureServiceImpl extends AbstractService implements PictureService {

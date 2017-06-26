@@ -1,11 +1,9 @@
 package cn.edu.uestc.acmicpc.util.helper;
 
+import au.com.bytecode.opencsv.CSVReader;
 import cn.edu.uestc.acmicpc.util.annotation.CSVMap;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
 import cn.edu.uestc.acmicpc.util.exception.AppExceptionUtil;
-
-import au.com.bytecode.opencsv.CSVReader;
-
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;

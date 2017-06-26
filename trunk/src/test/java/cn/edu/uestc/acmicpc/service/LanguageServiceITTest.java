@@ -4,12 +4,10 @@ import cn.edu.uestc.acmicpc.db.dto.impl.LanguageDto;
 import cn.edu.uestc.acmicpc.service.iface.LanguageService;
 import cn.edu.uestc.acmicpc.testing.PersistenceITTest;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
-
+import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.testng.Assert;
 import org.testng.annotations.Test;
-
-import java.util.List;
 
 /**
  * Integration test cases for {@link cn.edu.uestc.acmicpc.service.iface.LanguageService}.

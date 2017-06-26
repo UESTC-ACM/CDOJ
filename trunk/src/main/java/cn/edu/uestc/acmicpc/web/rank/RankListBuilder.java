@@ -3,7 +3,6 @@ package cn.edu.uestc.acmicpc.web.rank;
 import cn.edu.uestc.acmicpc.db.dto.impl.contestteam.ContestTeamListDto;
 import cn.edu.uestc.acmicpc.db.dto.impl.teamUser.TeamUserListDto;
 import cn.edu.uestc.acmicpc.util.enums.OnlineJudgeReturnType;
-
 import java.sql.Timestamp;
 import java.util.Arrays;
 import java.util.HashMap;

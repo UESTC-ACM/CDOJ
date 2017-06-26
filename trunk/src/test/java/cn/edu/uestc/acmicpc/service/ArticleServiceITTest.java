@@ -14,13 +14,11 @@ import cn.edu.uestc.acmicpc.util.enums.ArticleType;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
 import cn.edu.uestc.acmicpc.util.helper.ArrayUtil;
 import cn.edu.uestc.acmicpc.web.dto.PageInfo;
-
+import java.sql.Timestamp;
+import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.testng.Assert;
 import org.testng.annotations.Test;
-
-import java.sql.Timestamp;
-import java.util.List;
 
 /**
  * Integration test cases for
