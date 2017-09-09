@@ -14,3 +14,4 @@ trunk/build/
 target/
 /.vagrant/
 *.log
+bazel-*
