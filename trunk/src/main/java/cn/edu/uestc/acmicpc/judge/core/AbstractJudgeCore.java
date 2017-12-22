@@ -41,7 +41,7 @@ public abstract class AbstractJudgeCore implements JudgeCore {
     if (!dir.exists() && !dir.mkdirs()) {
       throw new AppException("Cannot create " + type + " directory");
     }
-    return path;
+    return dir.getAbsolutePath() + "/";
   }
 
   /**
@@ -77,7 +77,7 @@ public abstract class AbstractJudgeCore implements JudgeCore {
           p.getInputStream()));
       String line;
       while ((line = bufferedReader.readLine()) != null) {
-        sb.append(line);
+        sb.append(line).append("\n");
       }
     } catch (Exception ignored) {
     } finally {

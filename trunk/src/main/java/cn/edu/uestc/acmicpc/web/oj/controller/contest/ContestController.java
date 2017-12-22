@@ -1196,6 +1196,7 @@ public class ContestController extends BaseController {
       } catch (AppException e) {
         json.put("result", "error");
         json.put("error_msg", e.getMessage());
+        e.printStackTrace();
       }
     }
     return json;

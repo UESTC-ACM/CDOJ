@@ -64,8 +64,7 @@ public class Judge implements Runnable {
   /**
    * Judge judgeItem by judge core.
    *
-   * @param judgeItem
-   *          judge item to be judged
+   * @param judgeItem judge item to be judged
    */
   void judge(JudgeItem judgeItem) {
     LOGGER.info("[" + judgeName + "] Start judging status#"
@@ -84,6 +83,7 @@ public class Judge implements Runnable {
       judgeItem.update(true);
     } catch (Exception e) {
       LOGGER.error(e);
+      e.printStackTrace();
       judgeItem.getStatus().setResultId(OnlineJudgeReturnType.OJ_SE.ordinal());
       judgeItem.update(true);
     }
@@ -100,13 +100,17 @@ public class Judge implements Runnable {
     judgeItem.getStatus().setResultId(result.ordinal());
     Integer oldMemoryCost = judgeItem.getStatus().getMemoryCost();
     Integer currentMemoryCost = judgeResult.getMemoryCost();
-    judgeItem.getStatus().setMemoryCost(Math.max(currentMemoryCost, oldMemoryCost));
+    if (oldMemoryCost == null) {
+      judgeItem.getStatus().setMemoryCost(currentMemoryCost);
+    } else if (currentMemoryCost != null) {
+      judgeItem.getStatus().setMemoryCost(Math.max(currentMemoryCost, oldMemoryCost));
+    }
 
     Integer oldTimeCost = judgeItem.getStatus().getTimeCost();
     Integer currentTimeCost = judgeResult.getTimeCost();
     if (oldTimeCost == null) {
       judgeItem.getStatus().setTimeCost(currentTimeCost);
-    } else {
+    } else if (currentTimeCost != null) {
       judgeItem.getStatus().setTimeCost(Math.max(currentTimeCost, oldTimeCost));
     }
 
