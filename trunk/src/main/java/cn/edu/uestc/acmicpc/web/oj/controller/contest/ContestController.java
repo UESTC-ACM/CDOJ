@@ -1145,17 +1145,16 @@ public class ContestController extends BaseController {
         contestProblemService.removeContestProblemByContestId(contestDto.getContestId());
         // Add new contest problems
         for (int order = 0; order < problemIdList.size(); order++) {
-          Integer contestProblemId = contestProblemService.createNewContestProblem(
+          contestProblemService.createNewContestProblem(
               ContestProblemDto.builder()
                   .setContestId(contestDto.getContestId())
                   .setOrder(order)
                   .setProblemId(problemIdList.get(order))
-                  .build()
-          );
+                  .build());
 
           // Check problem added success.
           ContestProblemDto contestProblemDto = contestProblemService
-              .getContestProblemDto(contestProblemId);
+              .getBasicContestProblemDto(contestDto.getContestId(), problemIdList.get(order));
           AppExceptionUtil.assertNotNull(contestProblemDto);
           AppExceptionUtil.assertNotNull(contestProblemDto.getContestProblemId());
         }

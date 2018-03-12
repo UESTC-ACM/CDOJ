@@ -403,7 +403,8 @@ public abstract class DaoImpl<E extends Serializable> extends BaseDao implements
   public <T extends BaseDto<E>> List<T> findAll(
       Class<T> clazz, BaseDtoBuilder<T> builder,
       Condition condition) throws AppException {
-    AppExceptionUtil.assertTrue(clazz.isAnnotationPresent(Fields.class));
+    AppExceptionUtil.assertTrue(clazz.isAnnotationPresent(Fields.class),
+                                "the class " + clazz + " is not annotated with Fields.");
     String[] fields = clazz.getAnnotation(Fields.class).value();
     // TODO wrap the field by ``
     String queryField = ArrayUtil.join(fields, ",");

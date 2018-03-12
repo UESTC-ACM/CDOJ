@@ -23,7 +23,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class ContestProblemServiceImpl extends AbstractService implements ContestProblemService {
 
   private static final Comparator<ContestProblemDto> ORDER_COMPARATOR =
-      (a, b) -> a.getOrder().compareTo(b.getOrder());
+      Comparator.comparing(ContestProblemDto::getOrder);
 
   private final ContestProblemDao contestProblemDao;
 
@@ -33,11 +33,13 @@ public class ContestProblemServiceImpl extends AbstractService implements Contes
   }
 
   @Override
-  public ContestProblemDto getContestProblemDto(Integer contestProblemId) throws AppException {
-    AppExceptionUtil.assertNotNull(contestProblemId);
-    return contestProblemDao.getDtoByUniqueField(ContestProblemDto.class,
-        ContestProblemDto.builder(),
-        "contestProblemId", contestProblemId);
+  public ContestProblemDto getBasicContestProblemDto(Integer contestId, Integer problemId) throws AppException {
+    ContestProblemCriteria criteria = new ContestProblemCriteria();
+    criteria.contestId = contestId;
+    criteria.problemId = problemId;
+    List<ContestProblemDto> result =
+        contestProblemDao.findAll(criteria, null, ContestProblemFields.BASIC_FIELDS);
+    return result.isEmpty() ? null : result.iterator().next();
   }
 
   @Override

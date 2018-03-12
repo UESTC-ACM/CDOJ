@@ -12,14 +12,14 @@ public interface ContestProblemService {
   /**
    * Gets
    * {@link cn.edu.uestc.acmicpc.db.dto.impl.ContestProblemDto}
-   * by contest problem id.
+   * by contest id and problem id, with basic fields filled.
    *
-   * @param contestProblemId contest problem id.
+   * @param contestId the contest id
+   * @param problemId the problem id.
    * @return {@link cn.edu.uestc.acmicpc.db.dto.impl.ContestProblemDto}
    * entity.
-   * @throws AppException
    */
-  ContestProblemDto getContestProblemDto(Integer contestProblemId) throws AppException;
+  ContestProblemDto getBasicContestProblemDto(Integer contestId, Integer problemId) throws AppException;
 
   /**
    * Gets
