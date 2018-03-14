@@ -16,7 +16,7 @@ public class LrunCore extends AbstractJudgeCore {
   private static final Logger logger = Logger.getLogger(LrunCore.class);
 
   private static final String COMMAND_LINE_PATTERN =
-      "py-lrun-core.py -l %s -w %s -d %s -s %s -t %d -m %d -f %s";
+      "py-lrun-core.py -l %s -w %s -d %s -s %s -t %d -m %d -f %s -o %d";
 
   public LrunCore(String workPath, String tempPath, Settings settings) {
     super(workPath, tempPath, settings);
@@ -32,11 +32,12 @@ public class LrunCore extends AbstractJudgeCore {
     int memory = judgeItem.getStatus().getLanguage().equals("Java")
         ? judgeItem.getStatus().getJavaMemoryLimit()
         : judgeItem.getStatus().getMemoryLimit();
+    int outputlimit = judgeItem.getStatus().getOutputLimit();
     String command = String.format(COMMAND_LINE_PATTERN,
         language, tempPath, dataDir,
         judgeItem.getSourceNameWithoutExtension(),
         timeLimit, memory,
-        Integer.toString(currentTestCase) /* data file */);
+        Integer.toString(currentTestCase) /* data file */,outputlimit);
     if (currentTestCase == 1) {
       command = command + " -c";
     }
@@ -88,7 +89,11 @@ public class LrunCore extends AbstractJudgeCore {
       result.setResult(OnlineJudgeReturnType.OJ_TLE);
     } else if ("RE".equals(judgeResult)) {
       result.setResult(OnlineJudgeReturnType.OJ_RE_SEGV);
-    } else {
+    } else if ( "MLE".equals( judgeResult ) ){
+      result.setResult(OnlineJudgeReturnType.OJ_MLE);
+    }else if ( "OLE".equals( judgeResult ) ){
+      result.setResult(OnlineJudgeReturnType.OJ_OLE);
+    }else {
       result.setResult(OnlineJudgeReturnType.OJ_SE);
     }
     return result;
