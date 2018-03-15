@@ -26,13 +26,9 @@ public class LrunCore extends AbstractJudgeCore {
   protected String buildJudgeShellCommand(int currentTestCase, JudgeItem judgeItem) {
     String language = normalizeLanguage(judgeItem.getStatus().getLanguageId() );
     String dataDir = settings.DATA_PATH + "/" + judgeItem.getStatus().getProblemId() + "/";
-    int timeLimit = language == "java"
-        ? judgeItem.getStatus().getJavaTimeLimit()
-        : judgeItem.getStatus().getTimeLimit();
-    int memory = language == "java"
-        ? judgeItem.getStatus().getJavaMemoryLimit()
-        : judgeItem.getStatus().getMemoryLimit();
-    int outputlimit = judgeItem.getStatus().getOutputLimit();
+    int timeLimit = judgeItem.getStatus().getTimeLimit();
+    int memory = judgeItem.getStatus().getMemoryLimit() * 1024; // change mb to kb
+    int outputlimit = judgeItem.getStatus().getOutputLimit() * 1024; // change mb to kb
     String command = String.format(COMMAND_LINE_PATTERN,
         language, tempPath, dataDir,
         judgeItem.getSourceNameWithoutExtension(),

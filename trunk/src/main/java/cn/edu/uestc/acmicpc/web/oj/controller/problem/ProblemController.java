@@ -249,9 +249,7 @@ public class ProblemController extends BaseController {
         problemDto.setSource(problemEditDto.getSource());
 
         problemDto.setTimeLimit(problemEditDto.getTimeLimit());
-        problemDto.setJavaTimeLimit(problemEditDto.getJavaTimeLimit());
         problemDto.setMemoryLimit(problemEditDto.getMemoryLimit());
-        problemDto.setJavaMemoryLimit(problemEditDto.getJavaMemoryLimit());
         problemDto.setOutputLimit(problemEditDto.getOutputLimit());
         problemDto.setIsSpj(problemEditDto.getIsSpj());
         problemDto.setType(problemEditDto.getType());

@@ -33,28 +33,9 @@
                      ng-require
                      id="timeLimit"
                      class="form-control"/><span
-                class="input-group-addon">ms</span>
+                class="input-group-addon">MS</span>
             </div>
             <ui-validate-info value="fieldInfo" for="timeLimit"></ui-validate-info>
-          </div>
-        </div>
-      </div>
-      <div class="col-lg-6">
-        <div class="form-group">
-          <label for="javaTimeLimit"
-                 class="col-sm-4 col-lg-6 control-label">Java Time Limit</label>
-
-          <div class="col-sm-6">
-            <div class="input-group input-group-sm">
-              <input type="number"
-                     ng-model="problem.javaTimeLimit"
-                     ng-min="0"
-                     ng-max="60000"
-                     ng-require
-                     id="javaTimeLimit" class="form-control"/><span
-                class="input-group-addon">ms</span>
-            </div>
-            <ui-validate-info value="fieldInfo" for="javaTimeLimit"></ui-validate-info>
           </div>
         </div>
       </div>
@@ -68,31 +49,12 @@
               <input type="number"
                      ng-model="problem.memoryLimit"
                      ng-min="0"
-                     ng-max="262144"
+                     ng-max="512"
                      ng-require
                      id="memoryLimit" class="form-control"/><span
-                class="input-group-addon">kb</span>
+                class="input-group-addon">MB</span>
             </div>
             <ui-validate-info value="fieldInfo" for="memoryLimit"></ui-validate-info>
-          </div>
-        </div>
-      </div>
-      <div class="col-lg-6">
-        <div class="form-group">
-          <label for="javaMemoryLimit"
-                 class="col-sm-4 col-lg-6 control-label">Java Memory Limit</label>
-
-          <div class="col-sm-6">
-            <div class="input-group input-group-sm">
-              <input type="number"
-                     ng-model="problem.javaMemoryLimit"
-                     ng-min="0"
-                     ng-max="262144"
-                     ng-require
-                     id="javaMemoryLimit" class="form-control"/><span
-                class="input-group-addon">kb</span>
-            </div>
-            <ui-validate-info value="fieldInfo" for="javaMemoryLimit"></ui-validate-info>
           </div>
         </div>
       </div>
@@ -106,10 +68,10 @@
               <input type="number"
                      ng-model="problem.outputLimit"
                      ng-min="0"
-                     ng-max="262144"
+                     ng-max="512"
                      ng-require
                      id="outputLimit" class="form-control"/><span
-                class="input-group-addon">kb</span>
+                class="input-group-addon">MB</span>
             </div>
             <ui-validate-info value="fieldInfo" for="outputLimit"></ui-validate-info>
           </div>

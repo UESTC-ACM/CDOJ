@@ -74,10 +74,8 @@ cdoj
                   title: ""
                   isSpj: false
                   timeLimit: 1000
-                  javaTimeLimit: 3000
-                  memoryLimit: 65535
-                  javaMemoryLimit: 65535
-                  outputLimit: 65535
+                  memoryLimit: 64
+                  outputLimit: 64
                   isVisible: false
                   input: ""
                   output: ""

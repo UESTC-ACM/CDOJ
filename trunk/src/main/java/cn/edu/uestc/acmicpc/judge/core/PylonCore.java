@@ -48,18 +48,10 @@ public class PylonCore extends AbstractJudgeCore {
     stringBuilder.append(" -d ");
     stringBuilder.append(tempPath);
 
-    if (judgeItem.getStatus().getLanguage().equals("Java")) {
-      stringBuilder.append(" -t ");
-      stringBuilder.append(judgeItem.getStatus().getJavaTimeLimit());
-      stringBuilder.append(" -m ");
-      stringBuilder.append(judgeItem.getStatus()
-          .getJavaMemoryLimit());
-    } else {
-      stringBuilder.append(" -t ");
-      stringBuilder.append(judgeItem.getStatus().getTimeLimit());
-      stringBuilder.append(" -m ");
-      stringBuilder.append(judgeItem.getStatus().getMemoryLimit());
-    }
+    stringBuilder.append(" -t ");
+    stringBuilder.append(judgeItem.getStatus().getTimeLimit());
+    stringBuilder.append(" -m ");
+    stringBuilder.append(judgeItem.getStatus().getMemoryLimit());
 
     stringBuilder.append(" -o ");
     stringBuilder.append(judgeItem.getStatus().getOutputLimit());

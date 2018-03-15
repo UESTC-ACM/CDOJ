@@ -133,20 +133,6 @@
       "projections": ["FIELDS_FOR_JUDGE"]
     },
     {
-      "name": "javaMemoryLimit",
-      "type": "Integer",
-      "field": "problem.javaMemoryLimit",
-      "aliases": ["problem"],
-      "projections": ["FIELDS_FOR_JUDGE"]
-    },
-    {
-      "name": "javaTimeLimit",
-      "type": "Integer",
-      "field": "problem.javaTimeLimit",
-      "aliases": ["problem"],
-      "projections": ["FIELDS_FOR_JUDGE"]
-    },
-    {
       "name": "memoryLimit",
       "type": "Integer",
       "field": "problem.memoryLimit",

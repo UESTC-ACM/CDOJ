@@ -57,7 +57,7 @@ public class ContestImporterServiceImpl implements ContestImporterService {
   };
 
   private static final String[] problemAdditionalInfoTagNames = new String[]{
-      "javaTimeLimit", "javaMemoryLimit", "hint", "specialJudge"
+      "hint", "specialJudge"
   };
 
   private static final Map<String, String> problemTagsSetter;
@@ -71,9 +71,7 @@ public class ContestImporterServiceImpl implements ContestImporterService {
     problemTagsSetter.put("sampleInput", "setSampleInput");
     problemTagsSetter.put("sampleOutput", "setSampleOutput");
     problemTagsSetter.put("timeLimit", "setTimeLimit");
-    problemTagsSetter.put("javaTimeLimit", "setJavaTimeLimit");
     problemTagsSetter.put("memoryLimit", "setMemoryLimit");
-    problemTagsSetter.put("javaMemoryLimit", "setJavaMemoryLimit");
     problemTagsSetter.put("source", "setSource");
     problemTagsSetter.put("specialJudge", "setIsSpj");
     problemTagsSetter.put("hint", "setHint");
@@ -279,12 +277,6 @@ public class ContestImporterServiceImpl implements ContestImporterService {
     problemDto.setIsVisible(false);
     if (additionalTagSet.contains("specialJudge")) {
       problemDto.setIsSpj(false);
-    }
-    if (additionalTagSet.contains("javaTimeLimit")) {
-      problemDto.setJavaTimeLimit(problemDto.getTimeLimit() * 3);
-    }
-    if (additionalTagSet.contains("javaMemoryLimit")) {
-      problemDto.setJavaMemoryLimit(problemDto.getMemoryLimit());
     }
     return problemDto;
   }

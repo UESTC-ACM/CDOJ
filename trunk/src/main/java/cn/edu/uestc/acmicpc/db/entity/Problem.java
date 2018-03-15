@@ -46,8 +46,7 @@ public class Problem implements Serializable {
         + ", sampleInput='" + sampleInput + '\'' + ", sampleOutput='" + sampleOutput + '\''
         + ", hint='" + hint + '\'' + ", source='" + source + '\'' + ", timeLimit=" + timeLimit
         + ", memoryLimit=" + memoryLimit + ", solved=" + solved + ", tried=" + tried + ", isSpj="
-        + isSpj + ", isVisible=" + isVisible + ", outputLimit=" + outputLimit + ", javaTimeLimit="
-        + javaTimeLimit + ", javaMemoryLimit=" + javaMemoryLimit + ", dataCount=" + dataCount
+        + isSpj + ", isVisible=" + isVisible + ", outputLimit=" + outputLimit + ", dataCount=" + dataCount
         + ", difficulty=" + difficulty + ", type=" + type.name() + '}';
   }
 
@@ -256,32 +255,6 @@ public class Problem implements Serializable {
 
   public void setOutputLimit(Integer outputLimit) {
     this.outputLimit = outputLimit;
-  }
-
-  private Integer javaTimeLimit = 3000;
-
-  @Column(name = "javaTimeLimit", nullable = false, insertable = true, updatable = true,
-      length = 10, precision = 0)
-  @Basic
-  public Integer getJavaTimeLimit() {
-    return javaTimeLimit;
-  }
-
-  public void setJavaTimeLimit(Integer javaTimeLimit) {
-    this.javaTimeLimit = javaTimeLimit;
-  }
-
-  private Integer javaMemoryLimit = 65535;
-
-  @Column(name = "javaMemoryLimit", nullable = false, insertable = true, updatable = true,
-      length = 10, precision = 0)
-  @Basic
-  public Integer getJavaMemoryLimit() {
-    return javaMemoryLimit;
-  }
-
-  public void setJavaMemoryLimit(Integer javaMemoryLimit) {
-    this.javaMemoryLimit = javaMemoryLimit;
   }
 
   private Integer dataCount = 0;

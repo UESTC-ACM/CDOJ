@@ -30,20 +30,12 @@ public class ProblemEditDto {
   @Range(min = 0, max = 60000, message = "Time limit should between 0 and 60000")
   private Integer timeLimit;
 
-  @NotNull(message = "Time limit should between 0 and 60000")
-  @Range(min = 0, max = 60000, message = "Time limit should between 0 and 60000")
-  private Integer javaTimeLimit;
-
-  @NotNull(message = "Memory limit should between 0 and 262144")
-  @Range(min = 0, max = 262144, message = "Memory limit should between 0 and 262144")
+  @NotNull(message = "Memory limit should between 0 and 512")
+  @Range(min = 0, max = 512, message = "Memory limit should between 0 and 512")
   private Integer memoryLimit;
 
-  @NotNull(message = "Memory limit should between 0 and 262144")
-  @Range(min = 0, max = 262144, message = "Memory limit should between 0 and 262144")
-  private Integer javaMemoryLimit;
-
-  @NotNull(message = "Output limit should between 0 and 262144")
-  @Range(min = 0, max = 262144, message = "Output limit should between 0 and 262144")
+  @NotNull(message = "Output limit should between 0 and 512")
+  @Range(min = 0, max = 512, message = "Output limit should between 0 and 512")
   private Integer outputLimit;
 
   private Boolean isVisible;
@@ -63,8 +55,8 @@ public class ProblemEditDto {
   private ProblemType type;
 
   public ProblemEditDto(String action, Integer problemId, String description, String title,
-      Boolean isSpj, Integer timeLimit, Integer javaTimeLimit, Integer memoryLimit,
-      Integer javaMemoryLimit, Integer outputLimit, Boolean isVisible, String input, String output,
+      Boolean isSpj, Integer timeLimit, Integer memoryLimit,
+      Integer outputLimit, Boolean isVisible, String input, String output,
       String sampleInput, String sampleOutput, String hint, String source, ProblemType type) {
     this.action = action;
     this.problemId = problemId;
@@ -72,9 +64,7 @@ public class ProblemEditDto {
     this.title = title;
     this.isSpj = isSpj;
     this.timeLimit = timeLimit;
-    this.javaTimeLimit = javaTimeLimit;
     this.memoryLimit = memoryLimit;
-    this.javaMemoryLimit = javaMemoryLimit;
     this.outputLimit = outputLimit;
     this.isVisible = isVisible;
     this.input = input;
@@ -102,8 +92,6 @@ public class ProblemEditDto {
         && Objects.equals(this.input, that.input)
         && Objects.equals(this.isSpj, that.isSpj)
         && Objects.equals(this.isVisible, that.isVisible)
-        && Objects.equals(this.javaMemoryLimit, that.javaMemoryLimit)
-        && Objects.equals(this.javaTimeLimit, that.javaTimeLimit)
         && Objects.equals(this.memoryLimit, that.memoryLimit)
         && Objects.equals(this.output, that.output)
         && Objects.equals(this.outputLimit, that.outputLimit)
@@ -124,9 +112,7 @@ public class ProblemEditDto {
     result = 31 * result + (title != null ? title.hashCode() : 0);
     result = 31 * result + (isSpj != null ? isSpj.hashCode() : 0);
     result = 31 * result + (timeLimit != null ? timeLimit.hashCode() : 0);
-    result = 31 * result + (javaTimeLimit != null ? javaTimeLimit.hashCode() : 0);
     result = 31 * result + (memoryLimit != null ? memoryLimit.hashCode() : 0);
-    result = 31 * result + (javaMemoryLimit != null ? javaMemoryLimit.hashCode() : 0);
     result = 31 * result + (outputLimit != null ? outputLimit.hashCode() : 0);
     result = 31 * result + (isVisible != null ? isVisible.hashCode() : 0);
     result = 31 * result + (input != null ? input.hashCode() : 0);
@@ -179,28 +165,12 @@ public class ProblemEditDto {
     this.timeLimit = timeLimit;
   }
 
-  public Integer getJavaTimeLimit() {
-    return javaTimeLimit;
-  }
-
-  public void setJavaTimeLimit(Integer javaTimeLimit) {
-    this.javaTimeLimit = javaTimeLimit;
-  }
-
   public Integer getMemoryLimit() {
     return memoryLimit;
   }
 
   public void setMemoryLimit(Integer memoryLimit) {
     this.memoryLimit = memoryLimit;
-  }
-
-  public Integer getJavaMemoryLimit() {
-    return javaMemoryLimit;
-  }
-
-  public void setJavaMemoryLimit(Integer javaMemoryLimit) {
-    this.javaMemoryLimit = javaMemoryLimit;
   }
 
   public Integer getOutputLimit() {

@@ -57,28 +57,6 @@
       ]
     },
     {
-      "name": "javaTimeLimit",
-      "type": "Integer",
-      "field": "problem.javaTimeLimit",
-      "aliases": [
-        "problem"
-      ],
-      "projections": [
-        "DETAIL_FIELDS"
-      ]
-    },
-    {
-      "name": "javaMemoryLimit",
-      "type": "Integer",
-      "field": "problem.javaMemoryLimit",
-      "aliases": [
-        "problem"
-      ],
-      "projections": [
-        "DETAIL_FIELDS"
-      ]
-    },
-    {
       "name": "timeLimit",
       "type": "Integer",
       "field": "problem.timeLimit",

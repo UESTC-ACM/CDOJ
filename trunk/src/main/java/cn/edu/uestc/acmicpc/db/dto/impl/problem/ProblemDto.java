@@ -13,7 +13,7 @@ import java.util.Objects;
  */
 @Fields({ "problemId", "title", "description", "input", "output", "sampleInput",
     "sampleOutput", "hint", "source", "timeLimit", "memoryLimit", "solved", "tried",
-    "isSpj", "isVisible", "outputLimit", "javaTimeLimit", "javaMemoryLimit", "dataCount",
+    "isSpj", "isVisible", "outputLimit", "dataCount",
     "difficulty", "type" })
 public class ProblemDto implements BaseDto<Problem> {
 
@@ -33,8 +33,6 @@ public class ProblemDto implements BaseDto<Problem> {
   private Boolean isSpj;
   private Boolean isVisible;
   private Integer outputLimit;
-  private Integer javaTimeLimit;
-  private Integer javaMemoryLimit;
   private Integer dataCount;
   private Integer difficulty;
   private ProblemType type;
@@ -45,7 +43,7 @@ public class ProblemDto implements BaseDto<Problem> {
   private ProblemDto(Integer problemId, String title, String description, String input,
       String output, String sampleInput, String sampleOutput, String hint, String source,
       Integer timeLimit, Integer memoryLimit, Integer solved, Integer tried, Boolean isSpj,
-      Boolean isVisible, Integer outputLimit, Integer javaTimeLimit, Integer javaMemoryLimit,
+      Boolean isVisible, Integer outputLimit,
       Integer dataCount, Integer difficulty, ProblemType type) {
     this.problemId = problemId;
     this.title = title;
@@ -63,8 +61,6 @@ public class ProblemDto implements BaseDto<Problem> {
     this.isSpj = isSpj;
     this.isVisible = isVisible;
     this.outputLimit = outputLimit;
-    this.javaTimeLimit = javaTimeLimit;
-    this.javaMemoryLimit = javaMemoryLimit;
     this.dataCount = dataCount;
     this.difficulty = difficulty;
     this.type = type;
@@ -222,22 +218,6 @@ public class ProblemDto implements BaseDto<Problem> {
     this.isSpj = isSpj;
   }
 
-  public Integer getJavaTimeLimit() {
-    return javaTimeLimit;
-  }
-
-  public void setJavaTimeLimit(Integer javaTimeLimit) {
-    this.javaTimeLimit = javaTimeLimit;
-  }
-
-  public Integer getJavaMemoryLimit() {
-    return javaMemoryLimit;
-  }
-
-  public void setJavaMemoryLimit(Integer javaMemoryLimit) {
-    this.javaMemoryLimit = javaMemoryLimit;
-  }
-
   @Override
   public boolean equals(Object o) {
     if (this == o) {
@@ -255,8 +235,6 @@ public class ProblemDto implements BaseDto<Problem> {
         && Objects.equals(this.input, that.input)
         && Objects.equals(this.isSpj, that.isSpj)
         && Objects.equals(this.isVisible, that.isVisible)
-        && Objects.equals(this.javaMemoryLimit, that.javaMemoryLimit)
-        && Objects.equals(this.javaTimeLimit, that.javaTimeLimit)
         && Objects.equals(this.memoryLimit, that.memoryLimit)
         && Objects.equals(this.output, that.output)
         && Objects.equals(this.outputLimit, that.outputLimit)
@@ -289,8 +267,6 @@ public class ProblemDto implements BaseDto<Problem> {
     result = 31 * result + (isSpj != null ? isSpj.hashCode() : 0);
     result = 31 * result + (isVisible != null ? isVisible.hashCode() : 0);
     result = 31 * result + (outputLimit != null ? outputLimit.hashCode() : 0);
-    result = 31 * result + (javaTimeLimit != null ? javaTimeLimit.hashCode() : 0);
-    result = 31 * result + (javaMemoryLimit != null ? javaMemoryLimit.hashCode() : 0);
     result = 31 * result + (dataCount != null ? dataCount.hashCode() : 0);
     result = 31 * result + (difficulty != null ? difficulty.hashCode() : 0);
     result = 31 * result + (type != null ? type.hashCode() : 0);
@@ -319,14 +295,12 @@ public class ProblemDto implements BaseDto<Problem> {
     private String hint = "Sample code is here.";
     private String source = "Classcal problem";
     private Integer timeLimit = 1000;
-    private Integer memoryLimit = 65536;
+    private Integer memoryLimit = 64;
     private Integer solved = 0;
     private Integer tried = 0;
     private Boolean isSpj = false;
     private Boolean isVisible = true;
-    private Integer outputLimit = 8000;
-    private Integer javaTimeLimit = 3000;
-    private Integer javaMemoryLimit = 65536;
+    private Integer outputLimit = 64;
     private Integer dataCount = 1;
     private Integer difficulty = 1;
     private ProblemType type = ProblemType.NORMAL;
@@ -335,7 +309,7 @@ public class ProblemDto implements BaseDto<Problem> {
     public ProblemDto build() {
       return new ProblemDto(problemId, title, description, input, output, sampleInput,
           sampleOutput, hint, source, timeLimit, memoryLimit, solved, tried, isSpj, isVisible,
-          outputLimit, javaTimeLimit, javaMemoryLimit, dataCount, difficulty, type);
+          outputLimit, dataCount, difficulty, type);
     }
 
     @Override
@@ -356,8 +330,6 @@ public class ProblemDto implements BaseDto<Problem> {
       isSpj = (Boolean) properties.get("isSpj");
       isVisible = (Boolean) properties.get("isVisible");
       outputLimit = (Integer) properties.get("outputLimit");
-      javaTimeLimit = (Integer) properties.get("javaTimeLimit");
-      javaMemoryLimit = (Integer) properties.get("javaMemoryLimit");
       dataCount = (Integer) properties.get("dataCount");
       difficulty = (Integer) properties.get("difficulty");
       type = (ProblemType) properties.get("type");
@@ -431,16 +403,6 @@ public class ProblemDto implements BaseDto<Problem> {
 
     public Builder setIsSpj(Boolean isSpj) {
       this.isSpj = isSpj;
-      return this;
-    }
-
-    public Builder setJavaTimeLimit(Integer javaTimeLimit) {
-      this.javaTimeLimit = javaTimeLimit;
-      return this;
-    }
-
-    public Builder setJavaMemoryLimit(Integer javaMemoryLimit) {
-      this.javaMemoryLimit = javaMemoryLimit;
       return this;
     }
 
