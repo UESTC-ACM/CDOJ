@@ -629,7 +629,7 @@ VALUES
   (2, 'encoding', 'Default encoding', 'UTF-8'),
   (3, 'uploadFolder', 'Upload files store folder', 'uploads/'),
   (4, 'pictureFolder', 'Pictures folder', 'images/'),
-  (5, 'judgeCore', 'Judge core name', 'pyloncore'),
+  (5, 'judgeCore', 'Judge core name', 'lrun'),
   (6, 'dataPath', 'Data file path', 'data/'),
   (7, 'workPath', 'Judge work path', 'work/'),
   (8, 'judges', 'Judge threads', '[{"name":"judge1"},{"name":"judge2"},{"name":"judge3"},{"name":"judge4"}]'),
@@ -699,6 +699,8 @@ USE `uestcoj`;
 INSERT INTO `uestcoj`.`language` (`languageId`, `name`, `extension`, `param`, `OPTLOCK`) VALUES (1, 'C', '.c', '', 0);
 INSERT INTO `uestcoj`.`language` (`languageId`, `name`, `extension`, `param`, `OPTLOCK`) VALUES (2, 'C++', '.cc', '', 0);
 INSERT INTO `uestcoj`.`language` (`languageId`, `name`, `extension`, `param`, `OPTLOCK`) VALUES (3, 'Java', '.java', '', 0);
+INSERT INTO `uestcoj`.`language` (`languageId`, `name`, `extension`, `param`, `OPTLOCK`) VALUES (4, 'Python3', '.py', '', 0);
+INSERT INTO `uestcoj`.`language` (`languageId`, `name`, `extension`, `param`, `OPTLOCK`) VALUES (5, 'Python2', '.py', '', 0);
 
 COMMIT;
 

@@ -24,12 +24,12 @@ public class LrunCore extends AbstractJudgeCore {
 
   @Override
   protected String buildJudgeShellCommand(int currentTestCase, JudgeItem judgeItem) {
-    String language = normalizeLanguage(judgeItem.getStatus().getLanguage());
+    String language = normalizeLanguage(judgeItem.getStatus().getLanguageId() );
     String dataDir = settings.DATA_PATH + "/" + judgeItem.getStatus().getProblemId() + "/";
-    int timeLimit = judgeItem.getStatus().getLanguage().equals("Java")
+    int timeLimit = language == "java"
         ? judgeItem.getStatus().getJavaTimeLimit()
         : judgeItem.getStatus().getTimeLimit();
-    int memory = judgeItem.getStatus().getLanguage().equals("Java")
+    int memory = language == "java"
         ? judgeItem.getStatus().getJavaMemoryLimit()
         : judgeItem.getStatus().getMemoryLimit();
     int outputlimit = judgeItem.getStatus().getOutputLimit();
@@ -38,22 +38,25 @@ public class LrunCore extends AbstractJudgeCore {
         judgeItem.getSourceNameWithoutExtension(),
         timeLimit, memory,
         Integer.toString(currentTestCase) /* data file */,outputlimit);
-    if (currentTestCase == 1) {
+    if (currentTestCase == 1 && language != "python2" && language != "python3" ) {
       command = command + " -c";
     }
     return command;
   }
 
-  private String normalizeLanguage(String language) {
-    if ("Java".equals(language)) {
-      return "java";
-    } else if ("C".equals(language)) {
+  private String normalizeLanguage(int languageid) {
+    if( languageid == 1 )
       return "gnu-gcc";
-    } else if ("C++".equals(language)) {
+    else if( languageid == 2 )
       return "gnu-g++11";
-    } else {
-      throw new AppException("unreognize language: " + language);
-    }
+    else if( languageid == 3 )
+      return "java";
+    else if( languageid == 4 )
+      return "python3";
+    else if( languageid == 5 )
+      return "python2";
+    else
+      throw new AppException("unreognize language: " + languageid );
   }
 
   private String parseJudgeResult(String output) {
