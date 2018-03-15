@@ -1,6 +1,0 @@
-#!/bin/bash
-if [ -f trunk/install-plugin.sh ]; then
-  trunk/install-plugin.sh
-fi
-exit 0
-
