@@ -6,3 +6,4 @@
 /bower_components
 /dist
 /build/
+package-lock.json
