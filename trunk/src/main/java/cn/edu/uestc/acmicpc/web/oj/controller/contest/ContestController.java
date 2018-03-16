@@ -1157,6 +1157,7 @@ public class ContestController extends BaseController {
               ContestProblemDto.builder()
                   .setContestId(contestDto.getContestId())
                   .setOrder(order)
+                  .setProblemId(problemIdList.get(order))
                   .build());
 
           // Check problem added success.
