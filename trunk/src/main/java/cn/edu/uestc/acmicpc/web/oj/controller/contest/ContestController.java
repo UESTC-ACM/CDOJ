@@ -970,7 +970,7 @@ public class ContestController extends BaseController {
 
       // Update contest type
       contestShowDto.setType(getContestType(session, contestId));
-
+      
       List<ContestProblemDto> contestProblemList;
       if (contestShowDto.getStatus().equals("Pending") && !isAdmin(session)) {
         contestProblemList = new LinkedList<>();
@@ -984,6 +984,14 @@ public class ContestController extends BaseController {
           }
         }
       }
+      for(int i = 0 ; i < contestProblemList.size() ; ++ i){
+        int d = i + 65;
+        String wp = new String();
+        wp = wp + (char)d;
+        ContestProblemDto e = contestProblemList.get(i);
+        e.setOrderCharacter(wp);
+        contestProblemList.set( i , e );
+      }
 
       json.put("contest", contestShowDto);
       json.put("problemList", contestProblemList);
@@ -994,7 +1002,7 @@ public class ContestController extends BaseController {
     } catch (Exception e) {
       e.printStackTrace();
       json.put("result", "error");
-      json.put("error_msg", "Unknown exception occurred.");
+      json.put("error_msg", "Unknown 1 exception occurred.");
     }
     return json;
   }
@@ -1149,7 +1157,6 @@ public class ContestController extends BaseController {
               ContestProblemDto.builder()
                   .setContestId(contestDto.getContestId())
                   .setOrder(order)
-                  .setProblemId(problemIdList.get(order))
                   .build());
 
           // Check problem added success.

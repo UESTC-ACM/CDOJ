@@ -47,9 +47,10 @@ public class MessageServiceImpl extends AbstractService implements MessageServic
 
   @Override
   public MessageDto getMessageDto(Integer messageId) throws AppException {
-    AppExceptionUtil.assertNotNull(messageId);
-    return messageDao.getDtoByUniqueField(MessageDto.class, MessageDto.builder(), "messageId",
-        messageId);
+    MessageCriteria criteria = new MessageCriteria();
+    criteria.MessageId = messageId;
+    List<MessageDto> result = messageDao.findAll( criteria , null , MessageFields.BASIC_FIELDS  );
+    return result.isEmpty() ? null : result.iterator().next();
   }
 
   @Override

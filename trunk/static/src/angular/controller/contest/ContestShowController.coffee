@@ -218,11 +218,12 @@ cdoj
         codeContent: ""
       $scope.printCode = ->
         submitDTO = angular.copy($scope.submitDTO)
+        console.log(submitDTO)
         if angular.isUndefined submitDTO.codeContent then return
         if $rootScope.hasLogin == false
           $window.alert "Please login first!"
         else
-          if $window.confirm "Are you sure?"
+          #if $window.confirm "Are you sure?"
             $http.post("/status/print", submitDTO).success((data) ->
               if data.result == "success"
                 $window.alert "Your print request has been send to the stuff," +

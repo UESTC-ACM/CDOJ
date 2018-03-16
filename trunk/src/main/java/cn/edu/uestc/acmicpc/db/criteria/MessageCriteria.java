@@ -18,6 +18,7 @@ public class MessageCriteria extends BaseCriteria<Message, MessageDto> {
   public Integer senderId;
   public Integer receiverId;
   public Boolean isOpened;
+  public Integer MessageId;
 
   // Messages send/receive by this user
   public Integer userId;

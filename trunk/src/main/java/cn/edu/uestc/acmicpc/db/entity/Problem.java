@@ -179,7 +179,7 @@ public class Problem implements Serializable {
     this.timeLimit = timeLimit;
   }
 
-  private Integer memoryLimit = 65535;
+  private Integer memoryLimit = 64;
 
   @Column(name = "memoryLimit", nullable = false, insertable = true, updatable = true, length = 10,
       precision = 0)
@@ -244,7 +244,7 @@ public class Problem implements Serializable {
     isVisible = visible;
   }
 
-  private Integer outputLimit = 8000;
+  private Integer outputLimit = 64;
 
   @Column(name = "outputLimit", nullable = false, insertable = true, updatable = true, length = 10,
       precision = 0)

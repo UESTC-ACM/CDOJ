@@ -92,6 +92,8 @@ public class LrunCore extends AbstractJudgeCore {
       result.setResult(OnlineJudgeReturnType.OJ_MLE);
     }else if ( "OLE".equals( judgeResult ) ){
       result.setResult(OnlineJudgeReturnType.OJ_OLE);
+    }else if ( "WA".equals( judgeResult ) ){
+      result.setResult(OnlineJudgeReturnType.OJ_WA);
     }else {
       result.setResult(OnlineJudgeReturnType.OJ_SE);
     }
