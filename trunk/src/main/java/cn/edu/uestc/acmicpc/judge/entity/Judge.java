@@ -71,6 +71,9 @@ public class Judge implements Runnable {
         + judgeItem.getStatus().getStatusId());
     try {
       int numberOfTestCase = judgeItem.getStatus().getDataCount();
+      if( judgeItem.getStatus().getExtension().equals(".java") == true ){
+        judgeItem.setSourceNameWithoutExtension("Main");      
+      }
       boolean isAccepted = true;
       String tempPath = new String("");
       for (int currentCase = 1; isAccepted && currentCase <= numberOfTestCase; currentCase++) {

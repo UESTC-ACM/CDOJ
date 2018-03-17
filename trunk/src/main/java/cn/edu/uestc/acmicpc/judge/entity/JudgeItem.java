@@ -58,6 +58,10 @@ public class JudgeItem {
     return compileInfo;
   }
 
+  public void setSourceNameWithoutExtension(String SourceNameWithoutExtension){
+     this.SourceNameWithoutExtension = SourceNameWithoutExtension;
+  }
+
   public String getSourceNameWithoutExtension() {
     return SourceNameWithoutExtension;
   }
