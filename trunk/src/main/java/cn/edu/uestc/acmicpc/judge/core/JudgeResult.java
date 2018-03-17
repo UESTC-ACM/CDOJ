@@ -12,6 +12,7 @@ public class JudgeResult {
   private Integer memoryCost;
   private Integer timeCost;
   private String compileInfo;
+  private String tempPath;
 
   public OnlineJudgeReturnType getResult() {
     return result;
@@ -43,5 +44,13 @@ public class JudgeResult {
 
   public void setCompileInfo(String compileInfo) {
     this.compileInfo = compileInfo;
+  }
+
+  public String gettempPath() {
+    return tempPath;
+  }
+
+  public void settempPath(String tempPath) {
+    this.tempPath = tempPath;
   }
 }

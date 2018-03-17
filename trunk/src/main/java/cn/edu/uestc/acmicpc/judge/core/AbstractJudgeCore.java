@@ -65,9 +65,8 @@ public abstract class AbstractJudgeCore implements JudgeCore {
       FileUtil.saveToFile(judgeItem.getStatus().getCodeContent(),
           tempPath + "/" + judgeItem.getSourceName());
     }
-
     String shellCommand = buildJudgeShellCommand(currentCase, judgeItem);
-    logger.error("the shellCommand for judge core: " + shellCommand);
+    logger.info("the shellCommand for judge core: " + shellCommand);
     Process p;
     StringBuilder sb = new StringBuilder();
     BufferedReader bufferedReader = null;
@@ -88,6 +87,8 @@ public abstract class AbstractJudgeCore implements JudgeCore {
         }
       }
     }
-    return execute(judgeItem, sb.toString());
+    JudgeResult t = execute(judgeItem, sb.toString());
+    t.settempPath(tempPath);
+    return t;
   }
 }

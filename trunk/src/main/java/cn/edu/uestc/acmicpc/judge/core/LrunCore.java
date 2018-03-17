@@ -1,5 +1,5 @@
-package cn.edu.uestc.acmicpc.judge.core;
 
+package cn.edu.uestc.acmicpc.judge.core;
 import cn.edu.uestc.acmicpc.judge.entity.JudgeItem;
 import cn.edu.uestc.acmicpc.util.enums.OnlineJudgeReturnType;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
@@ -7,7 +7,6 @@ import cn.edu.uestc.acmicpc.util.settings.Settings;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import org.apache.log4j.Logger;
-
 /**
  * judge core adapter using lrun as judge core.
  */

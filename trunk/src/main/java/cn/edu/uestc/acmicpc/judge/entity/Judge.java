@@ -72,13 +72,28 @@ public class Judge implements Runnable {
     try {
       int numberOfTestCase = judgeItem.getStatus().getDataCount();
       boolean isAccepted = true;
+      String tempPath = new String("");
       for (int currentCase = 1; isAccepted && currentCase <= numberOfTestCase; currentCase++) {
         judgeItem.getStatus().setCaseNumber(currentCase);
         JudgeResult result = judgeCore.judge(currentCase, judgeItem);
+        tempPath = result.gettempPath();
         isAccepted = updateJudgeItem(result, judgeItem);
       }
       if (isAccepted) {
         judgeItem.getStatus().setResultId(OnlineJudgeReturnType.OJ_AC.ordinal());
+      }
+      if( tempPath != "" ){
+        try {
+          LOGGER.info( "[Delete Command] Judge completed, Run shell command " + new String[] { "/bin/sh", "-c", "rm -r -f" , tempPath , "*"  } );
+          try{
+            String pw = tempPath+"*";
+            Runtime.getRuntime().exec(new String[]{"/bin/sh","-c","rm -rf "+pw });
+            }catch(Exception ignored){
+                
+            }
+        } catch (Exception ignored) {
+          LOGGER.error( "Delete command error!" );
+        }
       }
       judgeItem.update(true);
     } catch (Exception e) {

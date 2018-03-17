@@ -8,6 +8,7 @@ import cn.edu.uestc.acmicpc.service.iface.UserService;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.context.annotation.Scope;
@@ -22,6 +23,7 @@ public class JudgeItem {
 
   private StatusDto status;
   private String compileInfo;
+  private String SourceNameWithoutExtension;
   private final CompileInfoService compileInfoService;
   private final StatusService statusService;
   private final UserService userService;
@@ -37,6 +39,7 @@ public class JudgeItem {
     this.statusService = statusService;
     this.userService = userService;
     this.problemService = problemService;
+    this.SourceNameWithoutExtension = UUID.randomUUID().toString();
   }
 
   public void setStatus(StatusDto status) {
@@ -56,7 +59,7 @@ public class JudgeItem {
   }
 
   public String getSourceNameWithoutExtension() {
-    return "Main";
+    return SourceNameWithoutExtension;
   }
 
   public String getSourceName() {
