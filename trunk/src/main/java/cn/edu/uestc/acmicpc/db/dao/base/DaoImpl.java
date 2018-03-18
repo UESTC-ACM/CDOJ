@@ -155,6 +155,7 @@ public abstract class DaoImpl<E extends Serializable> extends BaseDao implements
       throw new AppException("Invoke update method error.");
     }
   }
+  
 
   @Override
   @Deprecated
@@ -448,6 +449,7 @@ public abstract class DaoImpl<E extends Serializable> extends BaseDao implements
     getQuery(hql, null).executeUpdate();
   }
 
+
   @SuppressWarnings("unchecked")
   @Override
   public <T extends BaseDto<E>, F extends cn.edu.uestc.acmicpc.db.dto.Fields> List<T> findAll(
@@ -492,6 +494,7 @@ public abstract class DaoImpl<E extends Serializable> extends BaseDao implements
   @Override
   public Long customCount(DetachedCriteria criteria) throws AppException {
     Criteria executableCriteria = criteria.getExecutableCriteria(getSession());
+    LOGGER.info( "[customCount]: " + criteria.toString());
     return (Long) executableCriteria.uniqueResult();
   }
 }
