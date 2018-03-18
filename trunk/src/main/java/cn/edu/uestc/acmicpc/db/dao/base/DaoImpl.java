@@ -494,7 +494,7 @@ public abstract class DaoImpl<E extends Serializable> extends BaseDao implements
   @Override
   public Long customCount(DetachedCriteria criteria) throws AppException {
     Criteria executableCriteria = criteria.getExecutableCriteria(getSession());
-    LOGGER.info( "[customCount]: " + criteria.toString());
+    //LOGGER.info( "[customCount]: " + criteria.toString());
     return (Long) executableCriteria.uniqueResult();
   }
 }

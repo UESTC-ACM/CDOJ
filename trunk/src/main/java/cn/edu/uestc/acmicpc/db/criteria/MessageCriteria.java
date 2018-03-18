@@ -32,8 +32,7 @@ public class MessageCriteria extends BaseCriteria<Message, MessageDto> {
   @Override
   DetachedCriteria updateCriteria(DetachedCriteria criteria) throws AppException {
     if (userId != null) {
-      criteria.add(Restrictions.or(
-          Restrictions.eq("senderId", userId), Restrictions.eq("receiverId", userId)));
+      criteria = criteria.add(Restrictions.eq("receiverId",this.userId));
     }else if (userAId != null && userBId != null) {
       criteria.add(Restrictions.or(
           Restrictions.and(
