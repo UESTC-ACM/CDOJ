@@ -16,6 +16,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import javax.servlet.http.HttpSession;
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
+import org.omg.CORBA.Current;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -29,6 +32,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 public class MessageController extends BaseController {
   private final MessageService messageService;
   private final Settings settings;
+  private static final Logger LOGGER = LogManager.getLogger(MessageController.class);
 
   @Autowired
   public MessageController(MessageService messageService, Settings settings) {
@@ -47,6 +51,7 @@ public class MessageController extends BaseController {
     try {
       UserDto currentUser = getCurrentUser(session);
       MessageDto messageDto = messageService.getMessageDto(messageId);
+      LOGGER.info( "[Fetch]: " + currentUser.getUserId() + " " + messageId + " " + messageDto.getSenderId() + " " + messageDto.getReceiverId() );
       AppExceptionUtil.assertNotNull(messageDto, "No such message.");
       if (!Objects.equals(currentUser.getUserId(), messageDto.getSenderId()) &&
           !Objects.equals(currentUser.getUserId(), messageDto.getReceiverId())) {

@@ -3,6 +3,7 @@ package cn.edu.uestc.acmicpc.db.criteria;
 import cn.edu.uestc.acmicpc.db.dto.impl.MessageDto;
 import cn.edu.uestc.acmicpc.db.entity.Message;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
+import org.apache.log4j.Logger;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Restrictions;
 
@@ -10,6 +11,7 @@ import org.hibernate.criterion.Restrictions;
  * Message database criteria entity.
  */
 public class MessageCriteria extends BaseCriteria<Message, MessageDto> {
+  private static final Logger logger = Logger.getLogger(MessageCriteria.class);
 
   public MessageCriteria() {
     super(Message.class, MessageDto.class);
@@ -32,7 +34,7 @@ public class MessageCriteria extends BaseCriteria<Message, MessageDto> {
     if (userId != null) {
       criteria.add(Restrictions.or(
           Restrictions.eq("senderId", userId), Restrictions.eq("receiverId", userId)));
-    } else if (userAId != null && userBId != null) {
+    }else if (userAId != null && userBId != null) {
       criteria.add(Restrictions.or(
           Restrictions.and(
               Restrictions.eq("senderId", userAId),
@@ -41,6 +43,10 @@ public class MessageCriteria extends BaseCriteria<Message, MessageDto> {
               Restrictions.eq("senderId", userBId),
               Restrictions.eq("receiverId", userAId))));
     }
+    if( this.MessageId != null )
+      criteria = criteria.add(Restrictions.eq("messageId",this.MessageId));
+    if( isOpened != null )
+      criteria = criteria.add(Restrictions.eq("isOpened",isOpened));
     return criteria;
   }
 }
