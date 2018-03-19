@@ -81,6 +81,7 @@ import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
@@ -103,7 +104,7 @@ import org.w3c.dom.Element;
 @Controller
 @RequestMapping("/contest")
 public class ContestController extends BaseController {
-
+  private static final Logger logger = Logger.getLogger(ContestController.class);
   private final ContestService contestService;
   private final ContestProblemService contestProblemService;
   private final ContestImporterService contestImporterService;
@@ -346,29 +347,35 @@ public class ContestController extends BaseController {
     if (!isAdmin(session)) {
       throw new AppException("Permission denied!");
     }
+    logger.info( "Start exportDOMJudgeStyleReport" );
     // Fetch contest detail
     ContestDto contestShowDto =
         contestService.getContestDtoByContestId(contestId, ContestFields.FIELDS_FOR_SHOWING);
     if (contestId == null) {
       throw new AppException("Contest not found.");
     }
+    logger.info( "End Processing< 1 >" );
     // Fetch user list
     List<UserDto> contestUserList = userService.fetchAllOnsiteUsersByContestId(contestId);
+    logger.info( "Fetch user list completed!" );
     // Fetch problem list
     List<ContestProblemDto> contestProblemList = contestProblemService.
         getContestProblemSummaryDtoListByContestId(contestId);
+    logger.info( "Fetch problem list completed!" );
     // Fetch language list
     List<LanguageDto> languageDtoList = languageService.getLanguageList();
+    logger.info( "Fetch language list completed!" );
     // Fetch status list
     StatusCriteria statusCondition = new StatusCriteria();
     statusCondition.contestId = contestId;
     statusCondition.isForAdmin = false;
+    logger.info( "Fetch status list completed!" );
     // Sort by time
     statusCondition.orderFields = "time";
     statusCondition.orderAsc = "true";
     List<StatusDto> statusList = statusService.getStatusList(statusCondition, null,
         StatusFields.FIELDS_FOR_LIST_PAGE);
-
+    logger.info( "Sort by time completed" );
     // Create zip output stream
     ByteArrayOutputStream outputBuffer = new ByteArrayOutputStream();
     ZipOutputStream zipOutputStream = new ZipOutputStream(outputBuffer);
@@ -384,7 +391,7 @@ public class ContestController extends BaseController {
     zipOutputStream.putNextEntry(zipEntry);
     generateEvent(contestShowDto, languageDtoList, contestProblemList, statusList, zipOutputStream);
     zipOutputStream.closeEntry();
-
+    logger.info( "Zip output complted " );
     // Close
     zipOutputStream.close();
 
@@ -395,6 +402,7 @@ public class ContestController extends BaseController {
     response.getOutputStream().write(outputBuffer.toByteArray());
     response.getOutputStream().flush();
     outputBuffer.close();
+    logger.info( "Zip close complted " );
   }
 
   @RequestMapping("exportCodes/{contestId}")
