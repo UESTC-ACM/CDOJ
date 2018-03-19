@@ -394,10 +394,10 @@ public class UserController extends BaseController {
       BindingResult validateResult) {
     Map<String, Object> json = new HashMap<>();
     List<FieldError> filteredFieldErrors =
-        filterFieldErrorsByFields(validateResult, UserFields.ADMIN_EDIT_FIELDS, "userAdminEditDto");
-    if (validateResult.hasErrors()) {
+        filterFieldErrorsByFields(validateResult, UserFields.ADMIN_EDIT_FIELDS, "user");
+    if (!filteredFieldErrors.isEmpty()) {
       json.put("result", "field_error");
-      json.put("field", validateResult.getFieldErrors());
+      json.put("field", filteredFieldErrors);
     } else {
       try {
         UserDto userDto = userService.getUserDtoByUserName(userAdminEditDto.getUserName());
