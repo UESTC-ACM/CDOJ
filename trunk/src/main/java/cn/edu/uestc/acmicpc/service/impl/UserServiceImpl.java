@@ -18,6 +18,7 @@ import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -29,7 +30,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 @Transactional(rollbackFor = Exception.class)
 public class UserServiceImpl extends AbstractService implements UserService {
-
+  private static final Logger logger = Logger.getLogger(UserServiceImpl.class);
   private final UserDao userDao;
 
   @Autowired
@@ -207,12 +208,13 @@ public class UserServiceImpl extends AbstractService implements UserService {
   public List<UserDto> fetchAllOnsiteUsersByContestId(Integer contestId) throws AppException {
     StringBuilder hqlBuilder = new StringBuilder();
     hqlBuilder
-        .append("from User where")
-        .append(" userId in (")
-        .append("   select userId from ContestUser where contestId = ")
-        .append(contestId)
-        .append(" )")
-        .append(")");
+    .append("from User where")
+    .append(" userId in (")
+    .append("   select userId from ContestUser where contestId = ")
+    .append(contestId)
+    .append(" )")
+    .append(")");    
+    logger.info( "Hql is " + hqlBuilder.toString() );
     return userDao.findAll(UserDto.class, UserDto.builder(), hqlBuilder.toString(), null);
   }
 

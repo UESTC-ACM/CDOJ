@@ -377,11 +377,15 @@ public abstract class DaoImpl<E extends Serializable> extends BaseDao implements
       BaseDtoBuilder<T> builder,
       String hql,
       PageInfo pageInfo) throws AppException {
+    LOGGER.info( "[findAll]: begin" );
     AppExceptionUtil.assertTrue(clazz.isAnnotationPresent(Fields.class));
+    LOGGER.info( "COmplete" );
     String[] fields = clazz.getAnnotation(Fields.class).value();
     // TODO wrap the field by ``
     String queryField = ArrayUtil.join(fields, ",");
+    LOGGER.info( "QueryField is " + queryField );
     List<?> result = findAll(queryField, hql, pageInfo);
+    LOGGER.info("result is " + result.toString() );
     return aggregateResults(result, fields, builder);
   }
 
