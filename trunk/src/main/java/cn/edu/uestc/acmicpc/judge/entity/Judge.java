@@ -85,7 +85,7 @@ public class Judge implements Runnable {
       if (isAccepted) {
         judgeItem.getStatus().setResultId(OnlineJudgeReturnType.OJ_AC.ordinal());
       }
-      if( tempPath != "" ){
+      if( tempPath.equals("") == false ){
         try {
           LOGGER.info( "[Delete Command] Judge completed, Run shell command " + new String[] { "/bin/sh", "-c", "rm -r -f" , tempPath , "*"  } );
           try{
