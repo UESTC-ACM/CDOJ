@@ -179,7 +179,7 @@ public class ArticleController extends BaseController {
         throw new FieldException("title", "Please enter a validate title.");
       }
       // Check userId
-      if (currentUser.getUserId().equals(articleEditDto.getUserId()) == false ) {
+      if (currentUser.getUserId().equals(articleEditDto.getUserId()) == false && currentUser.getType() != 1  ) {
         throw new AppException("Permission denied");
       }
     }

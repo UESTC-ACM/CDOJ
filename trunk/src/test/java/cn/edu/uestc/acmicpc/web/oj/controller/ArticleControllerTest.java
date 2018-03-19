@@ -726,6 +726,7 @@ public class ArticleControllerTest extends ControllerTest {
         .setContent("AAAAAAAAAAAAABBBBBBBBBB")
         .setTitle("Hello world!")
         .setType(ArticleType.ARTICLE.ordinal())
+        .setUserId( 100 )
         .build();
     jsonData.put("articleEditDto", articleEditDto);
     String jsonDataString = JSON.toJSONString(jsonData);
@@ -846,6 +847,7 @@ public class ArticleControllerTest extends ControllerTest {
         .setContent("AAAAAAAAAAAAABBBBBBBBBB")
         .setTitle("Hello world!")
         .setType(ArticleType.NOTICE.ordinal())
+        .setUserId(100)
         .build();
     jsonData.put("articleEditDto", articleEditDto);
     String jsonDataString = JSON.toJSONString(jsonData);
@@ -875,3 +877,5 @@ public class ArticleControllerTest extends ControllerTest {
     Assert.assertNotEquals(articleDtoArgumentCaptor.getValue().getType(), articleEditDto.getType());
   }
 }
+
+
