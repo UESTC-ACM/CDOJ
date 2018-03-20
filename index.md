@@ -8,25 +8,33 @@ This is a online judge system for `ACM/ICPC`, and it currently runs at [UESTC AC
 
 ### How to run the project in your own computer?
 
-First of all, you need a `i686 Linux` and install `jdk8`, `gradle 2.2+` and `mysql5.5+` in your PC.
+First of all, you need a `i686 Linux` and install `openjdk8`, `gradle 4.4` and `mysql5.5+` in your PC.
+
+**NOTE**: version `gradle` should not equal to or greater than `4.6` because of a [jacoco issue](https://github.com/akhikhl/gretty/issues/420).
+
+On the other hand, you need to install [py-lrun-core](https://github.com/UESTC-ACM/py-lrun-core) first, by cloning the source code then run.
+
+{% highlight bash %}
+cd path/to/the/judge-core
+git submodule init
+git submodule update
+make install
+{% endhighlight %}
 
 Then you can fetch sources from our repository, and run the commond below.
 
 {% highlight bash %}
 cd path/to/the/sources
-    
-# Build judge core
-cd branches/oldJudge
-make
-    
-# Go to main directory of project.
-cd ../../trunk
-    
+
+# copy properties
+cd trunk
+cp gradle.properties.template gradle.properties
+
 # Set up database
 # Note: please change the user name if needed
 mysql -uroot -p < src/main/sql/uestcoj.sql
 {% endhighlight %}
-    
+
 Edit `gradle.properties`
 
 {% highlight properties %}
@@ -34,32 +42,32 @@ dbUser = your_database_user_name
 dbPassword = your_database_password
 
 # Static web resource path
-staticResourcePath = static/ 
+staticResourcePath = static/
 
 # Image directory location
-imagesPath = static/images/  
+imagesPath = static/images/
 
 # Problem data path
-dataPath = data/data/          
+dataPath = data/data/
 
-# Path to save temporary files upload from client  
-uploadPath = data/upload/    
+# Path to save temporary files upload from client
+uploadPath = data/upload/
 
 # Judge core working path
-judgeWorkPath = work/       
+judgeWorkPath = work/
 {% endhighlight %}
 
 Build project
-    
+
 {% highlight bash %}
 # Note: You can setup database user name and password in command line
 gradle -PdbUser=user -PdbPassword=password build
 {% endhighlight %}
-    
+
 Run jetty server
 
 {% highlight bash %}
-gradle jettyRun
+gradle appRun
 {% endhighlight %}
 
 After that, you can visit [localhost:8080](http://localhost:8080/) to get running demo.
@@ -119,4 +127,3 @@ the `types` and `fields` are joined by `,` and there are no white spaces in `typ
 ### Authors and Contributors
 
 Project owners: Ruins He(@lyhypacm) and Yun Li(@mzry1992).
-
