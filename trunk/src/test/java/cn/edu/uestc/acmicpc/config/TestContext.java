@@ -3,6 +3,7 @@ package cn.edu.uestc.acmicpc.config;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
+import cn.edu.uestc.acmicpc.db.dao.iface.ContestUserDao;
 import cn.edu.uestc.acmicpc.db.dao.iface.ProblemDao;
 import cn.edu.uestc.acmicpc.db.dao.iface.UserDao;
 import cn.edu.uestc.acmicpc.db.dto.impl.SettingDto;
@@ -71,8 +72,10 @@ public class TestContext extends ApplicationContextConfig {
   // real beans for testing.
   @Bean
   @Autowired
-  public UserService realUserService(@Qualifier("mockUserDao") UserDao userDao) {
-    return new UserServiceImpl(userDao);
+  public UserService realUserService(
+      @Qualifier("mockContestUserDao") ContestUserDao contestUserDao,
+      @Qualifier("mockUserDao") UserDao userDao) {
+    return new UserServiceImpl(contestUserDao, userDao);
   }
 
   @Bean
@@ -86,6 +89,12 @@ public class TestContext extends ApplicationContextConfig {
   @Primary
   public ArticleService mockArticleService() {
     return mock(ArticleService.class);
+  }
+
+  @Bean
+  @Primary
+  public ContestUserDao mockContestUserDao() {
+    return mock(ContestUserDao.class);
   }
 
   @Bean

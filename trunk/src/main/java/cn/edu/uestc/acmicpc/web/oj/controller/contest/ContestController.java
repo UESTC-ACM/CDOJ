@@ -57,7 +57,6 @@ import cn.edu.uestc.acmicpc.web.oj.controller.base.BaseController;
 import cn.edu.uestc.acmicpc.web.rank.RankList;
 import cn.edu.uestc.acmicpc.web.view.ContestRankListView;
 import cn.edu.uestc.acmicpc.web.view.ContestRegistryReportView;
-import com.google.common.collect.ImmutableMap;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;

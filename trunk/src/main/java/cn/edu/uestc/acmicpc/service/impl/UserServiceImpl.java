@@ -1,6 +1,5 @@
 package cn.edu.uestc.acmicpc.service.impl;
 
-import cn.edu.uestc.acmicpc.db.criteria.ContestCriteria;
 import cn.edu.uestc.acmicpc.db.criteria.ContestUserCriteria;
 import cn.edu.uestc.acmicpc.db.criteria.UserCriteria;
 import cn.edu.uestc.acmicpc.db.dao.iface.ContestUserDao;
@@ -20,11 +19,9 @@ import cn.edu.uestc.acmicpc.util.exception.AppExceptionUtil;
 import cn.edu.uestc.acmicpc.web.dto.PageInfo;
 import java.sql.Timestamp;
 import java.util.Date;
-import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.stream.Collectors;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
