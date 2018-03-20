@@ -53,7 +53,6 @@ public interface MessageService {
    * list
    * @throws AppException
    */
-  @Deprecated
   List<MessageDto> getMessageForReceiverDtoList(
       MessageCriteria criteria, PageInfo pageInfo) throws AppException;
 

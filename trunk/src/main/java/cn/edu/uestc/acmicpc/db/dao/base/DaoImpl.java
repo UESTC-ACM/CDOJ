@@ -40,7 +40,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 public abstract class DaoImpl<E extends Serializable> extends BaseDao implements Dao<E> {
 
-  private static final Logger LOGGER = LogManager.getLogger(DaoImpl.class);
+  private static final Logger logger = LogManager.getLogger(DaoImpl.class);
 
   @Override
   public void addOrUpdate(E entity) throws AppException {
@@ -107,7 +107,7 @@ public abstract class DaoImpl<E extends Serializable> extends BaseDao implements
           + hqlCondition;
       return (Long) getQuery(hql, null).uniqueResult();
     } catch (HibernateException e) {
-      LOGGER.error(e);
+      logger.error(e);
       throw new AppException("Invoke count method error.");
     }
   }
@@ -128,7 +128,7 @@ public abstract class DaoImpl<E extends Serializable> extends BaseDao implements
     try {
       getSession().save(entity);
     } catch (HibernateException e) {
-      LOGGER.error(e.getCause());
+      logger.error(e.getCause());
       throw new AppException("Invoke add method error.");
     }
   }
@@ -142,7 +142,7 @@ public abstract class DaoImpl<E extends Serializable> extends BaseDao implements
       }
       return (E) getSession().get(getReferenceClass(), key);
     } catch (HibernateException e) {
-      LOGGER.error(e);
+      logger.error(e);
       throw new AppException("Invoke get method error.");
     }
   }
@@ -151,7 +151,7 @@ public abstract class DaoImpl<E extends Serializable> extends BaseDao implements
     try {
       getSession().update(entity);
     } catch (HibernateException e) {
-      LOGGER.error(e);
+      logger.error(e);
       throw new AppException("Invoke update method error.");
     }
   }
@@ -163,7 +163,7 @@ public abstract class DaoImpl<E extends Serializable> extends BaseDao implements
     try {
       return getQuery(hql, null).list();
     } catch (HibernateException e) {
-      LOGGER.error(e);
+      logger.error(e);
       throw new AppException("Invoke findAll method error.");
     }
   }
@@ -181,7 +181,7 @@ public abstract class DaoImpl<E extends Serializable> extends BaseDao implements
       }
       return getQuery(hql, pageInfo).list();
     } catch (HibernateException e) {
-      LOGGER.error(e);
+      logger.error(e);
       throw new AppException("Invoke findAll method error.");
     }
   }
@@ -200,7 +200,7 @@ public abstract class DaoImpl<E extends Serializable> extends BaseDao implements
       }
       return getQuery(hql, condition.getPageInfo()).list();
     } catch (HibernateException e) {
-      LOGGER.error(e + "\nHQL = " + hql);
+      logger.error(e + "\nHQL = " + hql);
       throw new AppException("Invoke findAll method error.");
     }
   }
@@ -273,6 +273,7 @@ public abstract class DaoImpl<E extends Serializable> extends BaseDao implements
     try {
       getQuery(hql, null).executeUpdate();
     } catch (Exception e) {
+      logger.error(e);
       throw new AppException("Error while execute database query.");
     }
   }
@@ -292,6 +293,7 @@ public abstract class DaoImpl<E extends Serializable> extends BaseDao implements
     try {
       getQuery(hql, null).executeUpdate();
     } catch (Exception e) {
+      logger.error(e);
       throw new AppException("Error while execute database query.");
     }
   }
@@ -301,8 +303,9 @@ public abstract class DaoImpl<E extends Serializable> extends BaseDao implements
    */
   @Override
   @Deprecated
-  public void updateEntitiesByField(Map<String, Object> properties,
-                                    String field, String values) throws AppException {
+  public void updateEntitiesByField(
+      Map<String, Object> properties,
+      String field, String values) throws AppException {
     if (properties.isEmpty()) {
       return;
     }
@@ -333,14 +336,16 @@ public abstract class DaoImpl<E extends Serializable> extends BaseDao implements
     try {
       getQuery(hql, null).executeUpdate();
     } catch (Exception e) {
+      logger.error(e + "\nHQL: " + hql);
       throw new AppException("Error while execute database query.");
     }
   }
 
   @Override
   @Deprecated
-  public void updateEntitiesByField(String propertyField, Object propertyValue,
-                                    String field, String values) throws AppException {
+  public void updateEntitiesByField(
+      String propertyField, Object propertyValue,
+      String field, String values) throws AppException {
     Map<String, Object> properties = new HashMap<>();
     properties.put(propertyField, propertyValue);
     updateEntitiesByField(properties, field, values);
@@ -348,8 +353,9 @@ public abstract class DaoImpl<E extends Serializable> extends BaseDao implements
 
   @Override
   @Deprecated
-  public void updateEntitiesByCondition(String propertyField, Object propertyValue,
-                                        Condition condition) throws AppException {
+  public void updateEntitiesByCondition(
+      String propertyField, Object propertyValue,
+      Condition condition) throws AppException {
     Map<String, Object> properties = new HashMap<>();
     properties.put(propertyField, propertyValue);
     updateEntitiesByCondition(properties, condition);
@@ -377,15 +383,11 @@ public abstract class DaoImpl<E extends Serializable> extends BaseDao implements
       BaseDtoBuilder<T> builder,
       String hql,
       PageInfo pageInfo) throws AppException {
-    LOGGER.info( "[findAll]: begin" );
     AppExceptionUtil.assertTrue(clazz.isAnnotationPresent(Fields.class));
-    LOGGER.info( "COmplete" );
     String[] fields = clazz.getAnnotation(Fields.class).value();
     // TODO wrap the field by ``
     String queryField = ArrayUtil.join(fields, ",");
-    LOGGER.info( "QueryField is " + queryField );
     List<?> result = findAll(queryField, hql, pageInfo);
-    LOGGER.info("result is " + result.toString() );
     return aggregateResults(result, fields, builder);
   }
 
@@ -498,7 +500,7 @@ public abstract class DaoImpl<E extends Serializable> extends BaseDao implements
   @Override
   public Long customCount(DetachedCriteria criteria) throws AppException {
     Criteria executableCriteria = criteria.getExecutableCriteria(getSession());
-    //LOGGER.info( "[customCount]: " + criteria.toString());
+    //logger.info( "[customCount]: " + criteria.toString());
     return (Long) executableCriteria.uniqueResult();
   }
 }

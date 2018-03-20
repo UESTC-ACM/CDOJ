@@ -25,7 +25,6 @@ import cn.edu.uestc.acmicpc.web.oj.controller.base.BaseController;
 import java.util.HashMap;
 import java.util.Map;
 import javax.servlet.http.HttpSession;
-import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -38,7 +37,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @Controller
 @RequestMapping("/")
 public class IndexController extends BaseController {
-  private static final Logger logger = Logger.getLogger(IndexController.class);
 
   private final DepartmentService departmentService;
   private final LanguageService languageService;
@@ -97,7 +95,6 @@ public class IndexController extends BaseController {
         result.put("hasLogin", true);
         result.put("currentUser", currentUser);
         MessageCriteria criteria = new MessageCriteria();
-        logger.info("currentUser is " + currentUser );
         criteria.userId = currentUser.getUserId();
         criteria.isOpened = false;
         criteria.orderFields = "time";

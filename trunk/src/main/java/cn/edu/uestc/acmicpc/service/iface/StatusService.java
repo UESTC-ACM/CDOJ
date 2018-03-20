@@ -23,8 +23,8 @@ public interface StatusService {
    * @return problem id list.
    * @throws AppException
    */
-  public List<Integer> findAllProblemIdsThatUserTried(Integer userId,
-      Boolean isAdmin) throws AppException;
+  List<Integer> findAllProblemIdsThatUserTried(
+      Integer userId, Boolean isAdmin) throws AppException;
 
   /**
    * list user's accepted problem id.
@@ -36,8 +36,8 @@ public interface StatusService {
    * @return problem id list.
    * @throws AppException
    */
-  public List<Integer> findAllProblemIdsThatUserSolved(Integer userId,
-      Boolean isAdmin) throws AppException;
+  List<Integer> findAllProblemIdsThatUserSolved(
+      Integer userId, Boolean isAdmin) throws AppException;
 
   /**
    * Counts user's tried visible normal problems.
@@ -49,7 +49,7 @@ public interface StatusService {
    * @return number of problems this user has tried.
    * @throws AppException
    */
-  public Long countProblemsThatUserTried(Integer userId, boolean isAdmin) throws AppException;
+  Long countProblemsThatUserTried(Integer userId, boolean isAdmin) throws AppException;
 
   /**
    * Counts user's accepted visible normal problems.
@@ -61,7 +61,7 @@ public interface StatusService {
    * @return number of problems this user get accepted.
    * @throws AppException
    */
-  public Long countProblemsThatUserSolved(Integer userId, boolean isAdmin) throws AppException;
+  Long countProblemsThatUserSolved(Integer userId, boolean isAdmin) throws AppException;
 
   /**
    * Counts users that tried specified problem.
@@ -71,7 +71,7 @@ public interface StatusService {
    * @return number of users who tried this problem.
    * @throws AppException
    */
-  public Long countUsersThatTriedThisProblem(Integer problemId) throws AppException;
+  Long countUsersThatTriedThisProblem(Integer problemId) throws AppException;
 
   /**
    * Counts users that accepted specified problem.
@@ -81,7 +81,7 @@ public interface StatusService {
    * @return number of users who get accepted for this problem.
    * @throws AppException
    */
-  public Long countUsersThatSolvedThisProblem(Integer problemId) throws AppException;
+  Long countUsersThatSolvedThisProblem(Integer problemId) throws AppException;
 
   /**
    * Counts the number of status fit in condition.
@@ -91,7 +91,7 @@ public interface StatusService {
    * @return Total number of status fit in the condition.
    * @throws AppException
    */
-  public Long count(StatusCriteria criteria) throws AppException;
+  Long count(StatusCriteria criteria) throws AppException;
 
   /**
    * Get the status fit in condition and page range with required fields
@@ -105,7 +105,8 @@ public interface StatusService {
    * @return List of {@link StatusDto} entities.
    * @throws AppException
    */
-  public List<StatusDto> getStatusList(StatusCriteria criteria, PageInfo pageInfo,
+  List<StatusDto> getStatusList(
+      StatusCriteria criteria, PageInfo pageInfo,
       Set<StatusFields> fields) throws AppException;
 
   /**
@@ -116,7 +117,7 @@ public interface StatusService {
    * @return List of {@link StatusDto} entities.
    * @throws AppException
    */
-  public List<StatusDto> getQueuingStatus(boolean isFirstTime) throws AppException;
+  List<StatusDto> getQueuingStatus(boolean isFirstTime) throws AppException;
 
   /**
    * Updates status by {@link StatusDto} entity.
@@ -125,7 +126,7 @@ public interface StatusService {
    *          {@link StatusDto} entity.
    * @throws AppException
    */
-  public void updateStatus(StatusDto statusDto)
+  void updateStatus(StatusDto statusDto)
       throws AppException;
 
   /**
@@ -136,7 +137,7 @@ public interface StatusService {
    * @return the status id of persisted status
    * @throws AppException
    */
-  public Integer createNewStatus(StatusDto statusDto) throws AppException;
+  Integer createNewStatus(StatusDto statusDto) throws AppException;
 
   /**
    * Gets {@link StatusDto} by status id with required fields
@@ -148,7 +149,7 @@ public interface StatusService {
    * @return status' information.
    * @throws AppException
    */
-  public StatusDto getStatusDto(Integer statusId, Set<StatusFields> fields) throws AppException;
+  StatusDto getStatusDto(Integer statusId, Set<StatusFields> fields) throws AppException;
 
   /**
    * Runs re-judge process with specific status condition.
@@ -157,5 +158,5 @@ public interface StatusService {
    *          {@link StatusCriteria} entity.
    * @throws AppException
    */
-  public void rejudge(StatusCriteria criteria) throws AppException;
+  void rejudge(StatusCriteria criteria) throws AppException;
 }

@@ -2,6 +2,7 @@ package cn.edu.uestc.acmicpc.service.impl;
 
 import cn.edu.uestc.acmicpc.db.criteria.StatusCriteria;
 import cn.edu.uestc.acmicpc.db.dao.iface.StatusDao;
+import cn.edu.uestc.acmicpc.db.dto.Fields;
 import cn.edu.uestc.acmicpc.db.dto.field.StatusFields;
 import cn.edu.uestc.acmicpc.db.dto.impl.StatusDto;
 import cn.edu.uestc.acmicpc.db.entity.Status;
@@ -10,12 +11,24 @@ import cn.edu.uestc.acmicpc.util.enums.OnlineJudgeResultType;
 import cn.edu.uestc.acmicpc.util.enums.OnlineJudgeReturnType;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
 import cn.edu.uestc.acmicpc.util.exception.AppExceptionUtil;
+import cn.edu.uestc.acmicpc.util.helper.ArrayUtil;
 import cn.edu.uestc.acmicpc.util.helper.EnumTypeUtil;
 import cn.edu.uestc.acmicpc.web.dto.PageInfo;
+import com.google.common.base.Predicates;
+import com.google.common.collect.ImmutableSet;
+import com.google.common.collect.Sets;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
+import java.util.function.BiConsumer;
+import java.util.function.BinaryOperator;
+import java.util.function.Function;
+import java.util.function.Predicate;
+import java.util.function.Supplier;
+import java.util.stream.Collector;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Projections;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,6 +42,8 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional(rollbackFor = Exception.class)
 public class StatusServiceImpl extends AbstractService implements StatusService {
 
+  private static final Set<StatusFields> STATUS_FIELDS_FOR_REJUDGE =
+      ImmutableSet.of(StatusFields.STATUS_ID, StatusFields.RESULT);
   private final StatusDao statusDao;
 
   @Autowired
@@ -122,7 +137,7 @@ public class StatusServiceImpl extends AbstractService implements StatusService 
 
   @Override
   public List<StatusDto> getStatusList(StatusCriteria statusCriteria,
-      PageInfo pageInfo, Set<StatusFields> fields) throws AppException {
+                                       PageInfo pageInfo, Set<StatusFields> fields) throws AppException {
     List<StatusDto> result = statusDao.findAll(statusCriteria, pageInfo, fields);
     for (StatusDto statusDto : result) {
       updateStatusDto(statusDto, fields);
@@ -133,16 +148,16 @@ public class StatusServiceImpl extends AbstractService implements StatusService 
   private void updateStatusDto(StatusDto statusDto, Set<StatusFields> fields) {
     for (StatusFields field : fields) {
       switch (field) {
-      case RESULT:
-        statusDto.setResult(EnumTypeUtil.getReturnDescription(
-            statusDto.getResultId(), statusDto.getCaseNumber()));
-        if (statusDto.getResultId() != OnlineJudgeReturnType.OJ_AC.ordinal()) {
-          statusDto.setTimeCost(null);
-          statusDto.setMemoryCost(null);
-        }
-        break;
-      default:
-        break;
+        case RESULT:
+          statusDto.setResult(EnumTypeUtil.getReturnDescription(
+              statusDto.getResultId(), statusDto.getCaseNumber()));
+          if (statusDto.getResultId() != OnlineJudgeReturnType.OJ_AC.ordinal()) {
+            statusDto.setTimeCost(null);
+            statusDto.setMemoryCost(null);
+          }
+          break;
+        default:
+          break;
       }
     }
   }
@@ -215,9 +230,20 @@ public class StatusServiceImpl extends AbstractService implements StatusService 
     statusCriteria.isProblemVisible = null;
     statusCriteria.userName = null;
     statusCriteria.isForAdmin = true;
-    // TODO(Yun Li): Implement it.
-    // statusDao.updateEntitiesByCondition(properties,
-    // statusCondition.getCondition());
+
+    List<StatusDto> statuses = statusDao.findAll(
+        statusCriteria, null, STATUS_FIELDS_FOR_REJUDGE);
+    Set<Integer> statusIds = new HashSet<>();
+    statuses.stream().map(StatusDto::getStatusId)
+        .filter(Objects::nonNull).forEach(statusIds::add);
+
+    if (statusIds.isEmpty()) {
+      throw new AppException("There is no status matched for rejudging.");
+    }
+
+    statusDao.updateEntitiesByField(
+        properties, StatusFields.STATUS_ID.getProjection().getField(),
+        ArrayUtil.join(statusIds.toArray(), ","));
   }
 
   @Override
