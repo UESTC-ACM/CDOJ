@@ -4,7 +4,7 @@ jdk:
 
 install:
   - cd trunk
-  - cp gradle.proprties.template gradle.proprties
+  - cp gradle.properties.template gradle.proprties
 
 env:
   - TERM=dumb
