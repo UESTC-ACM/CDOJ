@@ -57,6 +57,7 @@ import cn.edu.uestc.acmicpc.web.oj.controller.base.BaseController;
 import cn.edu.uestc.acmicpc.web.rank.RankList;
 import cn.edu.uestc.acmicpc.web.view.ContestRankListView;
 import cn.edu.uestc.acmicpc.web.view.ContestRegistryReportView;
+import com.google.common.collect.ImmutableMap;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
@@ -105,6 +106,7 @@ import org.w3c.dom.Element;
 @RequestMapping("/contest")
 public class ContestController extends BaseController {
   private static final Logger logger = Logger.getLogger(ContestController.class);
+
   private final ContestService contestService;
   private final ContestProblemService contestProblemService;
   private final ContestImporterService contestImporterService;
@@ -340,42 +342,38 @@ public class ContestController extends BaseController {
   }
 
   @RequestMapping("exportDOMJudgeStyleReport/{contestId}")
+  @LoginPermit(AuthenticationType.ADMIN)
   public void exportDOMJudgeStyleReport(
       HttpSession session,
       @PathVariable("contestId") Integer contestId,
       HttpServletResponse response) throws Exception {
-    if (!isAdmin(session)) {
-      throw new AppException("Permission denied!");
-    }
-    logger.info( "Start exportDOMJudgeStyleReport" );
     // Fetch contest detail
     ContestDto contestShowDto =
         contestService.getContestDtoByContestId(contestId, ContestFields.FIELDS_FOR_SHOWING);
     if (contestId == null) {
       throw new AppException("Contest not found.");
     }
-    logger.info( "End Processing< 1 >" );
     // Fetch user list
     List<UserDto> contestUserList = userService.fetchAllOnsiteUsersByContestId(contestId);
-    logger.info( "Fetch user list completed!" );
+
     // Fetch problem list
     List<ContestProblemDto> contestProblemList = contestProblemService.
         getContestProblemSummaryDtoListByContestId(contestId);
-    logger.info( "Fetch problem list completed!" );
+    logger.info("Fetch problem list completed!");
     // Fetch language list
     List<LanguageDto> languageDtoList = languageService.getLanguageList();
-    logger.info( "Fetch language list completed!" );
+    logger.info("Fetch language list completed!");
     // Fetch status list
     StatusCriteria statusCondition = new StatusCriteria();
     statusCondition.contestId = contestId;
     statusCondition.isForAdmin = false;
-    logger.info( "Fetch status list completed!" );
+    logger.info("Fetch status list completed!");
     // Sort by time
     statusCondition.orderFields = "time";
     statusCondition.orderAsc = "true";
     List<StatusDto> statusList = statusService.getStatusList(statusCondition, null,
         StatusFields.FIELDS_FOR_LIST_PAGE);
-    logger.info( "Sort by time completed" );
+    logger.info("Sort by time completed");
     // Create zip output stream
     ByteArrayOutputStream outputBuffer = new ByteArrayOutputStream();
     ZipOutputStream zipOutputStream = new ZipOutputStream(outputBuffer);
@@ -391,7 +389,7 @@ public class ContestController extends BaseController {
     zipOutputStream.putNextEntry(zipEntry);
     generateEvent(contestShowDto, languageDtoList, contestProblemList, statusList, zipOutputStream);
     zipOutputStream.closeEntry();
-    logger.info( "Zip output complted " );
+    logger.info("Zip output complted ");
     // Close
     zipOutputStream.close();
 
@@ -402,17 +400,16 @@ public class ContestController extends BaseController {
     response.getOutputStream().write(outputBuffer.toByteArray());
     response.getOutputStream().flush();
     outputBuffer.close();
-    logger.info( "Zip close complted " );
+    logger.info("Zip close complted ");
   }
 
   @RequestMapping("exportCodes/{contestId}")
-  public void exportCodes(HttpSession session,
-                          @PathVariable("contestId") Integer contestId,
-                          HttpServletResponse response) {
+  @LoginPermit(AuthenticationType.ADMIN)
+  public void exportCodes(
+      HttpSession session,
+      @PathVariable("contestId") Integer contestId,
+      HttpServletResponse response) {
     try {
-      if (!isAdmin(session)) {
-        throw new AppException("Permission denied!");
-      }
       ContestDto contestShowDto =
           contestService.getContestDtoByContestId(contestId, ContestFields.FIELDS_FOR_SHOWING);
       if (contestId == null) {
@@ -469,15 +466,12 @@ public class ContestController extends BaseController {
   }
 
   @RequestMapping("exportRankList/{contestId}")
-  public ModelAndView exportRankList(HttpSession session,
-                                     @PathVariable("contestId") Integer contestId) {
+  @LoginPermit(AuthenticationType.ADMIN)
+  public ModelAndView exportRankList(
+      HttpSession session, @PathVariable("contestId") Integer contestId) {
     ModelAndView result = new ModelAndView();
     result.setView(contestRankListView);
     try {
-      if (!isAdmin(session)) {
-        throw new AppException("Permission denied!");
-      }
-
       // Login first
       loginContest(session,
           ContestDto.builder()
@@ -501,8 +495,8 @@ public class ContestController extends BaseController {
     return result;
   }
 
-  private List<ContestTeamReportDto> getContestTeamReportDtoList(Integer contestId,
-                                                                 HttpSession session) throws AppException {
+  private List<ContestTeamReportDto> getContestTeamReportDtoList(
+      Integer contestId, HttpSession session) throws AppException {
     ContestDto contestDto = contestService.getContestDtoByContestId(
         contestId, ContestFields.BASIC_FIELDS);
     if (contestDto.getType() == ContestType.INHERIT.ordinal()) {
@@ -545,15 +539,12 @@ public class ContestController extends BaseController {
   }
 
   @RequestMapping("registryReport/{contestId}")
+  @LoginPermit(AuthenticationType.ADMIN)
   public ModelAndView registryReport(HttpSession session,
                                      @PathVariable("contestId") Integer contestId) {
     ModelAndView result = new ModelAndView();
     result.setView(contestRegistryReportView);
     try {
-      if (!isAdmin(session)) {
-        throw new AppException("Permission denied!");
-      }
-
       result.addObject("list", getContestTeamReportDtoList(contestId, session));
       result.addObject("result", "success");
     } catch (AppException e) {
@@ -978,7 +969,7 @@ public class ContestController extends BaseController {
 
       // Update contest type
       contestShowDto.setType(getContestType(session, contestId));
-      
+
       List<ContestProblemDto> contestProblemList;
       if (contestShowDto.getStatus().equals("Pending") && !isAdmin(session)) {
         contestProblemList = new LinkedList<>();
@@ -992,13 +983,13 @@ public class ContestController extends BaseController {
           }
         }
       }
-      for(int i = 0 ; i < contestProblemList.size() ; ++ i){
+      for (int i = 0; i < contestProblemList.size(); ++i) {
         int d = i + 65;
         String wp = new String();
-        wp = wp + (char)d;
+        wp = wp + (char) d;
         ContestProblemDto e = contestProblemList.get(i);
         e.setOrderCharacter(wp);
-        contestProblemList.set( i , e );
+        contestProblemList.set(i, e);
       }
 
       json.put("contest", contestShowDto);

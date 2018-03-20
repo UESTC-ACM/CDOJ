@@ -1,8 +1,13 @@
 package cn.edu.uestc.acmicpc.service.impl;
 
+import cn.edu.uestc.acmicpc.db.criteria.ContestCriteria;
+import cn.edu.uestc.acmicpc.db.criteria.ContestUserCriteria;
 import cn.edu.uestc.acmicpc.db.criteria.UserCriteria;
+import cn.edu.uestc.acmicpc.db.dao.iface.ContestUserDao;
 import cn.edu.uestc.acmicpc.db.dao.iface.UserDao;
+import cn.edu.uestc.acmicpc.db.dto.field.ContestUserFields;
 import cn.edu.uestc.acmicpc.db.dto.field.UserFields;
+import cn.edu.uestc.acmicpc.db.dto.impl.ContestUserDto;
 import cn.edu.uestc.acmicpc.db.dto.impl.UserDto;
 import cn.edu.uestc.acmicpc.db.entity.User;
 import cn.edu.uestc.acmicpc.service.iface.UserService;
@@ -15,9 +20,12 @@ import cn.edu.uestc.acmicpc.util.exception.AppExceptionUtil;
 import cn.edu.uestc.acmicpc.web.dto.PageInfo;
 import java.sql.Timestamp;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
+import java.util.stream.Collectors;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -31,10 +39,14 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional(rollbackFor = Exception.class)
 public class UserServiceImpl extends AbstractService implements UserService {
   private static final Logger logger = Logger.getLogger(UserServiceImpl.class);
+
+  private final ContestUserDao contestUserDao;
   private final UserDao userDao;
 
+
   @Autowired
-  public UserServiceImpl(UserDao userDao) {
+  public UserServiceImpl(ContestUserDao contestUserDao, UserDao userDao) {
+    this.contestUserDao = contestUserDao;
     this.userDao = userDao;
   }
 
@@ -206,16 +218,15 @@ public class UserServiceImpl extends AbstractService implements UserService {
 
   @Override
   public List<UserDto> fetchAllOnsiteUsersByContestId(Integer contestId) throws AppException {
-    StringBuilder hqlBuilder = new StringBuilder();
-    hqlBuilder
-    .append("from User where")
-    .append(" userId in (")
-    .append("   select userId from ContestUser where contestId = ")
-    .append(contestId)
-    .append(" )")
-    .append(")");    
-    logger.info( "Hql is " + hqlBuilder.toString() );
-    return userDao.findAll(UserDto.class, UserDto.builder(), hqlBuilder.toString(), null);
+    ContestUserCriteria contestUserCriteria = new ContestUserCriteria();
+    contestUserCriteria.contestId = contestId;
+    List<ContestUserDto> contestUsers =
+        contestUserDao.findAll(contestUserCriteria, null, ContestUserFields.ALL_FIELDS);
+
+    UserCriteria userCriteria = new UserCriteria();
+    userCriteria.userIds =
+        contestUsers.stream().map(ContestUserDto::getUserId).collect(Collectors.toSet());
+    return userDao.findAll(userCriteria, null, UserFields.ALL_FIELDS);
   }
 
   @Override

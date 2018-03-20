@@ -200,7 +200,7 @@ public abstract class DaoImpl<E extends Serializable> extends BaseDao implements
       }
       return getQuery(hql, condition.getPageInfo()).list();
     } catch (HibernateException e) {
-      logger.error(e + "\nHQL = " + hql);
+      logger.error("HQL = " + hql, e);
       throw new AppException("Invoke findAll method error.");
     }
   }
@@ -336,7 +336,7 @@ public abstract class DaoImpl<E extends Serializable> extends BaseDao implements
     try {
       getQuery(hql, null).executeUpdate();
     } catch (Exception e) {
-      logger.error(e + "\nHQL: " + hql);
+      logger.error("HQL: " + hql, e);
       throw new AppException("Error while execute database query.");
     }
   }
@@ -383,7 +383,9 @@ public abstract class DaoImpl<E extends Serializable> extends BaseDao implements
       BaseDtoBuilder<T> builder,
       String hql,
       PageInfo pageInfo) throws AppException {
-    AppExceptionUtil.assertTrue(clazz.isAnnotationPresent(Fields.class));
+    AppExceptionUtil.assertTrue(
+        clazz.isAnnotationPresent(Fields.class),
+        "The class " + clazz.getCanonicalName() + "is not annotated with @Fields");
     String[] fields = clazz.getAnnotation(Fields.class).value();
     // TODO wrap the field by ``
     String queryField = ArrayUtil.join(fields, ",");

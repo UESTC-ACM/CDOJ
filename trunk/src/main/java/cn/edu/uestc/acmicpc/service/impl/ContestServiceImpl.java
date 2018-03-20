@@ -27,6 +27,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional(rollbackFor = Exception.class)
 public class ContestServiceImpl extends AbstractService implements ContestService {
   private static final Logger logger = Logger.getLogger(ContestServiceImpl.class);
+
   // This group of fields make up all progress information of a contest.
   private final static Set<ContestFields> CONTEST_STATUS_FIELDS = ImmutableSet.of(
       ContestFields.END_TIME, ContestFields.TIME_LEFT, ContestFields.STATUS);
@@ -52,11 +53,9 @@ public class ContestServiceImpl extends AbstractService implements ContestServic
   public ContestDto getContestDtoByContestId(
       Integer contestId, Set<ContestFields> fields) throws AppException {
     AppExceptionUtil.assertNotNull(contestId);
-    logger.info( "[Start getContestDtoByContestID] with fields " + fields.toString() );
     ContestCriteria criteria = new ContestCriteria();
     criteria.contestId = contestId;
     ContestDto contest = contestDao.getUniqueDto(criteria, fields);
-    logger.info( "[getUniqueDto] Completed " );
     return updateContestDto(contest, fields);
   }
 
@@ -104,7 +103,6 @@ public class ContestServiceImpl extends AbstractService implements ContestServic
   }
 
   private ContestDto updateContestDto(ContestDto contest, Set<ContestFields> fields) {
-    logger.info( "[updateContestDto] Start");
     for (ContestFields field : fields) {
       switch (field) {
         case LENGTH:
@@ -128,7 +126,6 @@ public class ContestServiceImpl extends AbstractService implements ContestServic
           break;
       }
     }
-    logger.info( "[StartupdateContestDto :: loop for fields] Completed" );
     if (!Sets.intersection(fields, CONTEST_STATUS_FIELDS).isEmpty()) {
       Timestamp endTime = new Timestamp(contest.getStartTime().getTime() + contest.getLength());
       Long timeLeft = Math.max(endTime.getTime() - contest.getCurrentTime().getTime(), 0L);
@@ -144,7 +141,6 @@ public class ContestServiceImpl extends AbstractService implements ContestServic
       contest.setTimeLeft(timeLeft);
       contest.setStatus(status);
     }
-    logger.info( "[StartupdateContestDto :: intersection] Completed" );
     return contest;
   }
 

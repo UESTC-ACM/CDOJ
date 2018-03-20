@@ -250,8 +250,9 @@ public interface Dao<E extends Serializable> {
    * @param hql      HQL statement.
    * @param pageInfo page constraint.
    * @return Dto list for this query.
-   * @since 2.0
+   * @since 1.0
    */
+  @Deprecated
   <T extends BaseDto<E>> List<T> findAll(
       Class<T> clazz,
       BaseDtoBuilder<T> builder,

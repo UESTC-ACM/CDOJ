@@ -3,6 +3,7 @@ package cn.edu.uestc.acmicpc.db.criteria;
 import cn.edu.uestc.acmicpc.db.dto.impl.UserDto;
 import cn.edu.uestc.acmicpc.db.entity.User;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
+import java.util.Set;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Restrictions;
 
@@ -16,6 +17,7 @@ public class UserCriteria extends BaseCriteria<User, UserDto> {
   }
 
   public Integer userId;
+  public Set<Integer> userIds;
   public String userNameForUniqueQuery;
   public String userName;
   public String nickName;
@@ -29,6 +31,12 @@ public class UserCriteria extends BaseCriteria<User, UserDto> {
   DetachedCriteria updateCriteria(DetachedCriteria criteria) throws AppException {
     if (userId != null) {
       criteria.add(Restrictions.eq("userId", userId));
+    } else if (userIds != null) {
+      if (userIds.isEmpty()) {
+        criteria.add(Restrictions.sqlRestriction("1=0"));
+      } else {
+        criteria.add(Restrictions.in("userId", userIds));
+      }
     }
     if (userNameForUniqueQuery != null) {
       criteria.add(Restrictions.like("userName", userNameForUniqueQuery));
