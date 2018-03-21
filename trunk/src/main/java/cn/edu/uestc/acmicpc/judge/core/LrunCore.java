@@ -28,6 +28,7 @@ public class LrunCore extends AbstractJudgeCore {
     int timeLimit = judgeItem.getStatus().getTimeLimit();
     int memory = judgeItem.getStatus().getMemoryLimit() * 1024; // change mb to kb
     int outputlimit = judgeItem.getStatus().getOutputLimit() * 1024; // change mb to kb
+    Boolean SpeicalJudgeFlag = judgeItem.getStatus().getIsSpj();
     String command = String.format(COMMAND_LINE_PATTERN,
         language, tempPath, dataDir,
         judgeItem.getSourceNameWithoutExtension(),
@@ -36,6 +37,8 @@ public class LrunCore extends AbstractJudgeCore {
     if (currentTestCase == 1 && language != "python2" && language != "python3" ) {
       command = command + " -c";
     }
+    if( SpeicalJudgeFlag == true )
+      command = command + " -spj";
     return command;
   }
 
