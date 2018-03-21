@@ -4,10 +4,10 @@ jdk:
 
 install:
   - cd trunk
+  - cp gradle.properties.template gradle.properties
 
 env:
   - TERM=dumb
 
 script:
-  - gradle -PdbUser=travis -PdbPassword="" build 
-
+  - gradle -PdbUser=travis -PdbPassword="" build
