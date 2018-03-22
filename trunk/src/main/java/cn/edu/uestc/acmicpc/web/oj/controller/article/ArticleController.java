@@ -23,6 +23,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import javax.servlet.http.HttpSession;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -33,7 +34,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @Controller
 @RequestMapping("/article")
 public class ArticleController extends BaseController {
-
+  private static final Logger logger = Logger.getLogger(ArticleController.class);
   private final ArticleService articleService;
   private final PictureService pictureService;
   private final Settings settings;
@@ -179,7 +180,8 @@ public class ArticleController extends BaseController {
         throw new FieldException("title", "Please enter a validate title.");
       }
       // Check userId
-      if (currentUser.getUserId().equals(articleEditDto.getUserId()) == false && currentUser.getType() != 1  ) {
+      logger.info( "UserId is " + currentUser.getUserId() );
+      if (currentUser.getUserId().equals(articleEditDto.getUserId()) == false && action.equals("new") == false  ) {
         throw new AppException("Permission denied");
       }
     }
