@@ -181,7 +181,7 @@ public class ArticleController extends BaseController {
       }
       // Check userId
       logger.info( "UserId is " + currentUser.getUserId() );
-      if (currentUser.getUserId().equals(articleEditDto.getUserId()) == false && action.equals("new") == false  ) {
+      if (currentUser.getUserId().equals(articleEditDto.getUserId()) == false && currentUser.getType() != 1 && action.equals("new") == false  ) {
         throw new AppException("Permission denied");
       }
     }
