@@ -80,9 +80,9 @@ public class LrunCore extends AbstractJudgeCore {
       } else {
         result.setMemoryCost(null);
       }
-      if (jsonObject.containsKey("REALTIME")) {
+      if (jsonObject.containsKey("CPUTIME")) {
         result.setTimeCost((int) (Double.parseDouble(
-            jsonObject.getString("REALTIME")) * 1000.0));
+            jsonObject.getString("CPUTIME")) * 1000.0));
       } else {
         result.setTimeCost(null);
       }
