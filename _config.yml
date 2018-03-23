@@ -5,7 +5,7 @@ url: "http://uestc-acm.github.io/CDOJ"
 
 markdown: kramdown
 permalink: pretty
-highlighter: pygments
+highlighter: rouge
 
 sass:
   style: :compressed
