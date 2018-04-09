@@ -126,4 +126,4 @@ the `types` and `fields` are joined by `,` and there are no white spaces in `typ
 
 ### Authors and Contributors
 
-Project owners: Ruins He(@lyhypacm) and Yun Li(@mzry1992).
+Project owners: Ruins He(@ruinshe) and Yun Li(@mzry1992).
