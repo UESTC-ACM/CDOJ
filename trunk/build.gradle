@@ -92,7 +92,7 @@ task generateTestPropertyFile(type: Exec) {
 }
 
 task cleanResources {
-    doLast {
+  doLast {
     delete "src/main/resources/resources.properties"
     delete "src/test/resources/resources.properties"
     delete "src/gen/"
