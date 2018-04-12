@@ -20,10 +20,12 @@ buildscript {
 }
 apply plugin: 'grunt'
 
-task build << {
-  nodeSetup.execute()
-  installGrunt.setArgs(['install', 'grunt-cli@1.1.0', 'grunt@~0.4.2'])
-  installGrunt.execute()
-  npmInstall.execute()
-  grunt_build.execute()
+task build {
+  doLast{
+    nodeSetup.execute()
+    installGrunt.setArgs(['install', 'grunt-cli@1.1.0', 'grunt@~0.4.2'])
+    installGrunt.execute()
+    npmInstall.execute()
+    grunt_build.execute()
+  }
 }
