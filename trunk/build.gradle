@@ -91,10 +91,12 @@ task generateTestPropertyFile(type: Exec) {
       file(judgeWorkPath).absolutePath
 }
 
-task cleanResources << {
-  delete "src/main/resources/resources.properties"
-  delete "src/test/resources/resources.properties"
-  delete "src/gen/"
+task cleanResources {
+  doLast {
+    delete "src/main/resources/resources.properties"
+    delete "src/test/resources/resources.properties"
+    delete "src/gen/"
+  }
 }
 
 checkDtosDoNotContainEntities.dependsOn(generateDtos)
